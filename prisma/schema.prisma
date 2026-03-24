@@ -161,6 +161,7 @@ model Inspection {
   locationLogs        LocationLog[]
   videoAttachment     VideoAttachment?
   voiceRecordings     VoiceRecording[]
+  extendedMeasurements Json?             // { totalFootage, depthAtFindings, diameterTransitions, cameraDirection, flowDirection, equipmentUsed }
 }
 
 model LocationLog {
