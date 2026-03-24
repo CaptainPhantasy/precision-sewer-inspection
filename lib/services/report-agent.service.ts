@@ -16,11 +16,11 @@ import { format } from "date-fns";
 import { generateEnhancedReportHTML, type EnhancedReportData } from "@/lib/report-template-enhanced";
 import { videoProcessingService } from "./video-processing.service";
 import { acousticAnalysisService, type AcousticResult } from "./acoustic-analysis.service";
+import { generateSpectrographDataUrl } from "./spectrograph.service";
 import { mapService, type MapResult } from "./map-service";
 import { reportNarrativesService, type InspectionBundle } from "./report-narratives.service";
+import { pdfService } from "./pdf.service";
 
-const ABACUSAI_API_URL = process.env.ABACUSAI_API_URL || "https://apps.abacus.ai";
-const ABACUSAI_API_KEY = process.env.ABACUSAI_API_KEY;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -389,6 +389,7 @@ class ReportAgentService {
       materialContextNarrative: narratives.materialContext,
       acousticResult: assets.acousticResult,
       acousticInterpretation: narratives.acousticInterpretation,
+      spectrogramDataUrl: assets.acousticResult ? generateSpectrographDataUrl(assets.acousticResult) : null,
       conditionNarrative: narratives.conditionNarrative,
       limitationsText: narratives.limitationsText,
 
@@ -404,63 +405,11 @@ class ReportAgentService {
   // ─── Phase 5: PDF Generation ─────────────────────────────────────────────
 
   private async generatePDF(html: string): Promise<{ success: boolean; buffer?: Buffer; error?: string }> {
-    if (!ABACUSAI_API_KEY) {
-      return { success: false, error: "AbacusAI API key not configured" };
-    }
-
-    try {
-      // Step 1: Create PDF request
-      const createResponse = await fetch(`${ABACUSAI_API_URL}/api/createConvertHtmlToPdfRequest`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          deployment_token: ABACUSAI_API_KEY,
-          html_content: html,
-          pdf_options: {
-            format: "A4",
-            margin: { top: "0mm", right: "0mm", bottom: "0mm", left: "0mm" },
-            print_background: true,
-          },
-        }),
-      });
-
-      if (!createResponse.ok) {
-        return { success: false, error: "Failed to create PDF request" };
-      }
-
-      const { request_id } = await createResponse.json();
-      if (!request_id) {
-        return { success: false, error: "No request_id returned" };
-      }
-
-      // Step 2: Poll for completion
-      for (let i = 0; i < 120; i++) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        const statusResponse = await fetch(`${ABACUSAI_API_URL}/api/getConvertHtmlToPdfStatus`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            request_id,
-            deployment_token: ABACUSAI_API_KEY,
-          }),
-        });
-
-        const statusResult = await statusResponse.json();
-
-        if (statusResult?.status === "SUCCESS" && statusResult?.result?.result) {
-          const buffer = Buffer.from(statusResult.result.result, "base64");
-          return { success: true, buffer };
-        } else if (statusResult?.status === "FAILED") {
-          return { success: false, error: statusResult?.result?.error || "PDF generation failed" };
-        }
-      }
-
-      return { success: false, error: "PDF generation timed out" };
-    } catch (error) {
-      logger.error("PDF generation failed", { error });
-      return { success: false, error: "PDF generation failed unexpectedly" };
-    }
+    return pdfService.generatePDF(html, {
+      format: "A4",
+      margin: { top: "0mm", right: "0mm", bottom: "0mm", left: "0mm" },
+      printBackground: true,
+    });
   }
 }
 

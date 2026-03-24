@@ -13,6 +13,7 @@
 
 import { format } from "date-fns";
 import type { AcousticResult, AcousticSegment } from "./services/acoustic-analysis.service";
+import { getPSILogoDataUrl } from "./services/logo-embed.service";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -95,6 +96,9 @@ export interface EnhancedReportData {
   }> | null;
 
   mapImageUrl?: string | null;
+
+  // Spectrograph image (base64 data URL)
+  spectrogramDataUrl?: string | null;
 
   // Video link
   videoUrl?: string | null;
@@ -225,13 +229,15 @@ function renderHeader(data: EnhancedReportData): string {
     ? format(new Date(data.completedAt), "MMMM d, yyyy")
     : "N/A";
 
+  const logoDataUrl = getPSILogoDataUrl();
+
   return `
   <div class="report-header">
     <div class="header-top">
       <div class="header-logo-area">
-        <div class="logo-circle">
-          <span class="logo-text">PSI</span>
-        </div>
+        ${logoDataUrl
+          ? `<img src="${logoDataUrl}" alt="PSI Logo" class="logo-image" />`
+          : `<div class="logo-circle"><span class="logo-text">PSI</span></div>`}
         <div class="company-info">
           <h1 class="company-name">Precision Sewer Inspection</h1>
           <p class="company-tagline">Central Indiana's Trusted Sewer Inspection Experts</p>
@@ -401,7 +407,11 @@ function renderAcousticAnalysis(data: EnhancedReportData): string {
         </div>
       </div>
 
-      ${acoustic.spectrogramUrl ? `
+      ${data.spectrogramDataUrl ? `
+      <div class="spectrogram-container">
+        <img src="${data.spectrogramDataUrl}" alt="Acoustic Frequency Analysis" class="spectrogram-image" />
+        <p class="spectrogram-caption">Frequency analysis of camera audio during inspection traverse</p>
+      </div>` : acoustic.spectrogramUrl ? `
       <div class="spectrogram-container">
         <img src="${acoustic.spectrogramUrl}" alt="Acoustic Spectrogram" class="spectrogram-image" />
         <p class="spectrogram-caption">Frequency spectrogram of camera audio during inspection traverse</p>
@@ -435,7 +445,7 @@ function renderConditionAssessment(data: EnhancedReportData): string {
   const urgency = getUrgencyConfig(data.urgencyLevel);
 
   return `
-  <div class="section">
+  <div class="section page-break-before">
     <div class="section-header">
       <div class="section-icon">📊</div>
       <h2 class="section-title">Overall Condition Assessment</h2>
@@ -693,7 +703,7 @@ function renderRecommendations(data: EnhancedReportData): string {
   if (!data.recommendations) return "";
 
   return `
-  <div class="section">
+  <div class="section page-break-before">
     <div class="section-header">
       <div class="section-icon">💡</div>
       <h2 class="section-title">Recommendations</h2>
@@ -731,8 +741,25 @@ function renderVideoDocumentation(data: EnhancedReportData): string {
       <h2 class="section-title">Video Documentation</h2>
     </div>
     <div class="video-card">
-      <p class="video-note">Complete video documentation of this inspection is available for download via your secure delivery link.</p>
-      ${data.highlightReelUrl ? `<p class="video-highlight">A highlight reel of key findings has been prepared for convenient review.</p>` : ""}
+      <p class="video-note">Complete video documentation of this inspection is included with your report delivery.</p>
+      <div class="video-links">
+        ${data.videoUrl ? `
+        <a href="${data.videoUrl}" class="video-link" target="_blank" rel="noopener">
+          <span class="video-link-icon">📹</span>
+          <span class="video-link-text">
+            <strong>Full Inspection Video</strong>
+            <span class="video-link-sub">Complete camera traverse recording</span>
+          </span>
+        </a>` : ""}
+        ${data.highlightReelUrl ? `
+        <a href="${data.highlightReelUrl}" class="video-link" target="_blank" rel="noopener">
+          <span class="video-link-icon">⭐</span>
+          <span class="video-link-text">
+            <strong>Highlight Reel</strong>
+            <span class="video-link-sub">Key findings summary video</span>
+          </span>
+        </a>` : ""}
+      </div>
     </div>
   </div>`;
 }
@@ -803,12 +830,14 @@ function renderDisclaimers(data: EnhancedReportData): string {
 }
 
 function renderFooter(data: EnhancedReportData): string {
+  const logoDataUrl = getPSILogoDataUrl();
+
   return `
   <div class="report-footer">
     <div class="footer-brand">
-      <div class="footer-logo-circle">
-        <span class="footer-logo-text">PSI</span>
-      </div>
+      ${logoDataUrl
+        ? `<img src="${logoDataUrl}" alt="PSI" class="footer-logo-image" />`
+        : `<div class="footer-logo-circle"><span class="footer-logo-text">PSI</span></div>`}
       <div class="footer-company">
         <span class="footer-company-name">Precision Sewer Inspection</span>
         <span class="footer-company-address">Nashville, IN 47448</span>
@@ -874,6 +903,10 @@ function getStylesheet(): string {
       display: flex;
       align-items: center;
       gap: 16px;
+    }
+    .logo-image {
+      width: 56px; height: 56px; border-radius: 50%;
+      object-fit: cover; border: 2px solid rgba(255,255,255,0.3);
     }
     .logo-circle {
       width: 56px;
@@ -1455,8 +1488,19 @@ function getStylesheet(): string {
       border-radius: 8px;
       padding: 16px 20px;
     }
-    .video-note { font-size: 13px; color: ${COLORS.gray700}; }
-    .video-highlight { font-size: 12px; color: ${COLORS.blue}; font-weight: 500; margin-top: 6px; }
+    .video-note { font-size: 13px; color: ${COLORS.gray700}; margin-bottom: 12px; }
+    .video-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .video-link {
+      display: flex; align-items: center; gap: 10px;
+      background: white; border: 1px solid ${COLORS.bluePale}; border-radius: 8px;
+      padding: 12px 16px; text-decoration: none; color: ${COLORS.gray800};
+      flex: 1; min-width: 200px; transition: border-color 0.2s;
+    }
+    .video-link:hover { border-color: ${COLORS.blue}; }
+    .video-link-icon { font-size: 24px; }
+    .video-link-text { display: flex; flex-direction: column; }
+    .video-link-text strong { font-size: 13px; color: ${COLORS.navy}; }
+    .video-link-sub { font-size: 11px; color: ${COLORS.gray500}; }
 
     /* ── Verification ── */
     .verification-card {
@@ -1529,6 +1573,10 @@ function getStylesheet(): string {
       gap: 12px;
       margin-bottom: 10px;
     }
+    .footer-logo-image {
+      width: 32px; height: 32px; border-radius: 50%;
+      object-fit: cover; border: 1px solid rgba(255,255,255,0.25);
+    }
     .footer-logo-circle {
       width: 32px;
       height: 32px;
@@ -1573,6 +1621,50 @@ function getStylesheet(): string {
     /* ── Utilities ── */
     .page-break-before { page-break-before: always; }
     .page-break-after { page-break-after: always; }
+
+    /* ── Print / PDF Pagination ── */
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+      /* Force page breaks before major sections */
+      .section.page-break-before { page-break-before: always; }
+
+      /* Prevent mid-section splits */
+      .section { page-break-inside: avoid; }
+      .acoustic-card { page-break-inside: avoid; }
+      .acoustic-table { page-break-inside: avoid; }
+      .condition-card { page-break-inside: avoid; }
+      .findings-card { page-break-inside: avoid; }
+      .measurements-card { page-break-inside: avoid; }
+      .verification-card { page-break-inside: avoid; }
+      .disclaimers-section { page-break-inside: avoid; }
+      .video-card { page-break-inside: avoid; }
+      .map-card { page-break-inside: avoid; }
+      .limitations-card { page-break-inside: avoid; }
+      .recommendations-card { page-break-inside: avoid; }
+
+      /* Keep images with their captions */
+      .still-card { page-break-inside: avoid; }
+      .locate-card { page-break-inside: avoid; }
+      .spectrogram-container { page-break-inside: avoid; }
+
+      /* Prevent orphaned headers */
+      .section-header { page-break-after: avoid; }
+      h2, h3 { page-break-after: avoid; orphans: 3; widows: 3; }
+
+      /* Keep stills grid together when possible, break between cards if needed */
+      .stills-grid { page-break-before: avoid; }
+
+      /* Footer stays at bottom of last page */
+      .report-footer { page-break-before: auto; page-break-inside: avoid; }
+
+      /* Header only on first page */
+      .report-header { page-break-after: avoid; }
+
+      /* Prevent large blank spaces — allow overflow to next page */
+      .property-info { page-break-inside: avoid; }
+      .info-card { page-break-inside: avoid; }
+    }
   </style>`;
 }
 

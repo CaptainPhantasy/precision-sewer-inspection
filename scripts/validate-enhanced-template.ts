@@ -6,6 +6,7 @@
 import { PrismaClient } from "@prisma/client";
 import { generateEnhancedReportHTML } from "../lib/report-template-enhanced";
 import type { AcousticResult } from "../lib/services/acoustic-analysis.service";
+import { generateSpectrographDataUrl } from "../lib/services/spectrograph.service";
 import { writeFileSync } from "fs";
 import { join } from "path";
 
@@ -121,6 +122,7 @@ async function main() {
 
     acousticResult: syntheticAcoustic,
     acousticInterpretation: syntheticAcoustic.interpretation,
+    spectrogramDataUrl: generateSpectrographDataUrl(syntheticAcoustic),
 
     conditionNarrative:
       "The overall condition of the sewer line is assessed as GOOD with a condition rating of 3 out of 5. While the pipe shows signs of aging consistent with its Orangeburg construction, no active blockages, significant cracks, or structural failures were observed during the inspection.\n\nThe 15-minute inspection duration was sufficient to evaluate the accessible portions of the line. The connection to the municipal main was verified as intact.",
@@ -144,8 +146,8 @@ async function main() {
     // Synthetic map
     mapImageUrl: "https://placehold.co/800x600/e2e8f0/475569?text=MapIndy+Sewer+Map",
 
-    videoUrl: null,
-    highlightReelUrl: null,
+    videoUrl: inspection.videoAttachment?.publicUrl || "https://example.com/inspection-video.mp4",
+    highlightReelUrl: inspection.videoAttachment?.highlightReelUrl || "https://example.com/highlight-reel.mp4",
   };
 
   console.log("\nGenerating enhanced report HTML...");
@@ -166,6 +168,7 @@ async function main() {
   const sections = [
     { name: "Material Context", marker: "Material Context" },
     { name: "Acoustic Analysis", marker: "Acoustic Material Analysis" },
+    { name: "Spectrograph Image", marker: "spectrogram-container" },
     { name: "Condition Assessment", marker: "Condition Assessment" },
     { name: "Video Stills", marker: "still-card" },
     { name: "Municipal Map", marker: "MapIndy" },
