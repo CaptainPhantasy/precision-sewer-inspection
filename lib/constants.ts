@@ -1,0 +1,229 @@
+export const COMPANY_INFO = {
+  name: 'Precision Sewer Inspection',
+  phone: '(317) 620-3858',
+  phoneRaw: '3176203858',
+  email: 'booking@precisionsewerinspections.com',
+  address: '6405 Justins Ridge Road',
+  city: 'Nashville',
+  state: 'IN',
+  zip: '47448',
+  fullAddress: '6405 Justins Ridge Road, Nashville, IN 47448',
+  serviceArea: 'Central Indiana',
+  serviceAreaDisplay: 'Indianapolis Metro & Surrounding Areas',
+  googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Indianapolis+IN+sewer+inspection',
+}
+
+export const SERVICES = [
+  {
+    id: 'sewer-scope',
+    title: 'Sewer Scope Inspection',
+    description: 'HD video inspection of your main sewer line from cleanout to city connection. Premium reporting with transparent, upfront pricing.',
+    price: 'From $159',
+    features: ['HD Video Recording', 'Premium Written Report', '24-Hour Delivery'],
+  },
+  {
+    id: 'commercial',
+    title: 'Commercial & Multi-Unit',
+    description: 'Comprehensive inspections for commercial properties, multi-family buildings, and property managers with volume pricing.',
+    price: 'Custom Quote',
+    features: ['Multi-Unit Pricing', 'Volume Discounts', 'Detailed Documentation'],
+  },
+  {
+    id: 'real-estate',
+    title: 'Brokerage & Investor Packages',
+    description: 'Prepaid volume packages for real estate professionals with priority scheduling and cost savings.',
+    price: 'Volume Pricing',
+    features: ['Priority Scheduling', 'Prepaid Discounts', 'Dedicated Support'],
+  },
+]
+
+export const PRICING_TIERS = [
+  {
+    name: 'Early Adopter',
+    price: '$159',
+    description: 'Limited Time Launch Pricing',
+    features: [
+      'HD Video Recording',
+      'HD images and factual summary with no jargon',
+      '24-Hour Delivery',
+      'Standard Cleanout Access',
+      'Phone Consultation',
+      'No Upselling Guarantee',
+    ],
+    cta: 'Book Now',
+    featured: false,
+    isPromo: true,
+  },
+  {
+    name: 'Standard',
+    price: '$159',
+    description: 'Regular Pricing',
+    features: [
+      'HD Video Recording',
+      'HD images and factual summary with no jargon',
+      '24-Hour Delivery',
+      'Standard Cleanout Access',
+      'Phone Consultation',
+      'No Upselling Guarantee',
+    ],
+    cta: 'Book Now',
+    featured: true,
+  },
+  {
+    name: 'Volume Packages',
+    price: 'Custom',
+    description: 'Brokerages & Investors',
+    features: [
+      '10+ Scope Prepaid Bundles',
+      'Per-Scope Discounts',
+      'Priority Scheduling',
+      'Dedicated Account Support',
+      'Annual Package Options',
+    ],
+    cta: 'Get Quote',
+    featured: false,
+  },
+]
+
+export const ACCESS_METHODS = [
+  { method: 'Standard Cleanout Access', price: 'Included', description: 'Outdoor or indoor cleanout — fastest access method' },
+  { method: 'Multiple Cleanouts', price: '1st: $159 / Additional: $129', description: 'Additional cleanout inspections performed on-site' },
+  { method: 'Roof Vent Access', price: '+$50', description: 'Camera entry via plumbing vent on roof' },
+  { method: 'Toilet Pull & Reset', price: '+$65', description: 'Includes new wax ring and supply line — reusing supply lines is the #1 cause of post-inspection leaks' },
+  { method: 'Clean-Out Cap Replacement', price: '+$50', description: 'Cut out and replace damaged or inaccessible cleanout cap' },
+  { method: 'Crawl Space Access', price: '+$30', description: 'Additional fee for crawl space entry' },
+  { method: 'Trip Fee', price: '$79', description: 'Charged on a case-by-case basis when access to the sewer system is unavailable, incorrect information was provided, or no one is home at the scheduled time' },
+]
+
+export const MULTI_UNIT_PRICING = [
+  { units: 'First Unit', price: '$159', description: 'Standard inspection rate' },
+  { units: 'Each Additional Unit', price: '$129', description: 'When using same access point conditions' },
+]
+
+export const VOLUME_PACKAGES = [
+  { 
+    name: '10-Scope Bundle', 
+    price: '$135/scope', 
+    description: 'Prepaid package with discounted per-scope rate',
+    features: ['~15% savings', 'Priority scheduling', 'On time findings']
+  },
+  { 
+    name: '25-Scope Brokerage', 
+    price: 'Call for Pricing', 
+    description: 'Ideal for active real estate teams',
+    features: ['Per-scope discounts', 'Dedicated support', 'On time findings']
+  },
+  { 
+    name: 'Enterprise', 
+    price: 'Call for Pricing', 
+    description: 'For high-volume investors (400-600+ scopes/year)',
+    features: ['Best per-scope rates', 'Priority service', 'Account manager']
+  },
+]
+
+export const PIPE_ISSUES = [
+  { name: 'Root Intrusion', image: '/images/root_intrusion.jpg', description: 'Tree roots growing into pipes' },
+  { name: 'Cracks & Breaks', image: '/images/cracked_pipe.jpg', description: 'Structural damage to pipes' },
+  { name: 'Belly/Sag', image: '/images/pipe_bellying.png', description: 'Low spots where waste collects' },
+  { name: 'Blockages', image: '/images/blockage.jpg', description: 'Debris blocking flow' },
+  { name: 'Scale Buildup', image: '/images/scale_buildup.png', description: 'Mineral deposits reducing flow' },
+  { name: 'Offset Joints', image: '/images/offset_joint.png', description: 'Misaligned pipe connections' },
+]
+
+export const TESTIMONIALS = [
+  {
+    quote: 'They saved me from a $15,000 mistake. The sellers swore the sewer line was fine but Precision Sewer Inspection found a complete collapse. Their video evidence gave me the leverage I needed to negotiate repairs before closing.',
+    author: 'Sarah M.',
+    role: 'First-Time Home Buyer, Indianapolis',
+    rating: 5,
+  },
+  {
+    quote: 'My go-to partner for every transaction. As a real estate agent, I need partners I can trust to treat my clients right. These folks are fast, honest, and their reports are incredibly thorough.',
+    author: 'Michael T.',
+    role: 'Licensed Realtor, Carmel',
+    rating: 5,
+  },
+  {
+    quote: "Finally, a company that doesn't try to sell me things. Another company told me I needed a full replacement for $12,000. Precision showed me it was just root intrusion that needed a simple cleaning.",
+    author: 'Jennifer L.',
+    role: 'Homeowner, Fishers',
+    rating: 5,
+  },
+]
+
+export const FAQ_ITEMS = [
+  {
+    question: 'How much does a sewer scope cost in Indiana?',
+    answer: 'Our standard sewer scope inspection is $159 with cleanout access, which includes HD video recording and a written report delivered within 24 hours. Additional fees may apply for alternative access methods: +$50 for roof vent access, +$65 for toilet pull (includes new wax ring and supply line), +$30 for crawl space access. We believe in transparent, upfront pricing—no hidden fees.',
+  },
+  {
+    question: 'What if access requires a toilet pull?',
+    answer: "Toilet pull access is $65 additional. This includes removing and reinstalling the toilet with a brand new wax ring and supply line. We always replace the supply line because reusing old supply lines is the number one cause of post-inspection leaks. We'll confirm the access method and pricing before beginning work.",
+  },
+  {
+    question: "What happens if no one is home or access isn't available?",
+    answer: 'A $79 trip fee may be charged on a case-by-case basis. This typically applies when access to the sewer system is unavailable, incorrect information was provided about the property, or no one is home at the scheduled time. To avoid this fee, please ensure someone is available and verify access to the clean-out before your appointment.',
+  },
+  {
+    question: 'What about multiple cleanouts on a property?',
+    answer: 'If additional cleanouts need to be inspected on the same visit, the first cleanout is $159 and each additional cleanout is $129. This allows us to provide comprehensive coverage of larger or more complex sewer systems at a reduced rate.',
+  },
+  {
+    question: 'Do you offer bulk pricing for investors or brokerages?',
+    answer: 'Yes! We offer prepaid volume packages designed for real estate professionals and investors. Our 10-scope bundles and 25-scope brokerage packages include per-scope discounts and priority scheduling. Contact us for custom volume pricing.',
+  },
+  {
+    question: 'How do volume packages work?',
+    answer: 'Volume packages are prepaid bundles purchased upfront at a discounted per-scope rate. You receive priority scheduling and dedicated support. Packages can be used across multiple properties. The more you purchase, the greater your savings.',
+  },
+  {
+    question: 'How long does an inspection take?',
+    answer: "Most inspections are completed in 30-60 minutes on-site. You'll receive your video and premium written report within 24 hours, or same-day for an additional fee if you're under a tight deadline.",
+  },
+  {
+    question: 'What equipment do you use?',
+    answer: "We use professional grade high-definition sewer camera systems trusted by industry professionals for accurate pipeline inspections. This ensures crystal-clear video footage so you can see exactly what's happening in your pipes.",
+  },
+]
+
+export const SERVICE_AREAS = [
+  'Indianapolis', 'Carmel', 'Fishers', 'Noblesville', 'Westfield',
+  'Zionsville', 'Brownsburg', 'Avon', 'Plainfield', 'Greenwood',
+  'Franklin', 'Greenfield',
+]
+
+export const TEAM_MEMBERS = [
+  {
+    name: 'Mike Reynolds',
+    role: 'Lead Inspector',
+    image: '/images/tech_male.png',
+    certifications: ['InterNACHI Certified', 'HD Camera Certified'],
+    experience: '8+ years',
+  },
+  {
+    name: 'Sarah Chen',
+    role: 'Senior Inspector',
+    image: '/images/tech_female.png',
+    certifications: ['InterNACHI Certified', 'Licensed & Insured'],
+    experience: '5+ years',
+  },
+]
+
+// Active promotions - set to null or empty array when no promotions are active
+export const ACTIVE_PROMOTIONS = [
+  {
+    code: 'SAVE10',
+    description: '$10 off your first sewer inspection',
+    discountAmount: 10,
+    discountType: 'fixed' as const, // 'fixed' or 'percent'
+    appliesTo: 'sewer-inspection',
+    bannerText: 'Click the banner at the top of any page to claim!',
+    isActive: true,
+  },
+]
+
+// Helper to get current active promotion (returns first active one or null)
+export const getActivePromotion = () => {
+  const promo = ACTIVE_PROMOTIONS.find(p => p.isActive)
+  return promo || null
+}

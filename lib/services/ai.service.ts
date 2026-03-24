@@ -1,0 +1,467 @@
+/**
+ * AI Service
+ * Handles all AI/LLM interactions via Abacus AI
+ */
+
+import { logger } from "@/lib/logger";
+import { Errors, AppError, ErrorCode } from "@/lib/errors";
+
+// AI API configuration
+const AI_API_URL = process.env.ABACUSAI_API_URL || "https://apps.abacus.ai";
+const AI_API_KEY = process.env.ABACUSAI_API_KEY;
+const AI_MODEL = process.env.ABACUSAI_MODEL || "gpt-4.1-mini";
+
+// Request options with timeout
+const AI_REQUEST_TIMEOUT = 30000; // 30 seconds
+
+interface AIResponse {
+  success: boolean;
+  content?: string;
+  error?: string;
+}
+
+interface InspectionContext {
+  propertyAddress: string;
+  clientName: string;
+  homeAge?: string | null;
+  pipeMaterial?: string | null;
+  knownIssues?: string | null;
+  backupHistory?: string | null;
+  overallCondition?: string | null;
+  pipeConditionRating?: number | null;
+  rootIntrusion?: { severity?: string; location?: string; notes?: string } | null;
+  cracks?: Array<{ location: string; severity: string; type?: string }> | null;
+  bellies?: Array<{ location: string; severity: string }> | null;
+  offsetJoints?: Array<{ location: string; severity: string }> | null;
+  blockages?: Array<{ location: string; type?: string; severity: string }> | null;
+  connectionToMain?: string | null;
+  recommendations?: string | null;
+  urgencyLevel?: string | null;
+  technicianName?: string;
+  inspectionDate?: string;
+  inspectionDuration?: number | null;
+}
+
+interface ChatMessage {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+
+class AIService {
+  private requestCount = 0;
+  private lastRequestTime = 0;
+
+  /**
+   * Make a chat completion request
+   */
+  private async chatCompletion(
+    messages: ChatMessage[],
+    options: {
+      maxTokens?: number;
+      temperature?: number;
+    } = {}
+  ): Promise<AIResponse> {
+    if (!AI_API_KEY) {
+      return {
+        success: false,
+        error: "AI API key not configured",
+      };
+    }
+
+    this.requestCount++;
+    this.lastRequestTime = Date.now();
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), AI_REQUEST_TIMEOUT);
+
+    try {
+      const response = await fetch(`${AI_API_URL}/v1/chat/completions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${AI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: AI_MODEL,
+          messages,
+          max_tokens: options.maxTokens || 1000,
+          temperature: options.temperature ?? 0.7,
+        }),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        logger.error("AI API error", {
+          status: response.status,
+          error: errorText,
+        });
+        return {
+          success: false,
+          error: `AI service error: ${response.status}`,
+        };
+      }
+
+      const data = await response.json();
+      const content = data.choices?.[0]?.message?.content;
+
+      if (!content) {
+        return {
+          success: false,
+          error: "No response from AI",
+        };
+      }
+
+      return {
+        success: true,
+        content,
+      };
+    } catch (error) {
+      clearTimeout(timeoutId);
+
+      if (error instanceof Error && error.name === "AbortError") {
+        return {
+          success: false,
+          error: "AI request timed out",
+        };
+      }
+
+      logger.error("AI request failed", { error });
+      return {
+        success: false,
+        error: "Failed to connect to AI service",
+      };
+    }
+  }
+
+  /**
+   * Generate a summary of inspection findings
+   */
+  async generateFindingsSummary(context: InspectionContext): Promise<AIResponse> {
+    const systemPrompt = `You are a professional sewer inspection technician writing a summary for a client. Write clear, plain-language summaries that a homeowner can understand. Avoid technical jargon. Be professional and factual. Never be alarmist.`;
+
+    const userPrompt = `Based on the following inspection data, write a clear summary of the findings (2-3 paragraphs):
+
+Property: ${context.propertyAddress}
+Client: ${context.clientName}
+Home Age: ${context.homeAge || "Unknown"}
+Pipe Material: ${context.pipeMaterial?.replace("_", " ") || "Unknown"}
+Known Issues Reported: ${context.knownIssues || "None reported"}
+Backup History: ${context.backupHistory || "None reported"}
+
+Overall Condition: ${context.overallCondition || "Not yet assessed"}
+Pipe Condition Rating: ${context.pipeConditionRating ? `${context.pipeConditionRating}/5` : "Not rated"}
+Root Intrusion: ${context.rootIntrusion?.severity ? `${context.rootIntrusion.severity} at ${context.rootIntrusion.location || "various locations"}. ${context.rootIntrusion.notes || ""}` : "None observed"}
+Cracks: ${context.cracks && context.cracks.length > 0 ? context.cracks.map((c) => `${c.severity} ${c.type || "crack"} at ${c.location}`).join("; ") : "None observed"}
+Bellies/Low Spots: ${context.bellies && context.bellies.length > 0 ? context.bellies.map((b) => `${b.severity} at ${b.location}`).join("; ") : "None observed"}
+Offset Joints: ${context.offsetJoints && context.offsetJoints.length > 0 ? context.offsetJoints.map((o) => `${o.severity} at ${o.location}`).join("; ") : "None observed"}
+Blockages: ${context.blockages && context.blockages.length > 0 ? context.blockages.map((b) => `${b.severity} ${b.type || "blockage"} at ${b.location}`).join("; ") : "None observed"}
+Connection to Main: ${context.connectionToMain || "Not documented"}
+Current Recommendations: ${context.recommendations || "None yet"}
+Urgency Level: ${context.urgencyLevel || "Not set"}
+
+Write a plain-language summary of the findings:`;
+
+    return this.chatCompletion(
+      [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      { maxTokens: 1500 }
+    );
+  }
+
+  /**
+   * Generate recommendations based on findings
+   */
+  async generateRecommendations(context: InspectionContext): Promise<AIResponse> {
+    const systemPrompt = `You are a professional sewer inspection technician. Provide clear, actionable recommendations for the property owner. Include priority/urgency and estimated timeframes where appropriate. Be honest but not alarmist. Use bullet points.`;
+
+    const userPrompt = `Based on the following inspection findings, provide clear, actionable recommendations (3-5 bullet points):
+
+Property: ${context.propertyAddress}
+Overall Condition: ${context.overallCondition || "Unknown"}
+Pipe Rating: ${context.pipeConditionRating || "N/A"}/5
+Root Intrusion: ${context.rootIntrusion?.severity || "None"}
+Cracks: ${context.cracks?.length || 0} found
+Bellies: ${context.bellies?.length || 0} found
+Offset Joints: ${context.offsetJoints?.length || 0} found
+Blockages: ${context.blockages?.length || 0} found
+Urgency Level: ${context.urgencyLevel || "Not set"}
+
+Provide recommendations in plain language:`;
+
+    return this.chatCompletion(
+      [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      { maxTokens: 1000, temperature: 0.6 }
+    );
+  }
+
+  /**
+   * Generate a complete inspection summary
+   */
+  async generateFullSummary(context: InspectionContext): Promise<AIResponse> {
+    const systemPrompt = `You are a professional sewer inspection technician writing a complete summary for a client. Write clearly and avoid jargon. Be honest about issues but don't be alarmist.`;
+
+    const userPrompt = `Based on the following inspection data, write:
+1. A brief overview of what was found (1 paragraph)
+2. Key concerns, if any (bullet points)
+3. Recommendations for the homeowner (bullet points)
+4. Overall assessment in one sentence
+
+Inspection Data:
+Property: ${context.propertyAddress}
+Client: ${context.clientName}
+Technician: ${context.technicianName || "PSI Team"}
+Date: ${context.inspectionDate || "Today"}
+Duration: ${context.inspectionDuration || "N/A"} minutes
+
+Property Info:
+- Home Age: ${context.homeAge || "Unknown"}
+- Pipe Material: ${context.pipeMaterial?.replace("_", " ") || "Unknown"}
+- Known Issues: ${context.knownIssues || "None reported"}
+
+Findings:
+- Overall Condition: ${context.overallCondition || "Not assessed"}
+- Pipe Rating: ${context.pipeConditionRating || "N/A"}/5
+- Root Intrusion: ${context.rootIntrusion?.severity || "None"}
+- Cracks: ${context.cracks?.length || 0} found
+- Bellies: ${context.bellies?.length || 0} found
+- Offset Joints: ${context.offsetJoints?.length || 0} found
+- Blockages: ${context.blockages?.length || 0} found
+- Connection to Main: ${context.connectionToMain || "Not documented"}
+- Urgency: ${context.urgencyLevel || "Not set"}
+
+Write the complete summary:`;
+
+    return this.chatCompletion(
+      [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      { maxTokens: 2000 }
+    );
+  }
+
+  /**
+   * Generate stage-specific guidance for technician
+   */
+  async generateStageGuidance(
+    stage: string,
+    context: Partial<InspectionContext>
+  ): Promise<AIResponse> {
+    const stagePrompts: Record<string, string> = {
+      PRE_INSPECTION: `You're guiding a technician through the pre-inspection interview. Remind them to:
+- Confirm client name and property address
+- Ask about home age to help assess pipe material
+- Ask about any known sewer issues or backup history
+- Ask about recent plumbing work
+- Note any special instructions
+
+Keep it brief (2-3 sentences) and conversational.`,
+
+      INSPECTING: `You're guiding a technician during an active inspection. Remind them to:
+- Start from the access point and document the entry
+- Call out distance markers for any findings
+- Look for root intrusion, cracks, bellies, offset joints
+- Check the connection to the main sewer line
+- Speak clearly for voice notes
+
+Keep it brief (2-3 sentences).`,
+
+      POST_INSPECTION: `You're guiding a technician through documenting findings. Remind them to:
+- Rate the overall pipe condition
+- Document each defect with location and severity
+- Note the connection to the main
+- Provide clear recommendations
+- Set appropriate urgency level
+
+Keep it brief (2-3 sentences).`,
+    };
+
+    const stagePrompt = stagePrompts[stage] || "Guide the technician through their current stage.";
+
+    const systemPrompt = `You are a helpful assistant for a sewer inspection technician. ${stagePrompt}
+
+Current inspection context:
+Property: ${context.propertyAddress || "Unknown"}
+Client: ${context.clientName || "Unknown"}
+Stage: ${stage}
+
+Provide a brief, encouraging message for the technician:`;
+
+    return this.chatCompletion(
+      [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: "What should I focus on at this stage?" },
+      ],
+      { maxTokens: 300, temperature: 0.8 }
+    );
+  }
+
+  /**
+   * Extract data from voice transcript
+   */
+  async extractDataFromTranscript(
+    transcript: string,
+    currentData: Partial<InspectionContext>
+  ): Promise<AIResponse & { extractedData?: Partial<InspectionContext> }> {
+    const systemPrompt = `You are a data extraction assistant. Extract structured information from the technician's voice notes about a sewer inspection. Return only valid JSON with the extracted fields. If a field cannot be determined, omit it.`;
+
+    const userPrompt = `Extract information from this voice transcript:
+
+"${transcript}"
+
+Current known data:
+${JSON.stringify(currentData, null, 2)}
+
+Extract any of these fields if mentioned:
+- pipeMaterial (CAST_IRON, CLAY, PVC, ABS, ORANGEBURG, CONCRETE, HDPE, UNKNOWN)
+- overallCondition (GOOD, FAIR, NEEDS_ATTENTION, CRITICAL)
+- pipeConditionRating (1-5)
+- urgencyLevel (NONE, MONITOR, SOON, IMMEDIATE)
+- connectionToMain
+- recommendations
+- Defects: rootIntrusion, cracks, bellies, offsetJoints, blockages (each with location, severity)
+
+Return only JSON, no explanation:`;
+
+    const response = await this.chatCompletion(
+      [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      { maxTokens: 500, temperature: 0.3 }
+    );
+
+    if (!response.success || !response.content) {
+      return response;
+    }
+
+    try {
+      // Try to parse the JSON response
+      const jsonMatch = response.content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const extractedData = JSON.parse(jsonMatch[0]) as Partial<InspectionContext>;
+        return {
+          success: true,
+          content: response.content,
+          extractedData,
+        };
+      }
+    } catch {
+      // If parsing fails, just return the raw content
+    }
+
+    return response;
+  }
+
+  /**
+   * Verify video description matches inspection data
+   */
+  async verifyVideoContent(
+    videoDescription: string,
+    inspectionData: InspectionContext
+  ): Promise<AIResponse & { verified?: boolean; issues?: string[] }> {
+    const systemPrompt = `You are verifying that a video inspection description matches the recorded findings. Check for consistency and flag any major discrepancies.`;
+
+    const userPrompt = `Compare this video description with the inspection findings:
+
+Video Description:
+${videoDescription}
+
+Recorded Findings:
+- Overall Condition: ${inspectionData.overallCondition}
+- Pipe Rating: ${inspectionData.pipeConditionRating}/5
+- Root Intrusion: ${inspectionData.rootIntrusion?.severity || "None"}
+- Cracks: ${inspectionData.cracks?.length || 0}
+- Bellies: ${inspectionData.bellies?.length || 0}
+- Urgency: ${inspectionData.urgencyLevel}
+
+Is this consistent? Reply with JSON: { "verified": boolean, "issues": ["list of any discrepancies"] }`;
+
+    const response = await this.chatCompletion(
+      [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      { maxTokens: 300, temperature: 0.2 }
+    );
+
+    if (!response.success || !response.content) {
+      return response;
+    }
+
+    try {
+      const jsonMatch = response.content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        return {
+          success: true,
+          content: response.content,
+          verified: parsed.verified,
+          issues: parsed.issues,
+        };
+      }
+    } catch {
+      // If parsing fails, return unverified
+    }
+
+    return {
+      success: true,
+      content: response.content,
+      verified: false,
+      issues: ["Could not verify video content"],
+    };
+  }
+
+  /**
+   * Get API health status
+   */
+  getHealthStatus(): {
+    configured: boolean;
+    requestCount: number;
+    lastRequestTime: number | null;
+  } {
+    return {
+      configured: !!AI_API_KEY,
+      requestCount: this.requestCount,
+      lastRequestTime: this.lastRequestTime || null,
+    };
+  }
+
+  /**
+   * General chat with inspection context
+   */
+  async chat(
+    message: string,
+    context: Partial<InspectionContext> | Record<string, unknown>,
+    currentStage: string,
+    conversationHistory: ChatMessage[] = []
+  ): Promise<AIResponse> {
+    const systemPrompt = `You are an AI assistant helping a sewer inspection technician in the field. You have access to the current inspection data. Be concise, practical, and helpful. Current stage: ${currentStage}.
+
+Property: ${context.propertyAddress}
+Client: ${context.clientName}
+${context.pipeMaterial ? `Pipe Material: ${context.pipeMaterial}` : ""}
+${context.overallCondition ? `Condition: ${context.overallCondition}` : ""}
+${context.recommendations ? `Recommendations: ${context.recommendations}` : ""}`;
+
+    const messages: ChatMessage[] = [
+      { role: "system", content: systemPrompt },
+      ...conversationHistory,
+      { role: "user", content: message },
+    ];
+
+    return this.chatCompletion(messages, { maxTokens: 500, temperature: 0.7 });
+  }
+}
+
+// Export singleton instance
+export const aiService = new AIService();
+export { AIService };
