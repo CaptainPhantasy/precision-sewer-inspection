@@ -5,81 +5,36 @@ import { sendNotificationEmail, getVideoReadyEmail } from "@/lib/notifications";
 import { DOWNLOAD_LINK_HOURS, DOWNLOAD_LINK_GRACE_HOURS, MAX_DOWNLOADS } from "@/lib/inspection-constants";
 import { generateReportHTML } from "@/lib/report-template";
 import { uploadBuffer } from "@/lib/s3";
+import { pdfService } from "@/lib/services/pdf.service";
 
-// Helper function to generate PDF
+// Helper function to generate PDF using shared service
 async function generateInspectionPDF(inspectionId: string): Promise<string | null> {
   try {
-    // Fetch complete inspection data
     const inspection = await prisma.inspection.findUnique({
       where: { id: inspectionId },
       include: {
         job: true,
-        technician: {
-          select: { name: true, email: true },
-        },
+        technician: { select: { name: true, email: true } },
         clientSignature: true,
       },
     });
 
     if (!inspection) return null;
 
-    // Generate HTML
     const clientHTML = generateReportHTML(inspection as Parameters<typeof generateReportHTML>[0], true);
+    const pdfResult = await pdfService.generatePDF(clientHTML);
+    if (!pdfResult.success || !pdfResult.buffer) return null;
 
-    // Create PDF request
-    const createResponse = await fetch("https://apps.abacus.ai/api/createConvertHtmlToPdfRequest", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        deployment_token: process.env.ABACUSAI_API_KEY,
-        html_content: clientHTML,
-        pdf_options: {
-          format: "A4",
-          margin: { top: "20mm", right: "20mm", bottom: "20mm", left: "20mm" },
-          print_background: true,
-        },
-      }),
+    const fileName = `inspection-report-${inspection.inspectionNumber}.pdf`;
+    const cloudPath = await uploadBuffer(pdfResult.buffer, fileName, "application/pdf", false);
+
+    await prisma.generatedReport.upsert({
+      where: { inspectionId },
+      create: { inspectionId, clientReportCloudPath: cloudPath },
+      update: { clientReportCloudPath: cloudPath, updatedAt: new Date() },
     });
 
-    if (!createResponse.ok) return null;
-
-    const { request_id } = await createResponse.json();
-    if (!request_id) return null;
-
-    // Poll for completion
-    let attempts = 0;
-    while (attempts < 120) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      const statusResponse = await fetch("https://apps.abacus.ai/api/getConvertHtmlToPdfStatus", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          request_id,
-          deployment_token: process.env.ABACUSAI_API_KEY,
-        }),
-      });
-
-      const statusResult = await statusResponse.json();
-      if (statusResult?.status === "SUCCESS" && statusResult?.result?.result) {
-        const pdfBuffer = Buffer.from(statusResult.result.result, "base64");
-        const fileName = `inspection-report-${inspection.inspectionNumber}.pdf`;
-        const cloudPath = await uploadBuffer(pdfBuffer, fileName, "application/pdf", false);
-
-        // Save to database
-        await prisma.generatedReport.upsert({
-          where: { inspectionId },
-          create: { inspectionId, clientReportCloudPath: cloudPath },
-          update: { clientReportCloudPath: cloudPath, updatedAt: new Date() },
-        });
-
-        return cloudPath;
-      } else if (statusResult?.status === "FAILED") {
-        return null;
-      }
-      attempts++;
-    }
-    return null;
+    return cloudPath;
   } catch (error) {
     console.error("Error generating PDF:", error);
     return null;
