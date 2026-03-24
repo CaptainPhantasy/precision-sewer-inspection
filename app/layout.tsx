@@ -8,8 +8,10 @@ import SiteTracker from '@/components/site-tracker'
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
-  
+  const configuredBaseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+  const baseUrl = configuredBaseUrl.replace(/\/$/, '')
+  const isStaging = process.env.PSI_STAGING_MODE === 'true'
+
   return {
     metadataBase: new URL(baseUrl),
     title: {
@@ -69,18 +71,18 @@ export async function generateMetadata(): Promise<Metadata> {
       images: ['/og-image.png'],
     },
     robots: {
-      index: true,
-      follow: true,
+      index: !isStaging,
+      follow: !isStaging,
       googleBot: {
-        index: true,
-        follow: true,
+        index: !isStaging,
+        follow: !isStaging,
         'max-video-preview': -1,
         'max-image-preview': 'large',
         'max-snippet': -1,
       },
     },
     alternates: {
-      canonical: 'https://precisionsewerinspections.com',
+      canonical: baseUrl,
     },
     verification: {
       // Add these when you have them

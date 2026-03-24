@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 import Stripe from 'stripe';
+import { AppError, ErrorCode, errorResponse } from '@/lib/errors';
 import { sendAdminNotification, sendNotificationEmail, getPaymentReceivedEmail, getPaymentReceiptEmail } from '@/lib/notifications';
 
 // Disable body parsing - we need raw body for signature verification
@@ -18,14 +19,17 @@ export async function POST(request: NextRequest) {
   let event: Stripe.Event;
 
   try {
-    // Verify webhook signature
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-    if (webhookSecret) {
-      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-    } else {
-      // For development without webhook secret
-      event = JSON.parse(body) as Stripe.Event;
+    if (!webhookSecret) {
+      throw new AppError(
+        ErrorCode.SERVICE_UNAVAILABLE,
+        'STRIPE_WEBHOOK_SECRET is required in this environment',
+        503
+      );
     }
+
+    // Verify webhook signature
+    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : 'Unknown error';
     console.error('Webhook signature verification failed:', errorMessage);
@@ -57,11 +61,7 @@ export async function POST(request: NextRequest) {
         console.log(`Unhandled event type: ${event.type}`);
     }
   } catch (error) {
-    console.error('Error processing webhook:', error);
-    return NextResponse.json(
-      { error: 'Webhook processing failed' },
-      { status: 500 }
-    );
+    return errorResponse(error);
   }
 
   return NextResponse.json({ received: true });

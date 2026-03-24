@@ -227,3 +227,83 @@ export const getActivePromotion = () => {
   const promo = ACTIVE_PROMOTIONS.find(p => p.isActive)
   return promo || null
 }
+
+
+export const INSPECTION_TECHNOLOGY = [
+  {
+    name: 'HD Push Camera System',
+    description: 'Professional-grade high-definition sewer cameras that provide crystal-clear video footage of your entire sewer line. Self-leveling camera head ensures optimal viewing angle.',
+    icon: 'Camera',
+  },
+  {
+    name: 'Digital Recording & Reporting',
+    description: 'Every inspection is digitally recorded in HD. You receive the full video plus a detailed written report with screenshots, condition ratings, and plain-English explanations.',
+    icon: 'FileVideo',
+  },
+  {
+    name: 'Precision Locating Equipment',
+    description: 'Built-in sonde transmitter allows us to pinpoint the exact location and depth of any issues found, so you know exactly where problems are — no guessing.',
+    icon: 'MapPin',
+  },
+  {
+    name: 'Real-Time Viewing',
+    description: 'Watch the inspection live on our high-resolution monitor. Ask questions in real-time as we navigate your sewer line from cleanout to city connection.',
+    icon: 'Monitor',
+  },
+]
+
+export const INSPECTION_PROCESS = [
+  {
+    step: 1,
+    title: 'Book Your Inspection',
+    description: 'Schedule online or call us. We offer flexible scheduling including same-day availability for urgent needs.',
+  },
+  {
+    step: 2,
+    title: 'Access & Setup',
+    description: 'Our certified inspector arrives on time, locates the cleanout access point, and sets up the HD camera system.',
+  },
+  {
+    step: 3,
+    title: 'HD Video Inspection',
+    description: 'We navigate the camera through your entire sewer line, documenting conditions from your home to the city connection.',
+  },
+  {
+    step: 4,
+    title: 'Report Delivery',
+    description: 'Within 24 hours, you receive your HD video recording and detailed written report with findings explained in plain English.',
+  },
+]
+
+export const SERVICE_BENEFITS = [
+  {
+    title: 'No Upselling, Ever',
+    description: 'We are inspectors, not contractors. We have zero incentive to exaggerate problems or recommend unnecessary repairs.',
+    icon: 'ShieldCheck',
+  },
+  {
+    title: 'Evidence You Can See',
+    description: 'Every finding is backed by HD video evidence. No guesswork, no assumptions — just facts you can verify yourself.',
+    icon: 'Eye',
+  },
+  {
+    title: 'Plain English Reports',
+    description: 'Our reports are written for real people, not plumbers. Every finding is explained clearly with no industry jargon.',
+    icon: 'FileText',
+  },
+  {
+    title: 'Indiana Clay Pipe Experts',
+    description: "Central Indiana homes commonly have clay sewer lines. We specialize in identifying clay pipe issues that general inspectors miss.",
+    icon: 'Award',
+  },
+  {
+    title: '24-Hour Delivery Guarantee',
+    description: 'Your video and report are delivered within 24 hours of inspection. Same-day delivery available for time-sensitive transactions.',
+    icon: 'Clock',
+  },
+  {
+    title: 'InterNACHI Certified',
+    description: 'Our inspectors hold InterNACHI certification — the gold standard in home inspection. Licensed and insured for your protection.',
+    icon: 'BadgeCheck',
+  },
+]

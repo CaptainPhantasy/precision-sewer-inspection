@@ -165,7 +165,7 @@ export async function POST(
     ]);
 
     // Generate download URL
-    const baseUrl = process.env.NEXTAUTH_URL || "https://precisionsewerinspections.com";
+    const baseUrl = (process.env.NEXTAUTH_URL || "https://precisionsewerinspection.com").replace(/\/$/, "");
     const downloadUrl = `${baseUrl}/download/${inspectionId}?token=${token}`;
 
     // Count findings for the email summary
@@ -184,7 +184,7 @@ export async function POST(
       // Also count chapters that are findings
       if (inspection.videoAttachment?.chapters) {
         count += inspection.videoAttachment.chapters.filter(
-          (ch) => ch.chapterType === "FINDING" || ch.chapterType === "DEFECT" || ch.chapterType === "REPAIR_NEEDED"
+          (ch: { chapterType: string }) => ch.chapterType === "FINDING" || ch.chapterType === "DEFECT" || ch.chapterType === "REPAIR_NEEDED"
         ).length;
       }
       return count;

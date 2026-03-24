@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react'
+import { MessageCircle, X, Send, Bot, User, Loader2, ThumbsUp, ThumbsDown } from 'lucide-react'
 import Link from 'next/link'
 import { ACCESS_METHODS, getActivePromotion } from '@/lib/constants'
 
@@ -119,6 +119,30 @@ function generateDynamicGreeting(): string {
   return greeting
 }
 
+const INITIAL_SUGGESTIONS = [
+  '💰 What does an inspection cost?',
+  '📅 How do I book?',
+  '🎥 Tell me about the free video review',
+  '🏠 What services do you offer?',
+]
+
+function getContextualSuggestions(lastUserMsg: string): string[] {
+  const msg = lastUserMsg.toLowerCase()
+  if (msg.includes('price') || msg.includes('cost') || msg.includes('how much')) {
+    return ['📅 Book an inspection', '🏢 Commercial pricing?', '📦 Volume packages?']
+  }
+  if (msg.includes('book') || msg.includes('schedule')) {
+    return ['💰 What\'s included?', '⏰ How long does it take?', '📍 Do you serve my area?']
+  }
+  if (msg.includes('service') || msg.includes('what do you') || msg.includes('what can')) {
+    return ['💰 Pricing details', '📅 Book now', '🎥 Free video review', '🔍 Utility locating']
+  }
+  if (msg.includes('video') || msg.includes('review')) {
+    return ['📅 Book an inspection', '💰 View pricing', '❓ More questions']
+  }
+  return ['📅 Book an inspection', '💰 View pricing', '❓ More questions']
+}
+
 export default function AIChat() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
@@ -126,8 +150,12 @@ export default function AIChat() {
   ])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [suggestions, setSuggestions] = useState<string[]>(INITIAL_SUGGESTIONS)
+  const [showFeedback, setShowFeedback] = useState(false)
+  const [feedbackGiven, setFeedbackGiven] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const sessionIdRef = useRef<string>('')
+  const formRef = useRef<HTMLFormElement>(null)
 
   // Initialize session ID on client only
   useEffect(() => {
@@ -138,12 +166,58 @@ export default function AIChat() {
     messagesEndRef?.current?.scrollIntoView?.({ behavior: 'smooth' })
   }, [messages])
 
+  // Clear suggestions when user starts typing
+  useEffect(() => {
+    if (input?.length > 0) {
+      setSuggestions([])
+    }
+  }, [input])
+
+  const handleSuggestionClick = (suggestion: string) => {
+    // Strip emoji prefix for cleaner message
+    const cleanText = suggestion.replace(/^[^\w]+/, '').trim()
+    setInput(cleanText)
+    setSuggestions([])
+    // Auto-submit after state update
+    setTimeout(() => {
+      formRef.current?.requestSubmit()
+    }, 50)
+  }
+
+  const submitFeedback = (rating: 'positive' | 'negative') => {
+    setFeedbackGiven(true)
+    fetch('/api/chat/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId: sessionIdRef.current,
+        rating,
+        comment: '',
+      }),
+    }).catch((err) => console.error('Failed to save feedback:', err))
+    // Hide feedback after 2 seconds
+    setTimeout(() => {
+      setShowFeedback(false)
+      setIsOpen(false)
+    }, 2000)
+  }
+
+  const handleCloseChat = () => {
+    if ((messages?.length ?? 0) > 2 && !feedbackGiven) {
+      setShowFeedback(true)
+    } else {
+      setIsOpen(false)
+      setShowFeedback(false)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e?.preventDefault?.()
     if (!input?.trim() || isLoading) return
 
     const userMessage = input?.trim() ?? ''
     setInput('')
+    setSuggestions([])
     setMessages(prev => [...(prev ?? []), { role: 'user', content: userMessage }])
     setIsLoading(true)
 
@@ -194,6 +268,9 @@ export default function AIChat() {
           }
         }
       }
+
+      // Set contextual follow-up suggestions
+      setSuggestions(getContextualSuggestions(userMessage))
     } catch (error) {
       console.error('Chat error:', error)
       setMessages(prev => [...(prev ?? []), { role: 'assistant', content: "I apologize, but I'm having trouble responding right now. Please call us at (317) 620-3858 for immediate assistance." }])
@@ -268,8 +345,48 @@ export default function AIChat() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-48px)] h-[500px] max-h-[calc(100vh-100px)] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200"
+            className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-48px)] h-[500px] max-h-[calc(100vh-100px)] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200 relative"
           >
+            {/* Feedback Overlay */}
+            {showFeedback && (
+              <div className="absolute inset-0 bg-white/95 backdrop-blur-sm z-10 flex flex-col items-center justify-center p-6">
+                {!feedbackGiven ? (
+                  <>
+                    <p className="text-gray-900 font-semibold text-lg mb-2">How was your experience?</p>
+                    <p className="text-gray-500 text-sm mb-6">Your feedback helps us improve</p>
+                    <div className="flex gap-6 mb-6">
+                      <button
+                        onClick={() => submitFeedback('positive')}
+                        className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-green-50 transition-colors group"
+                      >
+                        <ThumbsUp className="w-10 h-10 text-gray-400 group-hover:text-green-500 transition-colors" />
+                        <span className="text-sm text-gray-600 group-hover:text-green-600">Helpful</span>
+                      </button>
+                      <button
+                        onClick={() => submitFeedback('negative')}
+                        className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-red-50 transition-colors group"
+                      >
+                        <ThumbsDown className="w-10 h-10 text-gray-400 group-hover:text-red-500 transition-colors" />
+                        <span className="text-sm text-gray-600 group-hover:text-red-600">Not helpful</span>
+                      </button>
+                    </div>
+                    <button
+                      onClick={() => { setShowFeedback(false); setIsOpen(false) }}
+                      className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      Skip & close
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-4xl mb-3">✨</div>
+                    <p className="text-gray-900 font-semibold text-lg">Thank you!</p>
+                    <p className="text-gray-500 text-sm">Your feedback helps us improve</p>
+                  </>
+                )}
+              </div>
+            )}
+
             {/* Header */}
             <div className="bg-primary-600 text-white px-4 py-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -280,7 +397,7 @@ export default function AIChat() {
                 </div>
               </div>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={handleCloseChat}
                 className="p-1 hover:bg-primary-500 rounded-lg transition-colors"
                 aria-label="Close chat"
               >
@@ -326,11 +443,27 @@ export default function AIChat() {
                   </div>
                 </div>
               )}
+
+              {/* Quick Reply Suggestions */}
+              {suggestions.length > 0 && !isLoading && (
+                <div className="flex flex-wrap gap-2 px-1 pt-2">
+                  {suggestions.map((suggestion, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="text-xs px-3 py-1.5 bg-primary-50 text-primary-700 rounded-full border border-primary-200 hover:bg-primary-100 hover:border-primary-300 transition-colors whitespace-nowrap"
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               <div ref={messagesEndRef} />
             </div>
 
             {/* Input */}
-            <form onSubmit={handleSubmit} className="p-3 border-t border-gray-200 bg-white">
+            <form ref={formRef} onSubmit={handleSubmit} className="p-3 border-t border-gray-200 bg-white">
               <div className="flex gap-2">
                 <input
                   type="text"

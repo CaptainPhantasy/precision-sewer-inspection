@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser, hasRole } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { badRequestResponse, errorResponse, notFoundResponse, unauthorizedResponse } from "@/lib/errors";
 import { sendNotificationEmail, getInspectionReturnedEmail } from "@/lib/notifications";
-import { InspectionStage } from "@prisma/client";
+
+type RejectableStage =
+  | "PRE_INSPECTION"
+  | "INSPECTING"
+  | "POST_INSPECTION"
+  | "VIDEO_ATTACH"
+  | "CLIENT_SIGNOFF";
 
 // Valid stages that can be rejected/reopened for technician to redo
-const REJECTABLE_STAGES: InspectionStage[] = [
+const REJECTABLE_STAGES: RejectableStage[] = [
   "PRE_INSPECTION",
-  "INSPECTING", 
+  "INSPECTING",
   "POST_INSPECTION",
   "VIDEO_ATTACH",
   "CLIENT_SIGNOFF",
@@ -28,28 +35,25 @@ export async function POST(
   try {
     const user = await getCurrentUser();
     if (!user || !hasRole(user, ["ADMIN", "OWNER", "SUPER_ADMIN"])) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
+      return unauthorizedResponse();
     }
 
     const { inspectionId } = await params;
     const { reason, rejectedStage } = await request.json();
 
     if (!reason) {
-      return NextResponse.json(
-        { success: false, error: "Rejection reason is required" },
-        { status: 400 }
-      );
+      return badRequestResponse("Rejection reason is required");
     }
 
-    if (!rejectedStage || !REJECTABLE_STAGES.includes(rejectedStage)) {
-      return NextResponse.json(
-        { success: false, error: "A valid stage must be selected for rejection" },
-        { status: 400 }
-      );
+    if (
+      !rejectedStage ||
+      typeof rejectedStage !== "string" ||
+      !REJECTABLE_STAGES.includes(rejectedStage as RejectableStage)
+    ) {
+      return badRequestResponse("A valid stage must be selected for rejection");
     }
+
+    const selectedStage = rejectedStage as RejectableStage;
 
     const inspection = await prisma.inspection.findUnique({
       where: { id: inspectionId },
@@ -57,10 +61,7 @@ export async function POST(
     });
 
     if (!inspection) {
-      return NextResponse.json(
-        { success: false, error: "Inspection not found" },
-        { status: 404 }
-      );
+      return notFoundResponse("Inspection", inspectionId);
     }
 
     // Update inspection status with the specific rejected stage
@@ -68,8 +69,8 @@ export async function POST(
       where: { id: inspectionId },
       data: {
         status: "REJECTED",
-        currentStage: rejectedStage, // Set to the rejected stage so technician can redo it
-        rejectedStage: rejectedStage, // Track which stage was rejected
+        currentStage: selectedStage, // Set to the rejected stage so technician can redo it
+        rejectedStage: selectedStage, // Track which stage was rejected
         reviewedBy: user.id,
         reviewedAt: new Date(),
         reviewNotes: reason,
@@ -77,7 +78,7 @@ export async function POST(
     });
 
     // Send email to technician with specific stage info
-    const stageLabel = STAGE_LABELS[rejectedStage] || rejectedStage;
+    const stageLabel = STAGE_LABELS[selectedStage] || selectedStage;
     const emailContent = getInspectionReturnedEmail({
       technicianName: inspection.technician.name,
       inspectionNumber: inspection.inspectionNumber,
@@ -101,10 +102,6 @@ export async function POST(
       inspection: updatedInspection,
     });
   } catch (error) {
-    console.error("Error rejecting inspection:", error);
-    return NextResponse.json(
-      { success: false, error: "Failed to reject inspection" },
-      { status: 500 }
-    );
+    return errorResponse(error);
   }
 }

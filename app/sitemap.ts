@@ -1,8 +1,12 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Use canonical non-www domain for consistent SEO
-  const baseUrl = 'https://precisionsewerinspections.com'
+  const baseUrl = (process.env.NEXTAUTH_URL || 'https://precisionsewerinspection.com').replace(/\/$/, '')
+  const isStaging = process.env.PSI_STAGING_MODE === 'true'
+
+  if (isStaging) {
+    return []
+  }
 
   const routes = [
     {

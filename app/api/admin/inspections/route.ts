@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser, hasRole } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { badRequestResponse, errorResponse, unauthorizedResponse } from "@/lib/errors";
+import { adminService } from "@/lib/services/admin.service";
 
 export async function GET(request: Request) {
   try {
     const user = await getCurrentUser();
     if (!user || !hasRole(user, ["ADMIN", "OWNER", "SUPER_ADMIN"])) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
+      return unauthorizedResponse();
     }
 
     const { searchParams } = new URL(request.url);
@@ -17,25 +15,20 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "20");
 
-    const where = status ? { status: status as "SUBMITTED" | "UNDER_REVIEW" | "APPROVED" | "REJECTED" } : {};
+    if (Number.isNaN(page) || page < 1 || Number.isNaN(limit) || limit < 1 || limit > 100) {
+      return badRequestResponse("Invalid pagination values");
+    }
 
-    const [inspections, total] = await Promise.all([
-      prisma.inspection.findMany({
-        where,
-        include: {
-          job: true,
-          technician: {
-            select: { id: true, name: true, email: true },
-          },
-          videoAttachment: true,
-          clientSignature: true,
-        },
-        orderBy: { completedAt: "desc" },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      prisma.inspection.count({ where }),
-    ]);
+    const allowedStatuses = ["SUBMITTED", "UNDER_REVIEW", "APPROVED", "REJECTED"] as const;
+    if (status && !allowedStatuses.includes(status as (typeof allowedStatuses)[number])) {
+      return badRequestResponse("Invalid status filter");
+    }
+
+    const { inspections, total } = await adminService.getPendingReviewInspections({
+      page,
+      limit,
+      status: status || undefined,
+    });
 
     return NextResponse.json({
       success: true,
@@ -48,10 +41,6 @@ export async function GET(request: Request) {
       },
     });
   } catch (error) {
-    console.error("Error fetching inspections:", error);
-    return NextResponse.json(
-      { success: false, error: "Failed to fetch inspections" },
-      { status: 500 }
-    );
+    return errorResponse(error);
   }
 }
