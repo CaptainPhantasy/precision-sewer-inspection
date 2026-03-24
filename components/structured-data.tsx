@@ -1,9 +1,9 @@
 import { COMPANY_INFO, FAQ_ITEMS, SERVICE_AREAS, TESTIMONIALS } from '@/lib/constants'
 
 interface StructuredDataProps {
-  type: 'LocalBusiness' | 'Service' | 'FAQPage' | 'WebPage' | 'BreadcrumbList'
-  pageTitle?: string
-  pageDescription?: string
+  type: 'LocalBusiness' | 'Service' | 'FAQPage' | 'WebPage' | 'BreadcrumbList' | 'HowTo'
+  pageTitle?: string;
+  pageDescription?: string;
   breadcrumbs?: { name: string; url: string }[]
 }
 

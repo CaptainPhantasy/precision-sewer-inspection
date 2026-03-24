@@ -205,6 +205,7 @@ async function main() {
           "#10b981"
         ),
         caption: "Surface locate marker at property line, north side of structure. Paint indicates approximate sewer lateral path.",
+        photoType: "property_line",
       },
       {
         photoUrl: generateTestImageDataUrl(
@@ -215,6 +216,7 @@ async function main() {
           "#10b981"
         ),
         caption: "Surface locate at municipal sewer main connection point. Confirms lateral alignment with city records.",
+        photoType: "street_connection",
       },
     ],
 
