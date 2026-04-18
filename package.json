@@ -7,10 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "security:audit": "tsx scripts/security-audit.ts",
-    "ops:env-parity": "tsx scripts/vercel-env-parity.ts",
-    "ops:critical-path-qa": "tsx scripts/critical-path-qa.ts",
-    "ops:error-budget": "tsx scripts/error-budget-report.ts"
+    "security:audit": "tsx scripts/security-audit.ts"
   },
   "prisma": {
     "seed": "tsx --require dotenv/config scripts/safe-seed.ts"
@@ -33,7 +30,9 @@
     "typescript": "5.2.2"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.90.0",
     "@aws-sdk/client-s3": "^3.0.0",
+    "@aws-sdk/client-sesv2": "^3.1032.0",
     "@aws-sdk/s3-request-presigner": "^3.0.0",
     "@azure/storage-blob": "^12.0.0",
     "@floating-ui/react": "0.26.0",
@@ -97,7 +96,6 @@
     "jsonwebtoken": "9.0.2",
     "lodash": "4.17.21",
     "lucide-react": "0.446.0",
-    "mapbox-gl": "1.13.3",
     "next": "14.2.33",
     "next-auth": "4.24.11",
     "next-themes": "0.3.0",
