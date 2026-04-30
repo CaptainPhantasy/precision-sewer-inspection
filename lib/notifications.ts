@@ -1,10 +1,32 @@
 // Email notification utilities
+// Uses Hostinger SMTP via nodemailer (replaced Abacus notification API)
+
+import nodemailer from "nodemailer";
 
 // Admin email recipients
 export const ADMIN_EMAILS = [
   "Ryan@PrecisionSewerInspections.com",
   "Douglas@PrecisionSewerInspections.com",
 ];
+
+// SMTP transport — lazily created on first use
+let _transporter: nodemailer.Transporter | null = null;
+
+function getTransporter(): nodemailer.Transporter {
+  if (_transporter) return _transporter;
+
+  _transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || "smtp.hostinger.com",
+    port: Number(process.env.SMTP_PORT) || 465,
+    secure: true, // port 465 = implicit TLS
+    auth: {
+      user: process.env.SMTP_USER || "noreply@precisionsewerinspection.com",
+      pass: process.env.SMTP_PASSWORD,
+    },
+  });
+
+  return _transporter;
+}
 
 interface NotificationEmailParams {
   recipientEmail: string;
@@ -14,40 +36,40 @@ interface NotificationEmailParams {
   textContent?: string;
 }
 
-// Send notification email using Abacus AI notification system
+/**
+ * Send notification email via Hostinger SMTP.
+ *
+ * The `notificationId` parameter is retained for backward compatibility
+ * with existing callers that pass `process.env.NOTIF_ID_*` values.
+ * It is not used — SMTP sends directly.
+ */
 export async function sendNotificationEmail(
-  notificationId: string,
+  _notificationId: string,
   params: NotificationEmailParams
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const response = await fetch(
-      "https://apps.abacus.ai/api/sendNotificationEmail",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          app_id: process.env.WEB_APP_ID,
-          notification_id: notificationId,
-          recipient_email: params.recipientEmail,
-          recipient_name: params.recipientName,
-          subject: params.subject,
-          html_content: params.htmlContent,
-          text_content: params.textContent,
-        }),
-      }
-    );
+    const transporter = getTransporter();
 
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      return { success: false, error: error.message || "Failed to send email" };
-    }
+    const fromAddress =
+      process.env.SMTP_FROM || process.env.SMTP_USER || "noreply@precisionsewerinspection.com";
+
+    await transporter.sendMail({
+      from: `"Precision Sewer Inspection" <${fromAddress}>`,
+      to: params.recipientName
+        ? `${params.recipientName} <${params.recipientEmail}>`
+        : params.recipientEmail,
+      subject: params.subject,
+      html: params.htmlContent,
+      text: params.textContent || undefined,
+    });
 
     return { success: true };
   } catch (error) {
     console.error("Error sending notification email:", error);
-    return { success: false, error: "Failed to send email" };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to send email",
+    };
   }
 }
 

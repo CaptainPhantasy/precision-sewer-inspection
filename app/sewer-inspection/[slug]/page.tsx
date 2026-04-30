@@ -61,15 +61,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 // Generate static params for all active service areas
+// Returns empty array on DB failure so build succeeds without a connected DB
 export async function generateStaticParams() {
-  const areas = await prisma.serviceArea.findMany({
-    where: { isActive: true },
-    select: { slug: true },
-  });
+  try {
+    const areas = await prisma.serviceArea.findMany({
+      where: { isActive: true },
+      select: { slug: true },
+    });
 
-  return areas.map((area) => ({
-    slug: area.slug,
-  }));
+    return areas.map((area) => ({
+      slug: area.slug,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export default async function Page({ params }: PageProps) {

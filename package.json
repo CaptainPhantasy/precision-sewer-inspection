@@ -15,6 +15,7 @@
   "devDependencies": {
     "@next/swc-wasm-nodejs": "13.5.1",
     "@types/node": "20.6.2",
+    "@types/nodemailer": "^8.0.0",
     "@types/react": "18.2.22",
     "@types/react-dom": "18.2.7",
     "eslint": "8.57.1",
@@ -32,7 +33,6 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.90.0",
     "@aws-sdk/client-s3": "^3.0.0",
-    "@aws-sdk/client-sesv2": "^3.1032.0",
     "@aws-sdk/s3-request-presigner": "^3.0.0",
     "@azure/storage-blob": "^12.0.0",
     "@floating-ui/react": "0.26.0",
@@ -99,6 +99,7 @@
     "next": "14.2.33",
     "next-auth": "4.24.11",
     "next-themes": "0.3.0",
+    "nodemailer": "^8.0.7",
     "plotly.js": "2.35.3",
     "puppeteer-core": "^24.40.0",
     "react": "18.2.0",
