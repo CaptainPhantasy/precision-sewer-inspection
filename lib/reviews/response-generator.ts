@@ -3,7 +3,7 @@
 // Uses LLM to generate personalized review responses
 // ============================================================================
 
-interface Review {
+export interface Review {
   id: string;
   rating: number;
   content: string;

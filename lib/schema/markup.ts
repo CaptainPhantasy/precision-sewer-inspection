@@ -120,10 +120,10 @@ export function generateLocalBusinessSchema(
       postalCode: area.zipCodes?.[0] || COMPANY.address.postalCode,
       addressCountry: 'US',
     },
-    geo: area.geoBounds?.center ? {
+    geo: (area.geoBounds as { center?: { lat: number; lng: number } } | null)?.center ? {
       '@type': 'GeoCoordinates',
-      latitude: area.geoBounds.center.lat,
-      longitude: area.geoBounds.center.lng,
+      latitude: (area.geoBounds as { center: { lat: number; lng: number } }).center.lat,
+      longitude: (area.geoBounds as { center: { lat: number; lng: number } }).center.lng,
     } : undefined,
     areaServed: {
       '@type': 'City',
@@ -170,7 +170,6 @@ export function generateServiceSchema(
       '@id': `${COMPANY.url}/#organization`,
     },
     serviceType: service.name,
-    description: service.description,
     areaServed: area ? {
       '@type': 'City',
       name: area.name,

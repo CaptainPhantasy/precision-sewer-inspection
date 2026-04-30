@@ -3,11 +3,11 @@
 // Common questions about sewer inspections
 // ============================================================================
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, FAQCategory } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const faqs = [
+export const faqs: { question: string; answer: string; shortAnswer: string; category: FAQCategory; keywords: string[]; sortOrder: number; isPublished: boolean }[] = [
   // GENERAL
   {
     question: 'What is a sewer camera inspection?',

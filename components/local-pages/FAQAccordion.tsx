@@ -1,3 +1,5 @@
+'use client';
+
 // ============================================================================
 // FAQ Accordion Component
 // Expandable FAQ items

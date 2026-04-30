@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { ReviewResponseGenerator, analyzeSentiment } from '@/lib/reviews/response-generator';
+import { ReviewResponseGenerator, analyzeSentiment, Review } from '@/lib/reviews/response-generator';
 
 const prisma = new PrismaClient();
 
@@ -124,7 +124,15 @@ export async function PUT(request: NextRequest) {
     let finalResponse = responseText;
     if (!finalResponse) {
       const generator = new ReviewResponseGenerator();
-      const result = await generator.generate(review);
+      // Map Prisma type (null) to Review interface (undefined)
+      const reviewInput: Review = {
+        id: review.id,
+        rating: review.rating,
+        content: review.content,
+        authorName: review.authorName ?? undefined,
+        source: review.source,
+      };
+      const result = await generator.generate(reviewInput);
       finalResponse = result.response;
     }
 
@@ -141,8 +149,7 @@ export async function PUT(request: NextRequest) {
       { success: false, error: 'Failed to generate response' },
       { status: 500 }
     );
-  }
-}
+  }}
 
 // Helper function to calculate review statistics
 async function calculateReviewStats() {
