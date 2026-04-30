@@ -1,17 +1,21 @@
 /**
  * AI Service
- * Handles all AI/LLM interactions via Abacus AI
+ * Handles all AI/LLM interactions via Anthropic Claude API.
+ * Replaced Abacus AI (OpenAI-compatible proxy) with direct Anthropic SDK.
  */
 
+import Anthropic from "@anthropic-ai/sdk";
 import { logger } from "@/lib/logger";
-import { Errors, AppError, ErrorCode } from "@/lib/errors";
 
-// AI API configuration
-const AI_API_URL = process.env.ABACUSAI_API_URL || "https://apps.abacus.ai";
-const AI_API_KEY = process.env.ABACUSAI_API_KEY;
-const AI_MODEL = process.env.ABACUSAI_MODEL || "gpt-4.1-mini";
+// Initialize Anthropic client
+const client = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+});
 
-// Request options with timeout
+// Default model (configurable via env)
+const AI_MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-20250514";
+
+// Request timeout
 const AI_REQUEST_TIMEOUT = 30000; // 30 seconds
 
 interface AIResponse {
@@ -43,7 +47,7 @@ interface InspectionContext {
 }
 
 interface ChatMessage {
-  role: "system" | "user" | "assistant";
+  role: "user" | "assistant";
   content: string;
 }
 
@@ -52,87 +56,73 @@ class AIService {
   private lastRequestTime = 0;
 
   /**
-   * Make a chat completion request
+   * Core chat completion via Anthropic SDK.
+   * Separates system prompt (Anthropic top-level param) from user/assistant messages.
    */
   private async chatCompletion(
-    messages: ChatMessage[],
+    messages: Array<{ role: string; content: string }>,
     options: {
       maxTokens?: number;
       temperature?: number;
     } = {}
   ): Promise<AIResponse> {
-    if (!AI_API_KEY) {
+    if (!process.env.ANTHROPIC_API_KEY) {
       return {
         success: false,
-        error: "AI API key not configured",
+        error: "ANTHROPIC_API_KEY not configured",
       };
     }
 
     this.requestCount++;
     this.lastRequestTime = Date.now();
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), AI_REQUEST_TIMEOUT);
+    // Extract system prompt from messages — Anthropic uses top-level `system` param
+    let systemPrompt: string | undefined;
+    const chatMessages: ChatMessage[] = [];
+
+    for (const msg of messages) {
+      if (msg.role === "system") {
+        systemPrompt = msg.content;
+      } else if (msg.role === "user" || msg.role === "assistant") {
+        chatMessages.push({ role: msg.role, content: msg.content });
+      }
+    }
+
+    // Anthropic requires at least one user message
+    if (chatMessages.length === 0) {
+      return { success: false, error: "No user message provided" };
+    }
 
     try {
-      const response = await fetch(`${AI_API_URL}/v1/chat/completions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${AI_API_KEY}`,
-        },
-        body: JSON.stringify({
+      const response = await client.messages.create(
+        {
           model: AI_MODEL,
-          messages,
           max_tokens: options.maxTokens || 1000,
           temperature: options.temperature ?? 0.7,
-        }),
-        signal: controller.signal,
-      });
+          ...(systemPrompt ? { system: systemPrompt } : {}),
+          messages: chatMessages,
+        },
+        {
+          timeout: AI_REQUEST_TIMEOUT,
+        }
+      );
 
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        logger.error("AI API error", {
-          status: response.status,
-          error: errorText,
-        });
-        return {
-          success: false,
-          error: `AI service error: ${response.status}`,
-        };
+      const textBlock = response.content.find((block) => block.type === "text");
+      if (!textBlock || textBlock.type !== "text") {
+        return { success: false, error: "No text content in response" };
       }
 
-      const data = await response.json();
-      const content = data.choices?.[0]?.message?.content;
+      logger.info(`[AI] Response received. Tokens — input: ${response.usage.input_tokens}, output: ${response.usage.output_tokens}`);
 
-      if (!content) {
-        return {
-          success: false,
-          error: "No response from AI",
-        };
-      }
-
-      return {
-        success: true,
-        content,
-      };
+      return { success: true, content: textBlock.text };
     } catch (error) {
-      clearTimeout(timeoutId);
-
       if (error instanceof Error && error.name === "AbortError") {
-        return {
-          success: false,
-          error: "AI request timed out",
-        };
+        return { success: false, error: "AI request timed out" };
       }
 
-      logger.error("AI request failed", { error });
-      return {
-        success: false,
-        error: "Failed to connect to AI service",
-      };
+      const message = error instanceof Error ? error.message : String(error);
+      logger.error("AI request failed", { error: message });
+      return { success: false, error: message };
     }
   }
 
@@ -344,15 +334,10 @@ Return only JSON, no explanation:`;
     }
 
     try {
-      // Try to parse the JSON response
       const jsonMatch = response.content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         const extractedData = JSON.parse(jsonMatch[0]) as Partial<InspectionContext>;
-        return {
-          success: true,
-          content: response.content,
-          extractedData,
-        };
+        return { success: true, content: response.content, extractedData };
       }
     } catch {
       // If parsing fails, just return the raw content
@@ -429,7 +414,7 @@ Is this consistent? Reply with JSON: { "verified": boolean, "issues": ["list of 
     lastRequestTime: number | null;
   } {
     return {
-      configured: !!AI_API_KEY,
+      configured: !!process.env.ANTHROPIC_API_KEY,
       requestCount: this.requestCount,
       lastRequestTime: this.lastRequestTime || null,
     };
@@ -446,13 +431,13 @@ Is this consistent? Reply with JSON: { "verified": boolean, "issues": ["list of 
   ): Promise<AIResponse> {
     const systemPrompt = `You are an AI assistant helping a sewer inspection technician in the field. You have access to the current inspection data. Be concise, practical, and helpful. Current stage: ${currentStage}.
 
-Property: ${context.propertyAddress}
-Client: ${context.clientName}
-${context.pipeMaterial ? `Pipe Material: ${context.pipeMaterial}` : ""}
-${context.overallCondition ? `Condition: ${context.overallCondition}` : ""}
-${context.recommendations ? `Recommendations: ${context.recommendations}` : ""}`;
+Property: ${(context as Partial<InspectionContext>).propertyAddress}
+Client: ${(context as Partial<InspectionContext>).clientName}
+${(context as Partial<InspectionContext>).pipeMaterial ? `Pipe Material: ${(context as Partial<InspectionContext>).pipeMaterial}` : ""}
+${(context as Partial<InspectionContext>).overallCondition ? `Condition: ${(context as Partial<InspectionContext>).overallCondition}` : ""}
+${(context as Partial<InspectionContext>).recommendations ? `Recommendations: ${(context as Partial<InspectionContext>).recommendations}` : ""}`;
 
-    const messages: ChatMessage[] = [
+    const messages: Array<{ role: string; content: string }> = [
       { role: "system", content: systemPrompt },
       ...conversationHistory,
       { role: "user", content: message },

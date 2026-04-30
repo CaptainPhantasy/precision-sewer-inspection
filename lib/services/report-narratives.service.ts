@@ -1,18 +1,21 @@
 /**
  * Report Narratives Service
  * Generates professional, plain-language narratives for enhanced inspection reports.
- * Extends the existing ai.service.ts pattern with report-specific prompts.
+ * Uses Anthropic Claude API via @anthropic-ai/sdk.
  */
 
+import Anthropic from "@anthropic-ai/sdk";
 import { logger } from "@/lib/logger";
 import type { AcousticResult } from "./acoustic-analysis.service";
 
-const AI_API_URL = process.env.ABACUSAI_API_URL || "https://apps.abacus.ai";
-const AI_API_KEY = process.env.ABACUSAI_API_KEY;
-const AI_MODEL = process.env.ABACUSAI_MODEL || "gpt-4.1-mini";
+const client = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+});
+
+const AI_MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-20250514";
 
 interface ChatMessage {
-  role: "system" | "user" | "assistant";
+  role: "user" | "assistant";
   content: string;
 }
 
@@ -57,8 +60,6 @@ export interface InspectionBundle {
 class ReportNarrativesService {
   /**
    * Generate material context narrative.
-   * "Cast iron was the standard material for residential sewer lines in Indianapolis homes
-   * built during this era..."
    */
   async generateMaterialContext(
     pipeMaterial: string | null | undefined,
@@ -69,18 +70,16 @@ class ReportNarrativesService {
     return this.complete(
       [
         {
-          role: "system",
+          role: "user" as const,
           content: `You are a sewer infrastructure expert writing for a homeowner inspection report. Write a 2-3 paragraph narrative about the pipe material found in this home, including:
 1. Historical context — when this material was commonly used in Indianapolis
 2. Material properties — durability, expected lifespan, common failure modes
 3. Regional context — how Indiana soil conditions (clay-heavy, freeze-thaw cycles) affect this material
 
 Tone: Professional, informative, reassuring. Never alarmist. Write as if explaining to an educated homeowner.
-Do NOT use bullet points. Write flowing paragraphs.`,
-        },
-        {
-          role: "user",
-          content: `Write a material context section for a sewer inspection report:
+Do NOT use bullet points. Write flowing paragraphs.
+
+Write a material context section for a sewer inspection report:
 - Pipe Material: ${material}
 - Home Age: ${homeAge || "Unknown"}
 - Location: Indianapolis, Indiana
@@ -111,12 +110,10 @@ Do NOT use bullet points. Write flowing paragraphs.`,
     return this.complete(
       [
         {
-          role: "system",
-          content: `You are a sewer inspection acoustic analysis expert. Write a 1-2 paragraph plain-language interpretation of acoustic frequency data for a homeowner report. Explain what the acoustic signatures indicate about the pipe material. Be professional and factual. This is supplemental analysis — always note that acoustic analysis supports but does not replace visual inspection findings.`,
-        },
-        {
-          role: "user",
-          content: `Interpret these acoustic findings:
+          role: "user" as const,
+          content: `You are a sewer inspection acoustic analysis expert. Write a 1-2 paragraph plain-language interpretation of acoustic frequency data for a homeowner report. Explain what the acoustic signatures indicate about the pipe material. Be professional and factual. This is supplemental analysis — always note that acoustic analysis supports but does not replace visual inspection findings.
+
+Interpret these acoustic findings:
 
 Material indicated by analysis: ${acousticResult.materialIndicator}
 Confidence: ${acousticResult.confidence}
@@ -149,12 +146,10 @@ Write a professional interpretation paragraph:`,
     return this.complete(
       [
         {
-          role: "system",
-          content: `You are writing the "Limitations & Exclusions" section of a professional sewer inspection report. List specific limitations based on the inspection parameters. Be factual and thorough. Use numbered items. Include standard disclaimers about camera-based inspection limitations.`,
-        },
-        {
-          role: "user",
-          content: `Generate limitations for this inspection:
+          role: "user" as const,
+          content: `You are writing the "Limitations & Exclusions" section of a professional sewer inspection report. List specific limitations based on the inspection parameters. Be factual and thorough. Use numbered items. Include standard disclaimers about camera-based inspection limitations.
+
+Generate limitations for this inspection:
 - Access Type: ${accessType || "Cleanout"}
 - Total Footage Inspected: ${footage ? `${footage} ft` : "Not recorded"}
 - Equipment: ${equipment || "Standard push camera"}
@@ -188,12 +183,10 @@ Generate 5-8 specific limitation items:`,
     return this.complete(
       [
         {
-          role: "system",
-          content: `You are writing a detailed finding description for a sewer inspection report. Write 2-3 sentences that explain what was found, its significance, and any relevant context. Use plain language a homeowner can understand. Be factual, not alarmist.`,
-        },
-        {
-          role: "user",
-          content: `Describe this finding for the report:
+          role: "user" as const,
+          content: `You are writing a detailed finding description for a sewer inspection report. Write 2-3 sentences that explain what was found, its significance, and any relevant context. Use plain language a homeowner can understand. Be factual, not alarmist.
+
+Describe this finding for the report:
 - Type: ${findingType}
 - Severity: ${severity}
 - Location: ${location}
@@ -222,12 +215,10 @@ Generate 5-8 specific limitation items:`,
     return this.complete(
       [
         {
-          role: "system",
-          content: `You are writing the overall condition assessment for a professional sewer inspection report. Write 2-3 paragraphs summarizing the overall state of the sewer line. Be balanced — acknowledge issues but also note positive findings. Professional tone, plain language.`,
-        },
-        {
-          role: "user",
-          content: `Write an overall condition assessment:
+          role: "user" as const,
+          content: `You are writing the overall condition assessment for a professional sewer inspection report. Write 2-3 paragraphs summarizing the overall state of the sewer line. Be balanced — acknowledge issues but also note positive findings. Professional tone, plain language.
+
+Write an overall condition assessment:
 - Overall Condition: ${bundle.overallCondition || "Not assessed"}
 - Pipe Rating: ${bundle.pipeConditionRating || "N/A"}/5
 - Urgency: ${bundle.urgencyLevel || "Not set"}
@@ -248,52 +239,36 @@ Generate 5-8 specific limitation items:`,
   }
 
   /**
-   * Internal chat completion helper — mirrors ai.service.ts pattern.
+   * Internal chat completion helper using Anthropic SDK.
+   * Prompts embed the system instructions in the user message for single-turn calls.
    */
   private async complete(
     messages: ChatMessage[],
     options: { maxTokens?: number; temperature?: number } = {}
   ): Promise<NarrativeResult> {
-    if (!AI_API_KEY) {
-      return { success: false, error: "AI API key not configured" };
+    if (!process.env.ANTHROPIC_API_KEY) {
+      return { success: false, error: "ANTHROPIC_API_KEY not configured" };
     }
 
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000);
-
-      const response = await fetch(`${AI_API_URL}/v1/chat/completions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${AI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: AI_MODEL,
-          messages,
-          max_tokens: options.maxTokens || 1000,
-          temperature: options.temperature ?? 0.7,
-        }),
-        signal: controller.signal,
+      // For narrative generation, system instructions are embedded in the user message
+      // since we're using single-turn patterns (no separate system message)
+      const response = await client.messages.create({
+        model: AI_MODEL,
+        max_tokens: options.maxTokens || 1000,
+        temperature: options.temperature ?? 0.7,
+        messages,
       });
 
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        return { success: false, error: `AI service error: ${response.status}` };
+      const textBlock = response.content.find((block) => block.type === "text");
+      if (!textBlock || textBlock.type !== "text") {
+        return { success: false, error: "No text content in response" };
       }
 
-      const data = await response.json();
-      const content = data.choices?.[0]?.message?.content;
-
-      if (!content) {
-        return { success: false, error: "No response from AI" };
-      }
-
-      return { success: true, content };
+      return { success: true, content: textBlock.text };
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") {
-        return { success: false, error: "AI request timed out" };
+        return { success: false, error: "Narrative generation timed out" };
       }
       logger.error("Narrative generation failed", { error });
       return { success: false, error: "Failed to generate narrative" };

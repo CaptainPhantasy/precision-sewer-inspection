@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server'
+import Anthropic from '@anthropic-ai/sdk'
 import { 
   COMPANY_INFO, 
   SERVICE_AREAS, 
@@ -12,6 +13,12 @@ import {
 } from '@/lib/constants'
 
 export const dynamic = 'force-dynamic'
+
+const client = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+})
+
+const AI_MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-20250514'
 
 // Dynamically build system context from actual site data
 function buildDynamicSystemContext(): string {
@@ -129,13 +136,13 @@ When a user asks "What can you do?" or "What services do you offer?" or similar:
 Respond with a structured overview:
 "We offer three main services:
 
-**1. 🔍 Sewer Scope Inspection** — Starting at $159
+**1. Sewer Scope Inspection** — Starting at $159
 HD video inspection of your main sewer line. [Book Now](/contact) | [See Pricing](/pricing)
 
-**2. 🎥 FREE Video Review** — $0
+**2. FREE Video Review** — $0
 Already have a sewer video? We'll review it for free and explain findings in plain English. [Submit Video](/video-review)
 
-**3. 📍 Private Utility Locating**
+**3. Private Utility Locating**
 Professional underground utility location for construction and excavation projects. [Learn More](/locating)
 
 We also offer **volume packages** for real estate professionals and investors. [Get Volume Quote](/contact)
@@ -148,7 +155,7 @@ When a user seems interested but hasn't committed:
 - Provide the direct booking link
 
 When a user asks about the inspection process:
-Explain the 4-step process: Book → Access & Setup → HD Video Inspection → Report Delivery within 24 hours
+Explain the 4-step process: Book -> Access & Setup -> HD Video Inspection -> Report Delivery within 24 hours
 
 When a user asks about technology or equipment:
 Explain we use professional-grade HD push camera systems with self-leveling heads, digital recording, built-in sonde transmitters for precise locating, and real-time viewing monitors.
@@ -165,63 +172,66 @@ export async function POST(request: NextRequest) {
       return new Response('Invalid messages format', { status: 400 })
     }
 
+    if (!process.env.ANTHROPIC_API_KEY) {
+      console.error('ANTHROPIC_API_KEY not configured')
+      return new Response('AI service not configured', { status: 500 })
+    }
+
     // Build system context dynamically from site data
     const dynamicSystemContext = buildDynamicSystemContext()
 
-    const formattedMessages = [
-      { role: 'system', content: dynamicSystemContext },
-      ...(messages ?? [])?.map?.((m: { role: string; content: string }) => ({
-        role: m?.role ?? 'user',
-        content: m?.content ?? '',
-      })),
-    ]
+    // Filter to only user/assistant messages (Anthropic requirement)
+    const formattedMessages: Array<{ role: 'user' | 'assistant'; content: string }> = 
+      (messages ?? [])
+        ?.filter?.((m: { role: string; content: string }) => m.role === 'user' || m.role === 'assistant')
+        ?.map?.((m: { role: string; content: string }) => ({
+          role: m.role as 'user' | 'assistant',
+          content: m?.content ?? '',
+        })) ?? []
 
-    const response = await fetch('https://apps.abacus.ai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.ABACUSAI_API_KEY ?? ''}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-4.1-mini',
-        messages: formattedMessages,
-        stream: true,
-        max_tokens: 500,
-        temperature: 0.7,
-      }),
-    })
-
-    if (!response?.ok) {
-      const error = await response?.text?.()
-      console.error('LLM API error:', error)
-      return new Response('Failed to get AI response', { status: 500 })
+    if (formattedMessages.length === 0) {
+      return new Response('No valid messages', { status: 400 })
     }
 
-    const stream = new ReadableStream({
+    // Use Anthropic streaming
+    const stream = client.messages.stream({
+      model: AI_MODEL,
+      max_tokens: 500,
+      temperature: 0.7,
+      system: dynamicSystemContext,
+      messages: formattedMessages,
+    })
+
+    // Create a ReadableStream that converts Anthropic events to simple SSE
+    const readableStream = new ReadableStream({
       async start(controller) {
-        const reader = response?.body?.getReader?.()
-        const decoder = new TextDecoder()
         const encoder = new TextEncoder()
 
         try {
-          while (reader) {
-            const { done, value } = await reader?.read?.() ?? { done: true, value: undefined }
-            if (done) break
-            const chunk = decoder?.decode?.(value) ?? ''
-            controller?.enqueue?.(encoder?.encode?.(chunk))
+          for await (const event of stream) {
+            // Extract text deltas from content_block_delta events
+            if (
+              event.type === 'content_block_delta' &&
+              event.delta.type === 'text_delta'
+            ) {
+              const sseData = JSON.stringify({ content: event.delta.text })
+              controller.enqueue(encoder.encode(`data: ${sseData}\n\n`))
+            }
           }
+          // Signal completion
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'))
         } catch (error) {
           console.error('Stream error:', error)
-          controller?.error?.(error)
+          controller.error(error)
         } finally {
-          controller?.close?.()
+          controller.close()
         }
       },
     })
 
-    return new Response(stream, {
+    return new Response(readableStream, {
       headers: {
-        'Content-Type': 'text/plain; charset=utf-8',
+        'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
         'Connection': 'keep-alive',
       },

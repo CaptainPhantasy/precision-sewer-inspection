@@ -1,7 +1,12 @@
 /**
  * Video Processing Service
- * Handles frame extraction and audio extraction via AbacusAI FFmpeg API.
- * Pattern derived from highlight-reel/route.ts.
+ * Handles frame extraction and audio extraction via serverless FFmpeg.
+ *
+ * ARCHITECTURE NOTE:
+ * The Abacus.AI FFmpeg API is no longer available post-cutover.
+ * This service needs a serverless FFmpeg replacement (AWS Lambda MediaConvert,
+ * or a Vercel Edge Function with ffmpeg.wasm). For now, all methods return
+ * graceful degradation — the report pipeline works without video stills/audio.
  */
 
 import { logger } from "@/lib/logger";
@@ -13,8 +18,10 @@ import type {
   FFmpegJobResult,
 } from "./interfaces";
 
-const ABACUSAI_API_URL = process.env.ABACUSAI_API_URL || "https://apps.abacus.ai";
-const ABACUSAI_API_KEY = process.env.ABACUSAI_API_KEY;
+// FFmpeg service configuration
+// TODO: Replace with serverless FFmpeg (Lambda MediaConvert, ffmpeg.wasm, etc.)
+const FFMPEG_API_URL = process.env.FFMPEG_API_URL || "";
+const FFMPEG_API_KEY = process.env.FFMPEG_API_KEY || "";
 const FFMPEG_POLL_INTERVAL_MS = 2000;
 const FFMPEG_MAX_POLL_ATTEMPTS = 150; // 5 minutes max
 
@@ -151,7 +158,7 @@ class VideoProcessingService implements IMediaService {
   }
 
   /**
-   * Run an arbitrary FFmpeg command via AbacusAI API.
+   * Run an arbitrary FFmpeg command via serverless FFmpeg API.
    */
   async runFFmpegCommand(
     inputFiles: Record<string, string>,
@@ -159,16 +166,16 @@ class VideoProcessingService implements IMediaService {
     ffmpegCommand: string,
     maxRunSeconds: number = 300
   ): Promise<FFmpegJobResult> {
-    if (!ABACUSAI_API_KEY) {
-      return { success: false, error: "AbacusAI API key not configured" };
+    if (!FFMPEG_API_KEY) {
+      return { success: false, error: "FFmpeg API not configured — video processing unavailable" };
     }
 
     try {
-      const response = await fetch(`${ABACUSAI_API_URL}/api/createRunFfmpegCommandRequest`, {
+      const response = await fetch(`${FFMPEG_API_URL}/createRunFfmpegCommandRequest`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          deployment_token: ABACUSAI_API_KEY,
+          deployment_token: FFMPEG_API_KEY,
           input_files: inputFiles,
           output_files: outputFiles,
           ffmpeg_command: ffmpegCommand,
@@ -197,17 +204,17 @@ class VideoProcessingService implements IMediaService {
    * Poll an async FFmpeg job for completion.
    */
   async pollFFmpegJob(requestId: string): Promise<FFmpegJobResult> {
-    if (!ABACUSAI_API_KEY) {
-      return { success: false, error: "AbacusAI API key not configured" };
+    if (!FFMPEG_API_KEY) {
+      return { success: false, error: "FFmpeg API not configured — video processing unavailable" };
     }
 
     try {
-      const response = await fetch(`${ABACUSAI_API_URL}/api/getRunFfmpegCommandStatus`, {
+      const response = await fetch(`${FFMPEG_API_URL}/getRunFfmpegCommandStatus`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           request_id: requestId,
-          deployment_token: ABACUSAI_API_KEY,
+          deployment_token: FFMPEG_API_KEY,
         }),
       });
 

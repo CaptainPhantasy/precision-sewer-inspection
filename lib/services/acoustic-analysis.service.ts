@@ -291,23 +291,10 @@ class AcousticAnalysisService {
       )
       .join("\n");
 
-    const result = await aiService.generateFindingsSummary({
-      propertyAddress: "",
-      clientName: "",
-      pipeMaterial: pipeMaterialHint || materialIndicator,
-    });
-
-    if (!result.success) return null;
-
-    // Use a more specific prompt for acoustic interpretation
-    const messages = [
-      {
-        role: "system" as const,
-        content: `You are a sewer inspection acoustic analysis expert. Write a 2-3 sentence plain-language interpretation of acoustic frequency data for a homeowner report. Be professional and factual. Do not be alarmist. This is supplemental analysis.`,
-      },
-      {
-        role: "user" as const,
-        content: `Interpret these acoustic findings for a sewer inspection report:
+    // Use aiService for LLM interpretation
+    try {
+      const llmResult = await aiService.chat(
+        `Interpret these acoustic findings for a sewer inspection report:
 
 Material indicated: ${materialIndicator}
 Technician-reported material: ${pipeMaterialHint || "Not specified"}
@@ -320,32 +307,13 @@ Known signatures:
 - Clay: <800Hz dominant, duller profile, minimal resonance
 - PVC: Mid-range 400-800Hz, plastic dampening
 
-Write a brief, professional interpretation for the homeowner:`,
-      },
-    ];
-
-    // Use the AI service's chat completion pattern directly
-    try {
-      const response = await fetch(
-        `${process.env.ABACUSAI_API_URL || "https://apps.abacus.ai"}/v1/chat/completions`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.ABACUSAI_API_KEY}`,
-          },
-          body: JSON.stringify({
-            model: process.env.ABACUSAI_MODEL || "gpt-4.1-mini",
-            messages,
-            max_tokens: 500,
-            temperature: 0.5,
-          }),
-        }
+Write a brief, professional interpretation for the homeowner.`,
+        {},
+        "ACOUSTIC_ANALYSIS",
+        []
       );
 
-      if (!response.ok) return null;
-      const data = await response.json();
-      return data.choices?.[0]?.message?.content || null;
+      return llmResult.success ? llmResult.content || null : null;
     } catch {
       return null;
     }

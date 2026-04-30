@@ -1,7 +1,17 @@
 /**
- * PDF Generation Service — AbacusAI Implementation
- * Consolidates duplicated PDF logic from generate-report and approve routes.
- * Implements IPDFService so it can be swapped for Puppeteer/Browserless at Vercel cutover.
+ * PDF Generation Service
+ * Consolidates PDF logic from generate-report and approve routes.
+ *
+ * ARCHITECTURE NOTE:
+ * The Abacus.AI HTML-to-PDF API is no longer available post-cutover.
+ * This needs a serverless replacement (Puppeteer on Lambda, Browserless.io,
+ * or Vercel Edge + rendering service). For now, this returns a clear error
+ * so the report pipeline can handle the failure gracefully.
+ *
+ * TODO: Implement serverless PDF generation via:
+ *   - AWS Lambda with Puppeteer/Playwright
+ *   - Browserless.io hosted API
+ *   - Vercel Edge + external rendering service
  */
 
 import {
@@ -16,8 +26,7 @@ const DEFAULT_OPTIONS: PDFGenerationOptions = {
   printBackground: true,
 };
 
-class AbacusAIPDFService implements IPDFService {
-  private apiBase = "https://apps.abacus.ai/api";
+class ServerlessPDFService implements IPDFService {
   private maxAttempts = 120;
   private pollIntervalMs = 1000;
 
@@ -25,22 +34,25 @@ class AbacusAIPDFService implements IPDFService {
     html: string,
     options?: PDFGenerationOptions
   ): Promise<PDFResult> {
-    const deploymentToken = process.env.ABACUSAI_API_KEY;
-    if (!deploymentToken) {
-      return { success: false, error: "ABACUSAI_API_KEY not configured" };
+    const pdfApiUrl = process.env.PDF_API_URL;
+
+    if (!pdfApiUrl) {
+      return {
+        success: false,
+        error: "PDF generation not configured — PDF_API_URL env var missing. Implement serverless PDF generation (Puppeteer/Browserless).",
+      };
     }
 
     const merged = { ...DEFAULT_OPTIONS, ...options };
 
     try {
-      // Step 1: Create the PDF generation request
+      // Generic serverless PDF API pattern
       const createResponse = await fetch(
-        `${this.apiBase}/createConvertHtmlToPdfRequest`,
+        `${pdfApiUrl}/generate`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            deployment_token: deploymentToken,
             html_content: html,
             pdf_options: {
               format: merged.format,
@@ -63,12 +75,19 @@ class AbacusAIPDFService implements IPDFService {
         };
       }
 
+      // If the API returns PDF directly
+      if (createResponse.headers.get("content-type")?.includes("application/pdf")) {
+        const buffer = Buffer.from(await createResponse.arrayBuffer());
+        return { success: true, buffer };
+      }
+
+      // If the API returns a job ID (async pattern)
       const { request_id } = await createResponse.json();
       if (!request_id) {
         return { success: false, error: "No request ID returned from PDF API" };
       }
 
-      // Step 2: Poll for completion
+      // Poll for completion
       let attempts = 0;
       while (attempts < this.maxAttempts) {
         await new Promise((resolve) =>
@@ -76,14 +95,11 @@ class AbacusAIPDFService implements IPDFService {
         );
 
         const statusResponse = await fetch(
-          `${this.apiBase}/getConvertHtmlToPdfStatus`,
+          `${pdfApiUrl}/status`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              request_id,
-              deployment_token: deploymentToken,
-            }),
+            body: JSON.stringify({ request_id }),
           }
         );
 
@@ -97,8 +113,8 @@ class AbacusAIPDFService implements IPDFService {
         const result = statusResult?.result || null;
 
         if (status === "SUCCESS") {
-          if (result?.result) {
-            const buffer = Buffer.from(result.result, "base64");
+          if (result?.pdf_base64) {
+            const buffer = Buffer.from(result.pdf_base64, "base64");
             return { success: true, buffer };
           }
           return {
@@ -126,4 +142,4 @@ class AbacusAIPDFService implements IPDFService {
   }
 }
 
-export const pdfService: IPDFService = new AbacusAIPDFService();
+export const pdfService: IPDFService = new ServerlessPDFService();

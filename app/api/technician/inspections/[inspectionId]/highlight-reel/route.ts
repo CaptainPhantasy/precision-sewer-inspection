@@ -140,11 +140,11 @@ export async function POST(
     const ffmpegCommand = `-i {{in_1}} -filter_complex "${filterComplex}" -map "[outv]" -map "[outa]" -c:v libx264 -preset fast -crf 23 -c:a aac -b:a 128k -movflags +faststart {{out_1}}`;
 
     // Create FFmpeg request
-    const createResponse = await fetch("https://apps.abacus.ai/api/createRunFfmpegCommandRequest", {
+    const createResponse = await fetch(`${process.env.FFMPEG_API_URL || ""}/createRunFfmpegCommandRequest`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        deployment_token: process.env.ABACUSAI_API_KEY,
+        deployment_token: process.env.FFMPEG_API_KEY,
         input_files: { in_1: videoUrl },
         output_files: { out_1: `highlight_${inspectionId}.mp4` },
         ffmpeg_command: ffmpegCommand,
@@ -209,12 +209,12 @@ export async function PATCH(
     }
 
     // Check FFmpeg status
-    const statusResponse = await fetch("https://apps.abacus.ai/api/getRunFfmpegCommandStatus", {
+    const statusResponse = await fetch(`${process.env.FFMPEG_API_URL || ""}/getRunFfmpegCommandStatus`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         request_id: requestId,
-        deployment_token: process.env.ABACUSAI_API_KEY,
+        deployment_token: process.env.FFMPEG_API_KEY,
       }),
     });
 

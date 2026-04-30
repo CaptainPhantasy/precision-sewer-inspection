@@ -251,7 +251,7 @@ export default function AIChat() {
             if (data === '[DONE]') continue
             try {
               const parsed = JSON.parse(data)
-              const content = parsed?.choices?.[0]?.delta?.content ?? ''
+              const content = parsed?.choices?.[0]?.delta?.content ?? parsed?.content ?? ''
               if (content) {
                 assistantMessage += content
                 setMessages(prev => {
