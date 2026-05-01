@@ -12,6 +12,7 @@ import Footer from '@/components/footer';
 import AIChat from '@/components/ai-chat';
 import StructuredData from '@/components/structured-data';
 import ServiceAreaPage from '@/components/local-pages/ServiceAreaPage';
+import { withDatabaseFallback } from '@/lib/prisma-timeout';
 
 const prisma = new PrismaClient();
 
@@ -65,17 +66,20 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   
-  const area = await prisma.serviceArea.findUnique({
-    where: { slug },
-    include: {
-      services: {
-        include: { service: true },
+  const area = await withDatabaseFallback(
+    prisma.serviceArea.findUnique({
+      where: { slug },
+      include: {
+        services: {
+          include: { service: true },
+        },
+        technicians: {
+          include: { technician: true },
+        },
       },
-      technicians: {
-        include: { technician: true },
-      },
-    },
-  }).catch(() => fallbackAreaForSlug(slug));
+    }),
+    fallbackAreaForSlug(slug),
+  );
 
   if (!area) {
     return { title: 'Service Area Not Found' };
@@ -106,10 +110,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 // Returns empty array on DB failure so build succeeds without a connected DB
 export async function generateStaticParams() {
   try {
-    const areas = await prisma.serviceArea.findMany({
-      where: { isActive: true },
-      select: { slug: true },
-    });
+    const areas = await withDatabaseFallback(
+      prisma.serviceArea.findMany({
+        where: { isActive: true },
+        select: { slug: true },
+      }),
+      [],
+    );
 
     return areas.map((area) => ({
       slug: area.slug,
@@ -123,48 +130,57 @@ export default async function Page({ params }: PageProps) {
   const { slug } = await params;
 
   // Fetch service area with all related data
-  const area = await prisma.serviceArea.findUnique({
-    where: { slug },
-    include: {
-      services: {
-        where: { isAvailable: true },
-        include: { service: true },
+  const area = await withDatabaseFallback(
+    prisma.serviceArea.findUnique({
+      where: { slug },
+      include: {
+        services: {
+          where: { isAvailable: true },
+          include: { service: true },
+        },
+        technicians: {
+          where: { technician: { isPublic: true } },
+          include: { technician: true },
+        },
       },
-      technicians: {
-        where: { technician: { isPublic: true } },
-        include: { technician: true },
-      },
-    },
-  }).catch(() => fallbackAreaForSlug(slug));
+    }),
+    fallbackAreaForSlug(slug),
+  );
 
   if (!area) {
     notFound();
   }
 
   // Fetch FAQs
-  const faqs = await prisma.fAQ.findMany({
-    where: {
-      isPublished: true,
-      OR: [
-        { serviceAreas: { isEmpty: true } }, // FAQ applies to all areas
-        { serviceAreas: { has: area.name } }, // FAQ specifically for this area
+  const faqs = await withDatabaseFallback(
+    prisma.fAQ.findMany({
+      where: {
+        isPublished: true,
+        OR: [
+          { serviceAreas: { isEmpty: true } }, // FAQ applies to all areas
+          { serviceAreas: { has: area.name } }, // FAQ specifically for this area
+        ],
+      },
+      orderBy: [
+        { category: 'asc' },
+        { sortOrder: 'asc' },
       ],
-    },
-    orderBy: [
-      { category: 'asc' },
-      { sortOrder: 'asc' },
-    ],
-  }).catch(() => []);
+    }),
+    [],
+  );
 
   // Fetch nearby areas (excluding current)
-  const nearbyAreas = await prisma.serviceArea.findMany({
-    where: {
-      isActive: true,
-      id: { not: area.id },
-    },
-    orderBy: { priority: 'desc' },
-    take: 6,
-  }).catch(() => []);
+  const nearbyAreas = await withDatabaseFallback(
+    prisma.serviceArea.findMany({
+      where: {
+        isActive: true,
+        id: { not: area.id },
+      },
+      orderBy: { priority: 'desc' },
+      take: 6,
+    }),
+    [],
+  );
 
   // Fetch review stats (would come from AggregatedReview in production)
   const reviews = {

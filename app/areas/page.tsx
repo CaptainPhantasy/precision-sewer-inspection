@@ -10,6 +10,7 @@ import Footer from '@/components/footer';
 import AIChat from '@/components/ai-chat';
 import StructuredData from '@/components/structured-data';
 import { generateAllSchemas, getJsonLdScript } from '@/lib/schema/markup';
+import { withDatabaseFallback } from '@/lib/prisma-timeout';
 
 const prisma = new PrismaClient();
 
@@ -18,7 +19,7 @@ export const metadata = {
   description: 'Professional sewer inspection services throughout the Indianapolis metro area. Serving Indianapolis, Carmel, Fishers, Noblesville, Greenwood, and surrounding communities.',
 };
 
-const fallbackAreas = [
+const fallbackAreaSeeds = [
   { id: 'indianapolis-in', name: 'Indianapolis', state: 'IN', slug: 'indianapolis-in', description: 'Professional sewer inspection services throughout Indianapolis and Marion County.', zipCodes: ['46201', '46202', '46203'] },
   { id: 'carmel-in', name: 'Carmel', state: 'IN', slug: 'carmel-in', description: 'Professional sewer inspection services for Carmel homeowners, buyers, and real estate professionals.', zipCodes: ['46032', '46033', '46074'] },
   { id: 'fishers-in', name: 'Fishers', state: 'IN', slug: 'fishers-in', description: 'Professional sewer camera inspections for Fishers and northeast Indianapolis suburbs.', zipCodes: ['46037', '46038', '46040'] },
@@ -27,15 +28,30 @@ const fallbackAreas = [
   { id: 'westfield-in', name: 'Westfield', state: 'IN', slug: 'westfield-in', description: 'Professional sewer inspection services for Westfield homes and real estate transactions.', zipCodes: ['46074'] },
 ];
 
+const fallbackAreas = fallbackAreaSeeds.map((area) => ({
+  ...area,
+  city: area.name,
+  geoBounds: null,
+  population: null,
+  isActive: true,
+  priority: 0,
+  localKeywords: [],
+  createdAt: new Date(),
+  updatedAt: new Date(),
+}));
+
 
 export default async function ServiceAreasPage() {
-  const areas = await prisma.serviceArea.findMany({
-    where: { isActive: true },
-    orderBy: [
-      { priority: 'desc' },
-      { name: 'asc' },
-    ],
-  }).catch(() => fallbackAreas);
+  const areas = await withDatabaseFallback(
+    prisma.serviceArea.findMany({
+      where: { isActive: true },
+      orderBy: [
+        { priority: 'desc' },
+        { name: 'asc' },
+      ],
+    }),
+    fallbackAreas,
+  );
 
   const schemas = generateAllSchemas();
   const structuredData = {
