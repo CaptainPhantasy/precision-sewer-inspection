@@ -18,6 +18,16 @@ export const metadata = {
   description: 'Professional sewer inspection services throughout the Indianapolis metro area. Serving Indianapolis, Carmel, Fishers, Noblesville, Greenwood, and surrounding communities.',
 };
 
+const fallbackAreas = [
+  { id: 'indianapolis-in', name: 'Indianapolis', state: 'IN', slug: 'indianapolis-in', description: 'Professional sewer inspection services throughout Indianapolis and Marion County.', zipCodes: ['46201', '46202', '46203'] },
+  { id: 'carmel-in', name: 'Carmel', state: 'IN', slug: 'carmel-in', description: 'Professional sewer inspection services for Carmel homeowners, buyers, and real estate professionals.', zipCodes: ['46032', '46033', '46074'] },
+  { id: 'fishers-in', name: 'Fishers', state: 'IN', slug: 'fishers-in', description: 'Professional sewer camera inspections for Fishers and northeast Indianapolis suburbs.', zipCodes: ['46037', '46038', '46040'] },
+  { id: 'noblesville-in', name: 'Noblesville', state: 'IN', slug: 'noblesville-in', description: 'Professional sewer inspection services in Noblesville and surrounding Hamilton County communities.', zipCodes: ['46060', '46062'] },
+  { id: 'greenwood-in', name: 'Greenwood', state: 'IN', slug: 'greenwood-in', description: 'Professional sewer scope inspections for Greenwood and Johnson County properties.', zipCodes: ['46142', '46143'] },
+  { id: 'westfield-in', name: 'Westfield', state: 'IN', slug: 'westfield-in', description: 'Professional sewer inspection services for Westfield homes and real estate transactions.', zipCodes: ['46074'] },
+];
+
+
 export default async function ServiceAreasPage() {
   const areas = await prisma.serviceArea.findMany({
     where: { isActive: true },
@@ -25,7 +35,7 @@ export default async function ServiceAreasPage() {
       { priority: 'desc' },
       { name: 'asc' },
     ],
-  });
+  }).catch(() => fallbackAreas);
 
   const schemas = generateAllSchemas();
   const structuredData = {
@@ -57,7 +67,7 @@ export default async function ServiceAreasPage() {
               {areas.map((area) => (
                 <Link
                   key={area.id}
-                  href={`/sewer-inspection-${area.slug}`}
+                  href={`/sewer-inspection/${area.slug}`}
                   className="group block bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg hover:border-primary-200 transition-all"
                 >
                   <div className="flex items-start justify-between">
