@@ -87,15 +87,12 @@ export async function POST(
       rejectedStage: stageLabel,
     });
 
-    await sendNotificationEmail(
-      process.env.NOTIF_ID_INSPECTION_RETURNED_FOR_CORRECTIONS || "",
-      {
-        recipientEmail: inspection.technician.email,
-        recipientName: inspection.technician.name,
-        subject: emailContent.subject,
-        htmlContent: emailContent.htmlContent,
-      }
-    );
+    await sendNotificationEmail({
+      recipientEmail: inspection.technician.email,
+      recipientName: inspection.technician.name,
+      subject: emailContent.subject,
+      htmlContent: emailContent.htmlContent,
+    });
 
     return NextResponse.json({
       success: true,

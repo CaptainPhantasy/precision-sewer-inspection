@@ -54,13 +54,10 @@ export async function POST(request: NextRequest) {
 
     // Send admin notification to both Ryan & Douglas
     try {
-      await sendAdminNotification(
-        process.env.NOTIF_ID_CONTACT_FORM_SUBMISSION || '',
-        {
-          subject: `New Contact Form Submission from ${name ?? 'Website Visitor'}`,
-          htmlContent: htmlBody,
-        }
-      )
+      await sendAdminNotification({
+        subject: `New Contact Form Submission from ${name ?? 'Website Visitor'}`,
+        htmlContent: htmlBody,
+      })
     } catch (emailError) {
       console.error('Failed to send admin email notification:', emailError)
     }
@@ -74,15 +71,12 @@ export async function POST(request: NextRequest) {
         source: source ?? 'website',
         message: message ?? '',
       })
-      await sendNotificationEmail(
-        process.env.NOTIF_ID_BOOKING_CONFIRMATION || '',
-        {
-          recipientEmail: email,
-          recipientName: name,
-          subject: confirmEmail.subject,
-          htmlContent: confirmEmail.htmlContent,
-        }
-      )
+      await sendNotificationEmail({
+        recipientEmail: email,
+        recipientName: name,
+        subject: confirmEmail.subject,
+        htmlContent: confirmEmail.htmlContent,
+      })
     } catch (emailError) {
       console.error('Failed to send booking confirmation email:', emailError)
     }

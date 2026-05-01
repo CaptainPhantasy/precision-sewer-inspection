@@ -36,15 +36,8 @@ interface NotificationEmailParams {
   textContent?: string;
 }
 
-/**
- * Send notification email via Hostinger SMTP.
- *
- * The `notificationId` parameter is retained for backward compatibility
- * with existing callers that pass `process.env.NOTIF_ID_*` values.
- * It is not used — SMTP sends directly.
- */
+/** Send notification email via Hostinger SMTP. */
 export async function sendNotificationEmail(
-  _notificationId: string,
   params: NotificationEmailParams
 ): Promise<{ success: boolean; error?: string }> {
   try {
@@ -75,12 +68,11 @@ export async function sendNotificationEmail(
 
 // Send admin notification to all admin emails
 export async function sendAdminNotification(
-  notificationId: string,
   params: Omit<NotificationEmailParams, "recipientEmail">
 ): Promise<void> {
   const results = await Promise.allSettled(
     ADMIN_EMAILS.map((email) =>
-      sendNotificationEmail(notificationId, {
+      sendNotificationEmail({
         ...params,
         recipientEmail: email,
       })

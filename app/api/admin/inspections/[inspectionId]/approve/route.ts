@@ -159,15 +159,12 @@ export async function POST(
       downloadLimit: MAX_DOWNLOADS,
     });
 
-    await sendNotificationEmail(
-      process.env.NOTIF_ID_INSPECTION_VIDEO_READY_FOR_DOWNLOAD || "",
-      {
-        recipientEmail: inspection.job.clientEmail,
-        recipientName: inspection.job.clientName,
-        subject: emailContent.subject,
-        htmlContent: emailContent.htmlContent,
-      }
-    );
+    await sendNotificationEmail({
+      recipientEmail: inspection.job.clientEmail,
+      recipientName: inspection.job.clientName,
+      subject: emailContent.subject,
+      htmlContent: emailContent.htmlContent,
+    });
 
     // Generate PDF report in the background (don't block approval)
     generateInspectionPDF(inspectionId).then((cloudPath) => {

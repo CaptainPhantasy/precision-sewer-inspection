@@ -153,13 +153,10 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       howHeardAboutUs: submission?.howHeardAboutUs || undefined,
       directions: submission?.directions || undefined,
     });
-    await sendAdminNotification(
-      process.env.NOTIF_ID_PAYMENT_RECEIVED || '',
-      {
-        subject: adminEmail.subject,
-        htmlContent: adminEmail.htmlContent,
-      }
-    );
+    await sendAdminNotification({
+      subject: adminEmail.subject,
+      htmlContent: adminEmail.htmlContent,
+    });
   } catch (error) {
     console.error('Error sending payment received admin notification:', error);
   }
@@ -179,15 +176,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         promoCode: metadata.promoCode || undefined,
         discountAmount: discountAmount || undefined,
       });
-      await sendNotificationEmail(
-        process.env.NOTIF_ID_PAYMENT_RECEIPT || '',
-        {
-          recipientEmail: customerEmail,
-          recipientName: customerName,
-          subject: receiptEmail.subject,
-          htmlContent: receiptEmail.htmlContent,
-        }
-      );
+      await sendNotificationEmail({
+        recipientEmail: customerEmail,
+        recipientName: customerName,
+        subject: receiptEmail.subject,
+        htmlContent: receiptEmail.htmlContent,
+      });
     } catch (error) {
       console.error('Error sending payment receipt to customer:', error);
     }

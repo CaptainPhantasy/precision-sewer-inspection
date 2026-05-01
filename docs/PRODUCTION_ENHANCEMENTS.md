@@ -43,7 +43,7 @@ This document summarizes the production-grade enhancements implemented for the P
 - **Location Logging**: Automatic GPS tracking per stage
 
 ### 5. AI Service (`lib/services/ai.service.ts`)
-- **Abacus AI Integration**: Chat completions via Abacus API
+- **Direct Anthropic Claude Integration**: Chat, summaries, recommendations, and transcript analysis via `@anthropic-ai/sdk`
 - **Findings Summary**: generateFindingsSummary()
 - **Recommendations**: generateRecommendations()
 - **Full Summary**: generateFullSummary()
@@ -257,10 +257,14 @@ app/api/
 Ensure these environment variables are set:
 
 ```env
-ABACUSAI_API_KEY=your-api-key
-ABACUSAI_MODEL=gpt-4.1-mini
+ANTHROPIC_API_KEY=your-anthropic-key
+ANTHROPIC_MODEL=claude-sonnet-4-20250514
 DATABASE_URL=postgresql://...
-S3_BUCKET_NAME=your-bucket
+AWS_BUCKET_NAME=your-bucket
+SMTP_HOST=smtp.hostinger.com
+SMTP_PORT=465
+SMTP_USER=noreply@precisionsewerinspections.com
+SMTP_PASSWORD=your-hostinger-mailbox-password
 ```
 
 ---

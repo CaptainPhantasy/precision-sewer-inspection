@@ -41,35 +41,32 @@ export async function POST(request: NextRequest) {
     }
 
     // Send admin notification
-    const notifId = process.env.NOTIF_ID_NEW_LEAD_CAPTURED;
-    if (notifId) {
-      const infoRows = [
-        lead.email ? `<tr><td style="padding:5px 0;"><strong>Email:</strong></td><td><a href="mailto:${lead.email}">${lead.email}</a></td></tr>` : '',
-        lead.name ? `<tr><td style="padding:5px 0;"><strong>Name:</strong></td><td>${lead.name}</td></tr>` : '',
-        lead.phone ? `<tr><td style="padding:5px 0;"><strong>Phone:</strong></td><td><a href="tel:${lead.phone}">${lead.phone}</a></td></tr>` : '',
-        lead.address ? `<tr><td style="padding:5px 0;"><strong>Address:</strong></td><td>${lead.address}${lead.city ? ', ' + lead.city : ''}${lead.state ? ', ' + lead.state : ''} ${lead.zip || ''}</td></tr>` : '',
-        lead.source ? `<tr><td style="padding:5px 0;"><strong>Source:</strong></td><td>${lead.source}</td></tr>` : '',
-        lead.pageUrl ? `<tr><td style="padding:5px 0;"><strong>Page:</strong></td><td>${lead.pageUrl}</td></tr>` : '',
-      ].filter(Boolean).join('\n');
+    const infoRows = [
+      lead.email ? `<tr><td style="padding:5px 0;"><strong>Email:</strong></td><td><a href="mailto:${lead.email}">${lead.email}</a></td></tr>` : '',
+      lead.name ? `<tr><td style="padding:5px 0;"><strong>Name:</strong></td><td>${lead.name}</td></tr>` : '',
+      lead.phone ? `<tr><td style="padding:5px 0;"><strong>Phone:</strong></td><td><a href="tel:${lead.phone}">${lead.phone}</a></td></tr>` : '',
+      lead.address ? `<tr><td style="padding:5px 0;"><strong>Address:</strong></td><td>${lead.address}${lead.city ? ', ' + lead.city : ''}${lead.state ? ', ' + lead.state : ''} ${lead.zip || ''}</td></tr>` : '',
+      lead.source ? `<tr><td style="padding:5px 0;"><strong>Source:</strong></td><td>${lead.source}</td></tr>` : '',
+      lead.pageUrl ? `<tr><td style="padding:5px 0;"><strong>Page:</strong></td><td>${lead.pageUrl}</td></tr>` : '',
+    ].filter(Boolean).join('\n');
 
-      await sendAdminNotification(notifId, {
-        subject: `🔔 New Lead Captured: ${lead.email || lead.phone || 'Unknown'}`,
-        htmlContent: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <div style="background: #f59e0b; padding: 15px; border-radius: 8px 8px 0 0;">
-              <h2 style="color: white; margin: 0;">🔔 New Lead — Did Not Complete Purchase</h2>
-            </div>
-            <div style="background: #fffbeb; padding: 20px; border-radius: 0 0 8px 8px; border: 1px solid #fde68a;">
-              <p style="color: #92400e; margin-top: 0;">A visitor entered contact information but did not complete the booking/form. Follow up!</p>
-              <table style="width: 100%; color: #374151;">
-                ${infoRows}
-              </table>
-              <p style="color: #6b7280; font-size: 12px; margin-top: 15px;">Captured: ${lead.createdAt.toLocaleString()}</p>
-            </div>
+    await sendAdminNotification({
+      subject: `🔔 New Lead Captured: ${lead.email || lead.phone || 'Unknown'}`,
+      htmlContent: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: #f59e0b; padding: 15px; border-radius: 8px 8px 0 0;">
+            <h2 style="color: white; margin: 0;">🔔 New Lead — Did Not Complete Purchase</h2>
           </div>
-        `,
-      });
-    }
+          <div style="background: #fffbeb; padding: 20px; border-radius: 0 0 8px 8px; border: 1px solid #fde68a;">
+            <p style="color: #92400e; margin-top: 0;">A visitor entered contact information but did not complete the booking/form. Follow up!</p>
+            <table style="width: 100%; color: #374151;">
+              ${infoRows}
+            </table>
+            <p style="color: #6b7280; font-size: 12px; margin-top: 15px;">Captured: ${lead.createdAt.toLocaleString()}</p>
+          </div>
+        </div>
+      `,
+    });
 
     // Mark as notified
     await prisma.leadCapture.update({

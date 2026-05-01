@@ -111,13 +111,10 @@ export async function POST(
       submittedAt: new Date(),
     });
 
-    await sendAdminNotification(
-      process.env.NOTIF_ID_INSPECTION_SUBMITTED_FOR_REVIEW || "",
-      {
-        subject: emailContent.subject,
-        htmlContent: emailContent.htmlContent,
-      }
-    );
+    await sendAdminNotification({
+      subject: emailContent.subject,
+      htmlContent: emailContent.htmlContent,
+    });
 
     return NextResponse.json({
       success: true,
