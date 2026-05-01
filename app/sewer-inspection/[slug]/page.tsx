@@ -15,6 +15,48 @@ import ServiceAreaPage from '@/components/local-pages/ServiceAreaPage';
 
 const prisma = new PrismaClient();
 
+const fallbackAreaNames: Record<string, string> = {
+  'indianapolis-in': 'Indianapolis',
+  'carmel-in': 'Carmel',
+  'fishers-in': 'Fishers',
+  'noblesville-in': 'Noblesville',
+  'greenwood-in': 'Greenwood',
+  'westfield-in': 'Westfield',
+};
+
+function fallbackAreaForSlug(slug: string) {
+  const name = fallbackAreaNames[slug] ?? slug
+    .replace(/-in$/, '')
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  const now = new Date();
+
+  return {
+    id: slug,
+    name,
+    slug,
+    city: name,
+    state: 'IN',
+    zipCodes: [],
+    geoBounds: null,
+    population: null,
+    isActive: true,
+    priority: 0,
+    description: `Professional sewer camera inspection services in ${name}, Indiana. Serving homeowners, realtors, and property managers.`,
+    localKeywords: [
+      `sewer inspection ${name}`,
+      `sewer camera ${name}`,
+      `${name} drain inspection`,
+      `sewer line ${name} Indiana`,
+    ],
+    createdAt: now,
+    updatedAt: now,
+    services: [],
+    technicians: [],
+  };
+}
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
@@ -33,7 +75,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         include: { technician: true },
       },
     },
-  });
+  }).catch(() => fallbackAreaForSlug(slug));
 
   if (!area) {
     return { title: 'Service Area Not Found' };
@@ -51,11 +93,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: `Sewer Inspection in ${area.name} | Precision Sewer Inspections`,
       description: area.description || `Professional sewer inspection services in ${area.name}.`,
-      url: `/sewer-inspection-${slug}`,
+      url: `/sewer-inspection/${slug}`,
       type: 'website',
     },
     alternates: {
-      canonical: `/sewer-inspection-${slug}`,
+      canonical: `/sewer-inspection/${slug}`,
     },
   };
 }
@@ -93,7 +135,7 @@ export default async function Page({ params }: PageProps) {
         include: { technician: true },
       },
     },
-  });
+  }).catch(() => fallbackAreaForSlug(slug));
 
   if (!area) {
     notFound();
@@ -112,7 +154,7 @@ export default async function Page({ params }: PageProps) {
       { category: 'asc' },
       { sortOrder: 'asc' },
     ],
-  });
+  }).catch(() => []);
 
   // Fetch nearby areas (excluding current)
   const nearbyAreas = await prisma.serviceArea.findMany({
@@ -122,7 +164,7 @@ export default async function Page({ params }: PageProps) {
     },
     orderBy: { priority: 'desc' },
     take: 6,
-  });
+  }).catch(() => []);
 
   // Fetch review stats (would come from AggregatedReview in production)
   const reviews = {

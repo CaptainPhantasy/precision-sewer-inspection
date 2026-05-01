@@ -250,7 +250,7 @@ export default function ServiceAreaPage({
                 {nearbyAreas.map(nearby => (
                   <a
                     key={nearby.id}
-                    href={`/sewer-inspection-${nearby.slug}`}
+                    href={`/sewer-inspection/${nearby.slug}`}
                     className="px-4 py-2 bg-gray-100 hover:bg-primary-50 text-gray-700 hover:text-primary-700 rounded-full transition-colors"
                   >
                     {nearby.name}
