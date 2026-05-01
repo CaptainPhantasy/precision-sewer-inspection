@@ -5,6 +5,7 @@ import { sendNotificationEmail, getVideoReadyEmail } from "@/lib/notifications";
 import { DOWNLOAD_LINK_HOURS, DOWNLOAD_LINK_GRACE_HOURS, MAX_DOWNLOADS } from "@/lib/inspection-constants";
 import { generateReportHTML } from "@/lib/report-template";
 import { uploadBuffer } from "@/lib/s3";
+import { getSiteUrl } from "@/lib/site-url";
 import { pdfService } from "@/lib/services/pdf.service";
 
 // Helper function to generate PDF using shared service
@@ -120,7 +121,7 @@ export async function POST(
     ]);
 
     // Generate download URL
-    const baseUrl = (process.env.NEXTAUTH_URL || "https://precisionsewerinspection.com").replace(/\/$/, "");
+    const baseUrl = getSiteUrl();
     const downloadUrl = `${baseUrl}/download/${inspectionId}?token=${token}`;
 
     // Count findings for the email summary

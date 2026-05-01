@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { getSiteUrl } from '@/lib/site-url'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 import PromoBanner from '@/components/promo-banner'
@@ -8,8 +9,7 @@ import SiteTracker from '@/components/site-tracker'
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const configuredBaseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
-  const baseUrl = configuredBaseUrl.replace(/\/$/, '')
+  const baseUrl = getSiteUrl()
   const isStaging = process.env.PSI_STAGING_MODE === 'true'
 
   return {

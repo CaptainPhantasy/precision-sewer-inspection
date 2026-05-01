@@ -2,6 +2,7 @@
 // Uses Hostinger SMTP via nodemailer (replaced Abacus notification API)
 
 import nodemailer from "nodemailer";
+import { getSiteUrl } from "./site-url";
 
 // Admin email recipients
 export const ADMIN_EMAILS = [
@@ -20,7 +21,7 @@ function getTransporter(): nodemailer.Transporter {
     port: Number(process.env.SMTP_PORT) || 465,
     secure: true, // port 465 = implicit TLS
     auth: {
-      user: process.env.SMTP_USER || "noreply@precisionsewerinspection.com",
+      user: process.env.SMTP_USER || "noreply@precisionsewerinspections.com",
       pass: process.env.SMTP_PASSWORD,
     },
   });
@@ -44,7 +45,7 @@ export async function sendNotificationEmail(
     const transporter = getTransporter();
 
     const fromAddress =
-      process.env.SMTP_FROM || process.env.SMTP_USER || "noreply@precisionsewerinspection.com";
+      process.env.SMTP_FROM || process.env.SMTP_USER || "noreply@precisionsewerinspections.com";
 
     await transporter.sendMail({
       from: `"Precision Sewer Inspection" <${fromAddress}>`,
@@ -106,7 +107,7 @@ export function getInspectionSubmittedEmail(data: {
           <p><strong>Submitted:</strong> ${data.submittedAt.toLocaleString()}</p>
         </div>
         <p>Please review this inspection in the admin dashboard.</p>
-        <a href="${process.env.NEXTAUTH_URL || ''}/admin/inspections" 
+        <a href="${getSiteUrl()}/admin/inspections" 
            style="display: inline-block; background: #2563eb; color: white; padding: 12px 24px; 
                   text-decoration: none; border-radius: 6px; margin-top: 10px;">
           Review Inspection

@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url'
 import { COMPANY_INFO, FAQ_ITEMS, SERVICE_AREAS, TESTIMONIALS } from '@/lib/constants'
 
 interface StructuredDataProps {
@@ -8,7 +9,7 @@ interface StructuredDataProps {
 }
 
 export default function StructuredData({ type, pageTitle, pageDescription, breadcrumbs }: StructuredDataProps) {
-  const baseUrl = process.env.NEXTAUTH_URL || 'https://precisionsewerinspections.com'
+  const baseUrl = getSiteUrl()
 
   const localBusinessSchema = {
     '@context': 'https://schema.org',
