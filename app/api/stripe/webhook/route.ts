@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
+import { getStripeClient } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 import Stripe from 'stripe';
 import { AppError, ErrorCode, errorResponse } from '@/lib/errors';
@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const stripe = getStripeClient();
     // Verify webhook signature
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err: unknown) {

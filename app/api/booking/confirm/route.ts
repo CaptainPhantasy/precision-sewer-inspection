@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
+import { getStripeClient } from '@/lib/stripe';
 import { createBookingEvent, isSlotAvailable } from '@/lib/google-calendar';
 
 export async function POST(request: NextRequest) {
@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const stripe = getStripeClient();
     // Retrieve the Stripe session to get booking metadata
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
