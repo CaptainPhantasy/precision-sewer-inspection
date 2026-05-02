@@ -70,20 +70,36 @@ export async function sendNotificationEmail(
 // Send admin notification to all admin emails
 export async function sendAdminNotification(
   params: Omit<NotificationEmailParams, "recipientEmail">
-): Promise<void> {
-  const results = await Promise.allSettled(
-    ADMIN_EMAILS.map((email) =>
-      sendNotificationEmail({
+): Promise<{ success: boolean; results: Array<{ email: string; success: boolean; error?: string }> }> {
+  const settledResults = await Promise.allSettled(
+    ADMIN_EMAILS.map(async (email) => {
+      const result = await sendNotificationEmail({
         ...params,
         recipientEmail: email,
-      })
-    )
+      });
+
+      return { email, ...result };
+    })
   );
-  results.forEach((r, i) => {
-    if (r.status === "rejected" || (r.status === "fulfilled" && !r.value.success)) {
-      console.error(`Failed to send admin notification to ${ADMIN_EMAILS[i]}:`, r.status === "rejected" ? r.reason : r.value.error);
+
+  const results = settledResults.map((result, i) => {
+    if (result.status === "rejected") {
+      const error = result.reason instanceof Error ? result.reason.message : "Unknown admin notification error";
+      console.error(`Failed to send admin notification to ${ADMIN_EMAILS[i]}:`, error);
+      return { email: ADMIN_EMAILS[i], success: false, error };
     }
+
+    if (!result.value.success) {
+      console.error(`Failed to send admin notification to ${ADMIN_EMAILS[i]}:`, result.value.error);
+    }
+
+    return result.value;
   });
+
+  return {
+    success: results.every((result) => result.success),
+    results,
+  };
 }
 
 // Email templates
