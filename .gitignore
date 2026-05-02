@@ -61,3 +61,18 @@ FLOYD.md
 
 # Test output
 test-output/
+
+# Cutover workspace artifacts do not belong in application source
+SSOT/
+archive/
+work.bak/
+agent_output/
+.harness/
+.omp/
+.vibebox/
+claude_desktop_config.json
+vibebox.toml
+database_backup.sql
+database_export*.json
+Uploads/
+www.precisionsewerinspections.com/
