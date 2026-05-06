@@ -2,9 +2,11 @@ const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  distDir: '.next',
+  distDir: process.env.NEXT_DIST_DIR || '.next',
+  output: process.env.NEXT_OUTPUT_MODE,
+  productionBrowserSourceMaps: false,
   experimental: {
-    outputFileTracingRoot: __dirname,
+    outputFileTracingRoot: path.join(__dirname, '../'),
   },
   eslint: {
     ignoreDuringBuilds: true,
@@ -13,21 +15,12 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   images: { unoptimized: true },
-  async redirects() {
-    return [
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: 'precisionsewerinspection.com' }],
-        destination: 'https://precisionsewerinspections.com/:path*',
-        permanent: true,
-      },
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: 'www.precisionsewerinspection.com' }],
-        destination: 'https://precisionsewerinspections.com/:path*',
-        permanent: true,
-      },
-    ];
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.output.filename = 'static/chunks/[name]-[contenthash:8].js';
+      config.output.chunkFilename = 'static/chunks/[contenthash:16].js';
+    }
+    return config;
   },
 };
 

@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getStripeClient } from '@/lib/stripe';
+import { stripe } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 import Stripe from 'stripe';
-import { AppError, ErrorCode, errorResponse } from '@/lib/errors';
 import { sendAdminNotification, sendNotificationEmail, getPaymentReceivedEmail, getPaymentReceiptEmail } from '@/lib/notifications';
 
 // Disable body parsing - we need raw body for signature verification
@@ -19,18 +18,14 @@ export async function POST(request: NextRequest) {
   let event: Stripe.Event;
 
   try {
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-    if (!webhookSecret) {
-      throw new AppError(
-        ErrorCode.SERVICE_UNAVAILABLE,
-        'STRIPE_WEBHOOK_SECRET is required in this environment',
-        503
-      );
-    }
-
-    const stripe = getStripeClient();
     // Verify webhook signature
-    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    if (webhookSecret) {
+      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    } else {
+      // For development without webhook secret
+      event = JSON.parse(body) as Stripe.Event;
+    }
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : 'Unknown error';
     console.error('Webhook signature verification failed:', errorMessage);
@@ -51,6 +46,23 @@ export async function POST(request: NextRequest) {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
         console.log('Payment succeeded:', paymentIntent.id);
+        // Defense-in-depth: if checkout.session.completed was missed, look up
+        // the matching checkout session and run the same handler. The handler
+        // is idempotent (guards against re-processing a paid submission).
+        try {
+          const sessions = await stripe.checkout.sessions.list({
+            payment_intent: paymentIntent.id,
+            limit: 1,
+          });
+          const session = sessions.data?.[0];
+          if (session) {
+            await handleCheckoutCompleted(session);
+          } else {
+            console.log('No checkout session found for payment intent:', paymentIntent.id);
+          }
+        } catch (err) {
+          console.error('Error looking up checkout session for payment intent:', err);
+        }
         break;
       }
       case 'payment_intent.payment_failed': {
@@ -62,7 +74,11 @@ export async function POST(request: NextRequest) {
         console.log(`Unhandled event type: ${event.type}`);
     }
   } catch (error) {
-    return errorResponse(error);
+    console.error('Error processing webhook:', error);
+    return NextResponse.json(
+      { error: 'Webhook processing failed' },
+      { status: 500 }
+    );
   }
 
   return NextResponse.json({ received: true });
@@ -80,6 +96,22 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     amount: amountTotal,
     metadata,
   });
+
+  // Idempotency guard: if we've already processed this session, skip.
+  // Protects against dual-delivery (checkout.session.completed +
+  // payment_intent.succeeded both firing for the same payment).
+  try {
+    const already = await prisma.contactSubmission.findFirst({
+      where: { stripeSessionId: session.id, status: 'paid' },
+      select: { id: true },
+    });
+    if (already) {
+      console.log('Session already processed, skipping duplicate handling:', session.id);
+      return;
+    }
+  } catch (e) {
+    console.error('Error checking for duplicate session processing:', e);
+  }
 
   // Update the pre-saved contact submission with payment info, or create one if it doesn't exist
   try {
@@ -155,9 +187,10 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       directions: submission?.directions || undefined,
     });
     await sendAdminNotification({
-      subject: adminEmail.subject,
-      htmlContent: adminEmail.htmlContent,
-    });
+        subject: adminEmail.subject,
+        htmlContent: adminEmail.htmlContent,
+      }
+    );
   } catch (error) {
     console.error('Error sending payment received admin notification:', error);
   }
@@ -178,11 +211,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         discountAmount: discountAmount || undefined,
       });
       await sendNotificationEmail({
-        recipientEmail: customerEmail,
-        recipientName: customerName,
-        subject: receiptEmail.subject,
-        htmlContent: receiptEmail.htmlContent,
-      });
+          recipientEmail: customerEmail,
+          recipientName: customerName,
+          subject: receiptEmail.subject,
+          htmlContent: receiptEmail.htmlContent,
+        }
+      );
     } catch (error) {
       console.error('Error sending payment receipt to customer:', error);
     }

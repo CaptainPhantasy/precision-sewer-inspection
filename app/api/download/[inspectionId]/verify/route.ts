@@ -141,7 +141,7 @@ export async function POST(
         hasHighlightReel: !!insp.videoAttachment?.highlightReelPath,
         highlightDuration: insp.videoAttachment?.highlightDuration || null,
         // Chapters
-        chapters: insp.videoAttachment?.chapters?.map((ch: (typeof insp.videoAttachment.chapters)[number]) => ({
+        chapters: insp.videoAttachment?.chapters?.map((ch: any) => ({
           id: ch.id,
           timestamp: ch.timestamp,
           endTimestamp: ch.endTimestamp,

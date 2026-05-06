@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getStripeClient } from '@/lib/stripe';
+import { stripe } from '@/lib/stripe';
 
 // This endpoint creates all products and prices in your Stripe account
 // Run once to set up your Stripe catalog, then save the price IDs
@@ -61,8 +61,6 @@ export async function POST(request: NextRequest) {
         key: 'ADDITIONAL_CLEANOUT',
       },
     ];
-
-    const stripe = getStripeClient();
 
     const createdProducts: Array<{ key: string; productId: string; priceId: string; name: string; amount: number }> = [];
 

@@ -4,6 +4,9 @@ import { prisma } from "@/lib/db";
 import { generateReportHTML } from "@/lib/report-template";
 import { uploadBuffer, getFileUrl } from "@/lib/s3";
 import { pdfService } from "@/lib/services/pdf.service";
+import { aiService } from "@/lib/services/ai.service";
+import fs from "fs";
+import path from "path";
 
 export async function POST(
   request: NextRequest,
@@ -34,16 +37,29 @@ export async function POST(
       return NextResponse.json({ success: false, error: "Inspection not found" }, { status: 404 });
     }
 
-    // Generate HTML for client version
-    const clientHTML = generateReportHTML(inspection as Parameters<typeof generateReportHTML>[0], true);
+    // Read the blank HTML template
+    const templatePath = path.join(process.cwd(), "lib/templates/psi-blank-template-html.html");
+    const templateContent = fs.readFileSync(templatePath, "utf-8");
 
-    // Generate PDF via shared service
-    const pdfResult = await pdfService.generatePDF(clientHTML);
+    // Use AI Haiku to populate the HTML template
+    const aiResponse = await aiService.populateReportTemplate(templateContent, inspection);
+    if (!aiResponse.success || !aiResponse.content) {
+      console.error("AI Report generation error:", aiResponse.error);
+      return NextResponse.json({ success: false, error: aiResponse.error || "Failed to generate report via AI" }, { status: 500 });
+    }
+
+    const clientHTML = aiResponse.content;
+
+    // Generate PDF using Puppeteer/Chromium (Vercel-compatible)
+    const pdfResult = await pdfService.generatePDF(clientHTML, {
+      format: "A4",
+      margin: { top: "20mm", right: "20mm", bottom: "20mm", left: "20mm" },
+      printBackground: true,
+    });
+
     if (!pdfResult.success || !pdfResult.buffer) {
-      return NextResponse.json(
-        { success: false, error: pdfResult.error || "Failed to generate PDF" },
-        { status: 500 }
-      );
+      console.error("PDF generation error:", pdfResult.error);
+      return NextResponse.json({ success: false, error: pdfResult.error || "Failed to generate PDF" }, { status: 500 });
     }
 
     // Upload PDF to S3

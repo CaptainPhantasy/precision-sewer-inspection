@@ -1,14 +1,17 @@
-import type { MetadataRoute } from 'next'
+import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
+  // Use canonical non-www domain for consistent SEO
+  const baseUrl = 'https://precisionsewerinspections.com'
+
   return {
     rules: [
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin/', '/technician/', '/api/', '/download/'],
+        disallow: ['/api/', '/admin/'],
       },
     ],
-    sitemap: 'https://precisionsewerinspections.com/sitemap.xml',
+    sitemap: `${baseUrl}/sitemap.xml`,
   }
 }

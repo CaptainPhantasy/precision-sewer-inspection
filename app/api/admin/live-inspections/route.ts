@@ -114,7 +114,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Transform data for admin view
-    const liveInspections = inspections.map((inspection: (typeof inspections)[number]) => {
+    const liveInspections = inspections.map((inspection: any) => {
       const currentStageIndex = STAGE_ORDER.indexOf(inspection.currentStage as typeof STAGE_ORDER[number]);
       const progressPercent = Math.round((currentStageIndex / (STAGE_ORDER.length - 1)) * 100);
       
@@ -172,7 +172,7 @@ export async function GET(request: NextRequest) {
           timestamp: latestLocation.timestamp,
           isOverride: latestLocation.isOverride,
         } : null,
-        locationHistory: inspection.locationLogs.map((log: (typeof inspection.locationLogs)[number]) => ({
+        locationHistory: inspection.locationLogs.map((log: any) => ({
           latitude: log.latitude,
           longitude: log.longitude,
           eventType: log.eventType,

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { getSiteUrl } from '@/lib/site-url'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 import PromoBanner from '@/components/promo-banner'
@@ -9,9 +8,8 @@ import SiteTracker from '@/components/site-tracker'
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const baseUrl = getSiteUrl()
-  const isStaging = process.env.PSI_STAGING_MODE === 'true'
-
+  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+  
   return {
     metadataBase: new URL(baseUrl),
     title: {
@@ -71,18 +69,18 @@ export async function generateMetadata(): Promise<Metadata> {
       images: ['/og-image.png'],
     },
     robots: {
-      index: !isStaging,
-      follow: !isStaging,
+      index: true,
+      follow: true,
       googleBot: {
-        index: !isStaging,
-        follow: !isStaging,
+        index: true,
+        follow: true,
         'max-video-preview': -1,
         'max-image-preview': 'large',
         'max-snippet': -1,
       },
     },
     alternates: {
-      canonical: baseUrl,
+      canonical: 'https://precisionsewerinspections.com',
     },
     verification: {
       // Add these when you have them
@@ -100,6 +98,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Chatbot powered by Anthropic Claude via /api/chat */}
+      </head>
       <body className="min-h-screen bg-white text-gray-900 antialiased">
         <PromoBanner />
         {children}

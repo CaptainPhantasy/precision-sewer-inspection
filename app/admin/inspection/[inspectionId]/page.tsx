@@ -90,8 +90,6 @@ export default function AdminInspectionReviewPage() {
   const [success, setSuccess] = useState("");
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [loadingVideo, setLoadingVideo] = useState(false);
-  const [generatingReport, setGeneratingReport] = useState(false);
-  const [reportUrl, setReportUrl] = useState<string | null>(null);
   const [videoCurrentTime, setVideoCurrentTime] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -221,33 +219,6 @@ export default function AdminInspectionReviewPage() {
       setError("Network error");
     } finally {
       setRejecting(false);
-    }
-  };
-
-  const handleGenerateEnhancedReport = async () => {
-    setGeneratingReport(true);
-    setError("");
-    setSuccess("");
-
-    try {
-      const res = await fetch(`/api/admin/inspections/${inspectionId}/generate-enhanced-report`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        setSuccess("Enhanced report generated successfully!");
-        if (data.reportUrl) {
-          setReportUrl(data.reportUrl);
-        }
-      } else {
-        setError(data.error || "Failed to generate enhanced report");
-      }
-    } catch {
-      setError("Network error generating report");
-    } finally {
-      setGeneratingReport(false);
     }
   };
 
@@ -523,40 +494,6 @@ export default function AdminInspectionReviewPage() {
             />
           </div>
         )}
-
-
-        {/* Enhanced Report Generation */}
-        <div className="bg-white rounded-xl p-6 shadow-sm">
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <FileText className="w-4 h-4" /> Report Generation
-          </h3>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={handleGenerateEnhancedReport}
-              disabled={generatingReport}
-              className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2"
-            >
-              {generatingReport ? (
-                <><Loader2 className="w-5 h-5 animate-spin" /> Generating...</>
-              ) : (
-                <><FileText className="w-5 h-5" /> Generate Enhanced Report</>
-              )}
-            </button>
-            {reportUrl && (
-              <a
-                href={reportUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 underline text-sm font-medium"
-              >
-                View Report →
-              </a>
-            )}
-          </div>
-          <p className="text-xs text-gray-500 mt-2">
-            Generates the enhanced report with acoustic analysis, material context, and all supplemental sections.
-          </p>
-        </div>
 
         {/* Action Buttons */}
         {isActionable && (

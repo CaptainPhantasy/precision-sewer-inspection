@@ -1,15 +1,14 @@
-import { getSiteUrl } from '@/lib/site-url'
 import { COMPANY_INFO, FAQ_ITEMS, SERVICE_AREAS, TESTIMONIALS } from '@/lib/constants'
 
 interface StructuredDataProps {
-  type: 'LocalBusiness' | 'Service' | 'FAQPage' | 'WebPage' | 'BreadcrumbList' | 'HowTo'
-  pageTitle?: string;
-  pageDescription?: string;
+  type: 'LocalBusiness' | 'Service' | 'FAQPage' | 'WebPage' | 'BreadcrumbList'
+  pageTitle?: string
+  pageDescription?: string
   breadcrumbs?: { name: string; url: string }[]
 }
 
 export default function StructuredData({ type, pageTitle, pageDescription, breadcrumbs }: StructuredDataProps) {
-  const baseUrl = getSiteUrl()
+  const baseUrl = process.env.NEXTAUTH_URL || 'https://precisionsewerinspections.com'
 
   const localBusinessSchema = {
     '@context': 'https://schema.org',

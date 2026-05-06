@@ -277,9 +277,9 @@ Booked via: precisionsewerinspections.com
           dateTime: endDate.toISOString(),
           timeZone: TIMEZONE,
         },
-        // Service-account calendar inserts cannot invite external attendees unless
-        // Domain-Wide Delegation is enabled. Customer confirmation is handled by
-        // the app's email notification path; keep Calendar writes owner-side only.
+        attendees: [
+          { email: booking.customerEmail, displayName: booking.customerName },
+        ],
         reminders: {
           useDefault: false,
           overrides: [

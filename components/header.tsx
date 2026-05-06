@@ -13,7 +13,6 @@ const navLinks = [
   { href: '/locating', label: 'Utility Locating', highlight: true },
   { href: '/about', label: 'About' },
   { href: '/faq', label: 'FAQ' },
-  { href: '/resources', label: 'Resources' },
   { href: '/contact', label: 'Contact' },
 ]
 

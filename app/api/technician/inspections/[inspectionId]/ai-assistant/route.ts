@@ -32,29 +32,29 @@ export async function POST(
     const context: Record<string, unknown> = {
       propertyAddress: inspection.job.propertyAddress,
       clientName: inspection.job.clientName,
-      homeAge: inspection.homeAge,
-      pipeMaterial: inspection.pipeMaterial,
-      knownIssues: inspection.knownIssues,
-      backupHistory: inspection.backupHistory,
-      overallCondition: inspection.overallCondition,
-      pipeConditionRating: inspection.pipeConditionRating,
-      rootIntrusion: inspection.rootIntrusion,
-      cracks: inspection.cracks,
-      bellies: inspection.bellies,
-      offsetJoints: inspection.offsetJoints,
-      blockages: inspection.blockages,
-      connectionToMain: inspection.connectionToMain,
-      recommendations: inspection.recommendations,
-      urgencyLevel: inspection.urgencyLevel,
+      homeAge: (inspection as any).homeAge,
+      pipeMaterial: (inspection as any).pipeMaterial,
+      knownIssues: (inspection as any).knownIssues,
+      backupHistory: (inspection as any).backupHistory,
+      overallCondition: (inspection as any).overallCondition,
+      pipeConditionRating: (inspection as any).pipeConditionRating,
+      rootIntrusion: (inspection as any).rootIntrusion,
+      cracks: (inspection as any).cracks,
+      bellies: (inspection as any).bellies,
+      offsetJoints: (inspection as any).offsetJoints,
+      blockages: (inspection as any).blockages,
+      connectionToMain: (inspection as any).connectionToMain,
+      recommendations: (inspection as any).recommendations,
+      urgencyLevel: (inspection as any).urgencyLevel,
       technicianName: inspection.technician.name,
-      inspectionDuration: inspection.inspectionDuration,
+      inspectionDuration: (inspection as any).inspectionDuration,
     };
 
     // Get AI response
     const response = await aiService.chat(
       message,
       context,
-      inspection.currentStage,
+      (inspection as any).currentStage,
       conversationHistory || []
     );
 

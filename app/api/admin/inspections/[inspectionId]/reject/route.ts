@@ -1,20 +1,12 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser, hasRole } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { badRequestResponse, errorResponse, notFoundResponse, unauthorizedResponse } from "@/lib/errors";
 import { sendNotificationEmail, getInspectionReturnedEmail } from "@/lib/notifications";
 
-type RejectableStage =
-  | "PRE_INSPECTION"
-  | "INSPECTING"
-  | "POST_INSPECTION"
-  | "VIDEO_ATTACH"
-  | "CLIENT_SIGNOFF";
-
 // Valid stages that can be rejected/reopened for technician to redo
-const REJECTABLE_STAGES: RejectableStage[] = [
+const REJECTABLE_STAGES: string[] = [
   "PRE_INSPECTION",
-  "INSPECTING",
+  "INSPECTING", 
   "POST_INSPECTION",
   "VIDEO_ATTACH",
   "CLIENT_SIGNOFF",
@@ -35,25 +27,28 @@ export async function POST(
   try {
     const user = await getCurrentUser();
     if (!user || !hasRole(user, ["ADMIN", "OWNER", "SUPER_ADMIN"])) {
-      return unauthorizedResponse();
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 }
+      );
     }
 
     const { inspectionId } = await params;
     const { reason, rejectedStage } = await request.json();
 
     if (!reason) {
-      return badRequestResponse("Rejection reason is required");
+      return NextResponse.json(
+        { success: false, error: "Rejection reason is required" },
+        { status: 400 }
+      );
     }
 
-    if (
-      !rejectedStage ||
-      typeof rejectedStage !== "string" ||
-      !REJECTABLE_STAGES.includes(rejectedStage as RejectableStage)
-    ) {
-      return badRequestResponse("A valid stage must be selected for rejection");
+    if (!rejectedStage || !REJECTABLE_STAGES.includes(rejectedStage)) {
+      return NextResponse.json(
+        { success: false, error: "A valid stage must be selected for rejection" },
+        { status: 400 }
+      );
     }
-
-    const selectedStage = rejectedStage as RejectableStage;
 
     const inspection = await prisma.inspection.findUnique({
       where: { id: inspectionId },
@@ -61,7 +56,10 @@ export async function POST(
     });
 
     if (!inspection) {
-      return notFoundResponse("Inspection", inspectionId);
+      return NextResponse.json(
+        { success: false, error: "Inspection not found" },
+        { status: 404 }
+      );
     }
 
     // Update inspection status with the specific rejected stage
@@ -69,8 +67,8 @@ export async function POST(
       where: { id: inspectionId },
       data: {
         status: "REJECTED",
-        currentStage: selectedStage, // Set to the rejected stage so technician can redo it
-        rejectedStage: selectedStage, // Track which stage was rejected
+        currentStage: rejectedStage, // Set to the rejected stage so technician can redo it
+        rejectedStage: rejectedStage, // Track which stage was rejected
         reviewedBy: user.id,
         reviewedAt: new Date(),
         reviewNotes: reason,
@@ -78,7 +76,7 @@ export async function POST(
     });
 
     // Send email to technician with specific stage info
-    const stageLabel = STAGE_LABELS[selectedStage] || selectedStage;
+    const stageLabel = STAGE_LABELS[rejectedStage] || rejectedStage;
     const emailContent = getInspectionReturnedEmail({
       technicianName: inspection.technician.name,
       inspectionNumber: inspection.inspectionNumber,
@@ -88,17 +86,22 @@ export async function POST(
     });
 
     await sendNotificationEmail({
-      recipientEmail: inspection.technician.email,
-      recipientName: inspection.technician.name,
-      subject: emailContent.subject,
-      htmlContent: emailContent.htmlContent,
-    });
+        recipientEmail: inspection.technician.email,
+        recipientName: inspection.technician.name,
+        subject: emailContent.subject,
+        htmlContent: emailContent.htmlContent,
+      }
+    );
 
     return NextResponse.json({
       success: true,
       inspection: updatedInspection,
     });
   } catch (error) {
-    return errorResponse(error);
+    console.error("Error rejecting inspection:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to reject inspection" },
+      { status: 500 }
+    );
   }
 }

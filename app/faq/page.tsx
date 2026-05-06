@@ -1,82 +1,160 @@
-// ============================================================================
-// FAQ Page
-// Displays all FAQs with Schema.org markup
-// ============================================================================
+'use client'
 
-import { PrismaClient } from '@prisma/client';
-import Header from '@/components/header';
-import Footer from '@/components/footer';
-import AIChat from '@/components/ai-chat';
-import StructuredData from '@/components/structured-data';
-import FAQAccordion from '@/components/local-pages/FAQAccordion';
-import { generateFAQSchema, getJsonLdScript } from '@/lib/schema/markup';
+import { useState } from 'react'
+import Header from '@/components/header'
+import Footer from '@/components/footer'
+import AIChat from '@/components/ai-chat'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronDown, Search, Phone } from 'lucide-react'
+import { FAQ_ITEMS, COMPANY_INFO } from '@/lib/constants'
+import Link from 'next/link'
 
-const prisma = new PrismaClient();
+const additionalFAQs = [
+  {
+    question: 'What areas do you serve?',
+    answer: "We serve all of Central Indiana, including Indianapolis, Carmel, Fishers, Noblesville, Westfield, Zionsville, Brownsburg, Avon, Plainfield, Greenwood, Franklin, Greenfield, and surrounding areas. If you're not sure if we serve your area, just ask!",
+  },
+  {
+    question: 'Do you provide repair services?',
+    answer: "No, and that's intentional. We are strictly an inspection company. Because we don't do repairs, we have no incentive to exaggerate problems or recommend unnecessary work. You get an honest, unbiased assessment every time.",
+  },
+  {
+    question: 'How do I prepare for the inspection?',
+    answer: "Please confirm access to your clean-out before your appointment. If we're accessing via an outdoor cleanout, make sure we can reach it. If we need to access via toilet or roof vent, we'll coordinate with you ahead of time. Remember, a $79 trip fee applies if access cannot be provided as confirmed.",
+  },
 
-export const metadata = {
-  title: 'Frequently Asked Questions | Precision Sewer Inspections',
-  description: 'Common questions about sewer inspections, pricing, scheduling, and our services. Expert answers to help you understand our inspection process.',
-};
+  {
+    question: 'Can I watch the inspection?',
+    answer: "Absolutely! We love when customers watch. It helps you understand exactly what we're looking at and lets you ask questions in real-time. That said, it's not required—you'll get the full video regardless.",
+  },
+  {
+    question: "What's included in the written report?",
+    answer: 'Your premium report includes a summary of findings, condition ratings for different sections of the line, photos from the video, recommendations for any issues found, and an overall assessment. Everything is explained with no jargon. Our reports are designed for transparency and quality.',
+  },
+  {
+    question: 'How do I get my video and report?',
+    answer: "We'll email you a link to view/download your HD video and PDF report within 24 hours of the inspection (or same-day if you chose that option). You can share these with anyone—contractors, real estate agents, etc.",
+  },
+  {
+    question: 'What about multi-unit or commercial properties?',
+    answer: 'We offer discounted rates for multi-family properties: $159 for the first unit and $129 for each additional unit when using the same access point conditions. For commercial properties and high-volume needs, contact us for custom pricing.',
+  },
+  {
+    question: 'Do you offer any discounts or packages?',
+    answer: 'Yes! We offer prepaid volume packages for real estate professionals and investors. Our 10-scope bundles and 25-scope brokerage packages include per-scope discounts and priority scheduling.',
+  },
+]
 
-export default async function FAQPage() {
-  const faqs = await prisma.fAQ.findMany({
-    where: { isPublished: true },
-    orderBy: [
-      { category: 'asc' },
-      { sortOrder: 'asc' },
-    ],
-  });
+const allFAQs = [...(FAQ_ITEMS ?? []), ...(additionalFAQs ?? [])]
 
-  const faqSchema = generateFAQSchema(faqs);
+export default function FAQPage() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const filteredFAQs = allFAQs?.filter((faq) => {
+    const query = searchQuery?.toLowerCase() ?? ''
+    return (
+      faq?.question?.toLowerCase?.()?.includes?.(query) ||
+      faq?.answer?.toLowerCase?.()?.includes?.(query)
+    )
+  })
 
   return (
     <div className="min-h-screen flex flex-col">
-      <StructuredData type="LocalBusiness" />
-      <StructuredData type="FAQPage" />
       <Header />
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-gradient-to-br from-primary-900 to-primary-700 text-white py-16 md:py-24">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Frequently Asked Questions
-            </h1>
-            <p className="text-xl text-primary-100 max-w-2xl mx-auto">
-              Everything you need to know about sewer inspections, our services, and the inspection process.
-            </p>
-          </div>
-        </section>
-
-        {/* FAQ Content */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto">
-              <FAQAccordion faqs={faqs} categories={true} />
+        <section className="bg-gradient-to-br from-primary-900 to-primary-800 text-white py-16 md:py-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="max-w-3xl mx-auto text-center">
+              <span className="inline-block px-4 py-1 bg-primary-700 text-primary-200 text-sm font-semibold rounded-full mb-6">
+                FAQ
+              </span>
+              <h1 className="text-4xl md:text-5xl font-heading font-bold mb-6">
+                Frequently Asked Questions
+              </h1>
+              <p className="text-xl text-primary-200 mb-8">
+                Everything you need to know about sewer inspections in Central Indiana.
+              </p>
+              
+              {/* Search */}
+              <div className="relative max-w-lg mx-auto">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search questions..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e?.target?.value ?? '')}
+                  className="w-full pl-12 pr-4 py-3 rounded-xl bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500"
+                />
+              </div>
             </div>
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Still Have Questions?
-            </h2>
-            <p className="text-gray-600 mb-6 max-w-xl mx-auto">
-              We're here to help. Contact us and we'll get you answers.
+        {/* FAQs */}
+        <section className="section-padding bg-white">
+          <div className="max-w-3xl mx-auto">
+            {filteredFAQs?.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-500">No questions found matching &quot;{searchQuery}&quot;</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredFAQs?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="border border-gray-200 rounded-xl overflow-hidden"
+                  >
+                    <button
+                      onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                      className="w-full px-6 py-4 flex items-center justify-between text-left bg-gray-50 hover:bg-gray-100 transition-colors"
+                    >
+                      <span className="font-semibold text-gray-900 pr-4">{item?.question ?? ''}</span>
+                      <ChevronDown
+                        className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform duration-300 ${
+                          openIndex === index ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+                    <AnimatePresence>
+                      {openIndex === index && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <div className="px-6 py-4 bg-white border-t border-gray-100">
+                            <p className="text-gray-600 whitespace-pre-line">{item?.answer ?? ''}</p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Still have questions */}
+        <section className="section-padding bg-gray-50">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-2xl font-heading font-bold text-gray-900 mb-4">Still Have Questions?</h2>
+            <p className="text-gray-600 mb-8">
+              Our team is happy to answer any questions you have about sewer inspections.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/contact"
-                className="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors"
-              >
+              <Link href="/contact" className="btn-primary">
                 Contact Us
-              </a>
+              </Link>
               <a
-                href="tel:3176203858"
-                className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+                href={`tel:${COMPANY_INFO?.phoneRaw ?? ''}`}
+                className="btn-secondary"
               >
-                Call (317) 620-3858
+                <Phone className="w-5 h-5" />
+                {COMPANY_INFO?.phone ?? ''}
               </a>
             </div>
           </div>
@@ -85,5 +163,5 @@ export default async function FAQPage() {
       <Footer />
       <AIChat />
     </div>
-  );
+  )
 }

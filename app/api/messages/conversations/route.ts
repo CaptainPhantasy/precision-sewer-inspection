@@ -39,8 +39,8 @@ export async function GET() {
 
     // Calculate unread counts
     const conversationsWithUnread = await Promise.all(
-      conversations.map(async (conv: (typeof conversations)[number]) => {
-        const participant = conv.participants.find((p: (typeof conv.participants)[number]) => p.userId === user.id);
+      conversations.map(async (conv: any) => {
+        const participant = conv.participants.find((p: any) => p.userId === user.id);
         const unreadCount = await prisma.message.count({
           where: {
             conversationId: conv.id,

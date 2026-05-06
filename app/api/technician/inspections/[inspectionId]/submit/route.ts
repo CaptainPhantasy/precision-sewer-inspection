@@ -112,9 +112,10 @@ export async function POST(
     });
 
     await sendAdminNotification({
-      subject: emailContent.subject,
-      htmlContent: emailContent.htmlContent,
-    });
+        subject: emailContent.subject,
+        htmlContent: emailContent.htmlContent,
+      }
+    );
 
     return NextResponse.json({
       success: true,

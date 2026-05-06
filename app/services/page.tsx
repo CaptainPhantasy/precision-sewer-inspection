@@ -3,19 +3,11 @@ import Header from '@/components/header'
 import Footer from '@/components/footer'
 import AIChat from '@/components/ai-chat'
 import StructuredData from '@/components/structured-data'
+import SectionHeading from '@/components/section-heading'
 import Link from 'next/link'
 import Image from 'next/image'
-import {
-  Camera, Building2, Home, Users, Check, ArrowRight, Shield, Clock, Video,
-  FileVideo, MapPin, Monitor, ShieldCheck, Eye, FileText, Award, BadgeCheck,
-} from 'lucide-react'
-import {
-  COMPANY_INFO,
-  PIPE_ISSUES,
-  INSPECTION_TECHNOLOGY,
-  INSPECTION_PROCESS,
-  SERVICE_BENEFITS,
-} from '@/lib/constants'
+import { Camera, Building2, Home, Users, Check, ArrowRight, Shield, Clock, Video } from 'lucide-react'
+import { COMPANY_INFO } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Sewer Scope Services Indianapolis | Residential, Commercial & Real Estate',
@@ -83,15 +75,11 @@ const services = [
   },
 ]
 
-const benefitsBar = [
+const benefits = [
   { icon: Shield, title: 'InterNACHI Certified', description: 'Professional certification you can trust' },
   { icon: Video, title: 'HD Equipment', description: 'Professional grade high-definition camera systems' },
   { icon: Clock, title: '24-Hour Delivery', description: 'Reports delivered within 24 hours' },
 ]
-
-const iconMap: Record<string, any> = {
-  Camera, FileVideo, MapPin, Monitor, ShieldCheck, Eye, FileText, Award, Clock, BadgeCheck,
-}
 
 export default function ServicesPage() {
   return (
@@ -120,7 +108,7 @@ export default function ServicesPage() {
         <section className="bg-gray-50 border-b border-gray-200 py-6">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="flex flex-wrap justify-center gap-6 md:gap-12">
-              {benefitsBar?.map((benefit, index) => {
+              {benefits?.map((benefit, index) => {
                 const IconComponent = benefit?.icon
                 return (
                   <div key={index} className="flex items-center gap-3">
@@ -191,138 +179,6 @@ export default function ServicesPage() {
                   </div>
                 )
               })}
-            </div>
-          </div>
-        </section>
-
-        {/* Our Technology */}
-        <section className="section-padding bg-gray-50">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <span className="inline-block px-4 py-1 bg-primary-100 text-primary-700 text-sm font-semibold rounded-full mb-4">
-                Our Technology
-              </span>
-              <h2 className="text-3xl font-heading font-bold text-gray-900 mb-4">
-                Professional-Grade Equipment
-              </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                We invest in the best equipment so you get the clearest picture of your sewer line&apos;s condition.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-2 gap-6">
-              {INSPECTION_TECHNOLOGY?.map((tech, index) => {
-                const IconComponent = iconMap[tech?.icon ?? '']
-                return (
-                  <div key={index} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        {IconComponent && <IconComponent className="w-6 h-6 text-primary-600" />}
-                      </div>
-                      <div>
-                        <h3 className="font-heading font-bold text-gray-900 mb-2">{tech?.name ?? ''}</h3>
-                        <p className="text-gray-600 text-sm">{tech?.description ?? ''}</p>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* How It Works */}
-        <section className="section-padding bg-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <span className="inline-block px-4 py-1 bg-primary-100 text-primary-700 text-sm font-semibold rounded-full mb-4">
-                Simple Process
-              </span>
-              <h2 className="text-3xl font-heading font-bold text-gray-900 mb-4">
-                How It Works
-              </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                From booking to report delivery, our streamlined process makes sewer inspections easy.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-4 gap-8">
-              {INSPECTION_PROCESS?.map((step, index) => (
-                <div key={index} className="text-center relative">
-                  <div className="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                    {step?.step ?? index + 1}
-                  </div>
-                  {index < (INSPECTION_PROCESS?.length ?? 0) - 1 && (
-                    <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-primary-200" />
-                  )}
-                  <h3 className="font-heading font-bold text-gray-900 mb-2">{step?.title ?? ''}</h3>
-                  <p className="text-gray-600 text-sm">{step?.description ?? ''}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Why Choose Us */}
-        <section className="section-padding bg-gray-50">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <span className="inline-block px-4 py-1 bg-primary-100 text-primary-700 text-sm font-semibold rounded-full mb-4">
-                The PSI Difference
-              </span>
-              <h2 className="text-3xl font-heading font-bold text-gray-900 mb-4">
-                Why Choose Precision Sewer Inspection
-              </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                We&apos;re not contractors. We&apos;re inspectors. That means you get honest, unbiased assessments every time.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {SERVICE_BENEFITS?.map((benefit, index) => {
-                const IconComponent = iconMap[benefit?.icon ?? '']
-                return (
-                  <div key={index} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-                    <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
-                      {IconComponent && <IconComponent className="w-6 h-6 text-primary-600" />}
-                    </div>
-                    <h3 className="font-heading font-bold text-gray-900 mb-2">{benefit?.title ?? ''}</h3>
-                    <p className="text-gray-600 text-sm">{benefit?.description ?? ''}</p>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Common Issues We Find */}
-        <section className="section-padding bg-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <span className="inline-block px-4 py-1 bg-accent-500/10 text-accent-600 text-sm font-semibold rounded-full mb-4">
-                What We Look For
-              </span>
-              <h2 className="text-3xl font-heading font-bold text-gray-900 mb-4">
-                Common Issues We Identify
-              </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Our inspectors are trained to identify these common sewer line problems that can cost thousands if left unaddressed.
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {PIPE_ISSUES?.map((issue, index) => (
-                <div key={index} className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <Image
-                      src={issue?.image ?? ''}
-                      alt={issue?.name ?? 'Pipe issue'}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-heading font-bold text-gray-900 mb-1">{issue?.name ?? ''}</h3>
-                    <p className="text-gray-600 text-sm">{issue?.description ?? ''}</p>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </section>

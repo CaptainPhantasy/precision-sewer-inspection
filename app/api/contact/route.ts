@@ -55,9 +55,10 @@ export async function POST(request: NextRequest) {
     // Send admin notification to both Ryan & Douglas
     try {
       await sendAdminNotification({
-        subject: `New Contact Form Submission from ${name ?? 'Website Visitor'}`,
-        htmlContent: htmlBody,
-      })
+          subject: `New Contact Form Submission from ${name ?? 'Website Visitor'}`,
+          htmlContent: htmlBody,
+        }
+      )
     } catch (emailError) {
       console.error('Failed to send admin email notification:', emailError)
     }
@@ -72,11 +73,12 @@ export async function POST(request: NextRequest) {
         message: message ?? '',
       })
       await sendNotificationEmail({
-        recipientEmail: email,
-        recipientName: name,
-        subject: confirmEmail.subject,
-        htmlContent: confirmEmail.htmlContent,
-      })
+          recipientEmail: email,
+          recipientName: name,
+          subject: confirmEmail.subject,
+          htmlContent: confirmEmail.htmlContent,
+        }
+      )
     } catch (emailError) {
       console.error('Failed to send booking confirmation email:', emailError)
     }

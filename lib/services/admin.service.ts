@@ -13,7 +13,7 @@ import type {
   CreateDeliveryTokenInput,
 } from "@/lib/validations";
 import { inspectionService, type InspectionWithRelations } from "./inspection.service";
-import { randomBytes } from "crypto";
+import { randomBytes, createHmac } from "crypto";
 
 // Admin-only inspection status transitions
 const ADMIN_STATUS_TRANSITIONS: Record<string, string[]> = {
@@ -52,12 +52,11 @@ class AdminService {
   }> {
     const page = options?.page || 1;
     const limit = options?.limit || 20;
+    const status = options?.status || "SUBMITTED";
 
-    const where = options?.status
-      ? {
-          status: options.status as "SUBMITTED" | "UNDER_REVIEW" | "APPROVED" | "REJECTED",
-        }
-      : {};
+    const where = {
+      status: status as "SUBMITTED" | "UNDER_REVIEW" | "APPROVED" | "REJECTED",
+    };
 
     const [inspections, total] = await Promise.all([
       prisma.inspection.findMany({

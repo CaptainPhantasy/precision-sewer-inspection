@@ -406,6 +406,34 @@ Is this consistent? Reply with JSON: { "verified": boolean, "issues": ["list of 
   }
 
   /**
+   * Populate the blank HTML report template with inspection data
+   */
+  async populateReportTemplate(
+    htmlTemplate: string,
+    inspectionData: Record<string, any>
+  ): Promise<AIResponse> {
+    const systemPrompt = `You are a professional report generation assistant. Your task is to take the provided blank HTML report template and populate it with the provided inspection data.
+    
+Replace placeholders (like '&nbsp;', empty fields, or bracketed text) in the HTML with the exact corresponding data from the JSON inspection data provided.
+Ensure you format dates and values professionally.
+Output ONLY the final populated HTML string. Do not use markdown blocks like \`\`\`html.`;
+
+    const userPrompt = `Here is the inspection data:
+${JSON.stringify(inspectionData, null, 2)}
+
+Here is the blank HTML template to populate:
+${htmlTemplate}`;
+
+    return this.chatCompletion(
+      [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      { maxTokens: 4000, temperature: 0.1 }
+    );
+  }
+
+  /**
    * Get API health status
    */
   getHealthStatus(): {
@@ -429,13 +457,18 @@ Is this consistent? Reply with JSON: { "verified": boolean, "issues": ["list of 
     currentStage: string,
     conversationHistory: ChatMessage[] = []
   ): Promise<AIResponse> {
-    const systemPrompt = `You are an AI assistant helping a sewer inspection technician in the field. You have access to the current inspection data. Be concise, practical, and helpful. Current stage: ${currentStage}.
+    const systemPrompt = `You are an AI assistant helping a sewer inspection technician in the field. You have access to the current inspection data (including auto-extracted voice transcripts and GPS logs). Be concise, practical, and helpful. Current stage: ${currentStage}.
 
 Property: ${(context as Partial<InspectionContext>).propertyAddress}
 Client: ${(context as Partial<InspectionContext>).clientName}
 ${(context as Partial<InspectionContext>).pipeMaterial ? `Pipe Material: ${(context as Partial<InspectionContext>).pipeMaterial}` : ""}
 ${(context as Partial<InspectionContext>).overallCondition ? `Condition: ${(context as Partial<InspectionContext>).overallCondition}` : ""}
-${(context as Partial<InspectionContext>).recommendations ? `Recommendations: ${(context as Partial<InspectionContext>).recommendations}` : ""}`;
+${(context as Partial<InspectionContext>).recommendations ? `Recommendations: ${(context as Partial<InspectionContext>).recommendations}` : ""}
+
+YOUR MISSION FOR REPORT GENERATION:
+Review the inspection data. Identify critical missing fields required to produce a complete sanitary lateral camera survey report. 
+DO NOT ask for information that is already available or can be logically inferred from voice notes/data. 
+PROMPT THE USER ONLY FOR CRITICAL MISSING DATA that cannot be verified automatically. Ask exactly one question at a time to complete the report.`;
 
     const messages: Array<{ role: string; content: string }> = [
       { role: "system", content: systemPrompt },

@@ -5,17 +5,18 @@ import { sendNotificationEmail, getVideoReadyEmail } from "@/lib/notifications";
 import { DOWNLOAD_LINK_HOURS, DOWNLOAD_LINK_GRACE_HOURS, MAX_DOWNLOADS } from "@/lib/inspection-constants";
 import { generateReportHTML } from "@/lib/report-template";
 import { uploadBuffer } from "@/lib/s3";
-import { getSiteUrl } from "@/lib/site-url";
 import { pdfService } from "@/lib/services/pdf.service";
 
-// Helper function to generate PDF using shared service
+// Helper function to generate PDF using Puppeteer/Chromium
 async function generateInspectionPDF(inspectionId: string): Promise<string | null> {
   try {
     const inspection = await prisma.inspection.findUnique({
       where: { id: inspectionId },
       include: {
         job: true,
-        technician: { select: { name: true, email: true } },
+        technician: {
+          select: { name: true, email: true },
+        },
         clientSignature: true,
       },
     });
@@ -23,8 +24,17 @@ async function generateInspectionPDF(inspectionId: string): Promise<string | nul
     if (!inspection) return null;
 
     const clientHTML = generateReportHTML(inspection as Parameters<typeof generateReportHTML>[0], true);
-    const pdfResult = await pdfService.generatePDF(clientHTML);
-    if (!pdfResult.success || !pdfResult.buffer) return null;
+
+    const pdfResult = await pdfService.generatePDF(clientHTML, {
+      format: "A4",
+      margin: { top: "20mm", right: "20mm", bottom: "20mm", left: "20mm" },
+      printBackground: true,
+    });
+
+    if (!pdfResult.success || !pdfResult.buffer) {
+      console.error("PDF generation failed:", pdfResult.error);
+      return null;
+    }
 
     const fileName = `inspection-report-${inspection.inspectionNumber}.pdf`;
     const cloudPath = await uploadBuffer(pdfResult.buffer, fileName, "application/pdf", false);
@@ -121,7 +131,7 @@ export async function POST(
     ]);
 
     // Generate download URL
-    const baseUrl = getSiteUrl();
+    const baseUrl = process.env.NEXTAUTH_URL || "https://precisionsewerinspections.com";
     const downloadUrl = `${baseUrl}/download/${inspectionId}?token=${token}`;
 
     // Count findings for the email summary
@@ -140,7 +150,7 @@ export async function POST(
       // Also count chapters that are findings
       if (inspection.videoAttachment?.chapters) {
         count += inspection.videoAttachment.chapters.filter(
-          (ch: { chapterType: string }) => ch.chapterType === "FINDING" || ch.chapterType === "DEFECT" || ch.chapterType === "REPAIR_NEEDED"
+          (ch: any) => ch.chapterType === "FINDING" || ch.chapterType === "DEFECT" || ch.chapterType === "REPAIR_NEEDED"
         ).length;
       }
       return count;
@@ -161,11 +171,12 @@ export async function POST(
     });
 
     await sendNotificationEmail({
-      recipientEmail: inspection.job.clientEmail,
-      recipientName: inspection.job.clientName,
-      subject: emailContent.subject,
-      htmlContent: emailContent.htmlContent,
-    });
+        recipientEmail: inspection.job.clientEmail,
+        recipientName: inspection.job.clientName,
+        subject: emailContent.subject,
+        htmlContent: emailContent.htmlContent,
+      }
+    );
 
     // Generate PDF report in the background (don't block approval)
     generateInspectionPDF(inspectionId).then((cloudPath) => {

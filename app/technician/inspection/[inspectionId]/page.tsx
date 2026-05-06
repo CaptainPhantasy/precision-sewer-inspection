@@ -32,6 +32,7 @@ import { VideoAttachStage } from "@/components/inspection/video-attach-stage";
 import { SignatureStage } from "@/components/inspection/signature-stage";
 import { SubmitStage } from "@/components/inspection/submit-stage";
 import { FieldValidator } from "@/components/inspection/field-validator";
+import { GlobalVoiceNote } from "@/components/inspection/global-voice-note";
 
 const STAGES = [
   { id: "ACCEPTED", label: "Accepted", icon: CheckCircle },
@@ -498,24 +499,54 @@ export default function InspectionPage() {
               const isUpcoming = index > currentStageIndex;
 
               return (
-                <div
+                <button
                   key={stage.id}
+                  onClick={() => {
+                    if (isCompleted || user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") {
+                      if (isUpcoming && !confirm(`Bypass gates to jump to ${stage.label}?`)) return;
+                      updateStage(stage.id);
+                    }
+                  }}
+                  disabled={!isCompleted && user?.role !== "ADMIN" && user?.role !== "SUPER_ADMIN" && !isCurrent}
                   className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                     isCompleted
-                      ? "bg-green-100 text-green-700"
+                      ? "bg-green-100 text-green-700 hover:bg-green-200 cursor-pointer"
                       : isCurrent
                       ? "bg-blue-600 text-white"
                       : "bg-gray-100 text-gray-400"
-                  }`}
+                  } ${(user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") && isUpcoming ? "hover:bg-blue-100 border border-blue-300 cursor-pointer text-blue-700" : ""}`}
                 >
                   <Icon className="w-3 h-3" />
                   <span className="hidden sm:inline">{stage.label}</span>
                   {index < STAGES.length - 1 && (
                     <ChevronRight className={`w-3 h-3 ${isUpcoming ? "text-gray-300" : ""}`} />
                   )}
-                </div>
+                </button>
               );
             })}
+          </div>
+        </div>
+      )}
+
+      {/* Admin Bypass Warning */}
+      {!isRejected && (user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") && currentStageIndex < STAGES.length - 1 && (
+        <div className="bg-yellow-50 border-b border-yellow-200 px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-yellow-800">
+              <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0" />
+              <span className="text-xs sm:text-sm font-bold">Admin Bypass Available:</span>
+              <span className="text-xs sm:text-sm">You may click any future stage above to bypass gates, or click any past stage to go back.</span>
+            </div>
+            <button
+              onClick={() => {
+                if (confirm("WARNING: You are about to bypass required gates and jump to the next stage. Proceed?")) {
+                  updateStage(STAGES[currentStageIndex + 1].id);
+                }
+              }}
+              className="px-3 py-1.5 bg-yellow-600 text-white text-xs font-bold rounded hover:bg-yellow-700 whitespace-nowrap shadow-sm"
+            >
+              Force Next Stage
+            </button>
           </div>
         </div>
       )}

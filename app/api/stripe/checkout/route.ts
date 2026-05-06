@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getStripeClient, STRIPE_PRODUCTS } from '@/lib/stripe';
+import { stripe, STRIPE_PRODUCTS } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 
 const PROMO_DISCOUNT_AMOUNT = 1000; // $10.00 in cents
@@ -37,8 +37,6 @@ export async function POST(request: NextRequest) {
       propertyState,
       propertyZip,
     } = body;
-
-    const stripe = getStripeClient();
 
     // Build line items based on selections
     const lineItems: Array<{

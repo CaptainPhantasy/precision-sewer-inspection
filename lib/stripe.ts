@@ -1,20 +1,10 @@
 import Stripe from 'stripe';
 import { loadStripe, Stripe as StripeClient } from '@stripe/stripe-js';
 
-let stripeClient: Stripe | null = null;
-
-export function getStripeClient(): Stripe {
-  const secretKey = process.env.STRIPE_SECRET_KEY;
-  if (!secretKey) {
-    throw new Error('STRIPE_SECRET_KEY is required for Stripe server operations');
-  }
-
-  stripeClient ??= new Stripe(secretKey, {
-    apiVersion: '2025-01-27.acacia' as const as '2026-02-25.clover',
-  });
-
-  return stripeClient;
-}
+// Server-side Stripe instance
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-01-27.acacia' as const as '2026-02-25.clover',
+});
 
 // Client-side Stripe promise (singleton pattern)
 let stripePromise: Promise<StripeClient | null>;
