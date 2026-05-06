@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { prisma } from "./db";
 import bcrypt from "bcryptjs";
-import { randomBytes, createHmac } from "crypto";
+import { randomBytes, createHmac, timingSafeEqual } from "crypto";
 import type { User, UserRole } from "@prisma/client";
 
 const SESSION_COOKIE_NAME = "psi_session";
@@ -138,7 +138,10 @@ export function generateSecureToken(
   clientEmail: string,
   expiresAt: Date
 ): string {
-  const secret = process.env.ABACUSAI_API_KEY || "fallback-secret";
+  const secret = process.env.NEXTAUTH_SECRET || process.env.ABACUSAI_API_KEY;
+  if (!secret) {
+    throw new Error("No secret configured for token generation. Set NEXTAUTH_SECRET.");
+  }
   const nonce = randomBytes(16).toString("hex");
   const message = `${inspectionId}:${clientEmail}:${expiresAt.toISOString()}:${nonce}`;
   const hmac = createHmac("sha256", secret).update(message).digest("hex");
@@ -155,10 +158,16 @@ export function verifySecureToken(
   try {
     const decoded = Buffer.from(token, "base64url").toString();
     const [hmac, nonce] = decoded.split(":");
-    const secret = process.env.ABACUSAI_API_KEY || "fallback-secret";
+    if (!hmac || !nonce) return false;
+    const secret = process.env.NEXTAUTH_SECRET || process.env.ABACUSAI_API_KEY;
+    if (!secret) return false;
     const message = `${inspectionId}:${clientEmail}:${expiresAt.toISOString()}:${nonce}`;
     const expectedHmac = createHmac("sha256", secret).update(message).digest("hex");
-    return hmac === expectedHmac;
+    // Use timing-safe comparison to prevent timing attacks
+    const provided = Buffer.from(hmac, "hex");
+    const expected = Buffer.from(expectedHmac, "hex");
+    if (provided.length !== expected.length) return false;
+    return timingSafeEqual(provided, expected);
   } catch {
     return false;
   }
