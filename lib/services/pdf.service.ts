@@ -114,7 +114,7 @@ class ChromiumPDFService implements IPDFService {
       page.setDefaultNavigationTimeout(PDF_RENDER_TIMEOUT_MS);
 
       await page.setContent(html, {
-        waitUntil: ["load", "domcontentloaded", "networkidle0"],
+        waitUntil: ["load", "domcontentloaded"],
         timeout: PDF_RENDER_TIMEOUT_MS,
       });
 

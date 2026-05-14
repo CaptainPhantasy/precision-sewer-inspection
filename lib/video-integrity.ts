@@ -68,50 +68,50 @@ class VideoIntegrityService {
     }
 
     // If we have browser support, try to get video metadata
-    if (typeof window !== "undefined") {
-      try {
-        const videoMetadata = await this.extractVideoMetadata(file);
-        if (videoMetadata) {
-          metadata.duration = videoMetadata.duration;
-          metadata.resolution = videoMetadata.resolution;
-          metadata.bitrate = videoMetadata.bitrate;
-          metadata.hasAudio = videoMetadata.hasAudio;
-          metadata.frameRate = videoMetadata.frameRate;
+        if (typeof window !== "undefined") {
+          try {
+            const videoMetadata = await this.extractVideoMetadata(file);
+            if (videoMetadata) {
+              metadata.duration = videoMetadata.duration;
+              metadata.resolution = videoMetadata.resolution;
+              metadata.bitrate = videoMetadata.bitrate;
+              metadata.hasAudio = videoMetadata.hasAudio;
+              metadata.frameRate = videoMetadata.frameRate;
 
-          // Check duration
-          if (videoMetadata.duration !== null) {
-            if (videoMetadata.duration < MIN_DURATION_SECONDS) {
-              errors.push(
-                `Video duration (${Math.floor(videoMetadata.duration / 60)}:${Math.floor(videoMetadata.duration % 60)
-                  .toString()
-                  .padStart(2, "0")}) is less than minimum (${Math.floor(MIN_DURATION_SECONDS / 60)} minutes)`
-              );
-            }
-            if (videoMetadata.duration > MAX_DURATION_SECONDS) {
-              warnings.push(
-                `Video duration (${Math.floor(videoMetadata.duration / 60)} minutes) is unusually long`
-              );
-            }
-          }
+              // Duration is advisory: field inspections may pause, stop, resume, or add later voiceover notes.
+              if (videoMetadata.duration !== null) {
+                if (videoMetadata.duration < MIN_DURATION_SECONDS) {
+                  warnings.push(
+                    `Video duration (${Math.floor(videoMetadata.duration / 60)}:${Math.floor(videoMetadata.duration % 60)
+                      .toString()
+                      .padStart(2, "0")}) is shorter than the usual ${Math.floor(MIN_DURATION_SECONDS / 60)} minute reference. Upload is allowed; document any stops, return passes, or voiceover notes.`
+                  );
+                }
+                if (videoMetadata.duration > MAX_DURATION_SECONDS) {
+                  warnings.push(
+                    `Video duration (${Math.floor(videoMetadata.duration / 60)} minutes) is unusually long. Upload is allowed; verify the footage belongs to this inspection.`
+                  );
+                }
+              }
 
-          // Check resolution
-          if (videoMetadata.resolution) {
-            if (videoMetadata.resolution.width < 640 || videoMetadata.resolution.height < 480) {
-              warnings.push(
-                `Video resolution (${videoMetadata.resolution.width}x${videoMetadata.resolution.height}) is low. HD recommended.`
-              );
-            }
-          }
+              // Check resolution
+              if (videoMetadata.resolution) {
+                if (videoMetadata.resolution.width < 640 || videoMetadata.resolution.height < 480) {
+                  warnings.push(
+                    `Video resolution (${videoMetadata.resolution.width}x${videoMetadata.resolution.height}) is low. HD recommended.`
+                  );
+                }
+              }
 
-          // Check audio
-          if (!videoMetadata.hasAudio) {
-            warnings.push("Video has no audio track. Voice notes will not be captured.");
+              // Check audio
+              if (!videoMetadata.hasAudio) {
+                warnings.push("Video has no audio track. Add separate voice notes for report context.");
+              }
+            }
+          } catch (error) {
+            warnings.push("Could not read video metadata. Upload will proceed but validation is limited.");
           }
         }
-      } catch (error) {
-        warnings.push("Could not read video metadata. Upload will proceed but validation is limited.");
-      }
-    }
 
     return {
       valid: errors.length === 0,
@@ -228,68 +228,62 @@ class VideoIntegrityService {
   }
 
   /**
-   * Validate video matches inspection requirements
-   */
-  async validateInspectionVideo(
-    file: File,
-    requirements: {
-      minDuration?: number;
-      maxDuration?: number;
-      minResolution?: { width: number; height: number };
-      requireAudio?: boolean;
-    }
-  ): Promise<VideoValidationResult> {
-    const baseResult = await this.validateFile(file);
-
-    if (!baseResult.valid) {
-      return baseResult;
-    }
-
-    const errors = [...baseResult.errors];
-    const warnings = [...baseResult.warnings];
-
-    // Check minimum duration
-    if (requirements.minDuration && baseResult.metadata.duration) {
-      if (baseResult.metadata.duration < requirements.minDuration) {
-        errors.push(
-          `Video duration (${Math.floor(baseResult.metadata.duration / 60)} min) is below required minimum (${Math.floor(requirements.minDuration / 60)} min)`
-        );
+     * Validate video matches inspection requirements.
+     * Duration is advisory only because real inspections may pause, stop, resume, or add return voiceovers.
+     */
+    async validateInspectionVideo(
+      file: File,
+      requirements: {
+        minDuration?: number;
+        maxDuration?: number;
+        minResolution?: { width: number; height: number };
+        requireAudio?: boolean;
       }
-    }
+    ): Promise<VideoValidationResult> {
+      const baseResult = await this.validateFile(file);
 
-    // Check maximum duration
-    if (requirements.maxDuration && baseResult.metadata.duration) {
-      if (baseResult.metadata.duration > requirements.maxDuration) {
-        errors.push(
-          `Video duration (${Math.floor(baseResult.metadata.duration / 60)} min) exceeds maximum (${Math.floor(requirements.maxDuration / 60)} min)`
-        );
+      if (!baseResult.valid) {
+        return baseResult;
       }
-    }
 
-    // Check minimum resolution
-    if (requirements.minResolution && baseResult.metadata.resolution) {
-      if (
-        baseResult.metadata.resolution.width < requirements.minResolution.width ||
-        baseResult.metadata.resolution.height < requirements.minResolution.height
-      ) {
+      const errors = [...baseResult.errors];
+      const warnings = [...baseResult.warnings];
+
+      if (requirements.minDuration && baseResult.metadata.duration && baseResult.metadata.duration < requirements.minDuration) {
         warnings.push(
-          `Video resolution may be too low. Minimum: ${requirements.minResolution.width}x${requirements.minResolution.height}`
+          `Video duration (${Math.floor(baseResult.metadata.duration / 60)} min) is shorter than the usual field-work reference (${Math.floor(requirements.minDuration / 60)} min). Upload is allowed; document any stops, return passes, or voiceover notes in the report notes.`
         );
       }
-    }
 
-    // Check audio requirement
-    if (requirements.requireAudio && !baseResult.metadata.hasAudio) {
-      errors.push("Video must include audio track for voice notes");
-    }
+      if (requirements.maxDuration && baseResult.metadata.duration && baseResult.metadata.duration > requirements.maxDuration) {
+        warnings.push(
+          `Video duration (${Math.floor(baseResult.metadata.duration / 60)} min) is longer than the usual reference (${Math.floor(requirements.maxDuration / 60)} min). Upload is allowed; verify the footage is relevant to this inspection.`
+        );
+      }
 
-    return {
-      ...baseResult,
-      valid: errors.length === 0,
-      errors,
-      warnings,
-    };
-  }
+      // Check minimum resolution
+      if (requirements.minResolution && baseResult.metadata.resolution) {
+        if (
+          baseResult.metadata.resolution.width < requirements.minResolution.width ||
+          baseResult.metadata.resolution.height < requirements.minResolution.height
+        ) {
+          warnings.push(
+            `Video resolution may be too low. Minimum: ${requirements.minResolution.width}x${requirements.minResolution.height}`
+          );
+        }
+      }
+
+      if (requirements.requireAudio && !baseResult.metadata.hasAudio) {
+        warnings.push("Video has no audio track. Upload is allowed; add separate voice notes for report context.");
+      }
+
+      return {
+        ...baseResult,
+        valid: errors.length === 0,
+        errors,
+        warnings,
+      };
+    }
 
   /**
    * Format bytes to human readable string

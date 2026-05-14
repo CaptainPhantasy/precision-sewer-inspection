@@ -16,6 +16,7 @@ import {
   FileText,
   CheckCircle,
   AlertCircle,
+  Lock,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -50,6 +51,9 @@ export function ProfilePage({ backPath }: ProfilePageProps) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
     if (!loading && !user) {
@@ -157,28 +161,44 @@ export function ProfilePage({ backPath }: ProfilePageProps) {
   };
 
   const handleSaveProfile = async () => {
-    setSaving(true);
-    setMessage(null);
+  	setSaving(true);
+  	setMessage(null);
 
-    try {
-      const res = await fetch("/api/profile", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone: phone || null, bio: bio || null }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setProfile((prev) => prev ? { ...prev, name, phone, bio } : null);
-        setMessage({ type: "success", text: "Profile saved!" });
-        await refreshUser();
-      } else {
-        setMessage({ type: "error", text: data.error || "Failed to save" });
-      }
-    } catch {
-      setMessage({ type: "error", text: "Network error" });
-    } finally {
-      setSaving(false);
-    }
+  	const wantsPasswordChange = currentPassword || newPassword || confirmPassword;
+  	if (wantsPasswordChange && newPassword !== confirmPassword) {
+  		setSaving(false);
+  		setMessage({ type: "error", text: "New passwords do not match" });
+  		return;
+  	}
+
+  	try {
+  		const payload: Record<string, unknown> = { name, phone: phone || null, bio: bio || null };
+  		if (wantsPasswordChange) {
+  			payload.currentPassword = currentPassword;
+  			payload.newPassword = newPassword;
+  		}
+
+  		const res = await fetch("/api/profile", {
+  			method: "PATCH",
+  			headers: { "Content-Type": "application/json" },
+  			body: JSON.stringify(payload),
+  		});
+  		const data = await res.json();
+  		if (data.success) {
+  			setProfile((prev) => prev ? { ...prev, name, phone, bio } : null);
+  			setCurrentPassword("");
+  			setNewPassword("");
+  			setConfirmPassword("");
+  			setMessage({ type: "success", text: wantsPasswordChange ? "Profile and password saved!" : "Profile saved!" });
+  			await refreshUser();
+  		} else {
+  			setMessage({ type: "error", text: data.error || "Failed to save" });
+  		}
+  	} catch {
+  		setMessage({ type: "error", text: "Network error" });
+  	} finally {
+  		setSaving(false);
+  	}
   };
 
   const roleLabel = (role: string) => {
@@ -325,6 +345,53 @@ export function ProfilePage({ backPath }: ProfilePageProps) {
               <><Save className="w-4 h-4" /> Save Changes</>
             )}
           </button>
+        </div>
+
+        {/* Password Change */}
+        <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
+        	<h3 className="font-semibold text-gray-900">Change Password</h3>
+        	<p className="text-sm text-gray-500">
+        		Enter your current password before choosing a new one.
+        	</p>
+
+        	<div>
+        		<label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
+        			<Lock className="w-4 h-4" /> Current Password
+        		</label>
+        		<input
+        			type="password"
+        			value={currentPassword}
+        			onChange={(e) => setCurrentPassword(e.target.value)}
+        			autoComplete="current-password"
+        			className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        		/>
+        	</div>
+
+        	<div>
+        		<label className="block text-sm font-medium text-gray-700 mb-1">
+        			New Password
+        		</label>
+        		<input
+        			type="password"
+        			value={newPassword}
+        			onChange={(e) => setNewPassword(e.target.value)}
+        			autoComplete="new-password"
+        			className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        		/>
+        	</div>
+
+        	<div>
+        		<label className="block text-sm font-medium text-gray-700 mb-1">
+        			Confirm New Password
+        		</label>
+        		<input
+        			type="password"
+        			value={confirmPassword}
+        			onChange={(e) => setConfirmPassword(e.target.value)}
+        			autoComplete="new-password"
+        			className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        		/>
+        	</div>
         </div>
 
         {/* Additional Info */}

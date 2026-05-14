@@ -11,6 +11,8 @@ export function GlobalVoiceNote({ inspectionId }: { inspectionId: string }) {
   const [saveSuccess, setSaveSuccess] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null);
+  const shouldListenRef = useRef(false);
+  const restartTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -23,6 +25,12 @@ export function GlobalVoiceNote({ inspectionId }: { inspectionId: string }) {
 
   const startListening = useCallback(() => {
     if (!isSupported) return;
+
+    shouldListenRef.current = true;
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
+    }
 
     try {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -50,7 +58,24 @@ export function GlobalVoiceNote({ inspectionId }: { inspectionId: string }) {
         }
       };
 
+      recognition.onerror = (event: { error: string }) => {
+        if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+          shouldListenRef.current = false;
+        }
+        setIsListening(false);
+      };
+
       recognition.onend = () => {
+        recognitionRef.current = null;
+
+        if (shouldListenRef.current) {
+          restartTimeoutRef.current = setTimeout(() => {
+            restartTimeoutRef.current = null;
+            startListening();
+          }, 250);
+          return;
+        }
+
         setIsListening(false);
       };
 
@@ -58,11 +83,17 @@ export function GlobalVoiceNote({ inspectionId }: { inspectionId: string }) {
       recognition.start();
     } catch (err) {
       console.error("Failed to start speech recognition:", err);
+      shouldListenRef.current = false;
       setIsListening(false);
     }
   }, [isSupported]);
 
   const stopListeningAndSave = useCallback(async () => {
+    shouldListenRef.current = false;
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
+    }
     if (recognitionRef.current) {
       recognitionRef.current.stop();
       recognitionRef.current = null;
@@ -100,6 +131,10 @@ export function GlobalVoiceNote({ inspectionId }: { inspectionId: string }) {
 
   useEffect(() => {
     return () => {
+      shouldListenRef.current = false;
+      if (restartTimeoutRef.current) {
+        clearTimeout(restartTimeoutRef.current);
+      }
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }

@@ -7,7 +7,7 @@
  * - Print-first: Optimized for A4 PDF via HTML-to-PDF conversion
  * - Brand-forward: PSI logo, colors, and identity prominent throughout
  * - Information hierarchy: Clear visual weight guides the reader
- * - Professional typography: Plus Jakarta Sans headings, Inter body
+ * - Professional typography: Fraunces headings, Inter body
  * - Graceful degradation: Every section handles missing data
  */
 
@@ -204,15 +204,15 @@ function formatMaterial(material: string | null): string {
 function getUrgencyConfig(urgency: string | null): { label: string; color: string; bg: string } {
   switch (urgency?.toUpperCase()) {
     case "IMMEDIATE":
-      return { label: "Immediate Action Required", color: COLORS.white, bg: COLORS.critical };
+      return { label: "Priority Review", color: COLORS.white, bg: COLORS.amber600 };
     case "SOON":
-      return { label: "Repair Recommended (1-3 Months)", color: COLORS.white, bg: COLORS.poor };
+      return { label: "Follow-Up Context", color: COLORS.white, bg: COLORS.blue };
     case "MONITOR":
-      return { label: "Monitor Condition", color: COLORS.gray800, bg: COLORS.amber100 };
+      return { label: "Monitor Noted", color: COLORS.navy, bg: COLORS.amber100 };
     case "NONE":
-      return { label: "No Immediate Concerns", color: COLORS.white, bg: COLORS.good };
+      return { label: "No Immediate Observation", color: COLORS.white, bg: COLORS.navyLight };
     default:
-      return { label: "Assessment Pending", color: COLORS.gray600, bg: COLORS.gray100 };
+      return { label: "Assessment Pending", color: COLORS.gray700, bg: COLORS.gray100 };
   }
 }
 
@@ -239,33 +239,24 @@ function renderHeader(data: EnhancedReportData): string {
           ? `<img src="${logoDataUrl}" alt="PSI Logo" class="logo-image" />`
           : `<div class="logo-circle"><span class="logo-text">PSI</span></div>`}
         <div class="company-info">
-          <h1 class="company-name">Precision Sewer Inspection</h1>
-          <p class="company-tagline">Central Indiana's Trusted Sewer Inspection Experts</p>
+          <h1 class="company-name">Precision <em>Sewer</em> Inspection</h1>
+          <p class="company-tagline">SANITARY LATERAL CAMERA SURVEY</p>
         </div>
       </div>
       <div class="header-contact">
-        <div class="contact-item">
-          <span class="contact-icon">📞</span>
-          <span>(317) 620-3858</span>
-        </div>
-        <div class="contact-item">
-          <span class="contact-icon">✉</span>
-          <span>booking@precisionsewerinspections.com</span>
-        </div>
-        <div class="contact-item">
-          <span class="contact-icon">🌐</span>
-          <span>www.precisionsewerinspections.com</span>
-        </div>
+        <div class="contact-item"><span class="contact-label">PHONE</span><span>(317) 620-3858</span></div>
+        <div class="contact-item"><span class="contact-label">EMAIL</span><span>booking@precisionsewerinspections.com</span></div>
+        <div class="contact-item"><span class="contact-label">WEB</span><span>www.precisionsewerinspections.com</span></div>
       </div>
     </div>
     <div class="header-title-bar">
       <div class="title-left">
         <h2 class="report-title">Sewer Line Inspection Report</h2>
-        <p class="report-subtitle">Comprehensive Camera Inspection with Acoustic Material Analysis</p>
+        <p class="report-subtitle">Camera survey record with inspection notes and footage access</p>
       </div>
       <div class="title-right">
         <div class="report-number-badge">
-          <span class="report-number-label">Report</span>
+          <span class="report-number-label">REPORT</span>
           <span class="report-number-value">#${data.inspectionNumber}</span>
         </div>
         <div class="report-date">${inspectionDate}</div>
@@ -282,7 +273,7 @@ function renderPropertyInfo(data: EnhancedReportData): string {
   return `
   <div class="section">
     <div class="section-header">
-      <div class="section-icon">🏠</div>
+      <div class="section-icon">01</div>
       <h2 class="section-title">Property & Client Information</h2>
     </div>
     <div class="info-card">
@@ -360,7 +351,7 @@ function renderMaterialContext(data: EnhancedReportData): string {
   return `
   <div class="section">
     <div class="section-header">
-      <div class="section-icon">🔬</div>
+      <div class="section-icon">02</div>
       <h2 class="section-title">Material Context</h2>
     </div>
     <div class="narrative-card">
@@ -391,7 +382,7 @@ function renderAcousticAnalysis(data: EnhancedReportData): string {
   return `
   <div class="section acoustic-section">
     <div class="section-header">
-      <div class="section-icon">🎵</div>
+      <div class="section-icon">03</div>
       <h2 class="section-title">Acoustic Material Analysis</h2>
       <span class="section-badge">Supplemental</span>
     </div>
@@ -447,7 +438,7 @@ function renderConditionAssessment(data: EnhancedReportData): string {
   return `
   <div class="section page-break-before">
     <div class="section-header">
-      <div class="section-icon">📊</div>
+      <div class="section-icon">04</div>
       <h2 class="section-title">Overall Condition Assessment</h2>
     </div>
     <div class="assessment-card">
@@ -557,7 +548,7 @@ function renderDetailedFindings(data: EnhancedReportData): string {
   return `
   <div class="section">
     <div class="section-header">
-      <div class="section-icon">🔍</div>
+      <div class="section-icon">05</div>
       <h2 class="section-title">Detailed Findings</h2>
       <span class="findings-count">${totalFindings} finding${totalFindings !== 1 ? "s" : ""}</span>
     </div>
@@ -593,7 +584,7 @@ function renderVideoStillsGallery(data: EnhancedReportData): string {
   return `
   <div class="section page-break-before">
     <div class="section-header">
-      <div class="section-icon">📸</div>
+      <div class="section-icon">06</div>
       <h2 class="section-title">Video Still Captures</h2>
     </div>
     <div class="stills-grid">
@@ -618,7 +609,7 @@ function renderSurfaceLocate(data: EnhancedReportData): string {
   return `
   <div class="section">
     <div class="section-header">
-      <div class="section-icon">📍</div>
+      <div class="section-icon">07</div>
       <h2 class="section-title">Surface Locate Documentation</h2>
     </div>
     <div class="locate-grid">
@@ -633,7 +624,7 @@ function renderMunicipalMap(data: EnhancedReportData): string {
   return `
   <div class="section">
     <div class="section-header">
-      <div class="section-icon">🗺️</div>
+      <div class="section-icon">08</div>
       <h2 class="section-title">Municipal Sewer Map</h2>
     </div>
     <div class="map-card">
@@ -657,7 +648,7 @@ function renderMeasurements(data: EnhancedReportData): string {
   return `
   <div class="section">
     <div class="section-header">
-      <div class="section-icon">📏</div>
+      <div class="section-icon">09</div>
       <h2 class="section-title">Precise Measurements</h2>
     </div>
     <div class="measurements-card">
@@ -699,17 +690,17 @@ function renderMeasurements(data: EnhancedReportData): string {
   </div>`;
 }
 
-function renderRecommendations(data: EnhancedReportData): string {
+function renderReportNotes(data: EnhancedReportData): string {
   if (!data.recommendations) return "";
 
   return `
   <div class="section page-break-before">
     <div class="section-header">
-      <div class="section-icon">💡</div>
-      <h2 class="section-title">Recommendations</h2>
+      <div class="section-icon">·</div>
+      <h2 class="section-title">Report Notes</h2>
     </div>
-    <div class="recommendations-card">
-      <div class="recommendations-content">
+    <div class="report-notes-card">
+    			<div class="report-notes-content">
         ${data.recommendations}
       </div>
     </div>
@@ -722,7 +713,7 @@ function renderLimitations(data: EnhancedReportData): string {
   return `
   <div class="section">
     <div class="section-header">
-      <div class="section-icon">⚠️</div>
+      <div class="section-icon">10</div>
       <h2 class="section-title">Limitations & Exclusions</h2>
     </div>
     <div class="limitations-card">
@@ -732,34 +723,25 @@ function renderLimitations(data: EnhancedReportData): string {
 }
 
 function renderVideoDocumentation(data: EnhancedReportData): string {
-  if (!data.videoUrl && !data.highlightReelUrl) return "";
+  const primaryVideoUrl = data.videoUrl || data.highlightReelUrl;
+  if (!primaryVideoUrl) return "";
+
+  const posterUrl = data.videoStills?.[0]?.s3Url || data.surfaceLocatePhotos?.[0]?.photoUrl || "";
 
   return `
-  <div class="section">
-    <div class="section-header">
-      <div class="section-icon">🎬</div>
-      <h2 class="section-title">Video Documentation</h2>
-    </div>
-    <div class="video-card">
-      <p class="video-note">Complete video documentation of this inspection is included with your report delivery.</p>
-      <div class="video-links">
-        ${data.videoUrl ? `
-        <a href="${data.videoUrl}" class="video-link" target="_blank" rel="noopener">
-          <span class="video-link-icon">📹</span>
-          <span class="video-link-text">
-            <strong>Full Inspection Video</strong>
-            <span class="video-link-sub">Complete camera traverse recording</span>
-          </span>
-        </a>` : ""}
-        ${data.highlightReelUrl ? `
-        <a href="${data.highlightReelUrl}" class="video-link" target="_blank" rel="noopener">
-          <span class="video-link-icon">⭐</span>
-          <span class="video-link-text">
-            <strong>Highlight Reel</strong>
-            <span class="video-link-sub">Key findings summary video</span>
-          </span>
-        </a>` : ""}
-      </div>
+  <div class="video-band page-break-before">
+    <div class="video-band-rule"></div>
+    <div class="video-band-content">
+      <div class="video-band-eyebrow">INSPECTION FOOTAGE</div>
+      <h2 class="video-band-title">Watch the full survey</h2>
+      <p class="video-band-copy">The inspection footage is part of this report record. The visible URL remains printed below for offline review and manual entry.</p>
+      <a href="${primaryVideoUrl}" class="video-poster" target="_blank" rel="noopener">
+        ${posterUrl ? `<img src="${posterUrl}" alt="Inspection footage poster" class="video-poster-image" />` : `<div class="video-poster-placeholder">PSI VIDEO</div>`}
+        <span class="play-button" aria-hidden="true"></span>
+        <span class="poster-ribbon">HD · CLICK TO PLAY</span>
+      </a>
+      <a href="${primaryVideoUrl}" class="video-download" target="_blank" rel="noopener">Download Full Video</a>
+      <p class="video-url">${primaryVideoUrl}</p>
     </div>
   </div>`;
 }
@@ -768,7 +750,7 @@ function renderVerification(data: EnhancedReportData): string {
   return `
   <div class="section">
     <div class="section-header">
-      <div class="section-icon">✅</div>
+      <div class="section-icon">11</div>
       <h2 class="section-title">Inspection Verification</h2>
     </div>
     <div class="verification-card">
@@ -799,7 +781,7 @@ function renderDisclaimers(data: EnhancedReportData): string {
   return `
   <div class="section disclaimers-section">
     <div class="section-header">
-      <div class="section-icon">📋</div>
+      <div class="section-icon">12</div>
       <h2 class="section-title">Disclaimers</h2>
     </div>
     <div class="disclaimer-card">
@@ -881,7 +863,7 @@ function getStylesheet(): string {
       print-color-adjust: exact;
     }
     h1, h2, h3, h4 {
-      font-family: 'Plus Jakarta Sans', 'Inter', 'Helvetica Neue', sans-serif;
+    			font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
       line-height: 1.3;
     }
     p { margin-bottom: 8px; }
@@ -919,7 +901,7 @@ function getStylesheet(): string {
       justify-content: center;
     }
     .logo-text {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+    			font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
       font-weight: 800;
       font-size: 20px;
       letter-spacing: 2px;
@@ -1456,19 +1438,19 @@ function getStylesheet(): string {
       border-bottom: 1px solid ${COLORS.gray100};
     }
 
-    /* ── Recommendations ── */
-    .recommendations-card {
-      background: ${COLORS.amber50};
-      border: 1px solid ${COLORS.amber500};
-      border-left: 4px solid ${COLORS.amber500};
-      border-radius: 8px;
-      padding: 16px 20px;
-    }
-    .recommendations-content {
-      font-size: 13px;
-      line-height: 1.7;
-      color: ${COLORS.gray700};
-    }
+    /* ── Report Notes ── */
+    		.report-notes-card {
+    			background: ${COLORS.amber50};
+    			border: 1px solid ${COLORS.amber500};
+    			border-left: 4px solid ${COLORS.amber500};
+    			border-radius: 8px;
+    			padding: 16px 20px;
+    		}
+    		.report-notes-content {
+    			font-size: 13px;
+    			line-height: 1.7;
+    			color: ${COLORS.gray700};
+    		}
 
     /* ── Limitations ── */
     .limitations-card {
@@ -1588,7 +1570,7 @@ function getStylesheet(): string {
       justify-content: center;
     }
     .footer-logo-text {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+    			font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
       font-weight: 800;
       font-size: 12px;
       letter-spacing: 1px;
@@ -1693,11 +1675,11 @@ export function generateEnhancedReportHTML(
   ${renderSurfaceLocate(data)}
   ${renderMunicipalMap(data)}
   ${renderMeasurements(data)}
-  ${renderRecommendations(data)}
+  ${renderReportNotes(data)}
   ${renderLimitations(data)}
-  ${renderVideoDocumentation(data)}
   ${renderVerification(data)}
   ${renderDisclaimers(data)}
+  ${renderVideoDocumentation(data)}
   ${renderFooter(data)}
 </body>
 </html>`;

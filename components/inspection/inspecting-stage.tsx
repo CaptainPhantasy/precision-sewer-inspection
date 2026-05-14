@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Loader2, Clock, AlertCircle, ClipboardList, Mic } from "lucide-react";
 import type { Inspection } from "@/app/technician/inspection/[inspectionId]/page";
-import { MIN_INSPECTION_DURATION } from "@/lib/inspection-constants";
 import { CameraPairing } from "./camera-pairing";
 
 interface Props {
@@ -35,15 +34,7 @@ export function InspectingStage({ inspection, onComplete }: Props) {
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const elapsedMinutes = Math.floor(elapsedTime / 60);
-  const canComplete = elapsedMinutes >= MIN_INSPECTION_DURATION;
-
   const handleComplete = async () => {
-    if (!canComplete) {
-      setError(`Minimum inspection time is ${MIN_INSPECTION_DURATION} minutes`);
-      return;
-    }
-
     setCompleting(true);
     setError("");
 
@@ -67,19 +58,14 @@ export function InspectingStage({ inspection, onComplete }: Props) {
       <div className="bg-white rounded-xl p-6 shadow-sm text-center">
         <div className="flex items-center justify-center gap-2 text-gray-500 mb-2">
           <Clock className="w-5 h-5" />
-          <span className="text-sm font-medium">Inspection Duration</span>
+          <span className="text-sm font-medium">Inspection Time Recorded</span>
         </div>
         <div className="text-5xl font-mono font-bold text-blue-600">
           {formatTime(elapsedTime)}
         </div>
         <p className="text-sm text-gray-500 mt-2">
-          Minimum: {MIN_INSPECTION_DURATION} minutes
+          Proceed when the field work is complete. Stops, interruptions, and return voiceovers are expected in real inspections.
         </p>
-        {!canComplete && (
-          <div className="mt-3 bg-yellow-50 text-yellow-700 px-3 py-2 rounded-lg text-sm">
-            {MIN_INSPECTION_DURATION - elapsedMinutes} minutes remaining before you can proceed
-          </div>
-        )}
       </div>
 
       {/* Camera Pairing */}
@@ -92,12 +78,8 @@ export function InspectingStage({ inspection, onComplete }: Props) {
           Voice Notes
         </h3>
         <p className="text-sm text-gray-500 mb-3">
-          Tap to record observations during the inspection
+          Use the floating microphone to add observations during the inspection or after returning to a section.
         </p>
-        <button className="w-full bg-gray-100 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
-          <Mic className="w-5 h-5" />
-          Record Voice Note
-        </button>
       </div>
 
       {/* Tips */}
@@ -115,12 +97,8 @@ export function InspectingStage({ inspection, onComplete }: Props) {
       {/* Complete Button */}
       <button
         onClick={handleComplete}
-        disabled={completing || !canComplete}
-        className={`w-full py-4 rounded-xl font-semibold text-lg transition-colors flex items-center justify-center gap-2 ${
-          canComplete
-            ? "bg-blue-600 text-white hover:bg-blue-700"
-            : "bg-gray-200 text-gray-500 cursor-not-allowed"
-        }`}
+        disabled={completing}
+        className="w-full py-4 rounded-xl font-semibold text-lg transition-colors flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
       >
         {completing ? (
           <>
@@ -130,7 +108,7 @@ export function InspectingStage({ inspection, onComplete }: Props) {
         ) : (
           <>
             <ClipboardList className="w-5 h-5" />
-            {canComplete ? "Complete Inspection" : `Wait ${MIN_INSPECTION_DURATION - elapsedMinutes}m`}
+            Complete Field Inspection
           </>
         )}
       </button>

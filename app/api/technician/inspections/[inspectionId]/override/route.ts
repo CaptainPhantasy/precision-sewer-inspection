@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCurrentUser, hasRole } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
+import { isFieldOperatorRole } from "@/lib/auth/permissions";
 import { errorResponse } from "@/lib/errors";
 import { overrideService } from "@/lib/services/override.service";
 import { z } from "zod";
@@ -25,7 +26,7 @@ export async function POST(
 ) {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["TECHNICIAN", "ADMIN", "SUPER_ADMIN"])) {
+    if (!user || !isFieldOperatorRole(user?.role)) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 

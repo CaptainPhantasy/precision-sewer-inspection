@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
-import { getCurrentUser, hasRole } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
+import { canManageJobs } from "@/lib/auth/permissions";
 import { prisma } from "@/lib/db";
 
 // GET: List all jobs with filters
 export async function GET(request: Request) {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["ADMIN", "OWNER", "SUPER_ADMIN"])) {
+    if (!canManageJobs(user)) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 }
@@ -60,11 +61,11 @@ export async function GET(request: Request) {
   }
 }
 
-// POST: Create a test job (without Stripe)
+// POST: Create a real operations job without Stripe checkout
 export async function POST(request: Request) {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["ADMIN", "OWNER", "SUPER_ADMIN"])) {
+    if (!canManageJobs(user)) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 }
@@ -137,12 +138,12 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       job,
-      message: `Test job ${jobNumber} created successfully`,
+      message: `Job ${jobNumber} created successfully`,
     });
   } catch (error) {
-    console.error("Error creating test job:", error);
-    return NextResponse.json(
-      { success: false, error: "Failed to create test job" },
+    console.error("Error creating job:", error);
+    		return NextResponse.json(
+    			{ success: false, error: "Failed to create job" },
       { status: 500 }
     );
   }

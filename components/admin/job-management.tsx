@@ -53,9 +53,10 @@ interface Job {
 }
 
 interface Technician {
-  id: string;
-  name: string;
-  email: string;
+	id: string;
+	name: string;
+	email: string;
+	role: string;
 }
 
 interface JobManagementProps {
@@ -89,10 +90,12 @@ export function JobManagement({ currentUserRole }: JobManagementProps) {
 
   const fetchTechnicians = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/users?role=TECHNICIAN");
+      const res = await fetch("/api/admin/users");
       const data = await res.json();
       if (data.success) {
-        setTechnicians(data.users.filter((u: { isActive: boolean }) => u.isActive));
+        setTechnicians(data.users.filter((u: { isActive: boolean; role: string }) =>
+          u.isActive && ["TECHNICIAN", "OWNER", "SUPER_ADMIN"].includes(u.role)
+        ));
       }
     } catch (error) {
       console.error("Failed to fetch technicians:", error);
@@ -142,7 +145,7 @@ export function JobManagement({ currentUserRole }: JobManagementProps) {
       });
       const data = await res.json();
       if (data.success) {
-        toast.success(`Test job ${data.job.jobNumber} created!`);
+        toast.success(`Job ${data.job.jobNumber} created!`);
         setShowCreateModal(false);
         fetchJobs();
       } else {
@@ -219,7 +222,7 @@ export function JobManagement({ currentUserRole }: JobManagementProps) {
             onClick={() => setShowCreateModal(true)}
             className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
           >
-            <Plus className="w-4 h-4" /> Create Test Job
+            <Plus className="w-4 h-4" /> Create Job
           </button>
           <button
             onClick={() => fetchJobs()}
@@ -342,7 +345,7 @@ export function JobManagement({ currentUserRole }: JobManagementProps) {
       {/* Create Job Modal */}
       {showCreateModal && (
         <JobFormModal
-          title="Create Test Job"
+          title="Create Job"
           technicians={technicians}
           onClose={() => setShowCreateModal(false)}
           onSubmit={handleCreateJob}
@@ -557,7 +560,7 @@ function JobFormModal({
                   <option value="">-- Unassigned --</option>
                   {technicians.map((tech) => (
                     <option key={tech.id} value={tech.id}>
-                      {tech.name}
+                      {tech.name} ({tech.role.replace("_", " ")})
                     </option>
                   ))}
                 </select>

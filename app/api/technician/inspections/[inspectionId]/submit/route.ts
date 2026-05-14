@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { getCurrentUser, hasRole } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
+import { canEnterInspectionData, isFieldOperatorRole } from "@/lib/auth/permissions";
 import { prisma } from "@/lib/db";
 import { sendAdminNotification, getInspectionSubmittedEmail } from "@/lib/notifications";
-import { MIN_INSPECTION_DURATION } from "@/lib/inspection-constants";
 
 export async function POST(
   request: Request,
@@ -10,7 +10,7 @@ export async function POST(
 ) {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["TECHNICIAN", "ADMIN", "SUPER_ADMIN"])) {
+    if (!user || !isFieldOperatorRole(user?.role)) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 }
@@ -37,7 +37,7 @@ export async function POST(
       );
     }
 
-    if (user.role === "TECHNICIAN" && inspection.technicianId !== user.id) {
+    if (!canEnterInspectionData(user, inspection.technicianId)) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 403 }
@@ -61,10 +61,6 @@ export async function POST(
 
     if (!inspection.clientSignature) {
       errors.push("Client signature is required");
-    }
-
-    if (inspection.inspectionDuration && inspection.inspectionDuration < MIN_INSPECTION_DURATION) {
-      errors.push(`Inspection must be at least ${MIN_INSPECTION_DURATION} minutes`);
     }
 
     if (errors.length > 0) {

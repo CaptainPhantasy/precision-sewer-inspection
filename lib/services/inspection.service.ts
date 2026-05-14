@@ -103,9 +103,9 @@ const STAGE_GATES: Record<string, StageGateRequirement[]> = {
   INSPECTING: [
     {
       field: "inspectionDuration",
-      label: "Minimum 15 minutes inspection",
-      required: true,
-      validate: (i) => (i.inspectionDuration || 0) >= 15,
+      label: "Inspection time recorded",
+      required: false,
+      validate: (i) => (i.inspectionDuration || 0) > 0,
     },
     {
       field: "pipeMaterial",
@@ -135,13 +135,13 @@ const STAGE_GATES: Record<string, StageGateRequirement[]> = {
     },
     {
       field: "recommendations",
-      label: "Recommendations",
+      label: "Report Notes",
       required: true,
       validate: (i) => !!i.recommendations && i.recommendations.length >= 10,
     },
     {
       field: "urgencyLevel",
-      label: "Urgency Level",
+      label: "Review Priority",
       required: true,
       validate: (i) => !!i.urgencyLevel,
     },

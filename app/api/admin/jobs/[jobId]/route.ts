@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser, hasRole } from "@/lib/auth";
+import { canManageJobs } from "@/lib/auth/permissions";
 import { prisma } from "@/lib/db";
 
 // GET: Get single job details
@@ -9,7 +10,7 @@ export async function GET(
 ) {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["ADMIN", "OWNER", "SUPER_ADMIN"])) {
+    if (!canManageJobs(user)) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 }
@@ -58,7 +59,7 @@ export async function PATCH(
 ) {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["ADMIN", "OWNER", "SUPER_ADMIN"])) {
+    if (!canManageJobs(user)) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 }

@@ -429,13 +429,14 @@ export function VideoAttachStage({ inspection, onRefresh, onComplete }: Props) {
 
       {/* Instructions */}
       <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-        <h3 className="font-semibold text-blue-900 mb-2">Video Requirements</h3>
-        <ul className="text-sm text-blue-700 space-y-1">
-          <li>• Upload the complete inspection video</li>
-          <li>• Minimum 5 minutes of footage</li>
-          <li>• Video will be reviewed before delivery to client</li>
-        </ul>
-      </div>
+              <h3 className="font-semibold text-blue-900 mb-2">Video Requirements</h3>
+              <ul className="text-sm text-blue-700 space-y-1">
+                <li>• Upload the complete inspection video or the best complete segment available</li>
+                <li>• Stops, interruptions, replacement footage, and return voiceovers are allowed</li>
+                <li>• Use chapters and voice notes to explain any gaps, limits, or returned sections</li>
+                <li>• Video will be reviewed before delivery to client</li>
+              </ul>
+            </div>
 
       {/* Continue Button */}
       <button

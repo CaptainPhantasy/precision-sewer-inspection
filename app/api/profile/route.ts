@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
-import { getCurrentUser, hasRole } from "@/lib/auth";
+import { getCurrentUser, hasRole, hashPassword, verifyPassword } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { getFileUrl } from "@/lib/s3";
+import { passwordSchema } from "@/lib/validations";
 
 // GET: Get current user's profile
 export async function GET() {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["TECHNICIAN", "ADMIN", "SUPER_ADMIN"])) {
-      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    if (!user || !hasRole(user, ["TECHNICIAN", "MANAGER", "ADMIN", "OWNER", "SUPER_ADMIN"])) {
+    	return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
     const profile = await prisma.user.findUnique({
@@ -51,11 +52,11 @@ export async function GET() {
 export async function PATCH(request: Request) {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["TECHNICIAN", "ADMIN", "SUPER_ADMIN"])) {
-      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    if (!user || !hasRole(user, ["TECHNICIAN", "MANAGER", "ADMIN", "OWNER", "SUPER_ADMIN"])) {
+    	return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    const { name, phone, bio, profilePhotoPath, profilePhotoUrl } = await request.json();
+    const { name, phone, bio, profilePhotoPath, profilePhotoUrl, currentPassword, newPassword } = await request.json();
 
     const updateData: Record<string, unknown> = {};
     if (name !== undefined) updateData.name = name;
@@ -63,6 +64,36 @@ export async function PATCH(request: Request) {
     if (bio !== undefined) updateData.bio = bio;
     if (profilePhotoPath !== undefined) updateData.profilePhotoPath = profilePhotoPath;
     if (profilePhotoUrl !== undefined) updateData.profilePhotoUrl = profilePhotoUrl;
+
+    if (currentPassword !== undefined || newPassword !== undefined) {
+    	if (!currentPassword || !newPassword) {
+    		return NextResponse.json(
+    			{ success: false, error: "Current password and new password are required" },
+    			{ status: 400 }
+    		);
+    	}
+
+    	const parsedPassword = passwordSchema.safeParse(newPassword);
+    	if (!parsedPassword.success) {
+    		return NextResponse.json(
+    			{ success: false, error: parsedPassword.error.issues[0]?.message || "Invalid new password" },
+    			{ status: 400 }
+    		);
+    	}
+
+    	const account = await prisma.user.findUnique({
+    		where: { id: user.id },
+    		select: { passwordHash: true },
+    	});
+    	if (!account || !(await verifyPassword(currentPassword, account.passwordHash))) {
+    		return NextResponse.json(
+    			{ success: false, error: "Current password is incorrect" },
+    			{ status: 400 }
+    		);
+    	}
+
+    	updateData.passwordHash = await hashPassword(parsedPassword.data);
+    }
 
     const updated = await prisma.user.update({
       where: { id: user.id },

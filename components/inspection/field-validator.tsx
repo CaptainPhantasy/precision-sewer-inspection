@@ -20,162 +20,162 @@ interface ValidationItem {
 
 export function FieldValidator({ inspection, currentStage }: FieldValidatorProps) {
   const validationItems = useMemo<ValidationItem[]>(() => {
-    const items: ValidationItem[] = [];
+      const items: ValidationItem[] = [];
 
-    // Pre-Inspection Interview Fields
-    items.push({
-      field: "confirmedClientName",
-      label: "Client Name Confirmed",
-      status: inspection.confirmedClientName ? "complete" : "incomplete",
-      message: inspection.confirmedClientName
-        ? `Confirmed: ${inspection.confirmedClientName}`
-        : "Client name not confirmed yet",
-      required: true,
-      stage: ["PRE_INSPECTION", "INSPECTING", "POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
-    });
+      // Pre-Inspection Interview Fields
+      items.push({
+        field: "confirmedClientName",
+        label: "Client Name Confirmed",
+        status: inspection.confirmedClientName ? "complete" : "incomplete",
+        message: inspection.confirmedClientName
+          ? `Confirmed: ${inspection.confirmedClientName}`
+          : "Client name not confirmed yet",
+        required: true,
+        stage: ["PRE_INSPECTION", "INSPECTING", "POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
+      });
 
-    items.push({
-      field: "confirmedAddress",
-      label: "Address Confirmed",
-      status: inspection.confirmedAddress ? "complete" : "incomplete",
-      message: inspection.confirmedAddress
-        ? `Confirmed: ${inspection.confirmedAddress}`
-        : "Property address not confirmed yet",
-      required: true,
-      stage: ["PRE_INSPECTION", "INSPECTING", "POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
-    });
+      items.push({
+        field: "confirmedAddress",
+        label: "Property Address Confirmed",
+        status: inspection.confirmedAddress ? "complete" : "incomplete",
+        message: inspection.confirmedAddress
+          ? `Address: ${inspection.confirmedAddress}`
+          : "Property address not confirmed yet",
+        required: true,
+        stage: ["PRE_INSPECTION", "INSPECTING", "POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
+      });
 
-    items.push({
-      field: "homeAge",
-      label: "Home Age",
-      status: inspection.homeAge ? "complete" : "warning",
-      message: inspection.homeAge
-        ? `${inspection.homeAge}`
-        : "Home age not recorded (helps assess pipe condition)",
-      required: false,
-      stage: ["PRE_INSPECTION", "INSPECTING", "POST_INSPECTION"],
-    });
+      items.push({
+        field: "homeAge",
+        label: "Home Age",
+        status: inspection.homeAge ? "complete" : "warning",
+        message: inspection.homeAge
+          ? `Home age: ${inspection.homeAge}`
+          : "Home age helps with material context",
+        required: false,
+        stage: ["PRE_INSPECTION", "POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
+      });
 
-    items.push({
-      field: "pipeMaterial",
-      label: "Pipe Material",
-      status: inspection.pipeMaterial ? "complete" : "warning",
-      message: inspection.pipeMaterial
-        ? `${inspection.pipeMaterial.replace("_", " ")}`
-        : "Pipe material not identified yet",
-      required: false,
-      stage: ["INSPECTING", "POST_INSPECTION"],
-    });
+      items.push({
+        field: "pipeMaterial",
+        label: "Pipe Material",
+        status: inspection.pipeMaterial ? "complete" : "warning",
+        message: inspection.pipeMaterial
+          ? `${inspection.pipeMaterial.replace("_", " ")}`
+          : "Identify if visible or note as unknown",
+        required: false,
+        stage: ["INSPECTING", "POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
+      });
 
-    items.push({
-      field: "knownIssues",
-      label: "Known Issues",
-      status: inspection.knownIssues ? "complete" : "warning",
-      message: inspection.knownIssues
-        ? "Client reported issues recorded"
-        : "Ask client about any known plumbing issues",
-      required: false,
-      stage: ["PRE_INSPECTION"],
-    });
+      // Post-Inspection Fields
+      items.push({
+        field: "overallCondition",
+        label: "Overall Condition",
+        status: inspection.overallCondition ? "complete" : "incomplete",
+        message: inspection.overallCondition
+          ? `${inspection.overallCondition}`
+          : "Overall condition rating required",
+        required: true,
+        stage: ["POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
+      });
 
-    // Inspection Findings
-    items.push({
-      field: "overallCondition",
-      label: "Overall Condition",
-      status: inspection.overallCondition ? "complete" : "incomplete",
-      message: inspection.overallCondition
-        ? `Rated: ${inspection.overallCondition}`
-        : "Overall condition rating required",
-      required: true,
-      stage: ["POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
-    });
+      items.push({
+        field: "pipeConditionRating",
+        label: "Pipe Rating",
+        status: inspection.pipeConditionRating ? "complete" : "incomplete",
+        message: inspection.pipeConditionRating
+          ? `${inspection.pipeConditionRating}/5`
+          : "Pipe condition rating (1-5) required",
+        required: true,
+        stage: ["POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
+      });
 
-    items.push({
-      field: "pipeConditionRating",
-      label: "Pipe Condition Rating",
-      status: inspection.pipeConditionRating ? "complete" : "incomplete",
-      message: inspection.pipeConditionRating
-        ? `${inspection.pipeConditionRating}/5`
-        : "Pipe condition rating (1-5) required",
-      required: true,
-      stage: ["POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
-    });
+      items.push({
+        field: "connectionToMain",
+        label: "Connection to Main",
+        status: inspection.connectionToMain ? "complete" : "incomplete",
+        message: inspection.connectionToMain
+          ? `${inspection.connectionToMain}`
+          : "Connection to main status required",
+        required: true,
+        stage: ["POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
+      });
 
-    items.push({
-      field: "recommendations",
-      label: "Recommendations",
-      status: inspection.recommendations ? "complete" : "incomplete",
-      message: inspection.recommendations
-        ? "Recommendations provided"
-        : "Provide recommendations for the client",
-      required: true,
-      stage: ["POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
-    });
+      items.push({
+        field: "recommendations",
+        label: "Report Notes",
+        status: inspection.recommendations ? "complete" : "incomplete",
+        message: inspection.recommendations
+          ? "Report notes captured"
+          : "Record observational report notes for admin review",
+        required: true,
+        stage: ["POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
+      });
 
-    items.push({
-      field: "urgencyLevel",
-      label: "Urgency Level",
-      status: inspection.urgencyLevel ? "complete" : "incomplete",
-      message: inspection.urgencyLevel
-        ? `${inspection.urgencyLevel}`
-        : "Set urgency level for repairs",
-      required: true,
-      stage: ["POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
-    });
+      items.push({
+        field: "urgencyLevel",
+        label: "Review Priority",
+        status: inspection.urgencyLevel ? "complete" : "incomplete",
+        message: inspection.urgencyLevel
+          ? `${inspection.urgencyLevel}`
+          : "Set review priority for admin triage",
+        required: true,
+        stage: ["POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
+      });
 
-    // Video & Signature
-    items.push({
-      field: "videoAttachment",
-      label: "Video Upload",
-      status:
-        inspection.videoAttachment?.uploadStatus === "COMPLETED"
-          ? "complete"
-          : inspection.videoAttachment
-          ? "warning"
-          : "incomplete",
-      message:
-        inspection.videoAttachment?.uploadStatus === "COMPLETED"
-          ? `Video uploaded: ${inspection.videoAttachment.fileName}`
-          : inspection.videoAttachment
-          ? `Upload in progress: ${inspection.videoAttachment.uploadStatus}`
-          : "Video recording required",
-      required: true,
-      stage: ["VIDEO_ATTACH", "CLIENT_SIGNOFF"],
-    });
+      // Video & Signature
+      items.push({
+        field: "videoAttachment",
+        label: "Video Upload",
+        status:
+          inspection.videoAttachment?.uploadStatus === "COMPLETED"
+            ? "complete"
+            : inspection.videoAttachment
+            ? "warning"
+            : "incomplete",
+        message:
+          inspection.videoAttachment?.uploadStatus === "COMPLETED"
+            ? `Video uploaded: ${inspection.videoAttachment.fileName}`
+            : inspection.videoAttachment
+            ? `Upload in progress: ${inspection.videoAttachment.uploadStatus}`
+            : "Video recording required",
+        required: true,
+        stage: ["VIDEO_ATTACH", "CLIENT_SIGNOFF"],
+      });
 
-    items.push({
-      field: "clientSignature",
-      label: "Client Signature",
-      status: inspection.clientSignature ? "complete" : "incomplete",
-      message: inspection.clientSignature
-        ? `Signed by: ${inspection.clientSignature.signerName}`
-        : "Client signature required for completion",
-      required: true,
-      stage: ["CLIENT_SIGNOFF"],
-    });
+      items.push({
+        field: "clientSignature",
+        label: "Client Signature",
+        status: inspection.clientSignature ? "complete" : "incomplete",
+        message: inspection.clientSignature
+          ? `Signed by: ${inspection.clientSignature.signerName}`
+          : "Client signature required for completion",
+        required: true,
+        stage: ["CLIENT_SIGNOFF"],
+      });
 
-    // Timing
-    items.push({
-      field: "inspectionDuration",
-      label: "Inspection Duration",
-      status:
-        (inspection.inspectionDuration || 0) >= 15
-          ? "complete"
-          : (inspection.inspectionDuration || 0) > 0
-          ? "warning"
-          : "incomplete",
-      message:
-        (inspection.inspectionDuration || 0) >= 15
-          ? `${inspection.inspectionDuration} minutes (minimum met)`
-          : (inspection.inspectionDuration || 0) > 0
-          ? `${inspection.inspectionDuration} minutes (minimum 15 required)`
-          : "Inspection not started yet",
-      required: true,
-      stage: ["INSPECTING", "POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
-    });
+      // Timing is evidence, not a gate. Real inspections include stops, returns, and voiceover passes.
+      items.push({
+        field: "inspectionDuration",
+        label: "Inspection Time Recorded",
+        status:
+          (inspection.inspectionDuration || 0) > 0
+            ? "complete"
+            : inspection.inspectionStartedAt
+            ? "warning"
+            : "incomplete",
+        message:
+          (inspection.inspectionDuration || 0) > 0
+            ? `${inspection.inspectionDuration} minutes recorded`
+            : inspection.inspectionStartedAt
+            ? "Inspection in progress; finish when field work is complete"
+            : "Inspection not started yet",
+        required: false,
+        stage: ["INSPECTING", "POST_INSPECTION", "VIDEO_ATTACH", "CLIENT_SIGNOFF"],
+      });
 
-    return items;
-  }, [inspection]);
+      return items;
+    }, [inspection]);
 
   // Filter items relevant to current stage
   const relevantItems = validationItems.filter((item) =>

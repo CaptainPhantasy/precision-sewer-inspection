@@ -265,7 +265,7 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
 
       {/* Recommendations */}
       <div className="bg-white rounded-xl p-4 shadow-sm space-y-4">
-        <h3 className="font-semibold text-gray-900">Recommendations <span className="text-red-500">*</span></h3>
+        <h3 className="font-semibold text-gray-900">Report Notes <span className="text-red-500">*</span></h3>
         
         {/* AI Summary Helper */}
         <div className="border-b pb-4">
@@ -278,12 +278,12 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
         </div>
         
         <textarea
-          value={formData.recommendations}
-          onChange={(e) => handleChange("recommendations", e.target.value)}
-          rows={4}
-          placeholder="What actions do you recommend? Be specific..."
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-        />
+                  value={formData.recommendations}
+                  onChange={(e) => handleChange("recommendations", e.target.value)}
+                  rows={4}
+                  placeholder="Record what was observed, where it appears, inspection limits, and any context the admin needs for the report. Avoid repair instructions."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                />
       </div>
 
       {/* Urgency Level */}

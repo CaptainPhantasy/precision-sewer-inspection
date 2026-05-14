@@ -42,7 +42,7 @@ export const zipSchema = z
   .regex(/^\d{5}(-\d{4})?$/, "Invalid ZIP code");
 
 // Enums matching Prisma schema
-export const userRoleSchema = z.enum(["TECHNICIAN", "ADMIN", "SUPER_ADMIN"]);
+export const userRoleSchema = z.enum(["TECHNICIAN", "MANAGER", "ADMIN", "OWNER", "SUPER_ADMIN"]);
 export const clientRoleSchema = z.enum([
   "HOMEOWNER",
   "BUYER",

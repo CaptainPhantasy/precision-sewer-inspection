@@ -144,17 +144,17 @@ export function SubmitStage({ inspection, onSubmit }: Props) {
             checked={!!inspection.confirmedClientName}
           />
           <ChecklistItem
-            label="Inspection performed (min 15 min)"
-            checked={(inspection.inspectionDuration || 0) >= 15}
-          />
+                      label="Inspection time recorded"
+                      checked={!!inspection.inspectionStartedAt || (inspection.inspectionDuration || 0) > 0}
+                    />
           <ChecklistItem
             label="Findings recorded"
             checked={!!inspection.overallCondition}
           />
           <ChecklistItem
-            label="Recommendations provided"
-            checked={!!inspection.recommendations}
-          />
+                      label="Report notes captured"
+                      checked={!!inspection.recommendations}
+                    />
           <ChecklistItem
             label="Video attached"
             checked={inspection.videoAttachment?.uploadStatus === "COMPLETED"}

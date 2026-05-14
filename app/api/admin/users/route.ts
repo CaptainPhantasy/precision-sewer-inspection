@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { getCurrentUser } from "@/lib/auth";
-import bcrypt from "bcryptjs";
+import { getCurrentUser, hashPassword } from "@/lib/auth";
+import { getDefaultInitialPassword } from "@/lib/password-policy";
 
 export async function GET(request: NextRequest) {
   try {
@@ -59,11 +59,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { email, password, name, phone, role, certifications } = body;
 
-    if (!email || !password || !name) {
-      return NextResponse.json(
-        { error: "Email, password, and name are required" },
-        { status: 400 }
-      );
+    if (!email || !name) {
+    	return NextResponse.json(
+    		{ error: "Email and name are required" },
+    		{ status: 400 }
+    	);
     }
 
     // Check if email already exists
@@ -84,7 +84,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const passwordHash = await bcrypt.hash(password, 10);
+    const initialPassword = typeof password === "string" && password.length > 0
+    	? password
+    	: getDefaultInitialPassword();
+    const passwordHash = await hashPassword(initialPassword);
 
     const newUser = await prisma.user.create({
       data: {

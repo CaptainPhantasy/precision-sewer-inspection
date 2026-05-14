@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
-import { getCurrentUser, hasRole } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
+import { isFieldOperatorRole } from "@/lib/auth/permissions";
 import { prisma } from "@/lib/db";
 
 // GET: Get total unread message count
 export async function GET() {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["TECHNICIAN", "ADMIN", "SUPER_ADMIN"])) {
+    if (!user || !isFieldOperatorRole(user?.role)) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 

@@ -61,7 +61,7 @@ export default function TechnicianDashboard() {
   useEffect(() => {
     if (!loading && !user) {
       router.push("/technician/login");
-    } else if (!loading && user && user.role !== "TECHNICIAN" && user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
+    } else if (!loading && user && !["TECHNICIAN", "ADMIN", "OWNER", "SUPER_ADMIN"].includes(user.role)) {
       router.push("/technician/login");
     }
   }, [user, loading, router]);

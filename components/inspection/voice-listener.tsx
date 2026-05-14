@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Mic, MicOff, Volume2, Loader2, AlertCircle, Check } from "lucide-react";
+import { Mic, MicOff, AlertCircle } from "lucide-react";
 
 interface VoiceListenerProps {
   onTranscript: (text: string) => void;
@@ -23,6 +23,8 @@ export function VoiceListener({
   const [isSupported, setIsSupported] = useState(true);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null);
+  const shouldListenRef = useRef(false);
+  const restartTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Check for browser support
   useEffect(() => {
@@ -37,6 +39,12 @@ export function VoiceListener({
 
   const startListening = useCallback(() => {
     if (!isSupported || !isActive) return;
+
+    shouldListenRef.current = true;
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
+    }
 
     try {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -75,10 +83,11 @@ export function VoiceListener({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       recognition.onerror = (event: any) => {
         console.error("Speech recognition error:", event.error);
-        if (event.error === "not-allowed") {
+        if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+          shouldListenRef.current = false;
           setError("Microphone access denied. Please enable microphone permissions.");
         } else if (event.error === "no-speech") {
-          // Ignore no-speech errors, just restart
+          // Browser silence can end a recognition session; onend restarts while the user is still recording.
         } else {
           setError(`Voice recognition error: ${event.error}`);
         }
@@ -86,19 +95,36 @@ export function VoiceListener({
       };
 
       recognition.onend = () => {
-        setIsListening(false);
+        recognitionRef.current = null;
         setInterimTranscript("");
+
+        if (shouldListenRef.current && isActive) {
+          restartTimeoutRef.current = setTimeout(() => {
+            restartTimeoutRef.current = null;
+            startListening();
+          }, 250);
+          return;
+        }
+
+        setIsListening(false);
       };
 
       recognitionRef.current = recognition;
       recognition.start();
     } catch (err) {
       console.error("Failed to start speech recognition:", err);
+      shouldListenRef.current = false;
       setError("Failed to start voice input");
+      setIsListening(false);
     }
   }, [isSupported, isActive, onTranscript, transcript]);
 
   const stopListening = useCallback(() => {
+    shouldListenRef.current = false;
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
+    }
     if (recognitionRef.current) {
       recognitionRef.current.stop();
       recognitionRef.current = null;
@@ -123,6 +149,10 @@ export function VoiceListener({
   // Cleanup on unmount
   useEffect(() => {
     return () => {
+      shouldListenRef.current = false;
+      if (restartTimeoutRef.current) {
+        clearTimeout(restartTimeoutRef.current);
+      }
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }
@@ -211,7 +241,7 @@ export function VoiceListener({
 
       <p className="text-xs text-gray-500">
         {isListening
-          ? "Speak clearly. Tap the microphone again to stop."
+          ? "Keep speaking naturally. Browser silence is handled automatically; tap the microphone again to stop."
           : "Tap the microphone to start voice input."}
       </p>
     </div>

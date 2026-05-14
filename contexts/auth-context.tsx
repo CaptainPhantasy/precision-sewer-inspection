@@ -7,7 +7,7 @@ interface User {
   email: string;
   name: string;
   phone: string | null;
-  role: "TECHNICIAN" | "ADMIN" | "SUPER_ADMIN";
+  role: "TECHNICIAN" | "MANAGER" | "ADMIN" | "OWNER" | "SUPER_ADMIN";
   isActive: boolean;
   certifications: string[];
   profilePhotoUrl: string | null;

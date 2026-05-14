@@ -587,6 +587,5 @@ export default function AIChat() {
 		</>
 	);
 
-	// @ts-expect-error React 18.2 types: ReactElement not assignable to ReactNode for createPortal
 	return createPortal(portalContent, document.body) as unknown as JSX.Element;
 }

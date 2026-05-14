@@ -30,6 +30,8 @@ interface Inspection {
   pipeMaterial: string | null;
   knownIssues: string | null;
   backupHistory: string | null;
+  recentWork: string | null;
+  specialInstructions: string | null;
   overallCondition: string | null;
   pipeConditionRating: number | null;
   connectionToMain: string | null;
@@ -77,6 +79,22 @@ export default function AdminInspectionReviewPage() {
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [selectedRejectStage, setSelectedRejectStage] = useState("");
   const [reviewNotes, setReviewNotes] = useState("");
+  const [savingReportData, setSavingReportData] = useState(false);
+  const [reportData, setReportData] = useState({
+  	confirmedClientName: "",
+  	confirmedAddress: "",
+  	homeAge: "",
+  	pipeMaterial: "",
+  	knownIssues: "",
+  	backupHistory: "",
+  	recentWork: "",
+  	specialInstructions: "",
+  	overallCondition: "",
+  	pipeConditionRating: "",
+  	connectionToMain: "",
+  	recommendations: "",
+  	urgencyLevel: "",
+  });
   
   // Stages that can be rejected/reopened
   const REJECTABLE_STAGES = [
@@ -125,7 +143,7 @@ export default function AdminInspectionReviewPage() {
   useEffect(() => {
     if (!loading && !user) {
       router.push("/technician/login");
-    } else if (!loading && user && user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
+    } else if (!loading && user && !["ADMIN", "OWNER", "SUPER_ADMIN"].includes(user.role)) {
       router.push("/technician/dashboard");
     }
   }, [user, loading, router]);
@@ -137,6 +155,21 @@ export default function AdminInspectionReviewPage() {
         const data = await res.json();
         if (data.success) {
           setInspection(data.inspection);
+          setReportData({
+            confirmedClientName: data.inspection.confirmedClientName || data.inspection.job.clientName || "",
+            confirmedAddress: data.inspection.confirmedAddress || data.inspection.job.propertyAddress || "",
+            homeAge: data.inspection.homeAge || "",
+            pipeMaterial: data.inspection.pipeMaterial || "",
+            knownIssues: data.inspection.knownIssues || "",
+            backupHistory: data.inspection.backupHistory || "",
+            recentWork: data.inspection.recentWork || "",
+            specialInstructions: data.inspection.specialInstructions || "",
+            overallCondition: data.inspection.overallCondition || "",
+            pipeConditionRating: data.inspection.pipeConditionRating?.toString() || "",
+            connectionToMain: data.inspection.connectionToMain || "",
+            recommendations: data.inspection.recommendations || "",
+            urgencyLevel: data.inspection.urgencyLevel || "",
+          });
         }
       } catch (error) {
         console.error("Failed to fetch inspection:", error);
@@ -158,32 +191,62 @@ export default function AdminInspectionReviewPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspection]);
 
-  const handleApprove = async () => {
-    setApproving(true);
+  const handleSaveReportData = async () => {
+    setSavingReportData(true);
     setError("");
+    setSuccess("");
 
     try {
-      const res = await fetch(`/api/admin/inspections/${inspectionId}/approve`, {
-        method: "POST",
+      const res = await fetch(`/api/technician/inspections/${inspectionId}`, {
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reviewNotes }),
+        body: JSON.stringify({
+          ...reportData,
+          pipeConditionRating: reportData.pipeConditionRating
+            ? Number(reportData.pipeConditionRating)
+            : null,
+        }),
       });
-
       const data = await res.json();
       if (data.success) {
-        setSuccess("Inspection approved! Client notification sent.");
-        setTimeout(() => router.push("/admin"), 2000);
+        setInspection(data.inspection);
+        setSuccess("Report data saved.");
       } else {
-        setError(data.error || "Failed to approve");
+        setError(data.error || "Failed to save report data");
       }
     } catch {
       setError("Network error");
     } finally {
-      setApproving(false);
+      setSavingReportData(false);
     }
   };
 
-  const handleReject = async () => {
+const handleApprove = async () => {
+	setApproving(true);
+	setError("");
+
+	try {
+		const res = await fetch(`/api/admin/inspections/${inspectionId}/approve`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ reviewNotes }),
+		});
+
+		const data = await res.json();
+		if (data.success) {
+			setSuccess("Inspection approved! Client notification sent.");
+			setTimeout(() => router.push("/admin"), 2000);
+		} else {
+			setError(data.error || "Failed to approve");
+		}
+	} catch {
+		setError("Network error");
+	} finally {
+		setApproving(false);
+	}
+};
+
+const handleReject = async () => {
     if (!selectedRejectStage) {
       setError("Please select a stage to return for corrections");
       return;
@@ -240,6 +303,9 @@ export default function AdminInspectionReviewPage() {
   }
 
   const isActionable = inspection.status === "SUBMITTED" || inspection.status === "UNDER_REVIEW";
+  const handleReportDataChange = (field: keyof typeof reportData, value: string) => {
+    setReportData((prev) => ({ ...prev, [field]: value }));
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 pb-8">
@@ -320,43 +386,98 @@ export default function AdminInspectionReviewPage() {
           </div>
         </div>
 
-        {/* Findings */}
-        <div className="bg-white rounded-xl p-6 shadow-sm">
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <FileText className="w-4 h-4" /> Inspection Findings
-          </h3>
-          <div className="grid md:grid-cols-2 gap-6">
-            <dl className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <dt className="text-gray-500">Overall Condition</dt>
-                <dd className="font-bold text-lg">
-                  {inspection.overallCondition?.replace("_", " ") || "N/A"}
-                </dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="text-gray-500">Pipe Rating</dt>
-                <dd className="font-medium">{inspection.pipeConditionRating}/5</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="text-gray-500">Connection to Main</dt>
-                <dd className="font-medium">{inspection.connectionToMain || "N/A"}</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="text-gray-500">Urgency</dt>
-                <dd className={`font-medium ${
-                  inspection.urgencyLevel === "IMMEDIATE" ? "text-red-600" : ""
-                }`}>
-                  {inspection.urgencyLevel?.replace("_", " ") || "N/A"}
-                </dd>
-              </div>
-            </dl>
-            <div>
-              <p className="text-gray-500 text-sm mb-1">Recommendations</p>
-              <p className="text-gray-900 whitespace-pre-wrap">
-                {inspection.recommendations || "None provided"}
-              </p>
-            </div>
-          </div>
+        {/* Report Data */}
+        <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
+        	<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        		<h3 className="font-semibold text-gray-900 flex items-center gap-2">
+        			<FileText className="w-4 h-4" /> Report Data
+        		</h3>
+        		<button
+        			type="button"
+        			onClick={handleSaveReportData}
+        			disabled={savingReportData}
+        			className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
+        		>
+        			{savingReportData ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
+        			Save Report Data
+        		</button>
+        	</div>
+        	<div className="grid md:grid-cols-2 gap-4">
+        		<label className="block text-sm">
+        			<span className="text-gray-600">Confirmed Client Name</span>
+        			<input type="text" value={reportData.confirmedClientName} onChange={(e) => handleReportDataChange("confirmedClientName", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" />
+        		</label>
+        		<label className="block text-sm">
+        			<span className="text-gray-600">Confirmed Address</span>
+        			<input type="text" value={reportData.confirmedAddress} onChange={(e) => handleReportDataChange("confirmedAddress", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" />
+        		</label>
+        		<label className="block text-sm">
+        			<span className="text-gray-600">Home Age</span>
+        			<input type="text" value={reportData.homeAge} onChange={(e) => handleReportDataChange("homeAge", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" />
+        		</label>
+        		<label className="block text-sm">
+        			<span className="text-gray-600">Pipe Material</span>
+        			<select value={reportData.pipeMaterial} onChange={(e) => handleReportDataChange("pipeMaterial", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg bg-white">
+        				<option value="">Not set</option>
+        				<option value="CAST_IRON">Cast Iron</option>
+        				<option value="CLAY">Clay</option>
+        				<option value="PVC">PVC</option>
+        				<option value="ABS">ABS</option>
+        				<option value="ORANGEBURG">Orangeburg</option>
+        				<option value="CONCRETE">Concrete</option>
+        				<option value="HDPE">HDPE</option>
+        				<option value="UNKNOWN">Unknown</option>
+        			</select>
+        		</label>
+        		<label className="block text-sm">
+        			<span className="text-gray-600">Overall Condition</span>
+        			<select value={reportData.overallCondition} onChange={(e) => handleReportDataChange("overallCondition", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg bg-white">
+        				<option value="">Not set</option>
+        				<option value="GOOD">Good</option>
+        				<option value="FAIR">Fair</option>
+        				<option value="NEEDS_ATTENTION">Needs Attention</option>
+        				<option value="CRITICAL">Critical</option>
+        			</select>
+        		</label>
+        		<label className="block text-sm">
+        			<span className="text-gray-600">Pipe Rating</span>
+        			<input type="number" min="1" max="5" value={reportData.pipeConditionRating} onChange={(e) => handleReportDataChange("pipeConditionRating", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" />
+        		</label>
+        		<label className="block text-sm">
+        			<span className="text-gray-600">Connection to Main</span>
+        			<input type="text" value={reportData.connectionToMain} onChange={(e) => handleReportDataChange("connectionToMain", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" />
+        		</label>
+        		<label className="block text-sm">
+        			<span className="text-gray-600">Urgency Level</span>
+        			<select value={reportData.urgencyLevel} onChange={(e) => handleReportDataChange("urgencyLevel", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg bg-white">
+        				<option value="">Not set</option>
+        				<option value="NONE">None</option>
+        				<option value="MONITOR">Monitor</option>
+        				<option value="SOON">Soon</option>
+        				<option value="IMMEDIATE">Immediate</option>
+        			</select>
+        		</label>
+        	</div>
+        	<label className="block text-sm">
+        		<span className="text-gray-600">Known Issues</span>
+        		<textarea rows={2} value={reportData.knownIssues} onChange={(e) => handleReportDataChange("knownIssues", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" />
+        	</label>
+        	<label className="block text-sm">
+        		<span className="text-gray-600">Backup History</span>
+        		<textarea rows={2} value={reportData.backupHistory} onChange={(e) => handleReportDataChange("backupHistory", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" />
+        	</label>
+        	<label className="block text-sm">
+        		<span className="text-gray-600">Recent Work</span>
+        		<textarea rows={2} value={reportData.recentWork} onChange={(e) => handleReportDataChange("recentWork", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" />
+        	</label>
+        	<label className="block text-sm">
+        		<span className="text-gray-600">Special Instructions</span>
+        		<textarea rows={2} value={reportData.specialInstructions} onChange={(e) => handleReportDataChange("specialInstructions", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" />
+        	</label>
+        	<label className="block text-sm">
+        		<span className="text-gray-600">Report Notes</span>
+        		<textarea rows={4} value={reportData.recommendations} onChange={(e) => handleReportDataChange("recommendations", e.target.value)} className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" />
+        	</label>
         </div>
 
         {/* Attachments */}

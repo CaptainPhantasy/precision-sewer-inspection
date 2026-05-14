@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCurrentUser, hasRole } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
+import { isFieldOperatorRole } from "@/lib/auth/permissions";
 import { prisma } from "@/lib/db";
 import { ChapterType, FindingSeverity } from "@prisma/client";
 
@@ -10,7 +11,7 @@ export async function GET(
 ) {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["TECHNICIAN", "ADMIN", "SUPER_ADMIN"])) {
+    if (!user || !isFieldOperatorRole(user?.role)) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
@@ -55,7 +56,7 @@ export async function POST(
 ) {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["TECHNICIAN", "ADMIN", "SUPER_ADMIN"])) {
+    if (!user || !isFieldOperatorRole(user?.role)) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
@@ -124,7 +125,7 @@ export async function DELETE(
 ) {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["TECHNICIAN", "ADMIN", "SUPER_ADMIN"])) {
+    if (!user || !isFieldOperatorRole(user?.role)) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
@@ -161,7 +162,7 @@ export async function PATCH(
 ) {
   try {
     const user = await getCurrentUser();
-    if (!user || !hasRole(user, ["TECHNICIAN", "ADMIN", "SUPER_ADMIN"])) {
+    if (!user || !isFieldOperatorRole(user?.role)) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
