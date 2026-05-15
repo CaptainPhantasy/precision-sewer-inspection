@@ -122,6 +122,10 @@ export async function POST(request: NextRequest) {
     
     // Get origin for redirect URLs
     const origin = request.headers.get('origin') || 'https://precisionsewerinspections.com';
+    const stripeCustomerEmail =
+      typeof customerEmail === 'string' && customerEmail.trim().length > 0
+        ? customerEmail.trim()
+        : undefined;
 
     // Create or get the SAVE10 coupon for $10 off
     let discounts: Array<{ coupon: string }> = [];
@@ -187,7 +191,7 @@ export async function POST(request: NextRequest) {
       discounts: discounts.length > 0 ? discounts : undefined,
       success_url: `${origin}/booking/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/contact`,
-      customer_email: customerEmail,
+      customer_email: stripeCustomerEmail,
       metadata: {
         customerName,
         customerPhone,
@@ -205,6 +209,7 @@ export async function POST(request: NextRequest) {
         submissionId: submissionId || '',
       },
       payment_intent_data: {
+        receipt_email: stripeCustomerEmail,
         metadata: {
           customerName,
           customerPhone,
