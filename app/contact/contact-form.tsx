@@ -87,6 +87,7 @@ export default function ContactForm() {
     directions: '',
     agreeToTerms: false,
     subscribeNewsletter: false,
+    addOns: [] as string[],
   })
 
   const { captureField, markConverted } = useLeadCapture('booking-form')
@@ -254,7 +255,7 @@ export default function ContactForm() {
           propertyAddress: fullAddress,
           accessMethod: formData.serviceType.includes('toilet') ? 'toilet-pull' : formData.serviceType.includes('roof') ? 'roof-vent' : 'cleanout',
           sewerAccessMethod: formData.cleanoutLocation,
-          addOns: [],
+          addOns: formData.addOns,
           message: `Occupancy: ${formData.occupancy}\nAccess: ${formData.propertyAccess}\nCleanout: ${formData.cleanoutLocation}\nReferrer: ${formData.referrerName}\nBuyer's Agent: ${formData.buyersAgent}\nListing Agent: ${formData.listingAgent}\nHow heard: ${formData.howHeardAboutUs}\nDirections: ${formData.directions}`,
           promoCode: promoDiscount?.code || formData.promoCode,
           discountAmount: promoDiscount?.amount,
@@ -382,10 +383,24 @@ export default function ContactForm() {
             <h2 className="text-2xl font-bold text-gray-900">Job Details</h2>
             <p className="text-gray-600 text-sm">Tell us about the property and how we can access it.</p>
           </div>
-
-          <div className="bg-primary-900 text-white rounded-lg p-4 flex justify-between items-center">
-            <span className="font-semibold">{serviceTypes.find(s => s.value === formData.serviceType)?.label}</span>
-            <span className="font-bold">${getServicePrice()}.00</span>
+          <div className="bg-primary-900 text-white rounded-lg p-4 space-y-3">
+            <label htmlFor="serviceType" className="block text-sm font-medium text-primary-200">Select Service Type</label>
+            <select
+              id="serviceType"
+              name="serviceType"
+              value={formData.serviceType}
+              onChange={handleChange}
+              className="w-full bg-white text-gray-900 rounded-lg px-4 py-3 font-semibold focus:ring-2 focus:ring-primary-400"
+            >
+              {serviceTypes.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label} - ${opt.price}</option>
+              ))}
+            </select>
+            <div className="text-sm text-primary-200 space-y-1">
+              <p><span className="font-semibold">Standard ($159):</span> Cleanout access available</p>
+              <p><span className="font-semibold">Toilet Pull ($224):</span> +$65 includes new wax ring &amp; supply line</p>
+              <p><span className="font-semibold">Roof Vent ($209):</span> +$50 via plumbing vent pipe</p>
+            </div>
           </div>
 
           <div>
@@ -738,18 +753,68 @@ export default function ContactForm() {
 
           {/* Items / Pricing */}
           <div className="bg-white border rounded-xl p-4">
-            <h3 className="text-primary-600 font-semibold mb-3">Service Summary</h3>
             <div className="flex justify-between items-center text-sm border-b pb-2 mb-2">
               <span>{serviceTypes.find(s => s.value === formData.serviceType)?.label}</span>
               <span>1 X ${getServicePrice()}.00</span>
             </div>
+            {/* Add-ons Selection */}
+            {formData.serviceType === 'sewer-inspection' && (
+              <div className="border-t pt-3 mt-3">
+                <p className="text-sm font-medium text-gray-700 mb-2">Add-ons (optional):</p>
+                <div className="space-y-2">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.addOns.includes('toilet-pull')}
+                      onChange={(e) => {
+                        const newAddOns = e.target.checked
+                          ? [...formData.addOns, 'toilet-pull']
+                          : formData.addOns.filter(a => a !== 'toilet-pull');
+                        setFormData(prev => ({ ...prev, addOns: newAddOns }));
+                      }}
+                      className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                    />
+                    <span className="text-sm">Toilet Pull &amp; Reset (+$65) <span className="text-gray-500">includes new wax ring &amp; supply line</span></span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.addOns.includes('roof-vent')}
+                      onChange={(e) => {
+                        const newAddOns = e.target.checked
+                          ? [...formData.addOns, 'roof-vent']
+                          : formData.addOns.filter(a => a !== 'roof-vent');
+                        setFormData(prev => ({ ...prev, addOns: newAddOns }));
+                      }}
+                      className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                    />
+                    <span className="text-sm">Roof Vent Access (+$50)</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.addOns.includes('crawl-space')}
+                      onChange={(e) => {
+                        const newAddOns = e.target.checked
+                          ? [...formData.addOns, 'crawl-space']
+                          : formData.addOns.filter(a => a !== 'crawl-space');
+                        setFormData(prev => ({ ...prev, addOns: newAddOns }));
+                      }}
+                      className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                    />
+                    <span className="text-sm">Crawl Space Access (+$30)</span>
+                  </label>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">Note: If a cleanout is unavailable on-site, technician may need to use an alternate access method (additional charges may apply).</p>
+              </div>
+            )}
             <div className="space-y-1 text-sm">
-              <div className="flex justify-between"><span>Subtotal:</span><span className="font-semibold">${calculateTotal()}.00</span></div>
+              <div className="flex justify-between"><span>Subtotal:</span><span className="font-semibold">${calculateTotal() + (formData.addOns.includes('toilet-pull') ? 65 : 0) + (formData.addOns.includes('roof-vent') ? 50 : 0) + (formData.addOns.includes('crawl-space') ? 30 : 0)}.00</span></div>
               {promoDiscount && (
                 <div className="flex justify-between text-green-600"><span>Promo ({promoDiscount.code}):</span><span>-${promoDiscount.amount}.00</span></div>
               )}
               <div className="flex justify-between"><span>Tax:</span><span>$0.00</span></div>
-              <div className="flex justify-between font-bold text-lg pt-2 border-t"><span>Total:</span><span>${calculateFinalTotal()}.00</span></div>
+              <div className="flex justify-between font-bold text-lg pt-2 border-t"><span>Total:</span><span>${calculateFinalTotal() + (formData.addOns.includes('toilet-pull') ? 65 : 0) + (formData.addOns.includes('roof-vent') ? 50 : 0) + (formData.addOns.includes('crawl-space') ? 30 : 0)}.00</span></div>
             </div>
             {formData.referrerName && (
               <div className="mt-4 pt-3 border-t text-sm text-gray-600">Thanks for choosing Precision Sewer Inspection!</div>

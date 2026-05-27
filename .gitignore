@@ -63,3 +63,5 @@ pebkac-starter/
 prisma/.pi-lens/
 scripts/check_users.ts
 scripts/send-backfill-admin-emails.ts
+# local quarantine/cleanup artifacts
+.quarantine/

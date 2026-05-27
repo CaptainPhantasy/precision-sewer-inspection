@@ -22,10 +22,15 @@ const SECRET_PATTERNS: Array<{ name: string; regex: RegExp }> = [
 
 const ALLOWLIST_PATTERNS = [
   "your-api-key",
+  "your_password",
+  "your-sendgrid-api-key",
+  "SENDGRID_API_KEY='SG.your-sendgrid-api-key'",
   "generate-a-32-character-random-string-here",
   "generate-a-separate-download-token-secret",
+  "postgresql://your_username:[REDACTED]@your_host:5432/your_database",
   "postgresql://your_username:your_password@your_host:5432/your_database",
   "DATABASE_URL=postgresql://...",
+  "[REDACTED]",
 ];
 
 function getTrackedFiles(rootDir: string): string[] {
