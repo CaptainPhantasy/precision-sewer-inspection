@@ -240,11 +240,11 @@ export default function LocatingPage() {
     <div className="min-h-screen flex flex-col">
       <Toaster position="top-center" />
       
-      {/* Promo Banner */}
+      {/* Pricing Banner */}
       <div className="bg-accent-500 text-white py-2 px-4 text-center text-sm font-medium">
         <span className="inline-flex items-center gap-2">
-          🎉 $10 Off Your First Locate!
-          <Link href="#booking" className="underline hover:no-underline">Book Now →</Link>
+          Private utility locates start at $125 for the first hour.
+          <Link href="#booking" className="underline hover:no-underline">Request Service →</Link>
         </span>
       </div>
 

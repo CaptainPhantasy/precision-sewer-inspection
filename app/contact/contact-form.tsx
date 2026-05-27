@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { Send, Loader2, CheckCircle, AlertCircle, CreditCard, Tag, Calendar, Clock, ChevronRight, ArrowLeft, User, MapPin, FileText, Edit2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { getPromoDiscount } from '@/components/promo-banner'
+import { ADD_ON_OPTIONS, AddOnId, calculateCheckoutPricing, formatCents, SERVICE_OPTIONS, ServiceType } from '@/lib/checkout-pricing'
 import { COMPANY_INFO } from '@/lib/constants'
 import { useLeadCapture } from '@/hooks/use-lead-capture'
 
@@ -29,11 +30,7 @@ const howHeardOptions = [
   { value: 'other', label: 'Other' },
 ]
 
-const serviceTypes = [
-  { value: 'sewer-inspection', label: 'Sewer Scope w/ HD Video', price: 159 },
-  { value: 'sewer-inspection-toilet', label: 'Sewer Scope — Toilet Pull Access', price: 224 },
-  { value: 'sewer-inspection-roof', label: 'Sewer Scope — Roof Vent Access', price: 209 },
-]
+const serviceTypes = SERVICE_OPTIONS
 
 interface TimeSlot {
   start: string;
@@ -87,7 +84,8 @@ export default function ContactForm() {
     directions: '',
     agreeToTerms: false,
     subscribeNewsletter: false,
-    addOns: [] as string[],
+    accessVerified: false,
+    addOns: [] as AddOnId[],
   })
 
   const { captureField, markConverted } = useLeadCapture('booking-form')
@@ -103,12 +101,36 @@ export default function ContactForm() {
   const [currentMonth, setCurrentMonth] = useState(new Date())
 
   useEffect(() => {
+    let savedDraft: Partial<typeof formData> = {}
+    try {
+      const storedDraft = sessionStorage.getItem('psiBookingDraft')
+      if (storedDraft) {
+        savedDraft = JSON.parse(storedDraft)
+      }
+    } catch {
+      sessionStorage.removeItem('psiBookingDraft')
+    }
+
     const discount = getPromoDiscount()
     if (discount) {
       setPromoDiscount(discount)
-      setFormData(prev => ({ ...prev, promoCode: discount.code }))
     }
+
+    setFormData(prev => ({
+      ...prev,
+      ...savedDraft,
+      agreeToTerms: false,
+      promoCode: discount?.code || savedDraft.promoCode || prev.promoCode,
+    }))
   }, [])
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem('psiBookingDraft', JSON.stringify({ ...formData, agreeToTerms: false }))
+    } catch {
+      // Draft persistence is best-effort; checkout must continue even if storage is unavailable.
+    }
+  }, [formData])
 
   useEffect(() => {
     if (currentStep === 'datetime' && availability.length === 0) {
@@ -149,6 +171,23 @@ export default function ContactForm() {
     }))
   }
 
+  const handleServiceTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      serviceType: e.target.value as ServiceType,
+      accessVerified: false,
+    }))
+  }
+
+  const toggleAddOn = (addOnId: AddOnId, checked: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      addOns: checked
+        ? Array.from(new Set([...prev.addOns, addOnId]))
+        : prev.addOns.filter(id => id !== addOnId),
+    }))
+  }
+
   // Lead capture on blur for key fields
   const handleLeadBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -185,23 +224,26 @@ export default function ContactForm() {
     setFormData(prev => ({ ...prev, selectedDate: date, selectedTimeSlot: null }))
   }
 
-  const getServicePrice = () => {
-    const service = serviceTypes.find(s => s.value === formData.serviceType)
-    return service?.price || 159
-  }
-
-  const calculateTotal = () => getServicePrice()
-
-  const calculateFinalTotal = () => {
-    const subtotal = calculateTotal()
-    if (promoDiscount) return Math.max(subtotal - promoDiscount.amount, 0)
-    return subtotal
+  const activePromoCode = promoDiscount?.code || formData.promoCode
+  const pricing = calculateCheckoutPricing(formData.serviceType, formData.addOns, activePromoCode)
+  const getAccessVerificationCopy = () => {
+    if (formData.serviceType === 'sewer-inspection-toilet') {
+      return 'I confirm toilet pull/reset access is needed and approve the +$65 charge, including a new wax ring and supply line.'
+    }
+    if (formData.serviceType === 'sewer-inspection-roof') {
+      return 'I confirm roof vent access is needed and approve the +$50 roof vent access charge.'
+    }
+    return 'I verified a usable cleanout is accessible. If it is not accessible on-site, I understand alternate access or trip fees may apply.'
   }
 
   const validateStep = (step: Step): boolean => {
     if (step === 'job-details') {
       if (!formData.occupancy) {
         toast.error('Please select occupancy status')
+        return false
+      }
+      if (!formData.accessVerified) {
+        toast.error('Please verify the selected access method and any related charges')
         return false
       }
       return true
@@ -257,8 +299,7 @@ export default function ContactForm() {
           sewerAccessMethod: formData.cleanoutLocation,
           addOns: formData.addOns,
           message: `Occupancy: ${formData.occupancy}\nAccess: ${formData.propertyAccess}\nCleanout: ${formData.cleanoutLocation}\nReferrer: ${formData.referrerName}\nBuyer's Agent: ${formData.buyersAgent}\nListing Agent: ${formData.listingAgent}\nHow heard: ${formData.howHeardAboutUs}\nDirections: ${formData.directions}`,
-          promoCode: promoDiscount?.code || formData.promoCode,
-          discountAmount: promoDiscount?.amount,
+          promoCode: activePromoCode,
           appointmentStart: formData.selectedTimeSlot?.start,
           appointmentEnd: formData.selectedTimeSlot?.end,
           appointmentDisplay: formData.selectedTimeSlot?.display,
@@ -389,17 +430,17 @@ export default function ContactForm() {
               id="serviceType"
               name="serviceType"
               value={formData.serviceType}
-              onChange={handleChange}
+              onChange={handleServiceTypeChange}
               className="w-full bg-white text-gray-900 rounded-lg px-4 py-3 font-semibold focus:ring-2 focus:ring-primary-400"
             >
               {serviceTypes.map(opt => (
-                <option key={opt.value} value={opt.value}>{opt.label} - ${opt.price}</option>
+                <option key={opt.value} value={opt.value}>{opt.label} - {formatCents(opt.amountCents)}</option>
               ))}
             </select>
             <div className="text-sm text-primary-200 space-y-1">
-              <p><span className="font-semibold">Standard ($159):</span> Cleanout access available</p>
-              <p><span className="font-semibold">Toilet Pull ($224):</span> +$65 includes new wax ring &amp; supply line</p>
-              <p><span className="font-semibold">Roof Vent ($209):</span> +$50 via plumbing vent pipe</p>
+              {serviceTypes.map(option => (
+                <p key={option.value}><span className="font-semibold">{option.label} ({formatCents(option.amountCents)}):</span> {option.description}</p>
+              ))}
             </div>
           </div>
 
@@ -454,8 +495,13 @@ export default function ContactForm() {
             <p>&#8226; Need a date or time not shown? Call us at <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="text-primary-600 font-semibold hover:underline">{COMPANY_INFO.phone}</a> — we&apos;ll do our best to work with your schedule.</p>
             <p>&#8226; Every inspection includes a detailed written report and HD video recording, delivered to your inbox within 24 hours.</p>
             <p>&#8226; Payment is collected at checkout before service is confirmed.</p>
-            <p>&#8226; Your satisfaction matters to us. If a cleanout is not accessible on-site, by proceeding you authorize Precision Sewer Inspection to access the sewer line through an alternate method (toilet pull or roof vent).</p>
+            <p>&#8226; Before continuing, verify the selected access method. Standard pricing requires an accessible cleanout; toilet pull/reset includes a new wax ring and supply line; roof vent access is a separate priced access method.</p>
           </div>
+
+          <label className="flex items-start gap-3 p-4 border border-amber-200 bg-amber-50 rounded-lg cursor-pointer">
+            <input type="checkbox" name="accessVerified" checked={formData.accessVerified} onChange={handleChange} className="w-5 h-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5" required />
+            <span className="text-sm text-amber-900"><span className="font-semibold">Access verification required:</span> {getAccessVerificationCopy()}</span>
+          </label>
 
           <button type="button" onClick={goToNextStep} className="w-full btn-primary flex items-center justify-center gap-2 py-4 text-lg">
             CONTINUE <ChevronRight className="w-5 h-5" />
@@ -698,6 +744,8 @@ export default function ContactForm() {
                 <button type="button" onClick={() => goToStep('job-details')} className="text-primary-600 text-sm flex items-center gap-1 hover:underline"><Edit2 className="w-3 h-3" /> Edit</button>
               </div>
               <div className="space-y-2 text-sm">
+                <div><span className="text-gray-500">Service/access selected:</span> <span className="font-medium">{pricing.service.label}</span></div>
+                <div><span className="text-gray-500">Access verification:</span> <span className="font-medium">{formData.accessVerified ? 'Confirmed' : 'Not confirmed'}</span></div>
                 <div><span className="text-gray-500">Occupancy status:</span> <span className="font-medium capitalize">{formData.occupancy}</span></div>
                 <div><span className="text-gray-500">Access instructions:</span> <span className="font-medium">{formData.propertyAccess || 'N/A'}</span></div>
                 <div><span className="text-gray-500">Cleanout location:</span> <span className="font-medium">{formData.cleanoutLocation || 'N/A'}</span></div>
@@ -754,67 +802,45 @@ export default function ContactForm() {
           {/* Items / Pricing */}
           <div className="bg-white border rounded-xl p-4">
             <div className="flex justify-between items-center text-sm border-b pb-2 mb-2">
-              <span>{serviceTypes.find(s => s.value === formData.serviceType)?.label}</span>
-              <span>1 X ${getServicePrice()}.00</span>
+              <span>{pricing.service.label}</span>
+              <span>1 X {formatCents(pricing.service.amountCents)}</span>
             </div>
             {/* Add-ons Selection */}
-            {formData.serviceType === 'sewer-inspection' && (
-              <div className="border-t pt-3 mt-3">
-                <p className="text-sm font-medium text-gray-700 mb-2">Add-ons (optional):</p>
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={formData.addOns.includes('toilet-pull')}
-                      onChange={(e) => {
-                        const newAddOns = e.target.checked
-                          ? [...formData.addOns, 'toilet-pull']
-                          : formData.addOns.filter(a => a !== 'toilet-pull');
-                        setFormData(prev => ({ ...prev, addOns: newAddOns }));
-                      }}
-                      className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                    />
-                    <span className="text-sm">Toilet Pull &amp; Reset (+$65) <span className="text-gray-500">includes new wax ring &amp; supply line</span></span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={formData.addOns.includes('roof-vent')}
-                      onChange={(e) => {
-                        const newAddOns = e.target.checked
-                          ? [...formData.addOns, 'roof-vent']
-                          : formData.addOns.filter(a => a !== 'roof-vent');
-                        setFormData(prev => ({ ...prev, addOns: newAddOns }));
-                      }}
-                      className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                    />
-                    <span className="text-sm">Roof Vent Access (+$50)</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={formData.addOns.includes('crawl-space')}
-                      onChange={(e) => {
-                        const newAddOns = e.target.checked
-                          ? [...formData.addOns, 'crawl-space']
-                          : formData.addOns.filter(a => a !== 'crawl-space');
-                        setFormData(prev => ({ ...prev, addOns: newAddOns }));
-                      }}
-                      className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                    />
-                    <span className="text-sm">Crawl Space Access (+$30)</span>
-                  </label>
-                </div>
-                <p className="text-xs text-gray-500 mt-2">Note: If a cleanout is unavailable on-site, technician may need to use an alternate access method (additional charges may apply).</p>
+            <div className="border-t pt-3 mt-3">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-medium text-gray-700">Needed items / add-ons:</p>
+                <button type="button" onClick={() => goToStep('job-details')} className="text-primary-600 text-sm flex items-center gap-1 hover:underline"><Edit2 className="w-3 h-3" /> Edit service</button>
               </div>
-            )}
-            <div className="space-y-1 text-sm">
-              <div className="flex justify-between"><span>Subtotal:</span><span className="font-semibold">${calculateTotal() + (formData.addOns.includes('toilet-pull') ? 65 : 0) + (formData.addOns.includes('roof-vent') ? 50 : 0) + (formData.addOns.includes('crawl-space') ? 30 : 0)}.00</span></div>
-              {promoDiscount && (
-                <div className="flex justify-between text-green-600"><span>Promo ({promoDiscount.code}):</span><span>-${promoDiscount.amount}.00</span></div>
+              <div className="space-y-2">
+                {ADD_ON_OPTIONS.map(addOn => (
+                  <label key={addOn.id} className="flex items-start gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.addOns.includes(addOn.id)}
+                      onChange={(e) => toggleAddOn(addOn.id, e.target.checked)}
+                      className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5"
+                    />
+                    <span className="text-sm">
+                      {addOn.label} ({formatCents(addOn.amountCents)}) <span className="text-gray-500">{addOn.description}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 mt-2">Verify these before checkout. If needed items are discovered on-site after checkout, they may need to be charged separately.</p>
+            </div>
+            <div className="space-y-1 text-sm mt-3">
+              {pricing.addOnItems.map(addOn => (
+                <div key={addOn.id} className="flex justify-between text-gray-700">
+                  <span>{addOn.label}</span>
+                  <span>{formatCents(addOn.amountCents)}</span>
+                </div>
+              ))}
+              <div className="flex justify-between"><span>Subtotal:</span><span className="font-semibold">{formatCents(pricing.subtotalCents)}</span></div>
+              {pricing.promoApplied && (
+                <div className="flex justify-between text-green-600"><span>Promo ({activePromoCode.trim().toUpperCase()}):</span><span>-{formatCents(pricing.discountCents)}</span></div>
               )}
               <div className="flex justify-between"><span>Tax:</span><span>$0.00</span></div>
-              <div className="flex justify-between font-bold text-lg pt-2 border-t"><span>Total:</span><span>${calculateFinalTotal() + (formData.addOns.includes('toilet-pull') ? 65 : 0) + (formData.addOns.includes('roof-vent') ? 50 : 0) + (formData.addOns.includes('crawl-space') ? 30 : 0)}.00</span></div>
+              <div className="flex justify-between font-bold text-lg pt-2 border-t"><span>Total:</span><span>{formatCents(pricing.totalCents)}</span></div>
             </div>
             {formData.referrerName && (
               <div className="mt-4 pt-3 border-t text-sm text-gray-600">Thanks for choosing Precision Sewer Inspection!</div>
@@ -835,7 +861,7 @@ export default function ContactForm() {
                 <p>&#8226; <strong>Trip Fee:</strong> A $79 trip fee applies if access is unavailable at the scheduled time.</p>
                 <p>&#8226; <strong>Access Method:</strong> If the access method differs from what was selected, additional charges may apply.</p>
                 <p>&#8226; <strong>Cleanout Access:</strong> If there is no available cleanout, you are approving Precision Sewer Inspection to access the sewer line via toilet removal/reinstallation or roof vent pipe access.</p>
-                <p>&#8226; <strong>Payment:</strong> Payment is due upon receipt of the inspection report.</p>
+                <p>&#8226; <strong>Payment:</strong> Payment is collected at checkout before service is confirmed.</p>
                 <p>&#8226; <strong>Report Delivery:</strong> Written report and video will be emailed within 24 hours of inspection.</p>
               </div>
             )}

@@ -16,6 +16,7 @@ import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ACCESS_METHODS, getActivePromotion } from "@/lib/constants";
+import { PROMO_PERCENT } from "@/lib/checkout-pricing";
 
 interface Message {
 	role: "user" | "assistant";
@@ -112,9 +113,10 @@ function generateDynamicGreeting(): string {
 
 	// Build pricing text dynamically
 	if (promo && promo.isActive) {
-		const discountedPrice =
-			Number.parseInt(basePrice.replace("$", "")) - promo.discountAmount;
-		greeting += `• [Book a sewer inspection](/contact) - ${basePrice} (or $${discountedPrice} with our ${promo.code} discount!)\n`;
+		const promoText = promo.discountType === "percent"
+			? `${promo.discountAmount}% off`
+			: `$${promo.discountAmount} off`;
+		greeting += `• [Book a sewer inspection](/contact) - ${basePrice} (${promoText} with ${promo.code})\n`;
 	} else {
 		greeting += `• [Book a sewer inspection](/contact) - Starting at ${basePrice}\n`;
 	}
@@ -125,7 +127,7 @@ function generateDynamicGreeting(): string {
 
 	// Add promo tip only if there's an active promotion
 	if (promo && promo.isActive) {
-		greeting += `\n💰 **Tip:** ${promo.bannerText}\n`;
+		greeting += `\n**Tip:** Use ${promo.code} for ${PROMO_PERCENT}% off eligible sewer inspection checkout.\n`;
 	}
 
 	greeting += `\nWhat can I help you with?`;

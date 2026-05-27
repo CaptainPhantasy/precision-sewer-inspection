@@ -1,3 +1,4 @@
+import { PROMO_CODE, PROMO_PERCENT } from './checkout-pricing'
 export const COMPANY_INFO = {
   name: 'Precision Sewer Inspection',
   phone: '(317) 620-3858',
@@ -208,14 +209,22 @@ export const TEAM_MEMBERS = [
     experience: '5+ years',
   },
 ]
+type DiscountType = 'fixed' | 'percent'
 
-// Active promotions - set to null or empty array when no promotions are active
-export const ACTIVE_PROMOTIONS = [
+export const ACTIVE_PROMOTIONS: Array<{
+  code: string
+  description: string
+  discountAmount: number
+  discountType: DiscountType
+  appliesTo: string
+  bannerText: string
+  isActive: boolean
+}> = [
   {
-    code: 'SAVE10',
-    description: '$10 off your first sewer inspection',
-    discountAmount: 10,
-    discountType: 'fixed' as const, // 'fixed' or 'percent'
+    code: PROMO_CODE,
+    description: '10% off your first sewer inspection',
+    discountAmount: PROMO_PERCENT,
+    discountType: 'percent',
     appliesTo: 'sewer-inspection',
     bannerText: 'Click the banner at the top of any page to claim!',
     isActive: true,

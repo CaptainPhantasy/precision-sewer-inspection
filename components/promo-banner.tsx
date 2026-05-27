@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { X, Tag, ArrowRight } from 'lucide-react'
+import { PROMO_CODE, PROMO_PERCENT } from '@/lib/checkout-pricing'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const PROMO_CODE = 'SAVE10'
-const DISCOUNT_AMOUNT = 10
+const DISCOUNT_AMOUNT = PROMO_PERCENT
 
 export function setPromoDiscount() {
   if (typeof window !== 'undefined') {
@@ -111,12 +111,12 @@ export default function PromoBanner() {
                   {hasDiscount ? (
                     <span className="flex items-center gap-2">
                       <span className="bg-white/20 px-2 py-0.5 rounded text-xs sm:text-sm">SAVE10 Applied!</span>
-                      <span>Complete your booking to save $10</span>
+                      <span>Complete your booking to save 10%</span>
                     </span>
                   ) : (
                     <>
-                      <span className="hidden sm:inline">🎉 Limited Time Offer: </span>
-                      <span className="bg-white text-accent-600 px-2 py-0.5 rounded font-bold">$10 OFF</span>
+                      <span className="hidden sm:inline">Limited Time Offer: </span>
+                      <span className="bg-white text-accent-600 px-2 py-0.5 rounded font-bold">10% OFF</span>
                       <span> your first sewer inspection!</span>
                     </>
                   )}

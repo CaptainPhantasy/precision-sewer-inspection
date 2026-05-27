@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe, STRIPE_PRODUCTS } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
-
-const PROMO_DISCOUNT_AMOUNT = 1000; // $10.00 in cents
+import { ADD_ON_OPTIONS, AddOnId, PROMO_CODE, PROMO_PERCENT, STRIPE_PROMO_COUPON_ID, calculateCheckoutPricing, getAccessMethodForServiceType, getServiceTypeForAccessMethod, normalizeAddOns, isPromoCodeValid } from '@/lib/checkout-pricing';
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,7 +16,6 @@ export async function POST(request: NextRequest) {
       addOns = [],
       message,
       promoCode,
-      discountAmount,
       // Calendar booking info
       appointmentStart,
       appointmentEnd,
@@ -38,7 +36,11 @@ export async function POST(request: NextRequest) {
       propertyZip,
     } = body;
 
-    // Build line items based on selections
+    const effectiveServiceType = serviceType || getServiceTypeForAccessMethod(accessMethod);
+    const effectiveAccessMethod = getAccessMethodForServiceType(effectiveServiceType);
+    const selectedAddOns = normalizeAddOns(addOns);
+
+    // Build line items based on normalized selections.
     const lineItems: Array<{
       price_data: {
         currency: string;
@@ -62,7 +64,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Add access method fees
-    if (accessMethod === 'roof-vent') {
+    if (effectiveAccessMethod === 'roof-vent') {
       lineItems.push({
         price_data: {
           currency: 'usd',
@@ -74,7 +76,7 @@ export async function POST(request: NextRequest) {
         },
         quantity: 1,
       });
-    } else if (accessMethod === 'toilet-pull') {
+    } else if (effectiveAccessMethod === 'toilet-pull') {
       lineItems.push({
         price_data: {
           currency: 'usd',
@@ -89,36 +91,33 @@ export async function POST(request: NextRequest) {
     }
 
     // Add-ons
-    if (addOns.includes('same-day')) {
+    const addOnProductById: Record<AddOnId, typeof STRIPE_PRODUCTS.SAME_DAY_DELIVERY> = {
+      'same-day': STRIPE_PRODUCTS.SAME_DAY_DELIVERY,
+      'crawl-space': STRIPE_PRODUCTS.CRAWL_SPACE,
+      'cleanout-cap': STRIPE_PRODUCTS.CLEANOUT_CAP,
+      'additional-cleanout': STRIPE_PRODUCTS.ADDITIONAL_CLEANOUT,
+    };
+
+    for (const addOn of ADD_ON_OPTIONS) {
+      if (!selectedAddOns.includes(addOn.id)) continue;
+      const product = addOnProductById[addOn.id];
       lineItems.push({
         price_data: {
           currency: 'usd',
           product_data: {
-            name: STRIPE_PRODUCTS.SAME_DAY_DELIVERY.name,
-            description: STRIPE_PRODUCTS.SAME_DAY_DELIVERY.description,
+            name: product.name,
+            description: product.description,
           },
-          unit_amount: STRIPE_PRODUCTS.SAME_DAY_DELIVERY.amount,
+          unit_amount: product.amount,
         },
         quantity: 1,
       });
     }
 
-    if (addOns.includes('crawl-space')) {
-      lineItems.push({
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: STRIPE_PRODUCTS.CRAWL_SPACE.name,
-            description: STRIPE_PRODUCTS.CRAWL_SPACE.description,
-          },
-          unit_amount: STRIPE_PRODUCTS.CRAWL_SPACE.amount,
-        },
-        quantity: 1,
-      });
-    }
-
-    // Apply promo discount if valid
-    const hasValidPromo = promoCode === 'SAVE10' && discountAmount === 10;
+    // Apply promo discount if valid. Validate from the promo code only; never trust
+    // client-supplied discount amounts as proof a discount should apply.
+    const hasValidPromo = isPromoCodeValid(promoCode);
+    const checkoutPricing = calculateCheckoutPricing(effectiveServiceType, selectedAddOns, promoCode);
     
     // Get origin for redirect URLs
     const origin = request.headers.get('origin') || 'https://precisionsewerinspections.com';
@@ -127,24 +126,23 @@ export async function POST(request: NextRequest) {
         ? customerEmail.trim()
         : undefined;
 
-    // Create or get the SAVE10 coupon for $10 off
+    // Create or get the SAVE10 coupon for 10% off
     let discounts: Array<{ coupon: string }> = [];
-    
+
     if (hasValidPromo) {
       try {
         // Try to retrieve existing coupon
-        await stripe.coupons.retrieve('SAVE10');
+        await stripe.coupons.retrieve(STRIPE_PROMO_COUPON_ID);
       } catch {
         // Coupon doesn't exist, create it
         await stripe.coupons.create({
-          id: 'SAVE10',
-          name: '$10 Off First Inspection',
-          amount_off: PROMO_DISCOUNT_AMOUNT,
-          currency: 'usd',
+          id: STRIPE_PROMO_COUPON_ID,
+          name: '10% Off First Inspection',
+          percent_off: PROMO_PERCENT,
           duration: 'once',
         });
       }
-      discounts = [{ coupon: 'SAVE10' }];
+      discounts = [{ coupon: STRIPE_PROMO_COUPON_ID }];
     }
 
     // Save full form data to database BEFORE Stripe redirect
@@ -156,7 +154,7 @@ export async function POST(request: NextRequest) {
           name: customerName || '',
           email: customerEmail || '',
           phone: customerPhone || null,
-          serviceType: serviceType || 'sewer-inspection',
+          serviceType: effectiveServiceType,
           source: 'stripe-booking',
           message: message?.substring(0, 2000) || '',
           status: 'pending-payment',
@@ -174,7 +172,7 @@ export async function POST(request: NextRequest) {
           directions: directions || null,
           appointmentDate: appointmentDate || null,
           appointmentTime: appointmentDisplay || null,
-          promoCode: hasValidPromo ? 'SAVE10' : null,
+          promoCode: hasValidPromo ? PROMO_CODE : null,
         },
       });
       submissionId = submission.id;
@@ -196,17 +194,20 @@ export async function POST(request: NextRequest) {
         customerName,
         customerPhone,
         propertyAddress,
-        accessMethod,
+        accessMethod: effectiveAccessMethod,
         sewerAccessMethod,
-        promoCode: hasValidPromo ? 'SAVE10' : '',
+        addOns: selectedAddOns.join(','),
+        promoCode: hasValidPromo ? PROMO_CODE : '',
         message: message?.substring(0, 500) || '',
         // Calendar booking info
         appointmentStart: appointmentStart || '',
         appointmentEnd: appointmentEnd || '',
         appointmentDisplay: appointmentDisplay || '',
         appointmentDate: appointmentDate || '',
-        serviceType: serviceType || '',
+        serviceType: effectiveServiceType,
         submissionId: submissionId || '',
+        subtotalCents: String(checkoutPricing.subtotalCents),
+        discountCents: String(checkoutPricing.discountCents),
       },
       payment_intent_data: {
         receipt_email: stripeCustomerEmail,
@@ -214,7 +215,8 @@ export async function POST(request: NextRequest) {
           customerName,
           customerPhone,
           propertyAddress,
-          promoCode: hasValidPromo ? 'SAVE10' : '',
+          promoCode: hasValidPromo ? PROMO_CODE : '',
+          addOns: selectedAddOns.join(','),
           appointmentStart: appointmentStart || '',
           appointmentDisplay: appointmentDisplay || '',
         },

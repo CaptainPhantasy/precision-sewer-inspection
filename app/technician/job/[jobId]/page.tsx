@@ -141,7 +141,7 @@ export default function JobDetailsPage() {
       case "ROOF_VENT":
         return "Roof Vent (+$50)";
       case "TOILET_PULL":
-        return "Toilet Pull & Reset (+$250)";
+        return "Toilet Pull & Reset (+$65)";
       default:
         return "To Be Determined";
     }
@@ -245,7 +245,7 @@ export default function JobDetailsPage() {
             {job.hasCrawlSpace && (
               <div className="flex justify-between">
                 <span className="text-gray-600">Crawl Space</span>
-                <span className="font-medium text-orange-600">Yes (+$50)</span>
+                <span className="font-medium text-orange-600">Yes (+$30)</span>
               </div>
             )}
             <div className="border-t pt-2 mt-2 flex justify-between">
