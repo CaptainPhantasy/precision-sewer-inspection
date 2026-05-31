@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import './psi-website.css'
 import { Toaster } from 'react-hot-toast'
-import PromoBanner from '@/components/promo-banner'
 import GoogleAnalytics from '@/components/google-analytics'
 import SiteTracker from '@/components/site-tracker'
 
@@ -102,7 +102,6 @@ export default function RootLayout({
         {/* Chatbot powered by Anthropic Claude via /api/chat */}
       </head>
       <body className="min-h-screen bg-white text-gray-900 antialiased">
-        <PromoBanner />
         {children}
         <Toaster position="bottom-right" />
         <GoogleAnalytics />
