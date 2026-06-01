@@ -11,8 +11,8 @@ export default function WhatWeFind() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
 
   return (
-    <section id="what-we-find" className="section-padding bg-gray-50 scroll-mt-20">
-      <div className="max-w-7xl mx-auto">
+    <section id="what-we-find" className="psi alt">
+      <div className="container">
         <SectionHeading
           label="What We Find"
           title="Common Issues We Discover"
@@ -20,35 +20,34 @@ export default function WhatWeFind() {
           icon={AlertTriangle}
         />
 
-        <div ref={ref} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div ref={ref} className="pipes-grid">
           {PIPE_ISSUES?.map((issue, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="group relative bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
+              className="pipe"
             >
-              <div className="aspect-square relative">
+              <div className="still">
                 <Image
                   src={issue?.image ?? ''}
                   alt={issue?.name ?? 'Pipe issue'}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-3">
-                  <h3 className="text-white font-semibold text-sm">
-                    {issue?.name ?? ''}
-                  </h3>
-                </div>
+              </div>
+              <div className="label-row">
+                <h3 className="nm">
+                  {issue?.name ?? ''}
+                </h3>
               </div>
             </motion.div>
           ))}
         </div>
 
-        <div className="mt-8 text-center">
-          <p className="text-gray-600 mb-4">
+        <div className="findings-foot">
+          <p>
             Each issue comes with expert explanation—no jargon, no scare tactics.
           </p>
         </div>

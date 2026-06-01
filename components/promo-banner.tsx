@@ -93,49 +93,42 @@ export default function PromoBanner() {
           animate={{ height: 'auto', opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="bg-gradient-to-r from-accent-600 via-accent-500 to-secondary-500 text-white relative overflow-hidden"
+          className="promo-banner"
         >
-          {/* Animated background shimmer */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+          <Tag className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 animate-bounce" />
           
-          <div className="container-custom py-2.5 sm:py-3 relative">
-            <div className="flex items-center justify-center gap-2 sm:gap-4 text-center">
-              <Tag className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 animate-bounce" />
-              
-              <Link
-                href="/contact"
-                onClick={handleClick}
-                className="flex items-center gap-2 group"
-              >
-                <span className="text-sm sm:text-base font-semibold">
-                  {hasDiscount ? (
-                    <span className="flex items-center gap-2">
-                      <span className="bg-white/20 px-2 py-0.5 rounded text-xs sm:text-sm">SAVE10 Applied!</span>
-                      <span>Complete your booking to save 10%</span>
-                    </span>
-                  ) : (
-                    <>
-                      <span className="hidden sm:inline">Limited Time Offer: </span>
-                      <span className="bg-white text-accent-600 px-2 py-0.5 rounded font-bold">10% OFF</span>
-                      <span> your first sewer inspection!</span>
-                    </>
-                  )}
+          <Link
+            href="/contact"
+            onClick={handleClick}
+            className="flex items-center gap-2 group"
+          >
+            <span className="text-sm sm:text-base font-semibold">
+              {hasDiscount ? (
+                <span className="flex items-center gap-2">
+                  <span className="bg-white/20 px-2 py-0.5 rounded text-xs sm:text-sm">SAVE10 Applied!</span>
+                  <span>Complete your booking to save 10%</span>
                 </span>
-                <span className="flex items-center gap-1 font-bold underline underline-offset-2 group-hover:no-underline whitespace-nowrap">
-                  {hasDiscount ? 'Book Now' : 'Claim Discount'}
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </Link>
-              
-              <button
-                onClick={handleDismiss}
-                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-white/20 rounded-full transition-colors"
-                aria-label="Dismiss banner"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+              ) : (
+                <>
+                  <span className="hidden sm:inline">Limited Time Offer: </span>
+                  <span className="code">10% OFF</span>
+                  <span className="promo-cta"> your first sewer inspection!</span>
+                </>
+              )}
+            </span>
+            <span className="flex items-center gap-1 font-bold underline underline-offset-2 group-hover:no-underline whitespace-nowrap">
+              {hasDiscount ? 'Book Now' : 'Claim Discount'}
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </Link>
+          
+          <button
+            onClick={handleDismiss}
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-white/20 rounded-full transition-colors"
+            aria-label="Dismiss banner"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </motion.div>
       )}
     </AnimatePresence>

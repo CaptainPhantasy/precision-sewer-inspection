@@ -1,3 +1,4 @@
+TypeScript
 'use client'
 
 import { motion } from 'framer-motion'
@@ -15,61 +16,45 @@ const trustBadges = [
 
 export default function HeroSection() {
   return (
-    <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 text-white overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-[url('/images/hero-pattern.svg')] bg-repeat" />
-      </div>
-
-      {/* Background Image */}
-      <div className="absolute inset-0 opacity-20">
-        <Image
-          src="/images/hero_equipment.jpg"
-          alt="Sewer inspection background"
-          fill
-          className="object-cover"
-          priority
-        />
-      </div>
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24 lg:py-32">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+    <section className="cover">
+      <div className="container">
+        <div className="cover-grid">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-block px-4 py-1 bg-accent-500/20 text-accent-400 text-sm font-semibold rounded-full mb-6">
+            <span className="eyebrow on-dark">
               Central Indiana&apos;s Trusted Choice
             </span>
             
-            <h1 className="text-hero text-white mb-6">
-              See What&apos;s Really In Your <span className="text-accent-400">Pipes</span>
+            <h1>
+              See What&apos;s Really In Your <em>Pipes</em>
             </h1>
             
-            <p className="text-xl text-primary-200 mb-4">
-              Before it costs you <span className="text-white font-bold">$7,500</span>
+            <p className="price-line">
+              Before it costs you <b>$7,500</b>
             </p>
             
-            <p className="text-lg text-primary-300 mb-8 max-w-lg">
+            <p className="lede-dark">
               Our HD sewer scope lets you see what&apos;s really in your pipes with honest answers. No upselling, no scare tactics—just the evidence you need to make confident decisions.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-10">
-              <Link href="/contact" className="btn-cta">
+            <div className="ctas">
+              <Link href="/contact" className="btn btn-accent">
                 Book Inspection — 60 Seconds
                 <ArrowRight className="w-5 h-5" />
               </Link>
-              <a href="#what-we-find" className="btn-secondary bg-transparent border-primary-300 text-white hover:bg-primary-700/50">
+              <a href="#what-we-find" className="btn btn-outline-dark">
                 <Play className="w-5 h-5" />
                 See Sample Footage
               </a>
             </div>
 
             {/* Trust Badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="trust-grid">
               {trustBadges?.map((badge, index) => {
                 const IconComponent = badge?.icon
                 return (
@@ -78,16 +63,16 @@ export default function HeroSection() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-                    className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center"
+                    className="cell"
                   >
                     {IconComponent && <IconComponent className="w-5 h-5 text-accent-400 mx-auto mb-2" />}
-                    <div className="text-2xl font-bold text-white">
+                    <div className="k">{badge?.label ?? ''}</div>
+                    <div className="v">
                       <AnimatedCounter 
                         end={Number(badge?.value ?? 0)} 
                         suffix={badge?.suffix ?? ''} 
                       />
                     </div>
-                    <div className="text-xs text-primary-300">{badge?.label ?? ''}</div>
                   </motion.div>
                 )
               })}
@@ -99,9 +84,9 @@ export default function HeroSection() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative hidden lg:block"
+            className="tech-card"
           >
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
+            <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '400px', borderRadius: '16px', overflow: 'hidden' }}>
               <Image
                 src="/images/tech_hero.jpg"
                 alt="Precision Sewer Inspection technician with professional equipment"
@@ -109,17 +94,20 @@ export default function HeroSection() {
                 className="object-cover"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary-900/60 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-accent-500 rounded-full flex items-center justify-center">
-                    <ShieldCheck className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">InterNACHI Certified</p>
-                    <p className="text-sm text-gray-600">Licensed & Insured</p>
-                  </div>
-                </div>
+            </div>
+            
+            <div className="ribbon">
+              <div className="lead">InterNACHI Certified</div>
+              <div className="meta">Licensed & Insured</div>
+            </div>
+            
+            <div className="cert-bump">
+              <div className="ic">
+                <ShieldCheck style={{ width: '20px', height: '20px' }} />
+              </div>
+              <div className="text">
+                <div className="a">Verified Pro</div>
+                <div className="b">Precision Inspection</div>
               </div>
             </div>
           </motion.div>
