@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Calendar, Camera, Video, CheckCircle, ArrowRight } from 'lucide-react'
-import SectionHeading from '@/components/section-heading'
 
 const steps = [
   {
@@ -36,55 +35,45 @@ export default function HowItWorks() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
 
   return (
-    <section className="section-padding bg-white">
-      <div className="max-w-7xl mx-auto">
-        <SectionHeading
-          label="How It Works"
-          title="Simple, Fast, Transparent"
-          description="From booking to report delivery, we've streamlined every step so you can focus on what matters."
-        />
+    <section className="psi alt" data-screen-label="How It Works">
+      <div className="container">
+        
+        {/* Replaced old SectionHeading with the exact design system DOM structure */}
+        <div className="section-head">
+          <span className="eyebrow">How It Works</span>
+          <h2 className="psi"><span className="rule"></span>Simple, Fast, Transparent</h2>
+          <p className="lede">From booking to report delivery, we've streamlined every step so you can focus on what matters.</p>
+        </div>
 
-        <div ref={ref} className="relative">
-          {/* Connecting Line */}
-          <div className="hidden lg:block absolute top-24 left-[12%] right-[12%] h-0.5 bg-primary-200" />
+        <div ref={ref} className="steps-wrap">
+          {/* Connector line exactly as specified in the CSS */}
+          <div className="connector"></div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="steps">
             {steps?.map((step, index) => {
+              // Extracting icon to prevent unused variable warnings, though UI now uses typography lockup
               const IconComponent = step?.icon
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: index * 0.15 }}
-                  className="relative text-center"
+                  initial={{ opacity: 0 }}
+                  animate={inView ? { opacity: 1 } : {}}
+                  transition={{ duration: 0.2, ease: "easeOut", delay: index * 0.15 }}
+                  className="step"
                 >
-                  {/* Step Number */}
-                  <div className="relative z-10 w-20 h-20 bg-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary-500/30">
-                    {IconComponent && <IconComponent className="w-8 h-8 text-white" />}
-                    <span className="absolute -top-2 -right-2 w-8 h-8 bg-accent-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                      {step?.step ?? ''}
-                    </span>
+                  <div className="num-block">
+                    <span className="stepN">Step 0{step?.step ?? index + 1}</span>
+                    {step?.step ?? index + 1}
                   </div>
                   
-                  {/* Arrow (hidden on mobile) */}
-                  {index < steps.length - 1 && (
-                    <div className="hidden lg:block absolute top-8 right-0 translate-x-1/2 z-20">
-                      <ArrowRight className="w-6 h-6 text-primary-400" />
-                    </div>
-                  )}
-
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    {step?.title ?? ''}
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    {step?.description ?? ''}
-                  </p>
+                  <h3>{step?.title ?? ''}</h3>
+                  <p>{step?.description ?? ''}</p>
                 </motion.div>
               )
             })}
           </div>
         </div>
+
       </div>
     </section>
   )

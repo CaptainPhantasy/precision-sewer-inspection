@@ -2,50 +2,42 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { MapPin } from 'lucide-react'
-import SectionHeading from '@/components/section-heading'
 import { SERVICE_AREAS } from '@/lib/constants'
 
 export default function ServiceAreas() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
 
   return (
-    <section className="section-padding bg-primary-900 text-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="flex items-center gap-2 justify-center mb-3">
-            <div className="w-8 h-8 rounded-lg bg-primary-700 flex items-center justify-center">
-              <MapPin className="w-4 h-4 text-primary-300" />
-            </div>
-            <span className="text-sm font-semibold text-primary-300 uppercase tracking-wider">
-              Service Areas
-            </span>
-          </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
-            Serving Central Indiana
-          </h2>
-          <p className="text-lg text-primary-200 max-w-2xl mx-auto">
+    <section className="psi dark" data-screen-label="Service Areas">
+      <div className="container" style={{ textAlign: 'center' }}>
+        
+        <div className="section-head" style={{ alignItems: 'center' }}>
+          <span className="eyebrow">Service Areas</span>
+          {/* Inline auto margins center the rule under the heading */}
+          <h2 className="psi"><span className="rule" style={{ margin: '0 auto 1rem auto' }}></span>Serving Central Indiana</h2>
+          <p className="lede max-w-2xl mx-auto">
             We provide professional sewer inspection services throughout Central Indiana.
           </p>
         </div>
 
-        <div ref={ref} className="flex flex-wrap justify-center gap-3">
+        <div ref={ref} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '12px', padding: '2rem 0' }}>
           {SERVICE_AREAS?.map((area, index) => (
             <motion.span
               key={area ?? index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              className="px-4 py-2 bg-primary-800/50 text-primary-100 rounded-full text-sm font-medium hover:bg-primary-700 transition-colors cursor-default"
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.2, ease: "easeOut", delay: index * 0.05 }}
+              className="badge" // Reuses the badge styling we validated in the pricing section
             >
               {area ?? ''}
             </motion.span>
           ))}
         </div>
 
-        <p className="text-center text-primary-300 mt-8 text-sm">
+        <p style={{ marginTop: '1rem', color: 'var(--text-light)', opacity: 0.8, fontSize: '0.9rem' }}>
           Don&apos;t see your city? Contact us—we likely serve your area too!
         </p>
+        
       </div>
     </section>
   )
