@@ -216,7 +216,7 @@ export const serviceOfferings = [
     slug: 'sewer-inspection-crawl-space',
     description: 'For homes with crawl space access, this comprehensive inspection covers both the main sewer line and the crawl space plumbing. Ideal for older homes or properties with known issues.',
     shortDescription: 'Extended inspection covering crawl space plumbing and main sewer line.',
-    basePrice: 274,
+    basePrice: 189, // $159 base + $30 crawl-space access; matches the standard access-fee schedule
     priceUnit: 'flat rate',
     features: [
       'Full sewer line camera inspection',
