@@ -7,7 +7,7 @@ async function main() {
   console.log("Seeding database...");
 
   // Create admin user
-  const adminPassword = await bcrypt.hash("admin123", 12);
+  const adminPassword = await bcrypt.hash(process.env.SEED_ADMIN_PASSWORD ?? "CHANGE_ME__set_SEED_ADMIN_PASSWORD", 12);
   const admin = await prisma.user.upsert({
     where: { email: "admin@precisionsewerinspections.com" },
     update: {},
@@ -23,7 +23,7 @@ async function main() {
   console.log("Created admin user:", admin.email);
 
   // Create test technician
-  const techPassword = await bcrypt.hash("tech123", 12);
+  const techPassword = await bcrypt.hash(process.env.SEED_TECH_PASSWORD ?? "CHANGE_ME__set_SEED_TECH_PASSWORD", 12);
   const technician = await prisma.user.upsert({
     where: { email: "tech@precisionsewerinspections.com" },
     update: {},
@@ -39,7 +39,7 @@ async function main() {
   console.log("Created technician user:", technician.email);
 
   // Create super admin user
-  const superAdminPassword = await bcrypt.hash("superadmin123", 12);
+  const superAdminPassword = await bcrypt.hash(process.env.SEED_SUPERADMIN_PASSWORD ?? "CHANGE_ME__set_SEED_SUPERADMIN_PASSWORD", 12);
   const superAdmin = await prisma.user.upsert({
     where: { email: "superadmin@precisionsewerinspections.com" },
     update: {},
@@ -123,10 +123,8 @@ async function main() {
   console.log("Created test job:", job2.jobNumber);
 
   console.log("\n✅ Database seeded successfully!");
-  console.log("\nTest Accounts:");
-  console.log("  Admin: admin@precisionsewerinspections.com / admin123");
-  console.log("  Technician: tech@precisionsewerinspections.com / tech123");
-  console.log("  Super Admin: superadmin@precisionsewerinspections.com / superadmin123");
+  console.log("\nSeed accounts ensured. Passwords are taken from the SEED_ADMIN_PASSWORD / SEED_TECH_PASSWORD / SEED_SUPERADMIN_PASSWORD env vars.");
+  console.log("Existing accounts are left unchanged (upsert). Rotate any default credentials before use.");
 }
 
 main()
