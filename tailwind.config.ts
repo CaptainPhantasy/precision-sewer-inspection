@@ -34,7 +34,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ['Plus Jakarta Sans', 'sans-serif'],
+        heading: ['Fraunces', 'Georgia', 'serif'],
         body: ['Inter', 'sans-serif'],
       },
       animation: {

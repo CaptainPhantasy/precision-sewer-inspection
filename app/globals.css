@@ -952,3 +952,37 @@
   }
   .footer-bottom .tagline .dot { color:var(--accent); margin:0 5px; font-weight:700; }
   .footer-bottom .copy { color:rgba(255,255,255,.45); font-size:11.5px; letter-spacing:.4px; }
+
+/* ============================================================
+   MARKETING-PAGE FOUNDATION (restored 2026-06-04)
+   These component classes were deleted when globals.css was overwritten
+   by the PSI restyle (4782c18); the inner marketing pages (/services,
+   /about, /pricing, /faq, /contact, /locating, /resources, /areas,
+   /sewer-inspection) still reference them. Restored so those pages render
+   their orange buttons / spacing / cards again. Heading font is routed to
+   Fraunces (the PSI display face, already self-hosted) via tailwind.config,
+   replacing the now-unloaded Plus Jakarta Sans.
+   TODO(retire in Step 4): remove once every marketing page is migrated to
+   the PSI semantic classes; then de-duplicate globals.css / psi-website.css.
+   ============================================================ */
+  :root {
+    --color-primary-900:#0c4a6e; --color-primary-700:#0369a1; --color-primary-500:#0ea5e9;
+    --color-primary-300:#7dd3fc; --color-primary-100:#e0f2fe;
+    --color-secondary-700:#047857; --color-secondary-500:#10b981; --color-secondary-300:#6ee7b7;
+    --color-accent-600:#ea580c; --color-accent-500:#f97316; --color-accent-400:#fb923c;
+  }
+  .text-hero {
+    font-family:var(--display);
+    font-size:clamp(2.5rem, 5vw, 4rem);
+    font-weight:800; line-height:1.1; letter-spacing:-0.02em;
+  }
+  .btn-primary { @apply inline-flex items-center justify-center gap-2 px-5 py-3 bg-accent-500 text-white font-semibold rounded-lg transition-all duration-150 shadow-md hover:bg-accent-600 hover:-translate-y-0.5 hover:shadow-lg; }
+  .btn-secondary { @apply inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-primary-700 font-semibold rounded-lg border-2 border-primary-500 transition-all duration-150 hover:bg-primary-100 hover:border-primary-700; }
+  .btn-cta { @apply inline-flex items-center justify-center gap-3 px-10 py-4 bg-gradient-to-r from-accent-500 to-accent-600 text-white font-heading text-xl font-bold rounded-xl transition-all duration-200 shadow-[0_10px_25px_-5px_rgba(249,115,22,0.4)] hover:-translate-y-0.5 hover:shadow-[0_15px_35px_-5px_rgba(249,115,22,0.5)]; }
+  .card-service { @apply bg-white rounded-2xl p-8 shadow-sm border border-gray-100 transition-all duration-200 hover:shadow-xl hover:-translate-y-1; }
+  .card-pricing { @apply bg-white rounded-3xl p-8 shadow-sm border-2 border-gray-100 text-center relative; }
+  .card-pricing.featured { @apply border-primary-500 shadow-[0_20px_40px_-10px_rgba(14,165,233,0.2)]; }
+  .card-testimonial { @apply bg-white rounded-2xl p-6 shadow-sm border-l-4 border-primary-500; }
+  .form-input { @apply w-full px-4 py-3 text-gray-900 bg-white border-2 border-gray-200 rounded-lg transition-all duration-150 focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-sky-500/20 placeholder:text-gray-400; }
+  .form-label { @apply block text-sm font-semibold text-gray-700 mb-2; }
+  .section-padding { @apply py-16 md:py-20 px-4 md:px-6; }
