@@ -79,7 +79,7 @@ export default function VideoReviewPage() {
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Video Submitted for Review</h1>
             <p className="text-gray-600 mb-6">
-              Thank you! We&apos;ve received your video review request. You&apos;ll receive our independent assessment within 24 hours.
+              Thank you! We&apos;ve received your video review request. You&apos;ll receive our independent assessment within one business day.
             </p>
             <p className="text-sm text-gray-500">
               Questions? Call us at{' '}
@@ -235,7 +235,7 @@ export default function VideoReviewPage() {
                 <div className="bg-primary-50 rounded-lg p-4">
                   <h3 className="font-semibold text-primary-900 mb-2">What to Expect</h3>
                   <ul className="text-sm text-primary-700 space-y-1">
-                    <li>• We&apos;ll review your video within 24 hours</li>
+                    <li>• We&apos;ll review your video within one business day</li>
                     <li>• You&apos;ll receive a no-jargon explanation of findings</li>
                     <li>• This is an informational review only — no repair recommendations</li>
                     <li>• We do not provide contractor referrals</li>

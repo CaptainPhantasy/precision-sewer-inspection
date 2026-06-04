@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
       default: 'Sewer Scope Indianapolis from $159 | Precision Sewer',
       template: '%s | Precision Sewer',
     },
-    description: 'Indianapolis sewer scope from $159. InterNACHI certified, 24-hour HD video reports. Serving Central Indiana. No upselling.',
+    description: 'Indianapolis sewer scope from $159. InterNACHI certified, one-business-day HD video reports. Serving Central Indiana. No upselling.',
     keywords: [
       'sewer scope Indianapolis',
       'sewer inspection Indianapolis',
@@ -49,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
     manifest: '/manifest.json',
     openGraph: {
       title: 'Sewer Scope Indianapolis from $159 | Precision Sewer',
-      description: "See what's really in your pipes. HD video sewer inspection with 24-hour delivery. InterNACHI certified. Central Indiana.",
+      description: "See what's really in your pipes. HD video sewer inspection with one-business-day delivery. InterNACHI certified. Central Indiana.",
       images: [
         {
           url: '/og-image.png',
@@ -65,7 +65,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: 'summary_large_image',
       title: 'Indianapolis Sewer Scope from $159 | Precision Sewer',
-      description: "Central Indiana's trusted sewer inspection. InterNACHI certified, 24-hour HD reports.",
+      description: "Central Indiana's trusted sewer inspection. InterNACHI certified, one-business-day HD reports.",
       images: ['/og-image.png'],
     },
     robots: {

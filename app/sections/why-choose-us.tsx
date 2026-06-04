@@ -17,8 +17,8 @@ const features = [
   },
   {
     icon: Clock,
-    title: 'Answers in 24 Hours',
-    description: "We know timing matters, especially in real estate transactions. That's why we deliver your video and report within 24 hours.",
+    title: 'Answers in One Business Day',
+    description: "We know timing matters, especially in real estate transactions. That's why we deliver your video and report within one business day.",
   },
   {
     icon: BadgeCheck,

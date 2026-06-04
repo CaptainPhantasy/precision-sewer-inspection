@@ -92,7 +92,7 @@ export default function SupportPage() {
                     <li>HD video recording of sewer line interior</li>
                     <li>Visual identification of observable conditions (cracks, roots, blockages, etc.)</li>
                     <li>Written summary report with findings</li>
-                    <li>Digital delivery of video and report within 24 hours (standard) or same-day (if selected)</li>
+                    <li>Digital delivery of video and report within one business day (standard) or same-day (if selected)</li>
                   </ul>
                   <p className="text-gray-700 mt-3">
                     <strong>We are inspectors, not contractors.</strong> We do not perform repairs, cleaning, or any remediation work. Our role is to document and report what we observe.

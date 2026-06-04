@@ -194,7 +194,7 @@ function BookingSuccessContent() {
                   )}
                   <li className="flex items-start gap-3">
                     <span className="w-6 h-6 bg-primary-200 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold text-primary-800">3</span>
-                    <span>After your inspection, you&apos;ll receive your HD video and detailed report within 24 hours</span>
+                    <span>After your inspection, you&apos;ll receive your HD video and detailed report within one business day</span>
                   </li>
                 </ul>
               </div>

@@ -35,7 +35,7 @@ const PREVIEW_CARDS = [
     features: [
       'HD Video Recording',
       'HD images and factual summary with no jargon',
-      '24-Hour Delivery',
+      'One-Business-Day Delivery',
       'Standard Cleanout Access',
       'Phone Consultation',
       'No Upselling Guarantee'

@@ -20,7 +20,7 @@ const steps = [
   {
     icon: Video,
     step: '3',
-    title: 'See Your Video in 24 Hours',
+    title: 'See Your Video in One Business Day',
     description: 'Get a link to your HD video inspection plus a written report explaining everything.',
   },
   {

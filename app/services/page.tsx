@@ -11,10 +11,10 @@ import { COMPANY_INFO } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Sewer Scope Services Indianapolis | Residential, Commercial & Real Estate',
-  description: 'Professional sewer inspection services in Indianapolis. Residential sewer scope from $159, commercial inspections, and real estate partner programs. HD video, 24-hour reports. Book today.',
+  description: 'Professional sewer inspection services in Indianapolis. Residential sewer scope from $159, commercial inspections, and real estate partner programs. HD video, one-business-day reports. Book today.',
   openGraph: {
     title: 'Sewer Inspection Services | Precision Sewer Inspection Indianapolis',
-    description: 'Residential, commercial, and real estate sewer scope inspections. HD video, 24-hour delivery, InterNACHI certified.',
+    description: 'Residential, commercial, and real estate sewer scope inspections. HD video, one-business-day delivery, InterNACHI certified.',
   },
   alternates: {
     canonical: '/services',
@@ -31,7 +31,7 @@ const services = [
     features: [
       'HD Video Recording',
       'Written Report with Findings',
-      '24-Hour Delivery Guaranteed',
+      'One-Business-Day Delivery Guaranteed',
       'Expert Explanation With No Jargon',
       'Digital Copy for Your Records',
       'No Upselling, Ever',
@@ -78,7 +78,7 @@ const services = [
 const benefits = [
   { icon: Shield, title: 'InterNACHI Certified', description: 'Professional certification you can trust' },
   { icon: Video, title: 'HD Equipment', description: 'Professional grade high-definition camera systems' },
-  { icon: Clock, title: '24-Hour Delivery', description: 'Reports delivered within 24 hours' },
+  { icon: Clock, title: 'One-Business-Day Delivery', description: 'Reports delivered within one business day' },
 ]
 
 export default function ServicesPage() {

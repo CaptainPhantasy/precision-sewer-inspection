@@ -15,7 +15,7 @@ export default function StructuredData({ type, pageTitle, pageDescription, bread
     '@type': 'LocalBusiness',
     '@id': `${baseUrl}/#organization`,
     name: COMPANY_INFO.name,
-    description: 'Professional sewer scope inspections in Central Indiana. HD video inspections, 24-hour report delivery, InterNACHI certified inspectors.',
+    description: 'Professional sewer scope inspections in Central Indiana. HD video inspections, one-business-day report delivery, InterNACHI certified inspectors.',
     url: baseUrl,
     telephone: COMPANY_INFO.phone,
     email: COMPANY_INFO.email,
@@ -82,7 +82,7 @@ export default function StructuredData({ type, pageTitle, pageDescription, bread
           itemOffered: {
             '@type': 'Service',
             name: 'Early Adopter Sewer Scope Inspection',
-            description: 'Limited time launch pricing. HD video inspection with premium written report delivered within 24 hours.',
+            description: 'Limited time launch pricing. HD video inspection with premium written report delivered within one business day.',
           },
           price: '159.00',
           priceCurrency: 'USD',
@@ -92,7 +92,7 @@ export default function StructuredData({ type, pageTitle, pageDescription, bread
           itemOffered: {
             '@type': 'Service',
             name: 'Standard Sewer Scope Inspection',
-            description: 'HD video inspection of your main sewer line with premium written report delivered within 24 hours.',
+            description: 'HD video inspection of your main sewer line with premium written report delivered within one business day.',
           },
           price: '159.00',
           priceCurrency: 'USD',

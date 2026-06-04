@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     const products = [
       {
         name: 'Standard Sewer Inspection',
-        description: 'HD video inspection of your main sewer line with written report delivered within 24 hours. Includes standard cleanout access.',
+        description: 'HD video inspection of your main sewer line with written report delivered within one business day. Includes standard cleanout access.',
         amount: 15900, // $159.00
         key: 'STANDARD_INSPECTION',
       },

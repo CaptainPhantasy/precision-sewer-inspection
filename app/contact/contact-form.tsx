@@ -493,7 +493,7 @@ export default function ContactForm() {
 
           <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700 space-y-2">
             <p>&#8226; Need a date or time not shown? Call us at <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="text-primary-600 font-semibold hover:underline">{COMPANY_INFO.phone}</a> — we&apos;ll do our best to work with your schedule.</p>
-            <p>&#8226; Every inspection includes a detailed written report and HD video recording, delivered to your inbox within 24 hours.</p>
+            <p>&#8226; Every inspection includes a detailed written report and HD video recording, delivered to your inbox within one business day.</p>
             <p>&#8226; Payment is collected at checkout before service is confirmed.</p>
             <p>&#8226; Before continuing, verify the selected access method. Standard pricing requires an accessible cleanout; toilet pull/reset includes a new wax ring and supply line; roof vent access is a separate priced access method.</p>
           </div>
@@ -862,7 +862,7 @@ export default function ContactForm() {
                 <p>&#8226; <strong>Access Method:</strong> If the access method differs from what was selected, additional charges may apply.</p>
                 <p>&#8226; <strong>Cleanout Access:</strong> If there is no available cleanout, you are approving Precision Sewer Inspection to access the sewer line via toilet removal/reinstallation or roof vent pipe access.</p>
                 <p>&#8226; <strong>Payment:</strong> Payment is collected at checkout before service is confirmed.</p>
-                <p>&#8226; <strong>Report Delivery:</strong> Written report and video will be emailed within 24 hours of inspection.</p>
+                <p>&#8226; <strong>Report Delivery:</strong> Written report and video will be emailed within one business day of inspection.</p>
               </div>
             )}
             <label className="flex items-center gap-3 cursor-pointer">

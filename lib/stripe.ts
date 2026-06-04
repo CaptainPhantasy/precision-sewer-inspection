@@ -19,7 +19,7 @@ export const getStripe = () => {
 export const STRIPE_PRODUCTS = {
   STANDARD_INSPECTION: {
     name: 'Standard Sewer Inspection',
-    description: 'HD video inspection with written report delivered within 24 hours',
+    description: 'HD video inspection with written report delivered within one business day',
     priceId: process.env.STRIPE_PRICE_STANDARD || '',
     amount: 15900, // $159.00 in cents
   },

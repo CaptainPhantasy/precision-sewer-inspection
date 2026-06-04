@@ -20,7 +20,7 @@ export const SERVICES = [
     title: 'Sewer Scope Inspection',
     description: 'HD video inspection of your main sewer line from cleanout to city connection. Premium reporting with transparent, upfront pricing.',
     price: 'From $159',
-    features: ['HD Video Recording', 'Premium Written Report', '24-Hour Delivery'],
+    features: ['HD Video Recording', 'Premium Written Report', 'One-Business-Day Delivery'],
   },
   {
     id: 'commercial',
@@ -46,7 +46,7 @@ export const PRICING_TIERS = [
     features: [
       'HD Video Recording',
       'HD images and factual summary with no jargon',
-      '24-Hour Delivery',
+      'One-Business-Day Delivery',
       'Standard Cleanout Access',
       'Phone Consultation',
       'No Upselling Guarantee',
@@ -62,7 +62,7 @@ export const PRICING_TIERS = [
     features: [
       'HD Video Recording',
       'HD images and factual summary with no jargon',
-      '24-Hour Delivery',
+      'One-Business-Day Delivery',
       'Standard Cleanout Access',
       'Phone Consultation',
       'No Upselling Guarantee',
@@ -155,7 +155,7 @@ export const TESTIMONIALS = [
 export const FAQ_ITEMS = [
   {
     question: 'How much does a sewer scope cost in Indiana?',
-    answer: 'Our standard sewer scope inspection is $159 with cleanout access, which includes HD video recording and a written report delivered within 24 hours. Additional fees may apply for alternative access methods: +$50 for roof vent access, +$65 for toilet pull (includes new wax ring and supply line), +$30 for crawl space access. We believe in transparent, upfront pricing—no hidden fees.',
+    answer: 'Our standard sewer scope inspection is $159 with cleanout access, which includes HD video recording and a written report delivered within one business day. Additional fees may apply for alternative access methods: +$50 for roof vent access, +$65 for toilet pull (includes new wax ring and supply line), +$30 for crawl space access. We believe in transparent, upfront pricing—no hidden fees.',
   },
   {
     question: 'What if access requires a toilet pull?',
@@ -179,7 +179,7 @@ export const FAQ_ITEMS = [
   },
   {
     question: 'How long does an inspection take?',
-    answer: "Most inspections are completed in 30-60 minutes on-site. You'll receive your video and premium written report within 24 hours, or same-day for an additional fee if you're under a tight deadline.",
+    answer: "Most inspections are completed in 30-60 minutes on-site. You'll receive your video and premium written report within one business day, or same-day for an additional fee if you're under a tight deadline.",
   },
   {
     question: 'What equipment do you use?',

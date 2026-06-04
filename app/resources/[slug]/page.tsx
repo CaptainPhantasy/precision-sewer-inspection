@@ -134,7 +134,7 @@ export default function BlogPostPage({ params }: Props) {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-heading font-bold mb-4">Ready to Inspect Your Sewer Line?</h2>
             <p className="text-primary-200 mb-8">
-              Book your professional sewer inspection today. HD video, 24-hour reports, no upselling.
+              Book your professional sewer inspection today. HD video, one-business-day reports, no upselling.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact" className="btn-cta">
