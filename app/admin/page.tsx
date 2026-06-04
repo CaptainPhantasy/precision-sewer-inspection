@@ -196,7 +196,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/technician/login");
+      router.push("/admin/login");
     } else if (!loading && user && !["ADMIN", "OWNER", "SUPER_ADMIN"].includes(user.role)) {
       router.push("/technician/dashboard");
     }
@@ -279,7 +279,7 @@ export default function AdminDashboard() {
 
   const handleLogout = async () => {
     await logout();
-    router.push("/technician/login");
+    router.push("/admin/login");
   };
 
   // Admin override actions

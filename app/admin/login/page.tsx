@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import { isFieldOperatorRole } from "@/lib/auth/permissions";
+import { isAdminRole, isFieldOperatorRole } from "@/lib/auth/permissions";
 import Image from "next/image";
 import { Loader2, LogIn, Eye, EyeOff } from "lucide-react";
 
-export default function TechnicianLoginPage() {
+export default function AdminLoginPage() {
   const router = useRouter();
   const { user, loading, login } = useAuth();
   const [email, setEmail] = useState("");
@@ -18,13 +18,12 @@ export default function TechnicianLoginPage() {
 
   useEffect(() => {
     if (!loading && user) {
-      // The technician door always lands on the field app. Field-operator roles
-      // (TECHNICIAN/ADMIN/OWNER/SUPER_ADMIN) are allowed here; anyone else is sent
-      // to the admin sign-in instead.
-      if (isFieldOperatorRole(user.role)) {
+      // The admin door lands admin-capable roles on the admin dashboard. A field-only
+      // account that signs in here is forwarded to the field app instead of being stranded.
+      if (isAdminRole(user.role)) {
+        router.push("/admin");
+      } else if (isFieldOperatorRole(user.role)) {
         router.push("/technician/dashboard");
-      } else {
-        router.push("/admin/login");
       }
     }
   }, [user, loading, router]);
@@ -40,19 +39,19 @@ export default function TechnicianLoginPage() {
       setError(result.error || "Login failed");
       setIsSubmitting(false);
     }
-    // If successful, useEffect will handle redirect
+    // On success, the effect above performs the role-based redirect.
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-700" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-900 to-blue-700 px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-gray-700 px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -64,8 +63,8 @@ export default function TechnicianLoginPage() {
               className="object-contain p-2"
             />
           </div>
-          <h1 className="text-2xl font-bold text-white">Field Technician App</h1>
-          <p className="text-blue-200 mt-1">Precision Sewer Inspection</p>
+          <h1 className="text-2xl font-bold text-white">Administrator Sign In</h1>
+          <p className="text-gray-300 mt-1">Precision Sewer Inspection</p>
         </div>
 
         {/* Login Form */}
@@ -88,8 +87,8 @@ export default function TechnicianLoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
-                placeholder="technician@company.com"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-700 focus:border-transparent text-lg"
+                placeholder="admin@company.com"
               />
             </div>
 
@@ -105,7 +104,7 @@ export default function TechnicianLoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg pr-12"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-700 focus:border-transparent text-lg pr-12"
                   placeholder="••••••••"
                 />
                 <button
@@ -121,7 +120,7 @@ export default function TechnicianLoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-gray-800 text-white py-3 rounded-lg font-semibold text-lg hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>
@@ -138,13 +137,10 @@ export default function TechnicianLoginPage() {
           </form>
         </div>
 
-        <p className="text-center text-blue-200 text-sm mt-6">
-          Contact your administrator if you need access
-        </p>
-        <p className="text-center text-blue-200 text-sm mt-2">
-          Administrator?{" "}
-          <a href="/admin/login" className="underline hover:text-white">
-            Sign in to the admin dashboard
+        <p className="text-center text-gray-300 text-sm mt-6">
+          Field technician?{" "}
+          <a href="/technician/login" className="underline hover:text-white">
+            Use the field app sign-in
           </a>
         </p>
       </div>
