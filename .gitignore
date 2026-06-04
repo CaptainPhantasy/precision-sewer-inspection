@@ -65,3 +65,11 @@ scripts/check_users.ts
 scripts/send-backfill-admin-emails.ts
 # local quarantine/cleanup artifacts
 .quarantine/
+
+# internal working docs / handoff artifacts (do not publish)
+/handoff*/
+/CONTINUATION_BRIEF.md
+/*_audit_report.md
+/final_evidence_and_completeness.md
+/workflow_test_plans.md
+/css-refactor-diff.txt
