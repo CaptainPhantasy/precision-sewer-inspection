@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ============================================================
    PSI Reports Design System — Website Stylesheet
    Drop-in CSS extracted from the approved prototype.
