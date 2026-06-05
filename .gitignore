@@ -69,6 +69,8 @@ scripts/send-backfill-admin-emails.ts
 # internal working docs / handoff artifacts (do not publish)
 /handoff*/
 /CONTINUATION_BRIEF.md
+/next_items_to_address.md
+/MOTION_FIX_HANDOFF.md
 /*_audit_report.md
 /final_evidence_and_completeness.md
 /workflow_test_plans.md
