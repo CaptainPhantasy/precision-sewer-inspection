@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { stripe, STRIPE_PRODUCTS } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 import { ADD_ON_OPTIONS, AddOnId, PROMO_CODE, PROMO_PERCENT, STRIPE_PROMO_COUPON_ID, calculateCheckoutPricing, getAccessMethodForServiceType, getServiceTypeForAccessMethod, normalizeAddOns, isPromoCodeValid } from '@/lib/checkout-pricing';
+import { isBookingDateBlocked } from '@/lib/google-calendar';
 
 export async function POST(request: NextRequest) {
   try {
@@ -35,6 +36,15 @@ export async function POST(request: NextRequest) {
       propertyState,
       propertyZip,
     } = body;
+
+    // Reject bookings on manually blocked dates before creating a Stripe session,
+    // so a customer is never charged for a day we cannot service.
+    if (isBookingDateBlocked(appointmentStart)) {
+      return NextResponse.json(
+        { error: 'The selected date is not available for booking. Please choose another date.' },
+        { status: 409 }
+      );
+    }
 
     const effectiveServiceType = serviceType || getServiceTypeForAccessMethod(accessMethod);
     const effectiveAccessMethod = getAccessMethodForServiceType(effectiveServiceType);

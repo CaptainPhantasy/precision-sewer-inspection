@@ -11,6 +11,48 @@ const MAX_BOOKING_DAYS_AHEAD = 7; // Up to 7 days ahead
 // Time zone
 const TIMEZONE = 'America/Indianapolis';
 
+/**
+ * Manually blocked dates — no bookings allowed on these days regardless of
+ * Google Calendar state. Use this when a tech is unavailable and you need a
+ * guaranteed block (the Google Calendar freebusy integration only blocks days
+ * that have timed "Busy" events on the service-account calendar).
+ *
+ * Format: 'YYYY-MM-DD' in America/Indianapolis local time. Add or remove dates
+ * here and redeploy.
+ */
+const BLOCKED_DATES: string[] = [
+  '2026-06-12', // Fri — tech unavailable
+  '2026-06-13', // Sat — tech unavailable
+  '2026-06-14', // Sun — tech unavailable
+  '2026-06-15', // Mon — tech unavailable
+];
+
+/**
+ * Return YYYY-MM-DD for a Date as seen in the Indianapolis timezone.
+ */
+function getLocalDateStr(date: Date): string {
+  // en-CA formats as YYYY-MM-DD
+  return date.toLocaleDateString('en-CA', { timeZone: TIMEZONE });
+}
+
+/**
+ * Whether a given instant falls on a manually blocked date.
+ */
+function isDateBlocked(date: Date): boolean {
+  return BLOCKED_DATES.includes(getLocalDateStr(date));
+}
+
+/**
+ * Whether an appointment start (ISO string) falls on a manually blocked date.
+ * Lightweight, no network call — safe to call from the checkout route.
+ */
+export function isBookingDateBlocked(startTime: string): boolean {
+  if (!startTime) return false;
+  const date = new Date(startTime);
+  if (Number.isNaN(date.getTime())) return false;
+  return isDateBlocked(date);
+}
+
 // Service account credentials from environment
 const SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || '';
 const SERVICE_ACCOUNT_PRIVATE_KEY = (process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY || '').replace(/\\n/g, '\n');
@@ -165,11 +207,21 @@ export async function getAvailableSlots(daysAhead: number = MAX_BOOKING_DAYS_AHE
     const currentDay = new Date(startDate);
     while (currentDay <= endDate) {
       const daySlots = generateDaySlots(currentDay);
-      
+
       const slotsWithAvailability: TimeSlot[] = daySlots.map(slotStart => {
         const slotEnd = new Date(slotStart);
         slotEnd.setMinutes(slotEnd.getMinutes() + SLOT_DURATION_HOURS * 60);
-        
+
+        // Manually blocked dates are never available
+        if (isDateBlocked(slotStart)) {
+          return {
+            start: slotStart.toISOString(),
+            end: slotEnd.toISOString(),
+            display: `${formatTime(slotStart)} - ${formatTime(slotEnd)}`,
+            available: false,
+          };
+        }
+
         // Check if this slot conflicts with any busy period
         const isAvailable = !busyPeriods.some(busy => {
           if (!busy.start || !busy.end) return false;
@@ -238,7 +290,13 @@ export async function createBookingEvent(booking: BookingDetails): Promise<strin
   const startDate = new Date(booking.startTime);
   const endDate = new Date(startDate);
   endDate.setMinutes(endDate.getMinutes() + SLOT_DURATION_HOURS * 60);
-  
+
+  // Defense in depth: never create a booking on a manually blocked date,
+  // regardless of which caller reached this function.
+  if (isDateBlocked(startDate)) {
+    throw new Error('This date is not available for booking.');
+  }
+
   // Build event description with all customer details
   const description = `
 **SEWER INSPECTION BOOKING**
@@ -325,7 +383,12 @@ export async function isSlotAvailable(startTime: string): Promise<boolean> {
   const startDate = new Date(startTime);
   const endDate = new Date(startDate);
   endDate.setMinutes(endDate.getMinutes() + SLOT_DURATION_HOURS * 60);
-  
+
+  // Manually blocked dates are never available
+  if (isDateBlocked(startDate)) {
+    return false;
+  }
+
   try {
     const freebusyResponse = await calendar.freebusy.query({
       requestBody: {

@@ -139,6 +139,39 @@ export async function deleteFile(cloud_storage_path: string): Promise<void> {
   await s3Client.send(command);
 }
 
+// Canonical S3 "folder" prefix for one customer/job. S3 has no real folders;
+// this prefix groups every document we hold for a job (signed agreement, and
+// later the report, photos, etc.) under customers/{jobNumber}/.
+export function customerFolderKey(jobNumber: string, fileName: string): string {
+  const safeJob = jobNumber.replace(/[^a-zA-Z0-9._-]/g, "_");
+  const safeName = fileName.replace(/[^a-zA-Z0-9._-]/g, "_");
+  return `${folderPrefix}customers/${safeJob}/${safeName}`;
+}
+
+// Upload a buffer to an explicit key under a customer's folder (e.g. the signed
+// agreement PDF). Unlike uploadBuffer(), the path is deterministic — there is
+// exactly one agreement-signed.pdf per job, not a timestamped upload.
+export async function uploadToCustomerFolder(
+  buffer: Buffer,
+  jobNumber: string,
+  fileName: string,
+  contentType: string
+): Promise<string> {
+  const cloud_storage_path = customerFolderKey(jobNumber, fileName);
+
+  const command = new PutObjectCommand({
+    Bucket: bucketName,
+    Key: cloud_storage_path,
+    Body: buffer,
+    ContentType: contentType,
+    ContentDisposition: "attachment",
+  });
+
+  await s3Client.send(command);
+
+  return cloud_storage_path;
+}
+
 // Upload a buffer directly to S3 (for server-side uploads like generated PDFs)
 export async function uploadBuffer(
   buffer: Buffer,
