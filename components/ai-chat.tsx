@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ACCESS_METHODS, getActivePromotion } from "@/lib/constants";
 import { PROMO_PERCENT } from "@/lib/checkout-pricing";
+import { T, useDiversity } from "@/components/diversity/diversity-provider";
 
 interface Message {
 	role: "user" | "assistant";
@@ -181,6 +182,7 @@ function getContextualSuggestions(lastUserMsg: string): string[] {
 }
 
 export default function AIChat() {
+	const { t } = useDiversity();
 	const [isOpen, setIsOpen] = useState(false);
 	const [messages, setMessages] = useState<Message[]>([
 		{ role: "assistant", content: generateDynamicGreeting() },
@@ -383,15 +385,15 @@ export default function AIChat() {
 							<button
 								onClick={() => setShowPrompt(false)}
 								className="absolute -top-2 -right-2 w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-300 text-xs"
-								aria-label="Dismiss"
+								aria-label={t("Dismiss")}
 							>
 								×
 							</button>
 							<p className="text-sm text-gray-700 font-medium">
-								👋 Have questions?
+								👋 <T>Have questions?</T>
 							</p>
 							<p className="text-xs text-gray-500 mt-1">
-								Chat with our AI assistant!
+								<T>Chat with our AI assistant!</T>
 							</p>
 							<div className="absolute bottom-0 right-6 w-3 h-3 bg-white border-r border-b border-gray-200 transform rotate-45 translate-y-1.5" />
 						</motion.div>
@@ -406,7 +408,7 @@ export default function AIChat() {
 					className="relative w-14 h-14 bg-primary-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-primary-700 transition-colors"
 					whileHover={{ scale: 1.05 }}
 					whileTap={{ scale: 0.95 }}
-					aria-label="Open chat"
+					aria-label={t("Open chat")}
 				>
 					<MessageCircle className="w-6 h-6" />
 				</motion.button>
@@ -427,10 +429,10 @@ export default function AIChat() {
 								{!feedbackGiven ? (
 									<>
 										<p className="text-gray-900 font-semibold text-lg mb-2">
-											How was your experience?
+											<T>How was your experience?</T>
 										</p>
 										<p className="text-gray-500 text-sm mb-6">
-											Your feedback helps us improve
+											<T>Your feedback helps us improve</T>
 										</p>
 										<div className="flex gap-6 mb-6">
 											<button
@@ -439,7 +441,7 @@ export default function AIChat() {
 											>
 												<ThumbsUp className="w-10 h-10 text-gray-400 group-hover:text-green-500 transition-colors" />
 												<span className="text-sm text-gray-600 group-hover:text-green-600">
-													Helpful
+													<T>Helpful</T>
 												</span>
 											</button>
 											<button
@@ -448,7 +450,7 @@ export default function AIChat() {
 											>
 												<ThumbsDown className="w-10 h-10 text-gray-400 group-hover:text-red-500 transition-colors" />
 												<span className="text-sm text-gray-600 group-hover:text-red-600">
-													Not helpful
+													<T>Not helpful</T>
 												</span>
 											</button>
 										</div>
@@ -459,17 +461,17 @@ export default function AIChat() {
 											}}
 											className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
 										>
-											Skip &amp; close
+											<T>Skip &amp; close</T>
 										</button>
 									</>
 								) : (
 									<>
 										<div className="text-4xl mb-3">✨</div>
 										<p className="text-gray-900 font-semibold text-lg">
-											Thank you!
+											<T>Thank you!</T>
 										</p>
 										<p className="text-gray-500 text-sm">
-											Your feedback helps us improve
+											<T>Your feedback helps us improve</T>
 										</p>
 									</>
 								)}
@@ -482,15 +484,15 @@ export default function AIChat() {
 								<Bot className="w-5 h-5" />
 								<div>
 									<h3 className="font-semibold text-sm">
-										Sewer Scope Assistant
+										<T>Sewer Scope Assistant</T>
 									</h3>
-									<p className="text-xs text-primary-200">24/7 Answers</p>
+									<p className="text-xs text-primary-200"><T>24/7 Answers</T></p>
 								</div>
 							</div>
 							<button
 								onClick={handleCloseChat}
 								className="p-1 hover:bg-primary-500 rounded-lg transition-colors"
-								aria-label="Close chat"
+								aria-label={t("Close chat")}
 							>
 								<X className="w-5 h-5" />
 							</button>
@@ -535,7 +537,7 @@ export default function AIChat() {
 											<Loader2 className="w-4 h-4 text-primary-600 animate-spin" />
 										</div>
 										<div className="bg-white text-gray-500 px-4 py-2 rounded-2xl rounded-bl-md shadow-sm text-sm">
-											Thinking...
+											<T>Thinking...</T>
 										</div>
 									</div>
 								)}
@@ -549,7 +551,7 @@ export default function AIChat() {
 											onClick={() => handleSuggestionClick(suggestion)}
 											className="text-xs px-3 py-1.5 bg-primary-50 text-primary-700 rounded-full border border-primary-200 hover:bg-primary-100 hover:border-primary-300 transition-colors whitespace-nowrap"
 										>
-											{suggestion}
+											<T>{suggestion}</T>
 										</button>
 									))}
 								</div>
@@ -569,7 +571,7 @@ export default function AIChat() {
 									type="text"
 									value={input}
 									onChange={(e) => setInput(e?.target?.value ?? "")}
-									placeholder="Ask about sewer inspections..."
+									placeholder={t("Ask about sewer inspections...")}
 									className="flex-1 px-4 py-2 text-sm border border-gray-200 rounded-full focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
 									disabled={isLoading}
 								/>
@@ -577,7 +579,7 @@ export default function AIChat() {
 									type="submit"
 									disabled={!input?.trim() || isLoading}
 									className="w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-									aria-label="Send message"
+									aria-label={t("Send message")}
 								>
 									<Send className="w-4 h-4" />
 								</button>

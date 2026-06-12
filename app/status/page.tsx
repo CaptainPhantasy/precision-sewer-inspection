@@ -15,6 +15,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { format } from "date-fns";
+import { T } from "@/components/diversity/diversity-provider";
 
 interface StatusStage {
   id: string;
@@ -97,7 +98,7 @@ export default function StatusPage() {
             href="/contact"
             className="text-blue-600 hover:text-blue-700 text-sm font-medium"
           >
-            Contact Us
+            <T>Contact Us</T>
           </Link>
         </div>
       </header>
@@ -105,11 +106,11 @@ export default function StatusPage() {
       <main className="max-w-4xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Check Your Inspection Status
+            <T>Check Your Inspection Status</T>
           </h1>
           <p className="text-gray-600">
-            Enter your job number and email to see the current status of your
-            inspection.
+            <T>Enter your job number and email to see the current status of your
+            inspection.</T>
           </p>
         </div>
 
@@ -119,7 +120,7 @@ export default function StatusPage() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Job Number
+                  <T>Job Number</T>
                 </label>
                 <input
                   type="text"
@@ -132,7 +133,7 @@ export default function StatusPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email Address
+                  <T>Email Address</T>
                 </label>
                 <input
                   type="email"
@@ -153,12 +154,12 @@ export default function StatusPage() {
               {loading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Checking...
+                  <T>Checking...</T>
                 </>
               ) : (
                 <>
                   <Search className="w-5 h-5" />
-                  Check Status
+                  <T>Check Status</T>
                 </>
               )}
             </button>
@@ -179,14 +180,14 @@ export default function StatusPage() {
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <p className="text-sm text-gray-500">Job Number</p>
+                  <p className="text-sm text-gray-500"><T>Job Number</T></p>
                   <p className="text-xl font-bold text-gray-900">
                     {job.jobNumber}
                   </p>
                 </div>
                 {status.downloadAvailable && (
                   <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                    Report Ready
+                    <T>Report Ready</T>
                   </span>
                 )}
               </div>
@@ -195,7 +196,7 @@ export default function StatusPage() {
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
                   <div>
-                    <p className="text-sm text-gray-500">Property</p>
+                    <p className="text-sm text-gray-500"><T>Property</T></p>
                     <p className="text-gray-900">
                       {job.propertyAddress}
                       <br />
@@ -206,7 +207,7 @@ export default function StatusPage() {
                 <div className="flex items-start gap-3">
                   <Calendar className="w-5 h-5 text-gray-400 mt-0.5" />
                   <div>
-                    <p className="text-sm text-gray-500">Scheduled</p>
+                    <p className="text-sm text-gray-500"><T>Scheduled</T></p>
                     <p className="text-gray-900">
                       {format(new Date(job.scheduledDate), "MMMM d, yyyy")}
                       {job.scheduledTime && (
@@ -226,7 +227,7 @@ export default function StatusPage() {
               <p className="text-blue-800 text-lg">{status.message}</p>
               {status.downloadExpires && (
                 <p className="text-blue-600 text-sm mt-2">
-                  Download link expires:{" "}
+                  <T>Download link expires:</T>{" "}
                   {format(
                     new Date(status.downloadExpires),
                     "MMMM d, yyyy 'at' h:mm a"
@@ -238,7 +239,7 @@ export default function StatusPage() {
             {/* Timeline */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-6">
-                Inspection Progress
+                <T>Inspection Progress</T>
               </h2>
               <div className="relative">
                 {/* Progress Line */}
@@ -299,7 +300,7 @@ export default function StatusPage() {
               >
                 <span className="flex items-center justify-center gap-2">
                   <Download className="w-5 h-5" />
-                  Access Your Inspection Report
+                  <T>Access Your Inspection Report</T>
                   <ArrowRight className="w-5 h-5" />
                 </span>
               </Link>
@@ -309,13 +310,13 @@ export default function StatusPage() {
 
         {/* Help Text */}
         <div className="mt-8 text-center text-gray-500 text-sm">
-          <p>Can&apos;t find your job number?</p>
+          <p><T>Can&apos;t find your job number?</T></p>
           <p>
-            Check your confirmation email or{" "}
+            <T>Check your confirmation email or</T>{" "}
             <Link href="/contact" className="text-blue-600 hover:underline">
-              contact us
+              <T>contact us</T>
             </Link>{" "}
-            for assistance.
+            <T>for assistance.</T>
           </p>
         </div>
       </main>

@@ -7,9 +7,11 @@ import { Video, Link2, FileText, Send, CheckCircle, Loader2 } from 'lucide-react
 import { COMPANY_INFO } from '@/lib/constants'
 import toast, { Toaster } from 'react-hot-toast'
 import { useLeadCapture } from '@/hooks/use-lead-capture'
+import { T, useDiversity } from '@/components/diversity/diversity-provider'
 
 export default function VideoReviewPage() {
   const { captureField, markConverted } = useLeadCapture('video-review')
+  const { t } = useDiversity()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -77,12 +79,12 @@ export default function VideoReviewPage() {
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Video Submitted for Review</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4"><T>Video Submitted for Review</T></h1>
             <p className="text-gray-600 mb-6">
-              Thank you! We&apos;ve received your video review request. You&apos;ll receive our independent assessment within one business day.
+              <T>Thank you! We&apos;ve received your video review request. You&apos;ll receive our independent assessment within one business day.</T>
             </p>
             <p className="text-sm text-gray-500">
-              Questions? Call us at{' '}
+              <T>Questions? Call us at</T>{' '}
               <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="text-primary-600 hover:underline">
                 {COMPANY_INFO.phone}
               </a>
@@ -105,10 +107,10 @@ export default function VideoReviewPage() {
             <div className="max-w-3xl mx-auto text-center">
               <Video className="w-12 h-12 mx-auto mb-4 text-primary-300" />
               <h1 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-                Independent Video Review
+                <T>Independent Video Review</T>
               </h1>
               <p className="text-lg text-primary-200">
-                Already have a sewer scope video from another company? Submit it for a free, unbiased review of the findings.
+                <T>Already have a sewer scope video from another company? Submit it for a free, unbiased review of the findings.</T>
               </p>
             </div>
           </div>
@@ -118,14 +120,14 @@ export default function VideoReviewPage() {
         <section className="py-12 bg-white">
           <div className="max-w-2xl mx-auto px-4">
             <div className="bg-gray-50 rounded-2xl p-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Submit Your Video</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6"><T>Submit Your Video</T></h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Contact Info */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="review-name" className="block text-sm font-medium text-gray-700 mb-1">
-                      Name <span className="text-red-500">*</span>
+                      <T>Name</T> <span className="text-red-500">*</span>
                     </label>
                     <input
                       id="review-name"
@@ -141,7 +143,7 @@ export default function VideoReviewPage() {
                   </div>
                   <div>
                     <label htmlFor="review-email" className="block text-sm font-medium text-gray-700 mb-1">
-                      Email <span className="text-red-500">*</span>
+                      <T>Email</T> <span className="text-red-500">*</span>
                     </label>
                     <input
                       id="review-email"
@@ -159,7 +161,7 @@ export default function VideoReviewPage() {
 
                 <div>
                   <label htmlFor="review-phone" className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone
+                    <T>Phone</T>
                   </label>
                   <input
                     id="review-phone"
@@ -178,7 +180,7 @@ export default function VideoReviewPage() {
                   <label htmlFor="review-videoLink" className="block text-sm font-medium text-gray-700 mb-1">
                     <span className="flex items-center gap-2">
                       <Link2 className="w-4 h-4" />
-                      Video Link <span className="text-red-500">*</span>
+                      <T>Video Link</T> <span className="text-red-500">*</span>
                     </span>
                   </label>
                   <input
@@ -186,12 +188,12 @@ export default function VideoReviewPage() {
                     type="url"
                     value={formData.videoLink}
                     onChange={(e) => setFormData({ ...formData, videoLink: e.target.value })}
-                    placeholder="https://drive.google.com/... or Dropbox, YouTube, etc."
+                    placeholder={t('https://drive.google.com/... or Dropbox, YouTube, etc.')}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                     required
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Share via Google Drive, Dropbox, YouTube (unlisted), or any file sharing service
+                    <T>Share via Google Drive, Dropbox, YouTube (unlisted), or any file sharing service</T>
                   </p>
                 </div>
 
@@ -200,7 +202,7 @@ export default function VideoReviewPage() {
                   <label htmlFor="review-reportLink" className="block text-sm font-medium text-gray-700 mb-1">
                     <span className="flex items-center gap-2">
                       <FileText className="w-4 h-4" />
-                      Report/Document Link (Optional)
+                      <T>Report/Document Link (Optional)</T>
                     </span>
                   </label>
                   <input
@@ -208,37 +210,37 @@ export default function VideoReviewPage() {
                     type="url"
                     value={formData.reportLink}
                     onChange={(e) => setFormData({ ...formData, reportLink: e.target.value })}
-                    placeholder="https://... (if you have a written report to include)"
+                    placeholder={t('https://... (if you have a written report to include)')}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    If you received a written report with the video, share it here for review
+                    <T>If you received a written report with the video, share it here for review</T>
                   </p>
                 </div>
 
                 {/* Additional Notes */}
                 <div>
                   <label htmlFor="review-additionalNotes" className="block text-sm font-medium text-gray-700 mb-1">
-                    Additional Notes
+                    <T>Additional Notes</T>
                   </label>
                   <textarea
                     id="review-additionalNotes"
                     value={formData.additionalNotes}
                     onChange={(e) => setFormData({ ...formData, additionalNotes: e.target.value })}
                     rows={3}
-                    placeholder="Any specific concerns or questions about the video?"
+                    placeholder={t('Any specific concerns or questions about the video?')}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                   />
                 </div>
 
                 {/* What to Expect */}
                 <div className="bg-primary-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-primary-900 mb-2">What to Expect</h3>
+                  <h3 className="font-semibold text-primary-900 mb-2"><T>What to Expect</T></h3>
                   <ul className="text-sm text-primary-700 space-y-1">
-                    <li>• We&apos;ll review your video within one business day</li>
-                    <li>• You&apos;ll receive a no-jargon explanation of findings</li>
-                    <li>• This is an informational review only — no repair recommendations</li>
-                    <li>• We do not provide contractor referrals</li>
+                    <li>• <T>We&apos;ll review your video within one business day</T></li>
+                    <li>• <T>You&apos;ll receive a no-jargon explanation of findings</T></li>
+                    <li>• <T>This is an informational review only — no repair recommendations</T></li>
+                    <li>• <T>We do not provide contractor referrals</T></li>
                   </ul>
                 </div>
 
@@ -250,12 +252,12 @@ export default function VideoReviewPage() {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      Submitting...
+                      <T>Submitting...</T>
                     </>
                   ) : (
                     <>
                       <Send className="w-5 h-5" />
-                      Submit Video for Review
+                      <T>Submit Video for Review</T>
                     </>
                   )}
                 </button>

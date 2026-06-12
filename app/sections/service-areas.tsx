@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { SERVICE_AREAS } from '@/lib/constants'
+import { T } from '@/components/diversity/diversity-provider'
 
 export default function ServiceAreas() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -12,11 +13,11 @@ export default function ServiceAreas() {
       <div className="container" style={{ textAlign: 'center' }}>
         
         <div className="section-head" style={{ alignItems: 'center' }}>
-          <span className="eyebrow">Service Areas</span>
+          <span className="eyebrow"><T>Service Areas</T></span>
           {/* Inline auto margins center the rule under the heading */}
-          <h2 className="psi"><span className="rule" style={{ margin: '0 auto 1rem auto' }}></span>Serving Central Indiana</h2>
+          <h2 className="psi"><span className="rule" style={{ margin: '0 auto 1rem auto' }}></span><T>Serving Central Indiana</T></h2>
           <p className="lede max-w-2xl mx-auto">
-            We provide professional sewer inspection services throughout Central Indiana.
+            <T>We provide professional sewer inspection services throughout Central Indiana.</T>
           </p>
         </div>
 
@@ -35,7 +36,7 @@ export default function ServiceAreas() {
         </div>
 
         <p style={{ marginTop: '1rem', color: 'var(--text-light)', opacity: 0.8, fontSize: '0.9rem' }}>
-          Don&apos;t see your city? Contact us—we likely serve your area too!
+          <T>Don&apos;t see your city? Contact us—we likely serve your area too!</T>
         </p>
         
       </div>

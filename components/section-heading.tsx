@@ -1,4 +1,5 @@
 import { LucideIcon } from 'lucide-react'
+import { T } from '@/components/diversity/diversity-provider'
 
 interface SectionHeadingProps {
   label?: string
@@ -25,16 +26,16 @@ export default function SectionHeading({
             </div>
           )}
           <span className="text-sm font-semibold text-primary-600 uppercase tracking-wider">
-            {label}
+            <T>{label ?? ''}</T>
           </span>
         </div>
       )}
       <h2 className="font-heading text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-        {title ?? ''}
+        <T>{title ?? ''}</T>
       </h2>
       {description && (
         <p className={`text-lg text-gray-600 ${centered ? 'max-w-2xl mx-auto' : ''}`}>
-          {description}
+          <T>{description ?? ''}</T>
         </p>
       )}
     </div>

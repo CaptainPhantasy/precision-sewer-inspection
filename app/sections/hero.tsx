@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Play, ArrowRight, MapPin, Clock, ShieldCheck, DollarSign } from 'lucide-react'
 import AnimatedCounter from '@/components/animated-counter'
+import { useDiversity } from '@/components/diversity/diversity-provider'
 
 const trustBadges = [
   { icon: ShieldCheck, value: '100', label: 'No Upselling', suffix: '%' },
@@ -15,6 +16,7 @@ const trustBadges = [
 ]
 
 export default function HeroSection() {
+  const { t } = useDiversity()
   return (
     <section className="cover">
       <div className="container">
@@ -26,7 +28,7 @@ export default function HeroSection() {
             transition={{ duration: 0.6 }}
           >
             <span className="eyebrow on-dark">
-              Central Indiana&apos;s Trusted Choice
+              {t("Central Indiana's Trusted Choice")}
             </span>
             
             <h1>
@@ -44,12 +46,12 @@ export default function HeroSection() {
             {/* CTA Buttons */}
             <div className="ctas">
               <Link href="/contact" className="btn btn-accent">
-                Book Inspection — 60 Seconds
+                {t('Book Inspection — 60 Seconds')}
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a href="#what-we-find" className="btn btn-outline-dark">
                 <Play className="w-5 h-5" />
-                See Sample Footage
+                {t('See Sample Footage')}
               </a>
             </div>
 
@@ -66,7 +68,7 @@ export default function HeroSection() {
                     className="cell"
                   >
                     {IconComponent && <IconComponent className="w-5 h-5 text-accent-400 mx-auto mb-2" />}
-                    <div className="k">{badge?.label ?? ''}</div>
+                    <div className="k">{t(badge?.label ?? '')}</div>
                     <div className="v">
                       <AnimatedCounter 
                         end={Number(badge?.value ?? 0)} 

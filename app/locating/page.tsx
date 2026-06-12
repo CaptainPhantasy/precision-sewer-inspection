@@ -13,6 +13,7 @@ import { COMPANY_INFO } from '@/lib/constants'
 import toast, { Toaster } from 'react-hot-toast'
 import Image from 'next/image'
 import { useLeadCapture } from '@/hooks/use-lead-capture'
+import { T, useDiversity } from '@/components/diversity/diversity-provider'
 
 const UTILITIES_WE_LOCATE = [
   'Irrigation system wiring',
@@ -182,6 +183,7 @@ export default function LocatingPage() {
     preferredDate: '',
   })
   const { captureField, markConverted } = useLeadCapture('utility-locating')
+  const { t } = useDiversity()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
@@ -243,8 +245,8 @@ export default function LocatingPage() {
       {/* Pricing Banner */}
       <div className="bg-accent-500 text-white py-2 px-4 text-center text-sm font-medium">
         <span className="inline-flex items-center gap-2">
-          Private utility locates start at $125 for the first hour.
-          <Link href="#booking" className="underline hover:no-underline">Request Service →</Link>
+          <T>Private utility locates start at $125 for the first hour.</T>
+          <Link href="#booking" className="underline hover:no-underline"><T>Request Service →</T></Link>
         </span>
       </div>
 
@@ -268,21 +270,21 @@ export default function LocatingPage() {
                 </div>
               </div>
               <h1 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-                Private Utility Locating – Indianapolis
+                <T>Private Utility Locating – Indianapolis</T>
               </h1>
               <p className="text-xl text-amber-100 mb-4">
-                Locate underground utilities that 811 does not mark before digging.
+                <T>Locate underground utilities that 811 does not mark before digging.</T>
               </p>
               <p className="text-amber-200 mb-8">
-                Many underground utilities on private property are not marked through the Indiana 811 system. If you are planning to dig for a fence, landscaping project, deck, or excavation, private utilities may still be present even after an 811 locate is completed.
+                <T>Many underground utilities on private property are not marked through the Indiana 811 system. If you are planning to dig for a fence, landscaping project, deck, or excavation, private utilities may still be present even after an 811 locate is completed.</T>
               </p>
               <p className="text-sm text-amber-300 mb-8">
                 <MapPin className="w-4 h-4 inline mr-1" />
-                Serving Marion County and surrounding counties
+                <T>Serving Marion County and surrounding counties</T>
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="#booking" className="bg-white text-amber-700 px-6 py-3 rounded-lg font-semibold hover:bg-amber-50 transition-colors inline-flex items-center justify-center gap-2">
-                  Schedule a Locate
+                  <T>Schedule a Locate</T>
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <a
@@ -290,7 +292,7 @@ export default function LocatingPage() {
                   className="bg-amber-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-400 transition-colors inline-flex items-center justify-center gap-2"
                 >
                   <Phone className="w-5 h-5" />
-                  Call Now
+                  <T>Call Now</T>
                 </a>
               </div>
             </div>
@@ -301,18 +303,18 @@ export default function LocatingPage() {
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="text-3xl font-heading font-bold text-gray-900 text-center mb-4">
-              Private Utility Locate Pricing
+              <T>Private Utility Locate Pricing</T>
             </h2>
             <div className="grid md:grid-cols-2 gap-6 mt-10">
               <div className="bg-amber-50 rounded-xl p-8 border-2 border-amber-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Base Service Fee</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2"><T>Base Service Fee</T></h3>
                 <div className="text-4xl font-heading font-bold text-amber-600 mb-2">$125</div>
-                <p className="text-gray-600">Includes the first hour of locating service.</p>
+                <p className="text-gray-600"><T>Includes the first hour of locating service.</T></p>
               </div>
               <div className="bg-gray-50 rounded-xl p-8 border border-gray-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Additional Time</h3>
-                <div className="text-4xl font-heading font-bold text-gray-700 mb-2">$99<span className="text-lg font-normal">/hour</span></div>
-                <p className="text-gray-600">If more time is required beyond the first hour.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2"><T>Additional Time</T></h3>
+                <div className="text-4xl font-heading font-bold text-gray-700 mb-2">$99<span className="text-lg font-normal"><T>/hour</T></span></div>
+                <p className="text-gray-600"><T>If more time is required beyond the first hour.</T></p>
               </div>
             </div>
           </div>
@@ -322,16 +324,16 @@ export default function LocatingPage() {
         <section className="py-16 bg-gray-50">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="text-3xl font-heading font-bold text-gray-900 text-center mb-4">
-              Utilities We Can Often Locate
+              <T>Utilities We Can Often Locate</T>
             </h2>
             <p className="text-gray-600 text-center mb-10">
-              Locating success depends on installation method and whether a traceable signal can be applied.
+              <T>Locating success depends on installation method and whether a traceable signal can be applied.</T>
             </p>
             <div className="grid sm:grid-cols-2 gap-4">
               {UTILITIES_WE_LOCATE.map((utility, index) => (
                 <div key={index} className="flex items-center gap-3 bg-white p-4 rounded-lg border border-gray-200">
                   <Check className="w-5 h-5 text-amber-600 flex-shrink-0" />
-                  <span className="text-gray-700">{utility}</span>
+                  <span className="text-gray-700"><T>{utility}</T></span>
                 </div>
               ))}
             </div>
@@ -342,7 +344,7 @@ export default function LocatingPage() {
         <section className="py-16 bg-white">
           <div className="max-w-5xl mx-auto px-4">
             <h2 className="text-3xl font-heading font-bold text-gray-900 text-center mb-12">
-              Additional Services (Locate + Repair)
+              <T>Additional Services (Locate + Repair)</T>
             </h2>
             <div className="space-y-8">
               {ADDITIONAL_SERVICES.map((service, index) => {
@@ -354,17 +356,17 @@ export default function LocatingPage() {
                         <Icon className="w-6 h-6 text-amber-600" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">{service.title}</h3>
-                        <p className="text-gray-600 mb-4">{service.description}</p>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2"><T>{service.title}</T></h3>
+                        <p className="text-gray-600 mb-4"><T>{service.description}</T></p>
                         
                         {service.problems && (
                           <div className="mb-4">
-                            <h4 className="font-semibold text-gray-800 mb-2">Common problems include:</h4>
+                            <h4 className="font-semibold text-gray-800 mb-2"><T>Common problems include:</T></h4>
                             <ul className="grid sm:grid-cols-2 gap-2">
                               {service.problems.map((problem, i) => (
                                 <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
                                   <span className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
-                                  {problem}
+                                  <T>{problem}</T>
                                 </li>
                               ))}
                             </ul>
@@ -373,12 +375,12 @@ export default function LocatingPage() {
 
                         {service.uses && (
                           <div className="mb-4">
-                            <h4 className="font-semibold text-gray-800 mb-2">Common uses include locating:</h4>
+                            <h4 className="font-semibold text-gray-800 mb-2"><T>Common uses include locating:</T></h4>
                             <ul className="grid sm:grid-cols-2 gap-2">
                               {service.uses.map((use, i) => (
                                 <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
                                   <span className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
-                                  {use}
+                                  <T>{use}</T>
                                 </li>
                               ))}
                             </ul>
@@ -387,12 +389,12 @@ export default function LocatingPage() {
 
                         {service.drainTypes && (
                           <div className="mb-4">
-                            <h4 className="font-semibold text-gray-800 mb-2">Drain systems we can trace:</h4>
+                            <h4 className="font-semibold text-gray-800 mb-2"><T>Drain systems we can trace:</T></h4>
                             <ul className="grid sm:grid-cols-2 gap-2">
                               {service.drainTypes.map((drain, i) => (
                                 <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
                                   <span className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
-                                  {drain}
+                                  <T>{drain}</T>
                                 </li>
                               ))}
                             </ul>
@@ -401,12 +403,12 @@ export default function LocatingPage() {
 
                         {service.accessPoints && (
                           <div className="mb-4">
-                            <h4 className="font-semibold text-gray-800 mb-2">Entry points include:</h4>
+                            <h4 className="font-semibold text-gray-800 mb-2"><T>Entry points include:</T></h4>
                             <ul className="grid sm:grid-cols-2 gap-2">
                               {service.accessPoints.map((point, i) => (
                                 <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
                                   <span className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
-                                  {point}
+                                  <T>{point}</T>
                                 </li>
                               ))}
                             </ul>
@@ -415,12 +417,12 @@ export default function LocatingPage() {
 
                         {service.services && (
                           <div>
-                            <h4 className="font-semibold text-gray-800 mb-2">Services include:</h4>
+                            <h4 className="font-semibold text-gray-800 mb-2"><T>Services include:</T></h4>
                             <ul className="grid sm:grid-cols-2 gap-2">
                               {service.services.map((svc, i) => (
                                 <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
                                   <Check className="w-4 h-4 text-amber-600" />
-                                  {svc}
+                                  <T>{svc}</T>
                                 </li>
                               ))}
                             </ul>
@@ -430,7 +432,7 @@ export default function LocatingPage() {
                         {service.note && (
                           <p className="text-sm text-amber-700 bg-amber-50 p-3 rounded-lg mt-4">
                             <AlertTriangle className="w-4 h-4 inline mr-1" />
-                            {service.note}
+                            <T>{service.note}</T>
                           </p>
                         )}
                       </div>
@@ -446,15 +448,15 @@ export default function LocatingPage() {
         <section className="py-16 bg-gray-50">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="text-3xl font-heading font-bold text-gray-900 text-center mb-4">
-              Equipment We Use
+              <T>Equipment We Use</T>
             </h2>
             <p className="text-gray-600 text-center mb-10">
-              Professional underground locating equipment that allows us to apply a signal to underground utilities and trace their path from the surface.
+              <T>Professional underground locating equipment that allows us to apply a signal to underground utilities and trace their path from the surface.</T>
             </p>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl p-6 border border-gray-200">
                 <Wrench className="w-8 h-8 text-amber-600 mb-4" />
-                <h3 className="font-bold text-gray-900 mb-3">Primary Equipment</h3>
+                <h3 className="font-bold text-gray-900 mb-3"><T>Primary Equipment</T></h3>
                 <ul className="space-y-2">
                   {EQUIPMENT.map((item, index) => (
                     <li key={index} className="flex items-center gap-2 text-gray-600">
@@ -466,12 +468,12 @@ export default function LocatingPage() {
               </div>
               <div className="bg-white rounded-xl p-6 border border-gray-200">
                 <Cable className="w-8 h-8 text-amber-600 mb-4" />
-                <h3 className="font-bold text-gray-900 mb-3">Additional Methods</h3>
+                <h3 className="font-bold text-gray-900 mb-3"><T>Additional Methods</T></h3>
                 <ul className="space-y-2">
                   {ADDITIONAL_METHODS.map((item, index) => (
                     <li key={index} className="flex items-center gap-2 text-gray-600">
                       <Check className="w-4 h-4 text-amber-600" />
-                      {item}
+                      <T>{item}</T>
                     </li>
                   ))}
                 </ul>
@@ -484,27 +486,27 @@ export default function LocatingPage() {
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="text-3xl font-heading font-bold text-gray-900 text-center mb-10">
-              Why Private Locates Are Needed
+              <T>Why Private Locates Are Needed</T>
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
-                <h3 className="font-bold text-blue-900 mb-4">Indiana 811 Marks (Public Utilities)</h3>
+                <h3 className="font-bold text-blue-900 mb-4"><T>Indiana 811 Marks (Public Utilities)</T></h3>
                 <ul className="space-y-2">
                   {PUBLIC_UTILITIES.map((item, index) => (
                     <li key={index} className="flex items-center gap-2 text-blue-700">
                       <Check className="w-4 h-4" />
-                      {item}
+                      <T>{item}</T>
                     </li>
                   ))}
                 </ul>
               </div>
               <div className="bg-amber-50 rounded-xl p-6 border border-amber-200">
-                <h3 className="font-bold text-amber-900 mb-4">Not Marked by 811 (Private Utilities)</h3>
+                <h3 className="font-bold text-amber-900 mb-4"><T>Not Marked by 811 (Private Utilities)</T></h3>
                 <ul className="space-y-2">
                   {PRIVATE_UTILITIES.map((item, index) => (
                     <li key={index} className="flex items-center gap-2 text-amber-700">
                       <AlertTriangle className="w-4 h-4" />
-                      {item}
+                      <T>{item}</T>
                     </li>
                   ))}
                 </ul>
@@ -512,7 +514,7 @@ export default function LocatingPage() {
             </div>
             <div className="mt-8 bg-gray-100 rounded-xl p-6 text-center">
               <p className="text-gray-700">
-                <strong>Always contact Indiana 811 before digging.</strong> Private locating helps identify utilities that are not included in the 811 marking process.
+                <strong><T>Always contact Indiana 811 before digging.</T></strong> <T>Private locating helps identify utilities that are not included in the 811 marking process.</T>
               </p>
             </div>
           </div>
@@ -522,12 +524,12 @@ export default function LocatingPage() {
         <section className="py-16 bg-gray-50">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="text-3xl font-heading font-bold text-gray-900 text-center mb-10">
-              Common Reasons for Locates
+              <T>Common Reasons for Locates</T>
             </h2>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
               {COMMON_REASONS.map((reason, index) => (
                 <div key={index} className="bg-white p-4 rounded-lg border border-gray-200 text-center">
-                  <span className="text-gray-700">{reason}</span>
+                  <span className="text-gray-700"><T>{reason}</T></span>
                 </div>
               ))}
             </div>
@@ -538,23 +540,23 @@ export default function LocatingPage() {
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-3xl font-heading font-bold text-gray-900 mb-6">
-              Marking Method
+              <T>Marking Method</T>
             </h2>
             <p className="text-gray-600 mb-6">
-              Utilities that are successfully located may be marked using:
+              <T>Utilities that are successfully located may be marked using:</T>
             </p>
             <div className="flex justify-center gap-8">
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-amber-500 rounded-full" />
-                <span className="text-gray-700">Temporary marking paint</span>
+                <span className="text-gray-700"><T>Temporary marking paint</T></span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-4 h-8 bg-amber-500 rounded-sm" />
-                <span className="text-gray-700">Utility flags</span>
+                <span className="text-gray-700"><T>Utility flags</T></span>
               </div>
             </div>
             <p className="text-sm text-gray-500 mt-4">
-              Marking method may vary depending on the surface.
+              <T>Marking method may vary depending on the surface.</T>
             </p>
           </div>
         </section>
@@ -563,7 +565,7 @@ export default function LocatingPage() {
         <section className="py-16 bg-gray-50">
           <div className="max-w-3xl mx-auto px-4">
             <h2 className="text-3xl font-heading font-bold text-gray-900 text-center mb-10">
-              Frequently Asked Questions
+              <T>Frequently Asked Questions</T>
             </h2>
             <div className="space-y-4">
               {FAQS.map((faq, index) => (
@@ -574,7 +576,7 @@ export default function LocatingPage() {
                   >
                     <span className="font-semibold text-gray-900 flex items-center gap-2">
                       <HelpCircle className="w-5 h-5 text-amber-600" />
-                      {faq.question}
+                      <T>{faq.question}</T>
                     </span>
                     {expandedFaq === index ? (
                       <ChevronUp className="w-5 h-5 text-gray-500" />
@@ -584,7 +586,7 @@ export default function LocatingPage() {
                   </button>
                   {expandedFaq === index && (
                     <div className="px-5 pb-5 pt-0">
-                      <p className="text-gray-600 pl-7">{faq.answer}</p>
+                      <p className="text-gray-600 pl-7"><T>{faq.answer}</T></p>
                     </div>
                   )}
                 </div>
@@ -601,12 +603,12 @@ export default function LocatingPage() {
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <CheckCircle className="w-8 h-8 text-green-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Request Submitted!</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4"><T>Request Submitted!</T></h2>
                 <p className="text-gray-600 mb-6">
-                  We&apos;ll contact you shortly to confirm your appointment.
+                  <T>We&apos;ll contact you shortly to confirm your appointment.</T>
                 </p>
                 <p className="text-sm text-gray-500">
-                  Questions? Call us at{' '}
+                  <T>Questions? Call us at</T>{' '}
                   <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="text-amber-600 hover:underline">
                     {COMPANY_INFO.phone}
                   </a>
@@ -615,17 +617,17 @@ export default function LocatingPage() {
             ) : (
               <>
                 <h2 className="text-3xl font-heading font-bold text-white text-center mb-4">
-                  Schedule a Locate
+                  <T>Schedule a Locate</T>
                 </h2>
                 <p className="text-amber-100 text-center mb-8">
-                  Fill out the form below and we&apos;ll contact you to confirm your appointment.
+                  <T>Fill out the form below and we&apos;ll contact you to confirm your appointment.</T>
                 </p>
                 <div className="bg-white rounded-2xl p-8">
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="locating-name" className="block text-sm font-medium text-gray-700 mb-1">
-                          Name <span className="text-red-500">*</span>
+                          <T>Name</T> <span className="text-red-500">*</span>
                         </label>
                         <input
                           id="locating-name"
@@ -641,7 +643,7 @@ export default function LocatingPage() {
                       </div>
                       <div>
                         <label htmlFor="locating-phone" className="block text-sm font-medium text-gray-700 mb-1">
-                          Phone <span className="text-red-500">*</span>
+                          <T>Phone</T> <span className="text-red-500">*</span>
                         </label>
                         <input
                           id="locating-phone"
@@ -659,7 +661,7 @@ export default function LocatingPage() {
 
                     <div>
                       <label htmlFor="locating-email" className="block text-sm font-medium text-gray-700 mb-1">
-                        Email <span className="text-red-500">*</span>
+                        <T>Email</T> <span className="text-red-500">*</span>
                       </label>
                       <input
                         id="locating-email"
@@ -676,7 +678,7 @@ export default function LocatingPage() {
 
                     <div>
                       <label htmlFor="locating-address" className="block text-sm font-medium text-gray-700 mb-1">
-                        Service Address <span className="text-red-500">*</span>
+                        <T>Service Address</T> <span className="text-red-500">*</span>
                       </label>
                       <input
                         id="locating-address"
@@ -685,7 +687,7 @@ export default function LocatingPage() {
                         onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                         onBlur={handleLeadBlur}
                         name="address"
-                        placeholder="Full street address"
+                        placeholder={t('Full street address')}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                         required
                         autoComplete="street-address"
@@ -694,7 +696,7 @@ export default function LocatingPage() {
 
                     <div>
                       <label htmlFor="locating-serviceType" className="block text-sm font-medium text-gray-700 mb-1">
-                        Type of Service Needed <span className="text-red-500">*</span>
+                        <T>Type of Service Needed</T> <span className="text-red-500">*</span>
                       </label>
                       <select
                         id="locating-serviceType"
@@ -703,34 +705,34 @@ export default function LocatingPage() {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                         required
                       >
-                        <option value="">Select a service</option>
-                        <option value="invisible-fence">Invisible Dog Fence Locate/Repair</option>
-                        <option value="irrigation">Irrigation Wire Locate/Repair</option>
-                        <option value="electrical">Private Electrical Line Locate</option>
-                        <option value="sewer-septic">Sewer/Septic Line Locate</option>
-                        <option value="drain">Drain Line Locate</option>
-                        <option value="general">General Utility Locate (before digging)</option>
-                        <option value="other">Other</option>
+                        <option value=""><T>Select a service</T></option>
+                        <option value="invisible-fence"><T>Invisible Dog Fence Locate/Repair</T></option>
+                        <option value="irrigation"><T>Irrigation Wire Locate/Repair</T></option>
+                        <option value="electrical"><T>Private Electrical Line Locate</T></option>
+                        <option value="sewer-septic"><T>Sewer/Septic Line Locate</T></option>
+                        <option value="drain"><T>Drain Line Locate</T></option>
+                        <option value="general"><T>General Utility Locate (before digging)</T></option>
+                        <option value="other"><T>Other</T></option>
                       </select>
                     </div>
 
                     <div>
                       <label htmlFor="locating-projectDescription" className="block text-sm font-medium text-gray-700 mb-1">
-                        Description of Project
+                        <T>Description of Project</T>
                       </label>
                       <textarea
                         id="locating-projectDescription"
                         value={formData.projectDescription}
                         onChange={(e) => setFormData({ ...formData, projectDescription: e.target.value })}
                         rows={3}
-                        placeholder="Describe what you're planning and what utilities you need located"
+                        placeholder={t("Describe what you're planning and what utilities you need located")}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                       />
                     </div>
 
                     <div>
                       <label htmlFor="locating-preferredDate" className="block text-sm font-medium text-gray-700 mb-1">
-                        Preferred Appointment Date
+                        <T>Preferred Appointment Date</T>
                       </label>
                       <input
                         id="locating-preferredDate"
@@ -749,12 +751,12 @@ export default function LocatingPage() {
                       {isSubmitting ? (
                         <>
                           <Loader2 className="w-5 h-5 animate-spin" />
-                          Submitting...
+                          <T>Submitting...</T>
                         </>
                       ) : (
                         <>
                           <Send className="w-5 h-5" />
-                          Schedule Locate
+                          <T>Schedule Locate</T>
                         </>
                       )}
                     </button>
@@ -770,7 +772,7 @@ export default function LocatingPage() {
           <div className="max-w-4xl mx-auto px-4">
             <p className="text-sm text-gray-600 text-center">
               <AlertTriangle className="w-4 h-4 inline mr-1" />
-              <strong>Disclaimer:</strong> Utility locating services are provided on a best-effort basis. Not all underground utilities can be detected due to installation methods, depth, soil conditions, signal interference, or lack of tracer wire. Always contact Indiana 811 before digging.
+              <strong><T>Disclaimer:</T></strong> <T>Utility locating services are provided on a best-effort basis. Not all underground utilities can be detected due to installation methods, depth, soil conditions, signal interference, or lack of tracer wire. Always contact Indiana 811 before digging.</T>
             </p>
           </div>
         </section>

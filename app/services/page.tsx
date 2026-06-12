@@ -8,6 +8,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Camera, Building2, Home, Users, Check, ArrowRight, Shield, Clock, Video } from 'lucide-react'
 import { COMPANY_INFO } from '@/lib/constants'
+import { T } from '@/components/diversity/diversity-provider'
 
 export const metadata: Metadata = {
   title: 'Sewer Scope Services Indianapolis | Residential, Commercial & Real Estate',
@@ -92,13 +93,13 @@ export default function ServicesPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-3xl mx-auto text-center">
               <span className="inline-block px-4 py-1 bg-primary-700 text-primary-200 text-sm font-semibold rounded-full mb-6">
-                Our Services
+                <T>Our Services</T>
               </span>
               <h1 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-                Professional Sewer Inspection Services
+                <T>Professional Sewer Inspection Services</T>
               </h1>
               <p className="text-xl text-primary-200">
-                Evidence-based inspections for homeowners, businesses, and real estate professionals throughout Central Indiana.
+                <T>Evidence-based inspections for homeowners, businesses, and real estate professionals throughout Central Indiana.</T>
               </p>
             </div>
           </div>
@@ -116,8 +117,8 @@ export default function ServicesPage() {
                       {IconComponent && <IconComponent className="w-5 h-5 text-primary-600" />}
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 text-sm">{benefit?.title ?? ''}</p>
-                      <p className="text-gray-500 text-xs">{benefit?.description ?? ''}</p>
+                      <p className="font-semibold text-gray-900 text-sm"><T>{benefit?.title ?? ''}</T></p>
+                      <p className="text-gray-500 text-xs"><T>{benefit?.description ?? ''}</T></p>
                     </div>
                   </div>
                 )
@@ -146,24 +147,24 @@ export default function ServicesPage() {
                         </div>
                         <div>
                           <h2 className="text-2xl font-heading font-bold text-gray-900">
-                            {service?.title ?? ''}
+                            <T>{service?.title ?? ''}</T>
                           </h2>
-                          <p className="text-primary-600 text-sm font-medium">{service?.subtitle ?? ''}</p>
+                          <p className="text-primary-600 text-sm font-medium"><T>{service?.subtitle ?? ''}</T></p>
                         </div>
                       </div>
-                      <p className="text-gray-600 mb-6">{service?.description ?? ''}</p>
+                      <p className="text-gray-600 mb-6"><T>{service?.description ?? ''}</T></p>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                         {service?.features?.map((feature, i) => (
                           <li key={i} className="flex items-center gap-2 text-gray-700">
                             <Check className="w-5 h-5 text-secondary-500 flex-shrink-0" />
-                            <span className="text-sm">{feature ?? ''}</span>
+                            <span className="text-sm"><T>{feature ?? ''}</T></span>
                           </li>
                         ))}
                       </ul>
                       <div className="flex items-center gap-4">
                         <span className="text-2xl font-bold text-gray-900">{service?.price ?? ''}</span>
                         <Link href="/contact" className="btn-primary">
-                          {service?.price === 'Custom Quote' ? 'Get Quote' : 'Book Now'}
+                          <T>{service?.price === 'Custom Quote' ? 'Get Quote' : 'Book Now'}</T>
                           <ArrowRight className="w-4 h-4" />
                         </Link>
                       </div>
@@ -186,20 +187,20 @@ export default function ServicesPage() {
         {/* CTA */}
         <section className="section-padding bg-primary-900 text-white">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-heading font-bold mb-4">Ready to Get Started?</h2>
+            <h2 className="text-3xl font-heading font-bold mb-4"><T>Ready to Get Started?</T></h2>
             <p className="text-primary-200 mb-8">
-              Book your professional sewer inspection today or call us to discuss your specific needs.
+              <T>Book your professional sewer inspection today or call us to discuss your specific needs.</T>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact" className="btn-cta">
-                Book Inspection
+                <T>Book Inspection</T>
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a
                 href={`tel:${COMPANY_INFO?.phoneRaw ?? ''}`}
                 className="btn-secondary bg-transparent border-primary-300 text-white hover:bg-primary-800"
               >
-                Call {COMPANY_INFO?.phone ?? ''}
+                <T>Call</T> {COMPANY_INFO?.phone ?? ''}
               </a>
             </div>
           </div>

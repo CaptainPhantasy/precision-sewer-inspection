@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Phone, ChevronDown } from 'lucide-react'
 import { COMPANY_INFO } from '@/lib/constants'
+import { useDiversity } from '@/components/diversity/diversity-provider'
 
 const navLinks = [
   { href: '/services', label: 'Services' },
@@ -19,6 +20,7 @@ const navLinks = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { t } = useDiversity()
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
@@ -54,7 +56,7 @@ export default function Header() {
                     : 'text-gray-700 hover:text-primary-700 hover:bg-gray-50'
                 }`}
               >
-                {link?.label ?? ''}
+                {t(link?.label ?? '')}
               </Link>
             ))}
           </nav>
@@ -72,7 +74,7 @@ export default function Header() {
               href="/contact"
               className="hidden sm:inline-flex btn-primary text-sm"
             >
-              Book Inspection
+              {t('Book Inspection')}
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -106,7 +108,7 @@ export default function Header() {
                       : 'text-gray-700 hover:text-primary-700 hover:bg-gray-50'
                   }`}
                 >
-                  {link?.label ?? ''}
+                  {t(link?.label ?? '')}
                 </Link>
               ))}
               <div className="pt-4 border-t border-gray-100 mt-2">
@@ -122,7 +124,7 @@ export default function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="btn-primary w-full mt-2 justify-center"
                 >
-                  Book Inspection
+                  {t('Book Inspection')}
                 </Link>
               </div>
             </nav>

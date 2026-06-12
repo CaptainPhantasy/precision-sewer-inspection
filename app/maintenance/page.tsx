@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
+import { T } from '@/components/diversity/diversity-provider'
 
 export const metadata: Metadata = {
   title: 'Planned Maintenance | Precision Sewer Inspection',
@@ -15,7 +17,7 @@ export default function MaintenancePage() {
     <>
       <header className="site" data-screen-label="Maintenance Header">
         <div className="container header-inner">
-          <a className="brand-lockup" href="/">
+          <Link className="brand-lockup" href="/">
             <div className="mark">
               <img src="/assets/psi_logo.png" alt="Precision Sewer Inspection" />
             </div>
@@ -23,15 +25,15 @@ export default function MaintenancePage() {
               <span className="display">
                 Precision <em>Sewer</em> Inspection
               </span>
-              <span className="tag">Central Indiana&apos;s Trusted Experts</span>
+              <span className="tag"><T>Central Indiana&apos;s Trusted Experts</T></span>
             </div>
-          </a>
+          </Link>
           <div className="header-cta">
             <a className="phone" href="tel:3176203858">
               <span className="icon">·</span>(317) 620-3858
             </a>
             <a href="mailto:booking@precisionsewerinspections.com" className="btn btn-onlight">
-              Email Us
+              <T>Email Us</T>
             </a>
           </div>
         </div>
@@ -42,17 +44,17 @@ export default function MaintenancePage() {
           <div className="container">
             <div className="cover-grid">
               <div>
-                <span className="pill outline-dark">Planned Routine Maintenance</span>
+                <span className="pill outline-dark"><T>Planned Routine Maintenance</T></span>
                 <h1>
                   We&apos;re Tightening Up The <em>Website</em>
                 </h1>
                 <p className="price-line">
-                  Online booking is paused for a few hours while we finish scheduled updates.
+                  <T>Online booking is paused for a few hours while we finish scheduled updates.</T>
                 </p>
                 <p className="lede-dark">
-                  Precision Sewer Inspection is still available by phone and email. If you need
+                  <T>Precision Sewer Inspection is still available by phone and email. If you need
                   to schedule, change, or ask about an inspection, contact us directly and we will
-                  take care of it.
+                  take care of it.</T>
                 </p>
                 <div className="ctas">
                   <a className="btn btn-accent" href="tel:3176203858">
@@ -64,33 +66,33 @@ export default function MaintenancePage() {
                 </div>
                 <div className="trust-grid">
                   <div className="cell">
-                    <div className="k">Status</div>
-                    <div className="v">Planned</div>
+                    <div className="k"><T>Status</T></div>
+                    <div className="v"><T>Planned</T></div>
                   </div>
                   <div className="cell">
-                    <div className="k">Booking</div>
-                    <div className="v">Paused</div>
+                    <div className="k"><T>Booking</T></div>
+                    <div className="v"><T>Paused</T></div>
                   </div>
                   <div className="cell">
-                    <div className="k">Phone</div>
-                    <div className="v">Open</div>
+                    <div className="k"><T>Phone</T></div>
+                    <div className="v"><T>Open</T></div>
                   </div>
                   <div className="cell">
-                    <div className="k">Reports</div>
-                    <div className="v">Safe</div>
+                    <div className="k"><T>Reports</T></div>
+                    <div className="v"><T>Safe</T></div>
                   </div>
                 </div>
               </div>
 
               <div className="tech-card" aria-hidden="true">
                 <div className="placeholder">
-                  <span className="stamp">Scheduled Website Maintenance</span>
+                  <span className="stamp"><T>Scheduled Website Maintenance</T></span>
                 </div>
                 <div className="cert-bump">
                   <div className="ic">✓</div>
                   <div className="text">
-                    <div className="a">Routine Work</div>
-                    <div className="b">Back online shortly</div>
+                    <div className="a"><T>Routine Work</T></div>
+                    <div className="b"><T>Back online shortly</T></div>
                   </div>
                 </div>
                 <div className="ribbon">
@@ -113,20 +115,20 @@ export default function MaintenancePage() {
         </div>
 
         <section className="final-cta" data-screen-label="Maintenance Contact">
-          <h2>Need Us Before The Site Is Back?</h2>
+          <h2><T>Need Us Before The Site Is Back?</T></h2>
           <p>
-            Call or email and we can handle scheduling, questions, and report support directly.
+            <T>Call or email and we can handle scheduling, questions, and report support directly.</T>
           </p>
           <div className="btn-row">
             <a className="btn btn-white" href="tel:3176203858">
-              Call Now <span className="arrow">→</span>
+              <T>Call Now</T> <span className="arrow">→</span>
             </a>
           </div>
           <div className="phone-row">
             <span>·</span>
             <a href="tel:3176203858">(317) 620-3858</a>
             <span className="sep">|</span>
-            <span>Central Indiana Sewer Inspection</span>
+            <span><T>Central Indiana Sewer Inspection</T></span>
           </div>
         </section>
       </main>
@@ -135,7 +137,7 @@ export default function MaintenancePage() {
         <div className="container">
           <div className="footer-grid">
             <div className="footer-brand">
-              <a className="lockup" href="/">
+              <Link className="lockup" href="/">
                 <div className="mark">
                   <img src="/assets/psi_logo.png" alt="Precision Sewer Inspection" />
                 </div>
@@ -143,37 +145,37 @@ export default function MaintenancePage() {
                   <div className="a">
                     Precision <em>Sewer</em> Inspection
                   </div>
-                  <div className="b">Sanitary Lateral Camera Survey</div>
+                  <div className="b"><T>Sanitary Lateral Camera Survey</T></div>
                 </div>
-              </a>
+              </Link>
               <p>
-                Central Indiana&apos;s trusted sewer inspection company. Evidence you can see,
-                answers you can trust.
+                <T>Central Indiana&apos;s trusted sewer inspection company. Evidence you can see,
+                answers you can trust.</T>
               </p>
               <div className="creds">
-                <span className="cred">Licensed &amp; Insured</span>
+                <span className="cred"><T>Licensed &amp; Insured</T></span>
                 <span className="cred">
                   <span className="dot">·</span>InterNACHI
                 </span>
               </div>
             </div>
             <div>
-              <h4>Maintenance</h4>
+              <h4><T>Maintenance</T></h4>
               <ul>
-                <li>Online booking temporarily paused</li>
-                <li>Phone scheduling available</li>
-                <li>Email support available</li>
+                <li><T>Online booking temporarily paused</T></li>
+                <li><T>Phone scheduling available</T></li>
+                <li><T>Email support available</T></li>
               </ul>
             </div>
             <div>
-              <h4>Contact</h4>
+              <h4><T>Contact</T></h4>
               <ul>
                 <li className="contact-line">
-                  <span className="label-mini">Phone</span>
+                  <span className="label-mini"><T>Phone</T></span>
                   <a href="tel:3176203858">(317) 620-3858</a>
                 </li>
                 <li className="contact-line">
-                  <span className="label-mini">Email</span>
+                  <span className="label-mini"><T>Email</T></span>
                   <a href="mailto:booking@precisionsewerinspections.com">
                     booking@precisionsewerinspections.com
                   </a>
@@ -181,10 +183,10 @@ export default function MaintenancePage() {
               </ul>
             </div>
             <div>
-              <h4>Area</h4>
+              <h4><T>Area</T></h4>
               <ul>
                 <li className="contact-line">
-                  <span className="label-mini">Serving</span>
+                  <span className="label-mini"><T>Serving</T></span>
                   <span>Indianapolis Metro &amp; Surrounding Areas</span>
                 </li>
               </ul>
@@ -192,7 +194,7 @@ export default function MaintenancePage() {
           </div>
 
           <div className="footer-areas">
-            <h4>Serving Central Indiana</h4>
+            <h4><T>Serving Central Indiana</T></h4>
             <div className="row">
               <span className="chip">Indianapolis</span>
               <span className="chip">Carmel</span>
@@ -201,7 +203,7 @@ export default function MaintenancePage() {
               <span className="chip">Westfield</span>
               <span className="chip">Zionsville</span>
               <span className="chip">Greenwood</span>
-              <span className="more">+ more</span>
+              <span className="more"><T>+ more</T></span>
             </div>
           </div>
 

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Video, HandCoins, Clock, BadgeCheck } from 'lucide-react'
+import { T } from '@/components/diversity/diversity-provider'
 
 const features = [
   {
@@ -36,9 +37,9 @@ export default function WhyChooseUs() {
         
         {/* Replaced old SectionHeading with the exact design system DOM structure */}
         <div className="section-head">
-          <span className="eyebrow">Why Choose Us</span>
-          <h2 className="psi"><span className="rule"></span>The Difference is in the Details</h2>
-          <p className="lede">We built Precision Sewer Inspection around one simple principle: give people the truth, and they'll make smart decisions.</p>
+          <span className="eyebrow"><T>Why Choose Us</T></span>
+          <h2 className="psi"><span className="rule"></span><T>The Difference is in the Details</T></h2>
+          <p className="lede"><T>We built Precision Sewer Inspection around one simple principle: give people the truth, and they'll make smart decisions.</T></p>
         </div>
 
         <div ref={ref} className="find-grid">
@@ -54,7 +55,7 @@ export default function WhyChooseUs() {
               >
                 <div className="head">
                   <div className="title">
-                    {feature?.title ?? ''}
+                    <T>{feature?.title ?? ''}</T>
                     {/* Preserved Lucide icons, styled to match the design system's subtitle slot */}
                     {IconComponent && (
                       <span className="sub" style={{ display: 'flex', alignItems: 'center' }}>
@@ -62,9 +63,9 @@ export default function WhyChooseUs() {
                       </span>
                     )}
                   </div>
-                  <span className="pill">Observed</span>
+                  <span className="pill"><T>Observed</T></span>
                 </div>
-                <p>{feature?.description ?? ''}</p>
+                <p><T>{feature?.description ?? ''}</T></p>
               </motion.article>
             )
           })}

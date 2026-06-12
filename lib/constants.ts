@@ -137,8 +137,8 @@ export const PIPE_ISSUES = [
 // Shape for each entry: { quote: string, author: string, role: string, rating: number }
 export const TESTIMONIALS: { quote: string; author: string; role: string; rating: number }[] = [
   {
-    // Real, customer-approved testimonial — customer consented to a public review.
-    // Full identity verified internally; only first name + initial is shown publicly.
+    // Verified paying customer (2026-05-18) who explicitly offered a positive
+    // public review (SMS, 2026). Real words, lightly trimmed.
     quote:
       "This is an incredibly thorough report. Thank you for all your hard work — I'll be glad to share your contact with my investor community in Indianapolis!",
     author: 'Andrew L.',

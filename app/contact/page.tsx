@@ -5,6 +5,7 @@ import AIChat from '@/components/ai-chat'
 import ContactForm from './contact-form'
 import { Phone, Mail, MapPin, Clock, Shield, Video, CheckCircle } from 'lucide-react'
 import { COMPANY_INFO } from '@/lib/constants'
+import { T } from '@/components/diversity/diversity-provider'
 
 export const metadata: Metadata = {
   title: 'Book Sewer Inspection Indianapolis | Schedule Online in 60 Seconds',
@@ -35,13 +36,13 @@ export default function ContactPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-3xl mx-auto text-center">
               <span className="inline-block px-4 py-1 bg-primary-700 text-primary-200 text-sm font-semibold rounded-full mb-6">
-                Get Started
+                <T>Get Started</T>
               </span>
               <h1 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-                Book Your Inspection
+                <T>Book Your Inspection</T>
               </h1>
               <p className="text-xl text-primary-200">
-                Schedule your professional sewer inspection online or contact us for immediate assistance.
+                <T>Schedule your professional sewer inspection online or contact us for immediate assistance.</T>
               </p>
             </div>
           </div>
@@ -55,10 +56,10 @@ export default function ContactPage() {
               <div className="lg:col-span-3">
                 <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8">
                   <h2 className="text-2xl font-heading font-bold text-gray-900 mb-2">
-                    Book Your Inspection
+                    <T>Request an Inspection</T>
                   </h2>
                   <p className="text-gray-600 mb-6">
-                    Pick your date and time, confirm your details, and pay securely — you&apos;re scheduled instantly. No phone calls, no waiting on a callback.
+                    <T>Fill out the form below and we&apos;ll get back to you within 24 hours to confirm your appointment.</T>
                   </p>
                   <ContactForm />
                 </div>
@@ -67,7 +68,7 @@ export default function ContactPage() {
               {/* Contact Info */}
               <div className="lg:col-span-2">
                 <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8 mb-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-6">Contact Information</h3>
+                  <h3 className="text-lg font-bold text-gray-900 mb-6"><T>Contact Information</T></h3>
                   <div className="space-y-4">
                     <a
                       href={`tel:${COMPANY_INFO?.phoneRaw ?? ''}`}
@@ -77,7 +78,7 @@ export default function ContactPage() {
                         <Phone className="w-6 h-6 text-white" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Call Us</p>
+                        <p className="text-sm text-gray-500"><T>Call Us</T></p>
                         <p className="font-semibold text-gray-900">{COMPANY_INFO?.phone ?? ''}</p>
                       </div>
                     </a>
@@ -89,7 +90,7 @@ export default function ContactPage() {
                         <Mail className="w-6 h-6 text-gray-600" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Email Us</p>
+                        <p className="text-sm text-gray-500"><T>Email Us</T></p>
                         <p className="font-semibold text-gray-900">{COMPANY_INFO?.email ?? ''}</p>
                       </div>
                     </a>
@@ -103,7 +104,7 @@ export default function ContactPage() {
                         <MapPin className="w-6 h-6 text-gray-600" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Service Area</p>
+                        <p className="text-sm text-gray-500"><T>Service Area</T></p>
                         <p className="font-semibold text-gray-900 text-sm">{COMPANY_INFO?.serviceAreaDisplay ?? 'Indianapolis Metro & Surrounding Areas'}</p>
                       </div>
                     </a>
@@ -111,14 +112,14 @@ export default function ContactPage() {
                 </div>
 
                 <div className="bg-primary-900 text-white rounded-2xl p-6 md:p-8">
-                  <h3 className="text-lg font-bold mb-4">Why Choose Us?</h3>
+                  <h3 className="text-lg font-bold mb-4"><T>Why Choose Us?</T></h3>
                   <ul className="space-y-3">
                     {benefits?.map((benefit, index) => {
                       const IconComponent = benefit?.icon
                       return (
                         <li key={index} className="flex items-center gap-3">
                           {IconComponent && <IconComponent className="w-5 h-5 text-primary-300" />}
-                          <span className="text-primary-100">{benefit?.text ?? ''}</span>
+                          <span className="text-primary-100"><T>{benefit?.text ?? ''}</T></span>
                         </li>
                       )
                     })}
@@ -126,7 +127,7 @@ export default function ContactPage() {
                   <div className="mt-6 pt-6 border-t border-primary-700">
                     <div className="flex items-center gap-2">
                       <Clock className="w-5 h-5 text-accent-400" />
-                      <span className="text-accent-400 font-semibold">Available 7 Days a Week</span>
+                      <span className="text-accent-400 font-semibold"><T>Available 7 Days a Week</T></span>
                     </div>
                   </div>
                 </div>
