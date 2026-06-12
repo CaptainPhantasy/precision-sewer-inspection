@@ -59,7 +59,7 @@ Issues/
 VERCEL_HANDOFF.md
 PSI_FULL_ENVIRONMENT_ABACUS_EXPORT*
 llm_skeptic.py
-pebkac-starter/
+pebkac-starter*/
 prisma/.pi-lens/
 scripts/check_users.ts
 scripts/send-backfill-admin-emails.ts
@@ -75,3 +75,14 @@ scripts/send-backfill-admin-emails.ts
 /final_evidence_and_completeness.md
 /workflow_test_plans.md
 /css-refactor-diff.txt
+
+# internal audit & status docs — candid weakness/strategy catalogs, never publish
+/BREAKING_CODE_AUDIT.md
+/OWNER_AUDIT*.md
+/*_AUDIT.md
+/*_AUDIT_*.md
+/docs/BUILD_PROGRESS.md
+/docs/CHECKOUT_FLOW_ISSUES.md
+/docs/DIRECTORY_SETUP_GUIDE.md
+/docs/PRODUCTION_ENHANCEMENTS.md
+/public/images/IMAGE_INVENTORY.md

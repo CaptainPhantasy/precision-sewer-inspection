@@ -1,0 +1,76 @@
+name: CI
+
+# Lint + build gate for the PSI app. Runs on pushes and PRs to the long-lived
+# branches. No test job: the repo has no test runner or test scripts yet — a
+# placeholder test step that always passes would be worse than none.
+on:
+  push:
+    branches: [main, development]
+  pull_request:
+    branches: [main, development]
+
+# A newer push to the same ref cancels the in-flight run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint (eslint .)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      # npm ci is deterministic and uses package-lock.json. NOTE: this repo also
+      # carries a yarn.lock — CI pins to npm; the duplicate lockfile should be removed.
+      - run: npm ci   # postinstall runs `prisma generate`
+      - run: npm run lint
+
+  build:
+    name: Build (prisma generate && next build)
+    runs-on: ubuntu-latest
+
+    # Throwaway Postgres so `next build` cannot fail on a missing/blank DATABASE_URL
+    # if any route reads the DB during static generation.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: psi_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      # Real (ephemeral) DB for the service above.
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/psi_ci
+      # Build-time placeholders. These are NOT secrets — they only satisfy
+      # presence checks so the build doesn't crash on undefined env. If the build
+      # ever needs real values, add them as repo Secrets and reference here.
+      NEXTAUTH_SECRET: ci-placeholder-secret-not-used-at-runtime
+      NEXTAUTH_URL: http://localhost:3000
+      AWS_ACCESS_KEY_ID: ci-placeholder
+      AWS_SECRET_ACCESS_KEY: ci-placeholder
+      AWS_REGION: us-east-1
+      AWS_BUCKET_NAME: ci-placeholder-bucket
+      AWS_FOLDER_PREFIX: uploads/
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      # Materialize the schema into the ephemeral DB so build-time queries resolve.
+      - run: npx prisma db push --skip-generate
+      - run: npm run build
