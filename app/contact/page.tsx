@@ -56,10 +56,10 @@ export default function ContactPage() {
               <div className="lg:col-span-3">
                 <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8">
                   <h2 className="text-2xl font-heading font-bold text-gray-900 mb-2">
-                    <T>Request an Inspection</T>
+                    <T>Book Your Inspection</T>
                   </h2>
                   <p className="text-gray-600 mb-6">
-                    <T>Fill out the form below and we&apos;ll get back to you within 24 hours to confirm your appointment.</T>
+                    <T>Pick your date and time, confirm your details, and pay securely — you&apos;re scheduled instantly. No phone calls, no waiting on a callback.</T>
                   </p>
                   <ContactForm />
                 </div>
