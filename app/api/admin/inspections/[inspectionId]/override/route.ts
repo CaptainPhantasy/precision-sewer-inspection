@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 /**
  * Admin Override API
  * Allows admins to override workflow gates including time minimums

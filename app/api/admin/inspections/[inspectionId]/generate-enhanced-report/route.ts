@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 /**
  * Enhanced Report Generation API Route
  * POST: Triggers the ReportForge agent to generate an enhanced inspection report.

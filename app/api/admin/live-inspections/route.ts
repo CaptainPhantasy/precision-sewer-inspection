@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 /**
  * Live Inspections API
  * Returns real-time data about all active inspections for admin monitoring
