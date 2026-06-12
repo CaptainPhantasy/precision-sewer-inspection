@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, ShieldCheck } from 'lucide-react'
 import AnimatedCounter from '@/components/animated-counter'
-import { Star, Clock, DollarSign } from 'lucide-react'
+import { MapPin, Clock, DollarSign } from 'lucide-react'
 
 interface ServiceAreaHeroProps {
   cityName: string
@@ -15,10 +15,10 @@ interface ServiceAreaHeroProps {
 }
 
 const trustBadges = [
-  { icon: Star, value: '4.9', label: 'Google Rating', suffix: '' },
-  { icon: Clock, value: '24', label: 'Hour Delivery', suffix: 'h' },
   { icon: ShieldCheck, value: '100', label: 'No Upselling', suffix: '%' },
+  { icon: Clock, value: '1', label: 'Business-Day Reports', suffix: '' },
   { icon: DollarSign, value: '0', label: 'Hidden Fees', suffix: '' },
+  { icon: MapPin, value: '10', label: 'Indiana Areas Served', suffix: '+' },
 ]
 
 export default function ServiceAreaHero({

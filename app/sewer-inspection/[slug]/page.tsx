@@ -182,12 +182,6 @@ export default async function Page({ params }: PageProps) {
     [],
   );
 
-  // Fetch review stats (would come from AggregatedReview in production)
-  const reviews = {
-    rating: 4.9,
-    count: 47,
-  };
-
   return (
     <div className="min-h-screen flex flex-col">
       <StructuredData type="LocalBusiness" />
@@ -197,7 +191,6 @@ export default async function Page({ params }: PageProps) {
         <ServiceAreaPage
           area={area}
           faqs={faqs}
-          reviews={reviews}
           nearbyAreas={nearbyAreas}
         />
       </main>

@@ -7,6 +7,9 @@ import { TESTIMONIALS } from '@/lib/constants'
 export default function Testimonials() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
 
+  // Nothing fabricated: render the section only when real, approved testimonials exist.
+  if (!TESTIMONIALS || TESTIMONIALS.length === 0) return null
+
   return (
     <section className="psi alt" data-screen-label="Testimonials">
       <div className="container">

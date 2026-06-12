@@ -131,23 +131,18 @@ export const PIPE_ISSUES = [
   { name: 'Offset Joints', image: '/images/offset_joint.png', description: 'Misaligned pipe connections' },
 ]
 
-export const TESTIMONIALS = [
+// Real, customer-approved testimonials ONLY. Empty until verified quotes are
+// added — the Testimonials section and the review schema both stay hidden while
+// this is empty, so nothing fabricated is ever shown to users or to Google.
+// Shape for each entry: { quote: string, author: string, role: string, rating: number }
+export const TESTIMONIALS: { quote: string; author: string; role: string; rating: number }[] = [
   {
-    quote: 'They saved me from a $15,000 mistake. The sellers swore the sewer line was fine but Precision Sewer Inspection found a complete collapse. Their video evidence gave me the leverage I needed to negotiate repairs before closing.',
-    author: 'Sarah M.',
-    role: 'First-Time Home Buyer, Indianapolis',
-    rating: 5,
-  },
-  {
-    quote: 'My go-to partner for every transaction. As a real estate agent, I need partners I can trust to treat my clients right. These folks are fast, honest, and their reports are incredibly thorough.',
-    author: 'Michael T.',
-    role: 'Licensed Realtor, Carmel',
-    rating: 5,
-  },
-  {
-    quote: "Finally, a company that doesn't try to sell me things. Another company told me I needed a full replacement for $12,000. Precision showed me it was just root intrusion that needed a simple cleaning.",
-    author: 'Jennifer L.',
-    role: 'Homeowner, Fishers',
+    // Real, customer-approved testimonial — customer consented to a public review.
+    // Full identity verified internally; only first name + initial is shown publicly.
+    quote:
+      "This is an incredibly thorough report. Thank you for all your hard work — I'll be glad to share your contact with my investor community in Indianapolis!",
+    author: 'Andrew L.',
+    role: 'Real Estate Investor · Greenwood, IN',
     rating: 5,
   },
 ]

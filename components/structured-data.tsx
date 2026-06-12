@@ -1,4 +1,4 @@
-import { COMPANY_INFO, FAQ_ITEMS, SERVICE_AREAS, TESTIMONIALS } from '@/lib/constants'
+import { COMPANY_INFO, FAQ_ITEMS, SERVICE_AREAS } from '@/lib/constants'
 
 interface StructuredDataProps {
   type: 'LocalBusiness' | 'Service' | 'FAQPage' | 'WebPage' | 'BreadcrumbList'
@@ -52,27 +52,6 @@ export default function StructuredData({ type, pageTitle, pageDescription, bread
     image: `${baseUrl}/logo.png`,
     logo: `${baseUrl}/logo.png`,
     sameAs: [],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '5.0',
-      reviewCount: TESTIMONIALS.length.toString(),
-      bestRating: '5',
-      worstRating: '1',
-    },
-    review: TESTIMONIALS.map((t) => ({
-      '@type': 'Review',
-      author: {
-        '@type': 'Person',
-        name: t.author,
-      },
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: t.rating.toString(),
-        bestRating: '5',
-        worstRating: '1',
-      },
-      reviewBody: t.quote,
-    })),
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'Sewer Inspection Services',
