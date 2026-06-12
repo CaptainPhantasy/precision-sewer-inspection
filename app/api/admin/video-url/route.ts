@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { getCurrentUser, hasRole } from "@/lib/auth";
 import { getFileUrl } from "@/lib/s3";
