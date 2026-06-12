@@ -501,9 +501,10 @@
     background:var(--accent); border-radius:0 2px 2px 0;
   }
   .step .num-block .stepN {
-    font-size:9px; letter-spacing:2px; text-transform:uppercase;
+    font-size:9px; letter-spacing:0.5px; text-transform:uppercase;
     color:rgba(255,255,255,.6); font-family:var(--body); font-weight:600;
-    position:absolute; top:8px; right:12px;
+    position:absolute; top:8px; right:10px; max-width:calc(100% - 16px);
+    white-space:nowrap; overflow:hidden; text-overflow:clip;
   }
   .step h3 {
     font-family:var(--display); font-weight:600;

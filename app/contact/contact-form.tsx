@@ -383,9 +383,9 @@ export default function ContactForm() {
         <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <CheckCircle className="w-8 h-8 text-secondary-600" />
         </div>
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Thank You!</h3>
-        <p className="text-gray-600 mb-6">We&apos;ve received your request and will get back to you within 24 hours.</p>
-        <button onClick={() => setIsSuccess(false)} className="btn-secondary">Submit Another Request</button>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">You&apos;re Booked!</h3>
+        <p className="text-gray-600 mb-6">Your inspection is scheduled. Check your email for your confirmation and appointment details.</p>
+        <button onClick={() => setIsSuccess(false)} className="btn-secondary">Book Another Inspection</button>
       </div>
     )
   }
