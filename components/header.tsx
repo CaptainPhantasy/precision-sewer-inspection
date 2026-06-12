@@ -10,6 +10,7 @@ import { COMPANY_INFO } from '@/lib/constants'
 const navLinks = [
   { href: '/services', label: 'Services' },
   { href: '/pricing', label: 'Pricing' },
+  { href: '/areas', label: 'Service Areas' },
   { href: '/locating', label: 'Utility Locating', highlight: true },
   { href: '/about', label: 'About' },
   { href: '/faq', label: 'FAQ' },

@@ -1,7 +1,8 @@
 import { Award, CheckCircle, Mail, MapPin, Phone, Shield } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { COMPANY_INFO, SERVICE_AREAS } from "@/lib/constants";
+import { COMPANY_INFO } from "@/lib/constants";
+import { SERVICE_AREA_LINKS } from "@/lib/service-areas";
 
 export default function Footer() {
 	return (
@@ -191,18 +192,19 @@ export default function Footer() {
 				{/* Service Areas */}
 				<div className="mt-10 pt-8 border-t border-primary-800">
 					<h4 className="font-heading font-bold text-sm mb-3">
-						Serving Central Indiana
+						<Link href="/areas" className="hover:text-white transition-colors">Sewer Inspection Service Areas</Link>
 					</h4>
 					<div className="flex flex-wrap gap-2">
-						{(SERVICE_AREAS ?? [])?.slice(0, 10)?.map((area) => (
-							<span
-								key={area ?? ""}
-								className="text-xs text-primary-300 bg-primary-800 px-2 py-1 rounded"
-							>
-								{area ?? ""}
-							</span>
-						))}
-						<span className="text-xs text-primary-300">+ more</span>
+						{SERVICE_AREA_LINKS.map((area) => (
+						<Link
+							key={area.slug}
+							href={`/sewer-inspection/${area.slug}`}
+							className="text-xs text-primary-300 bg-primary-800 px-2 py-1 rounded hover:bg-primary-700 hover:text-white transition-colors"
+						>
+							{area.name}
+						</Link>
+					))}
+					<Link href="/areas" className="text-xs text-primary-300 px-2 py-1 hover:text-white transition-colors self-center">View all areas</Link>
 					</div>
 				</div>
 

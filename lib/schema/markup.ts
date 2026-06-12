@@ -9,7 +9,7 @@ import { ServiceArea, ServiceOffering, FAQ } from '@prisma/client';
 const COMPANY = {
   name: 'Precision Sewer Inspection',
   description: 'Professional sewer and drain camera inspection services for homeowners, realtors, and property managers throughout the Indianapolis metro area.',
-  url: 'https://www.precisionsewerinspections.com',
+  url: 'https://precisionsewerinspections.com',
   phone: '(317) 620-3858',
   phoneRaw: '3176203858',
   email: 'booking@precisionsewerinspections.com',
@@ -108,10 +108,10 @@ export function generateLocalBusinessSchema(
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    '@id': `${COMPANY.url}/sewer-inspection-${area.slug}/#localbusiness`,
+    '@id': `${COMPANY.url}/sewer-inspection/${area.slug}/#localbusiness`,
     name: `${COMPANY.name} - ${area.name}`,
     description: area.description || `${COMPANY.name} provides professional sewer inspection services in ${area.name}, Indiana.`,
-    url: `${COMPANY.url}/sewer-inspection-${area.slug}`,
+    url: `${COMPANY.url}/sewer-inspection/${area.slug}`,
     telephone: COMPANY.phone,
     address: {
       '@type': 'PostalAddress',
@@ -164,7 +164,7 @@ export function generateServiceSchema(
     name: service.name,
     description: service.description,
     url: area 
-      ? `${COMPANY.url}/sewer-inspection-${area.slug}/#${service.slug}`
+      ? `${COMPANY.url}/sewer-inspection/${area.slug}/#${service.slug}`
       : `${COMPANY.url}/services/${service.slug}`,
     provider: {
       '@id': `${COMPANY.url}/#organization`,
@@ -312,13 +312,13 @@ export function generateLandingPageSchema(options: LandingPageSchemaOptions) {
     generateWebpageSchema({
       title: `Sewer Inspection in ${area.name}, IN | ${COMPANY.name}`,
       description: area.description || `Professional sewer camera inspection services in ${area.name}, Indiana. Serving homeowners, realtors, and property managers.`,
-      url: `${COMPANY.url}/sewer-inspection-${area.slug}`,
+      url: `${COMPANY.url}/sewer-inspection/${area.slug}`,
       area,
     }),
     generateBreadcrumbSchema([
       { name: 'Home', url: '/' },
       { name: 'Service Areas', url: '/areas' },
-      { name: area.name, url: `/sewer-inspection-${area.slug}` },
+      { name: area.name, url: `/sewer-inspection/${area.slug}` },
     ]),
   ];
 
@@ -362,13 +362,13 @@ export function generateAllSchemas(options?: { area?: ServiceArea }) {
       generateWebpageSchema({
         title: `Sewer Inspection in ${options.area.name}, IN | ${COMPANY.name}`,
         description: options.area.description || '',
-        url: `${COMPANY.url}/sewer-inspection-${options.area.slug}`,
+        url: `${COMPANY.url}/sewer-inspection/${options.area.slug}`,
         area: options.area,
       }),
       generateBreadcrumbSchema([
         { name: 'Home', url: '/' },
         { name: 'Service Areas', url: '/areas' },
-        { name: options.area.name, url: `/sewer-inspection-${options.area.slug}` },
+        { name: options.area.name, url: `/sewer-inspection/${options.area.slug}` },
       ])
     );
   }
