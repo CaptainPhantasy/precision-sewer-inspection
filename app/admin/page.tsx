@@ -44,6 +44,7 @@ import { BookingsTab } from "@/components/admin/bookings-tab";
 import { ChatsTab } from "@/components/admin/chats-tab";
 import { LeadsTab } from "@/components/admin/leads-tab";
 import { AnalyticsTab } from "@/components/admin/analytics-tab";
+import { OpsMonitorTab } from "@/components/admin/ops-monitor-tab";
 import toast from "react-hot-toast";
 
 // Types
@@ -183,7 +184,7 @@ export default function AdminDashboard() {
   const { user, loading, logout } = useAuth();
   
   // State
-  const [activeTab, setActiveTab] = useState<"live" | "review" | "jobs" | "users" | "bookings" | "chats" | "leads" | "analytics">("live");
+  const [activeTab, setActiveTab] = useState<"live" | "ops" | "review" | "jobs" | "users" | "bookings" | "chats" | "leads" | "analytics">("live");
   const [liveInspections, setLiveInspections] = useState<LiveInspection[]>([]);
   const [reviewInspections, setReviewInspections] = useState<ReviewInspection[]>([]);
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -555,6 +556,7 @@ export default function AdminDashboard() {
           <div className="flex gap-1 lg:gap-0 border-b border-gray-200 min-w-max">
             {([
               { id: "live" as const, icon: Radio, label: "Live", badge: liveInspections.length > 0 ? liveInspections.length : undefined, badgeColor: "bg-green-500" },
+              { id: "ops" as const, icon: Shield, label: "Ops" },
               { id: "review" as const, icon: FileText, label: "Review", badge: stats && stats.pendingReview > 0 ? stats.pendingReview : undefined, badgeColor: "bg-yellow-500" },
               { id: "jobs" as const, icon: Briefcase, label: "Jobs" },
               { id: "leads" as const, icon: Zap, label: "Leads" },
@@ -981,6 +983,13 @@ export default function AdminDashboard() {
                 ))}
               </div>
             )}
+          </section>
+        )}
+
+        {/* Ops Monitor Tab */}
+        {activeTab === "ops" && (
+          <section>
+            <OpsMonitorTab />
           </section>
         )}
 

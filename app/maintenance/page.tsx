@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Planned Maintenance | Precision Sewer Inspection',
@@ -15,7 +16,7 @@ export default function MaintenancePage() {
     <>
       <header className="site" data-screen-label="Maintenance Header">
         <div className="container header-inner">
-          <a className="brand-lockup" href="/">
+          <Link className="brand-lockup" href="/">
             <div className="mark">
               <img src="/assets/psi_logo.png" alt="Precision Sewer Inspection" />
             </div>
@@ -25,7 +26,7 @@ export default function MaintenancePage() {
               </span>
               <span className="tag">Central Indiana&apos;s Trusted Experts</span>
             </div>
-          </a>
+          </Link>
           <div className="header-cta">
             <a className="phone" href="tel:3176203858">
               <span className="icon">·</span>(317) 620-3858
@@ -135,7 +136,7 @@ export default function MaintenancePage() {
         <div className="container">
           <div className="footer-grid">
             <div className="footer-brand">
-              <a className="lockup" href="/">
+              <Link className="lockup" href="/">
                 <div className="mark">
                   <img src="/assets/psi_logo.png" alt="Precision Sewer Inspection" />
                 </div>
@@ -145,7 +146,7 @@ export default function MaintenancePage() {
                   </div>
                   <div className="b">Sanitary Lateral Camera Survey</div>
                 </div>
-              </a>
+              </Link>
               <p>
                 Central Indiana&apos;s trusted sewer inspection company. Evidence you can see,
                 answers you can trust.
