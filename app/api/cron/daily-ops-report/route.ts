@@ -1,11 +1,42 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { sendAdminNotification } from "@/lib/notifications";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 type CountMap = Record<string, number>;
+type CheckStatus = "ok" | "warn" | "fail";
+
+interface OpsMonitorCheck {
+  id: string;
+  title: string;
+  status: CheckStatus;
+  summary: string;
+  evidence: string[];
+}
+
+interface OpsMonitorResponse {
+  success: boolean;
+  checkedAt?: string;
+  overallStatus?: CheckStatus;
+  checks?: OpsMonitorCheck[];
+  recentBookings?: Array<{ issues?: string[]; monitorIssues?: string[]; handoffIssues?: string[] }>;
+  error?: string;
+}
+
+interface OpsMonitorSnapshot {
+  success: boolean;
+  status: CheckStatus;
+  checkedAt: string | null;
+  checks: OpsMonitorCheck[];
+  recentBookingCount: number;
+  issueCount: number;
+  monitorIssueCount: number;
+  handoffIssueCount: number;
+  error?: string;
+}
 
 function countBy<T extends string | null | undefined>(values: T[]): CountMap {
   return values.reduce<CountMap>((acc, value) => {
@@ -33,6 +64,106 @@ function escapeHtml(value: string): string {
     .replace(/'/g, "&#39;");
 }
 
+function statusColor(status: CheckStatus): string {
+  switch (status) {
+    case "ok":
+      return "#166534";
+    case "warn":
+      return "#92400e";
+    case "fail":
+      return "#991b1b";
+  }
+}
+
+async function fetchOpsMonitorSnapshot(cronSecret: string): Promise<OpsMonitorSnapshot> {
+  const monitorUrl = `${getSiteUrl()}/api/admin/ops-monitor`;
+
+  try {
+    const response = await fetch(monitorUrl, {
+      cache: "no-store",
+      headers: { authorization: `Bearer ${cronSecret}` },
+    });
+    const body = (await response.json().catch(() => null)) as OpsMonitorResponse | null;
+
+    if (!response.ok || !body?.success || !body.overallStatus) {
+      return {
+        success: false,
+        status: "fail",
+        checkedAt: null,
+        checks: [],
+        recentBookingCount: 0,
+        issueCount: 0,
+        monitorIssueCount: 0,
+        handoffIssueCount: 0,
+        error: body?.error || `Monitor returned HTTP ${response.status}`,
+      };
+    }
+
+    const recentBookings = body.recentBookings || [];
+    return {
+      success: true,
+      status: body.overallStatus,
+      checkedAt: body.checkedAt || null,
+      checks: body.checks || [],
+      recentBookingCount: recentBookings.length,
+      issueCount: recentBookings.reduce((sum, booking) => sum + (booking.issues || []).length, 0),
+      monitorIssueCount: recentBookings.reduce((sum, booking) => sum + (booking.monitorIssues || []).length, 0),
+      handoffIssueCount: recentBookings.reduce((sum, booking) => sum + (booking.handoffIssues || []).length, 0),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      status: "fail",
+      checkedAt: null,
+      checks: [],
+      recentBookingCount: 0,
+      issueCount: 0,
+      monitorIssueCount: 0,
+      handoffIssueCount: 0,
+      error: error instanceof Error ? error.message : "Unknown monitor fetch error",
+    };
+  }
+}
+
+function renderOpsMonitor(snapshot: OpsMonitorSnapshot): string {
+  const failedChecks = snapshot.checks.filter((check) => check.status === "fail");
+  const warningChecks = snapshot.checks.filter((check) => check.status === "warn");
+  const borderColor = statusColor(snapshot.status);
+
+  return `
+    <div style="border: 2px solid ${borderColor}; background: ${snapshot.status === "fail" ? "#fef2f2" : snapshot.status === "warn" ? "#fffbeb" : "#f0fdf4"}; padding: 16px; border-radius: 8px; margin: 24px 0;">
+      <h2 style="margin-top: 0; color: ${borderColor};">Operations Monitor: ${snapshot.status.toUpperCase()}</h2>
+      ${
+        snapshot.status === "ok"
+          ? "<p><strong>Clear:</strong> monitored systems and monitor instrumentation are reporting clean.</p>"
+          : "<p><strong>ACTION REQUIRED:</strong> at least one monitored system or monitor-instrumentation path is failing.</p>"
+      }
+      ${snapshot.error ? `<p><strong>Monitor error:</strong> ${escapeHtml(snapshot.error)}</p>` : ""}
+      <ul>
+        <li><strong>Checked at:</strong> ${escapeHtml(snapshot.checkedAt || "not available")}</li>
+        <li><strong>Recent bookings checked:</strong> ${snapshot.recentBookingCount}</li>
+        <li><strong>Total booking issues:</strong> ${snapshot.issueCount}</li>
+        <li><strong>Monitor instrumentation issues:</strong> ${snapshot.monitorIssueCount}</li>
+        <li><strong>PWA handoff issues:</strong> ${snapshot.handoffIssueCount}</li>
+      </ul>
+      ${
+        failedChecks.length
+          ? `<h3 style="color: #991b1b;">Failing checks</h3><ul>${failedChecks
+              .map((check) => `<li><strong>${escapeHtml(check.title)}:</strong> ${escapeHtml(check.summary)}</li>`)
+              .join("")}</ul>`
+          : ""
+      }
+      ${
+        warningChecks.length
+          ? `<h3 style="color: #92400e;">Warnings</h3><ul>${warningChecks
+              .map((check) => `<li><strong>${escapeHtml(check.title)}:</strong> ${escapeHtml(check.summary)}</li>`)
+              .join("")}</ul>`
+          : ""
+      }
+    </div>
+  `;
+}
+
 function requireCronSecret(request: NextRequest): NextResponse | null {
   const cronSecret = process.env.CRON_SECRET;
   if (!cronSecret) {
@@ -56,6 +187,7 @@ function requireCronSecret(request: NextRequest): NextResponse | null {
 export async function GET(request: NextRequest) {
   const authError = requireCronSecret(request);
   if (authError) return authError;
+  const cronSecret = process.env.CRON_SECRET || "";
 
   const now = new Date();
   const since = new Date(now.getTime() - 24 * 60 * 60 * 1000);
@@ -70,6 +202,7 @@ export async function GET(request: NextRequest) {
     jobs,
     inspectionsAwaitingReview,
     expiringDeliveryTokens,
+    opsMonitor,
   ] = await Promise.all([
     prisma.contactSubmission.findMany({
       where: { createdAt: { gte: since } },
@@ -132,6 +265,7 @@ export async function GET(request: NextRequest) {
       orderBy: { actualExpiresAt: "asc" },
       take: 25,
     }),
+    fetchOpsMonitorSnapshot(cronSecret),
   ]);
 
   const pageCounts = countBy(siteVisits.map((visit) => visit.pageUrl));
@@ -140,11 +274,15 @@ export async function GET(request: NextRequest) {
   const jobStatusCounts = countBy(jobs.map((job) => job.status));
   const contactStatusCounts = countBy(contacts.map((contact) => contact.status));
 
-  const subject = `PSI Daily Ops Digest — ${now.toLocaleDateString("en-US", { timeZone: "America/Indianapolis" })}`;
+  const subjectPrefix =
+    opsMonitor.status === "fail" ? "PSI OPS ALERT - " : opsMonitor.status === "warn" ? "PSI OPS WARNING - " : "";
+  const subject = `${subjectPrefix}PSI Daily Ops Digest — ${now.toLocaleDateString("en-US", { timeZone: "America/Indianapolis" })}`;
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; max-width: 720px; margin: 0 auto; color: #1f2937;">
       <h1>PSI Daily Ops Digest</h1>
       <p>Window: ${since.toISOString()} through ${now.toISOString()}</p>
+
+      ${renderOpsMonitor(opsMonitor)}
 
       <h2>Summary</h2>
       <ul>
@@ -198,6 +336,10 @@ export async function GET(request: NextRequest) {
     emailResult,
     window: { since: since.toISOString(), until: now.toISOString() },
     counts: {
+      opsMonitorStatus: opsMonitor.status,
+      opsMonitorIssueCount: opsMonitor.issueCount,
+      opsMonitorInstrumentationIssueCount: opsMonitor.monitorIssueCount,
+      opsMonitorHandoffIssueCount: opsMonitor.handoffIssueCount,
       contacts: contacts.length,
       leadCaptures: leadCaptures.length,
       chatConversations: chatConversations.length,

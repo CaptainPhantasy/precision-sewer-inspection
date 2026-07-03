@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 type CheckStatus = "ok" | "warn" | "fail";
+type BookingLifecycleKind = "active" | "refunded" | "canceled" | "partially_refunded" | "needs_review";
 
 interface MonitorCheck {
   id: string;
@@ -58,6 +59,16 @@ interface RecentBooking {
     status: string;
     technicianId: string | null;
   };
+  lifecycle: {
+    kind: BookingLifecycleKind;
+    label: string;
+    summary: string;
+    requiresOperationalHandoff: boolean;
+  };
+  monitorIssues: string[];
+  paymentIssues: string[];
+  calendarIssues: string[];
+  handoffIssues: string[];
   issues: string[];
 }
 
@@ -103,6 +114,32 @@ function formatMoney(amount: number | null): string {
 function formatCents(amount: number | null | undefined): string {
   if (amount == null) return "n/a";
   return formatMoney(amount / 100);
+}
+
+function checkCardClasses(status: CheckStatus): string {
+  switch (status) {
+    case "ok":
+      return "border-green-100 bg-white";
+    case "warn":
+      return "border-amber-300 bg-amber-50";
+    case "fail":
+      return "border-red-300 bg-red-50";
+  }
+}
+
+function lifecycleClasses(kind: BookingLifecycleKind): string {
+  switch (kind) {
+    case "active":
+      return "bg-blue-100 text-blue-800";
+    case "refunded":
+      return "bg-gray-200 text-gray-800";
+    case "canceled":
+      return "bg-gray-200 text-gray-800";
+    case "partially_refunded":
+      return "bg-amber-100 text-amber-800";
+    case "needs_review":
+      return "bg-red-100 text-red-800";
+  }
 }
 
 export function OpsMonitorTab() {
@@ -169,7 +206,30 @@ export function OpsMonitorTab() {
 
   if (!data) return null;
 
+  const failedChecks = data.checks.filter((check) => check.status === "fail");
+  const warningChecks = data.checks.filter((check) => check.status === "warn");
+  const monitorFailing = failedChecks.some((check) => check.id === "monitor-instrumentation");
+  const publicFunnelFailing = failedChecks.some((check) =>
+    ["public-website", "booking-availability"].includes(check.id)
+  );
   const failingBookings = data.recentBookings.filter((booking) => booking.issues.length > 0).length;
+  const activeHandoffFailures = data.recentBookings.filter((booking) => booking.handoffIssues.length > 0).length;
+  const headline =
+    data.overallStatus === "ok"
+      ? "Operations monitor clear"
+      : monitorFailing
+        ? "Monitor cannot prove system health"
+        : publicFunnelFailing
+          ? "Customer-facing funnel needs attention now"
+          : "Back-office handoff needs attention";
+  const summary =
+    data.overallStatus === "ok"
+      ? "Public funnel, payment records, calendar handoff, PWA jobs, and monitor instrumentation are clean."
+      : monitorFailing
+        ? "A monitored dependency or credential read failed, so the monitor is treating system health as unproven."
+        : publicFunnelFailing
+          ? "The public website or booking availability path is failing."
+          : `${activeHandoffFailures || failingBookings} booking${(activeHandoffFailures || failingBookings) === 1 ? "" : "s"} need downstream operational attention.`;
 
   return (
     <div className="space-y-6">
@@ -178,22 +238,43 @@ export function OpsMonitorTab() {
           <div className="flex items-start gap-3">
             {statusIcon(data.overallStatus)}
             <div>
-              <h2 className="text-lg font-semibold">
-                {data.overallStatus === "ok"
-                  ? "Live customer flow healthy"
-                  : data.overallStatus === "warn"
-                    ? "Live customer flow needs attention"
-                    : "Live customer flow failing"}
-              </h2>
-              <p className="mt-1 text-sm">
-                {failingBookings > 0
-                  ? `${failingBookings} recent paid booking${failingBookings === 1 ? "" : "s"} have downstream data issues.`
-                  : "Website, calendar, payment, database, and PWA checks returned clean."}
-              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-lg font-semibold">{headline}</h2>
+                {data.overallStatus !== "ok" && (
+                  <span className="rounded-full bg-red-600 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+                    Needs attention now
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-sm">{summary}</p>
               <p className="mt-1 flex items-center gap-1 text-xs opacity-80">
                 <Clock className="h-3.5 w-3.5" />
                 Last checked {new Date(data.checkedAt).toLocaleString()}
               </p>
+              {failedChecks.length > 0 && (
+                <div className="mt-4 rounded-lg border border-red-300 bg-white/80 p-3 text-red-900">
+                  <p className="text-sm font-semibold">Failing checks</p>
+                  <ul className="mt-2 space-y-1 text-sm">
+                    {failedChecks.map((check) => (
+                      <li key={check.id}>
+                        <strong>{check.title}:</strong> {check.summary}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {failedChecks.length === 0 && warningChecks.length > 0 && (
+                <div className="mt-4 rounded-lg border border-amber-300 bg-white/80 p-3 text-amber-900">
+                  <p className="text-sm font-semibold">Warnings</p>
+                  <ul className="mt-2 space-y-1 text-sm">
+                    {warningChecks.map((check) => (
+                      <li key={check.id}>
+                        <strong>{check.title}:</strong> {check.summary}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
           <button
@@ -209,7 +290,7 @@ export function OpsMonitorTab() {
 
       <section className="grid gap-4 lg:grid-cols-2">
         {data.checks.map((check) => (
-          <article key={check.id} className="rounded-xl bg-white p-5 shadow-sm">
+          <article key={check.id} className={`rounded-xl border p-5 shadow-sm ${checkCardClasses(check.status)}`}>
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-start gap-3">
                 {statusIcon(check.status)}
@@ -251,6 +332,9 @@ export function OpsMonitorTab() {
                   <div className="flex flex-wrap items-center gap-2">
                     {booking.issues.length ? statusIcon("fail") : statusIcon("ok")}
                     <h4 className="font-semibold text-gray-900">{booking.name}</h4>
+                    <span className={`rounded-full px-2 py-1 text-xs font-medium ${lifecycleClasses(booking.lifecycle.kind)}`}>
+                      {booking.lifecycle.label}
+                    </span>
                     <span className="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600">
                       {booking.serviceType || "unknown service"}
                     </span>
@@ -280,7 +364,11 @@ export function OpsMonitorTab() {
                 )}
               </div>
 
-              <div className="mt-4 grid gap-3 lg:grid-cols-3">
+              <div className="mt-4 grid gap-3 lg:grid-cols-4">
+                <div className="rounded-lg bg-gray-50 p-3">
+                  <p className="text-xs font-medium uppercase text-gray-500">Lifecycle</p>
+                  <p className="mt-1 text-sm text-gray-800">{booking.lifecycle.summary}</p>
+                </div>
                 <div className="rounded-lg bg-gray-50 p-3">
                   <p className="text-xs font-medium uppercase text-gray-500">Stripe</p>
                   <p className="mt-1 text-sm text-gray-800">
@@ -313,13 +401,30 @@ export function OpsMonitorTab() {
               {booking.issues.length > 0 && (
                 <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3">
                   <p className="mb-2 text-sm font-semibold text-red-800">Issues</p>
-                  <ul className="space-y-1">
-                    {booking.issues.map((issue) => (
-                      <li key={issue} className="text-sm text-red-700">
-                        {issue}
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="space-y-3">
+                    {[
+                      ["Monitor instrumentation", booking.monitorIssues],
+                      ["Payment record", booking.paymentIssues],
+                      ["Calendar handoff", booking.calendarIssues],
+                      ["PWA job handoff", booking.handoffIssues],
+                    ].map(([label, issues]) => {
+                      const issueList = issues as string[];
+                      if (!issueList.length) return null;
+
+                      return (
+                        <div key={label as string}>
+                          <p className="text-xs font-semibold uppercase text-red-900">{label as string}</p>
+                          <ul className="mt-1 space-y-1">
+                            {issueList.map((issue) => (
+                              <li key={issue} className="text-sm text-red-700">
+                                {issue}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
             </article>

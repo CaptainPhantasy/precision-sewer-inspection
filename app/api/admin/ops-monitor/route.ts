@@ -9,6 +9,7 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 type CheckStatus = "ok" | "warn" | "fail";
+type BookingLifecycleKind = "active" | "refunded" | "canceled" | "partially_refunded" | "needs_review";
 
 interface MonitorCheck {
   id: string;
@@ -55,6 +56,16 @@ interface RecentBooking {
     status: string;
     technicianId: string | null;
   };
+  lifecycle: {
+    kind: BookingLifecycleKind;
+    label: string;
+    summary: string;
+    requiresOperationalHandoff: boolean;
+  };
+  monitorIssues: string[];
+  paymentIssues: string[];
+  calendarIssues: string[];
+  handoffIssues: string[];
   issues: string[];
 }
 
@@ -158,6 +169,93 @@ function bookingNeedsCalendar(booking: { appointmentDate: string | null; appoint
   return Boolean(booking.appointmentDate && booking.appointmentTime);
 }
 
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : "Unknown error";
+}
+
+function classifyLifecycle(
+  stripeData: RecentBooking["stripe"] | undefined,
+  calendarEvent: calendar_v3.Schema$Event | null
+): RecentBooking["lifecycle"] {
+  if (!stripeData) {
+    return {
+      kind: "needs_review",
+      label: "Needs review",
+      summary: "Stripe payment state was not readable for this paid booking.",
+      requiresOperationalHandoff: false,
+    };
+  }
+
+  const amountTotal = stripeData.amountTotal || 0;
+  const refundedAmount = stripeData.refundedAmount || 0;
+  const fullyRefunded = amountTotal > 0 && refundedAmount >= amountTotal;
+  const partiallyRefunded = refundedAmount > 0 && !fullyRefunded;
+  const calendarCanceled = calendarEvent?.status === "cancelled";
+
+  if (fullyRefunded) {
+    return {
+      kind: "refunded",
+      label: "Refunded",
+      summary: "Stripe shows the payment has been fully refunded.",
+      requiresOperationalHandoff: false,
+    };
+  }
+
+  if (partiallyRefunded) {
+    return {
+      kind: "partially_refunded",
+      label: "Partial refund",
+      summary: "Stripe shows a partial refund; operator review is required.",
+      requiresOperationalHandoff: false,
+    };
+  }
+
+  if (calendarCanceled) {
+    return {
+      kind: "canceled",
+      label: "Calendar canceled",
+      summary: "Google Calendar marks this booking as canceled.",
+      requiresOperationalHandoff: false,
+    };
+  }
+
+  return {
+    kind: "active",
+    label: "Active paid booking",
+    summary: "Paid booking still requires downstream operational handoff.",
+    requiresOperationalHandoff: true,
+  };
+}
+
+function countIssues(
+  bookings: RecentBooking[],
+  key: "monitorIssues" | "paymentIssues" | "calendarIssues" | "handoffIssues"
+): number {
+  return bookings.reduce((sum, booking) => sum + booking[key].length, 0);
+}
+
+function issueEvidence(
+  bookings: RecentBooking[],
+  key: "monitorIssues" | "paymentIssues" | "calendarIssues" | "handoffIssues"
+): string[] {
+  const relevantBookings = bookings.filter((booking) => booking[key].length > 0);
+  if (!relevantBookings.length) return ["No issues found in this layer."];
+
+  return relevantBookings.slice(0, 3).map((booking) => {
+    return `${booking.lifecycle.label}: ${booking.name} / ${booking.appointmentDate || "no date"} / ${booking[key].join(" | ")}`;
+  });
+}
+
+function unavailableLayerCheck(id: string, title: string, error: string): MonitorCheck {
+  return {
+    id,
+    title,
+    status: "fail",
+    summary: `${title} could not be evaluated because the booking monitor failed.`,
+    evidence: [`Recent booking monitor exception: ${error}`],
+  };
+}
+
 async function findCalendarEvent(
   calendar: calendar_v3.Calendar,
   booking: { name: string; appointmentDate: string | null }
@@ -197,11 +295,24 @@ async function buildRecentBookings(): Promise<RecentBooking[]> {
     take: 5,
   });
 
-  const calendar = calendarClient();
+  if (!bookings.length) return [];
+
+  let calendar: calendar_v3.Calendar | null = null;
+  let calendarSetupError: string | null = null;
+  try {
+    calendar = calendarClient();
+  } catch (error) {
+    calendarSetupError = errorMessage(error);
+  }
 
   return Promise.all(
     bookings.map(async (booking): Promise<RecentBooking> => {
-      const issues: string[] = [];
+      const monitorIssues: string[] = [];
+      const paymentIssues: string[] = [];
+      const calendarIssues: string[] = [];
+      const handoffIssues: string[] = [];
+      let stripeReadError: string | null = null;
+      let calendarReadError: string | null = calendarSetupError;
 
       const [job, calendarEvent, stripeData] = await Promise.all([
         prisma.job.findFirst({
@@ -214,10 +325,13 @@ async function buildRecentBookings(): Promise<RecentBooking[]> {
           orderBy: { createdAt: "desc" },
           select: { id: true, jobNumber: true, status: true, technicianId: true },
         }),
-        bookingNeedsCalendar(booking)
+        bookingNeedsCalendar(booking) && calendar
           ? findCalendarEvent(calendar, {
               name: booking.name,
               appointmentDate: booking.appointmentDate,
+            }).catch((error) => {
+              calendarReadError = errorMessage(error);
+              return null;
             })
           : Promise.resolve(null),
         booking.stripeSessionId
@@ -237,45 +351,64 @@ async function buildRecentBookings(): Promise<RecentBooking[]> {
                   refundedAmount: refunds.data.reduce((sum, refund) => sum + (refund.amount || 0), 0),
                 };
               })
+              .catch((error) => {
+                stripeReadError = errorMessage(error);
+                return undefined;
+              })
           : Promise.resolve(undefined),
       ]);
 
+      const lifecycle = classifyLifecycle(stripeData, calendarEvent);
+
+      if (stripeReadError) {
+        const issue = `Stripe read failed: ${stripeReadError}.`;
+        monitorIssues.push(issue);
+        paymentIssues.push(issue);
+      }
+
       if (!booking.stripeSessionId) {
-        issues.push("Paid booking is missing a Stripe session ID.");
+        paymentIssues.push("Paid booking is missing a Stripe session ID.");
       }
 
       if (stripeData) {
         const expectedCents = booking.amountPaid != null ? Math.round(booking.amountPaid * 100) : null;
         if (stripeData.paymentStatus !== "paid") {
-          issues.push(`Stripe payment status is ${stripeData.paymentStatus}.`);
+          paymentIssues.push(`Stripe payment status is ${stripeData.paymentStatus}.`);
         }
         if (expectedCents != null && stripeData.amountTotal !== expectedCents) {
-          issues.push(`Stripe amount ${stripeData.amountTotal} does not match Neon amount ${expectedCents}.`);
+          paymentIssues.push(`Stripe amount ${stripeData.amountTotal} does not match Neon amount ${expectedCents}.`);
         }
       }
 
-      if (!job) {
-        issues.push("Paid booking is not present in the PWA Job table.");
+      if (lifecycle.requiresOperationalHandoff && !job) {
+        handoffIssues.push("Active paid booking is not present in the PWA Job table.");
       }
 
       let calendarPayload: RecentBooking["calendar"];
       if (bookingNeedsCalendar(booking)) {
-        if (!calendarEvent) {
-          issues.push("No matching Google Calendar event found.");
-        } else {
+        if (calendarReadError) {
+          const issue = `Google Calendar read failed: ${calendarReadError}.`;
+          monitorIssues.push(issue);
+          calendarIssues.push(issue);
+        } else if (!calendarEvent && lifecycle.requiresOperationalHandoff) {
+          calendarIssues.push("No matching Google Calendar event found.");
+        } else if (calendarEvent) {
           const start = calendarEvent.start?.dateTime || calendarEvent.start?.date || null;
           const end = calendarEvent.end?.dateTime || calendarEvent.end?.date || null;
           const hasPhone = includesPhone(calendarEvent.description, booking.phone);
           const hasAddress = includesMeaningfulAddress(calendarEvent.description, booking.propertyAddress);
 
           if (calendarEvent.status === "cancelled" && (stripeData?.refundedAmount || 0) === 0) {
-            issues.push("Calendar event is cancelled but Stripe shows no refund.");
+            paymentIssues.push("Calendar event is cancelled but Stripe shows no refund.");
           }
-          if (!hasPhone) {
-            issues.push("Calendar event does not contain the booking phone number.");
+          if (lifecycle.kind === "refunded" && calendarEvent.status !== "cancelled") {
+            calendarIssues.push("Refunded booking still has an active Google Calendar event.");
           }
-          if (!hasAddress) {
-            issues.push("Calendar event does not contain the full property address.");
+          if (lifecycle.requiresOperationalHandoff && !hasPhone) {
+            calendarIssues.push("Calendar event does not contain the booking phone number.");
+          }
+          if (lifecycle.requiresOperationalHandoff && !hasAddress) {
+            calendarIssues.push("Calendar event does not contain the full property address.");
           }
 
           calendarPayload = {
@@ -290,6 +423,8 @@ async function buildRecentBookings(): Promise<RecentBooking[]> {
           };
         }
       }
+
+      const issues = [...paymentIssues, ...calendarIssues, ...handoffIssues];
 
       return {
         id: booking.id,
@@ -307,18 +442,50 @@ async function buildRecentBookings(): Promise<RecentBooking[]> {
         stripe: stripeData,
         calendar: calendarPayload,
         job: job || undefined,
+        lifecycle,
+        monitorIssues,
+        paymentIssues,
+        calendarIssues,
+        handoffIssues,
         issues,
       };
     })
   );
 }
 
-function recentBookingCheck(bookings: RecentBooking[]): MonitorCheck {
-  const issueCount = bookings.reduce((sum, booking) => sum + booking.issues.length, 0);
+function monitorInstrumentationCheck(bookings: RecentBooking[], bookingReadError: string | null): MonitorCheck {
+  if (bookingReadError) {
+    return {
+      id: "monitor-instrumentation",
+      title: "Monitor Instrumentation",
+      status: "fail",
+      summary: "The monitor could not evaluate recent booking health.",
+      evidence: [`Recent booking monitor exception: ${bookingReadError}`],
+    };
+  }
+
+  const issueCount = countIssues(bookings, "monitorIssues");
+  return {
+    id: "monitor-instrumentation",
+    title: "Monitor Instrumentation",
+    status: issueCount > 0 ? "fail" : "ok",
+    summary:
+      issueCount > 0
+        ? `${issueCount} monitor source-read failure${issueCount === 1 ? "" : "s"} found.`
+        : "Monitor source reads completed for public, database, Stripe, Calendar, and PWA checks.",
+    evidence: issueCount > 0 ? issueEvidence(bookings, "monitorIssues") : [
+      "Public website and booking availability are wrapped in timed checks.",
+      `${bookings.length} recent paid booking${bookings.length === 1 ? "" : "s"} evaluated for downstream source reads.`,
+    ],
+  };
+}
+
+function paymentRecordCheck(bookings: RecentBooking[]): MonitorCheck {
+  const issueCount = countIssues(bookings, "paymentIssues");
   if (!bookings.length) {
     return {
-      id: "recent-bookings",
-      title: "Recent Paid Bookings",
+      id: "payment-records",
+      title: "Payment Records",
       status: "warn",
       summary: "No paid Stripe bookings found in Neon.",
       evidence: ["Query: ContactSubmission where source=stripe-booking and status=paid."],
@@ -326,17 +493,57 @@ function recentBookingCheck(bookings: RecentBooking[]): MonitorCheck {
   }
 
   return {
-    id: "recent-bookings",
-    title: "Recent Paid Bookings",
+    id: "payment-records",
+    title: "Payment Records",
     status: issueCount > 0 ? "fail" : "ok",
     summary:
       issueCount > 0
-        ? `${issueCount} downstream booking issue${issueCount === 1 ? "" : "s"} found.`
-        : "Recent paid bookings are coherent across Neon, Stripe, Calendar, and PWA jobs.",
-    evidence: bookings.slice(0, 3).map((booking) => {
-      const status = booking.issues.length ? "FAIL" : "OK";
-      return `${status}: ${booking.name} / ${booking.appointmentDate || "no date"} / ${booking.issues.join(" | ") || "no issues"}`;
-    }),
+        ? `${issueCount} payment or lifecycle issue${issueCount === 1 ? "" : "s"} found.`
+        : "Paid booking records match readable Stripe payment state.",
+    evidence: issueCount > 0 ? issueEvidence(bookings, "paymentIssues") : [
+      `${bookings.length} paid booking record${bookings.length === 1 ? "" : "s"} checked.`,
+      `Lifecycle: active=${bookings.filter((booking) => booking.lifecycle.kind === "active").length}, refunded=${bookings.filter((booking) => booking.lifecycle.kind === "refunded").length}, canceled=${bookings.filter((booking) => booking.lifecycle.kind === "canceled").length}, review=${bookings.filter((booking) => booking.lifecycle.kind === "needs_review").length}.`,
+    ],
+  };
+}
+
+function calendarHandoffCheck(bookings: RecentBooking[]): MonitorCheck {
+  const issueCount = countIssues(bookings, "calendarIssues");
+  const calendarBookings = bookings.filter((booking) => bookingNeedsCalendar(booking));
+
+  return {
+    id: "calendar-handoff",
+    title: "Calendar Handoff",
+    status: issueCount > 0 ? "fail" : "ok",
+    summary:
+      issueCount > 0
+        ? `${issueCount} calendar handoff issue${issueCount === 1 ? "" : "s"} found.`
+        : "Calendar events are coherent for active paid bookings.",
+    evidence: issueCount > 0 ? issueEvidence(bookings, "calendarIssues") : [
+      `${calendarBookings.length} booking${calendarBookings.length === 1 ? "" : "s"} required calendar validation.`,
+      "Refunded and canceled bookings are classified separately from active booking handoff.",
+    ],
+  };
+}
+
+function pwaJobHandoffCheck(bookings: RecentBooking[]): MonitorCheck {
+  const issueCount = countIssues(bookings, "handoffIssues");
+  const activeBookings = bookings.filter((booking) => booking.lifecycle.requiresOperationalHandoff);
+
+  return {
+    id: "pwa-job-handoff",
+    title: "PWA Job Handoff",
+    status: issueCount > 0 ? "fail" : "ok",
+    summary:
+      issueCount > 0
+        ? `${issueCount} active paid booking${issueCount === 1 ? "" : "s"} missing PWA job handoff.`
+        : activeBookings.length
+          ? "Active paid bookings have matching PWA job records."
+          : "No active paid bookings currently require PWA job handoff.",
+    evidence: issueCount > 0 ? issueEvidence(bookings, "handoffIssues") : [
+      `${activeBookings.length} active paid booking${activeBookings.length === 1 ? "" : "s"} checked for PWA Job records.`,
+      `${bookings.length - activeBookings.length} refunded, canceled, or review booking${bookings.length - activeBookings.length === 1 ? "" : "s"} excluded from active handoff failure.`,
+    ],
   };
 }
 
@@ -403,17 +610,36 @@ export async function GET(request: Request) {
         ],
       };
     }),
-    buildRecentBookings(),
+    buildRecentBookings()
+      .then((bookings) => ({ bookings, error: null as string | null }))
+      .catch((error) => ({ bookings: [] as RecentBooking[], error: errorMessage(error) })),
   ]);
 
-  const bookingCheck = recentBookingCheck(recentBookings);
-  const checks = [websiteCheck, availabilityCheck, databaseCheck, bookingCheck];
+  const bookingReadError = recentBookings.error;
+  const bookingLayerChecks = bookingReadError
+    ? [
+        unavailableLayerCheck("payment-records", "Payment Records", bookingReadError),
+        unavailableLayerCheck("calendar-handoff", "Calendar Handoff", bookingReadError),
+        unavailableLayerCheck("pwa-job-handoff", "PWA Job Handoff", bookingReadError),
+      ]
+    : [
+        paymentRecordCheck(recentBookings.bookings),
+        calendarHandoffCheck(recentBookings.bookings),
+        pwaJobHandoffCheck(recentBookings.bookings),
+      ];
+  const checks = [
+    websiteCheck,
+    availabilityCheck,
+    databaseCheck,
+    monitorInstrumentationCheck(recentBookings.bookings, bookingReadError),
+    ...bookingLayerChecks,
+  ];
 
   return NextResponse.json({
     success: true,
     checkedAt: new Date().toISOString(),
     overallStatus: overallStatus(checks),
     checks,
-    recentBookings,
+    recentBookings: recentBookings.bookings,
   });
 }
