@@ -144,7 +144,7 @@ function renderOpsMonitor(snapshot: OpsMonitorSnapshot): string {
         <li><strong>Recent bookings checked:</strong> ${snapshot.recentBookingCount}</li>
         <li><strong>Total booking issues:</strong> ${snapshot.issueCount}</li>
         <li><strong>Monitor instrumentation issues:</strong> ${snapshot.monitorIssueCount}</li>
-        <li><strong>PWA handoff issues:</strong> ${snapshot.handoffIssueCount}</li>
+        <li><strong>Field PWA dispatch issues:</strong> ${snapshot.handoffIssueCount}</li>
       </ul>
       ${
         failedChecks.length

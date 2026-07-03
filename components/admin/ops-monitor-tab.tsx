@@ -224,12 +224,12 @@ export function OpsMonitorTab() {
           : "Back-office handoff needs attention";
   const summary =
     data.overallStatus === "ok"
-      ? "Public funnel, payment records, calendar handoff, PWA jobs, and monitor instrumentation are clean."
+      ? "Public funnel, payment records, calendar handoff, field PWA jobs, and monitor instrumentation are clean."
       : monitorFailing
         ? "A monitored dependency or credential read failed, so the monitor is treating system health as unproven."
         : publicFunnelFailing
           ? "The public website or booking availability path is failing."
-          : `${activeHandoffFailures || failingBookings} booking${(activeHandoffFailures || failingBookings) === 1 ? "" : "s"} need downstream operational attention.`;
+          : `${activeHandoffFailures || failingBookings} booking${(activeHandoffFailures || failingBookings) === 1 ? "" : "s"} need downstream field dispatch attention.`;
 
   return (
     <div className="space-y-6">
@@ -389,11 +389,11 @@ export function OpsMonitorTab() {
                   )}
                 </div>
                 <div className="rounded-lg bg-gray-50 p-3">
-                  <p className="text-xs font-medium uppercase text-gray-500">PWA Job</p>
+                  <p className="text-xs font-medium uppercase text-gray-500">Field PWA Job</p>
                   <p className="mt-1 text-sm text-gray-800">
                     {booking.job
                       ? `${booking.job.jobNumber} / ${booking.job.status}`
-                      : "Missing from Job table"}
+                      : "Missing from field Job table"}
                   </p>
                 </div>
               </div>
@@ -406,7 +406,7 @@ export function OpsMonitorTab() {
                       ["Monitor instrumentation", booking.monitorIssues],
                       ["Payment record", booking.paymentIssues],
                       ["Calendar handoff", booking.calendarIssues],
-                      ["PWA job handoff", booking.handoffIssues],
+                      ["Field PWA dispatch", booking.handoffIssues],
                     ].map(([label, issues]) => {
                       const issueList = issues as string[];
                       if (!issueList.length) return null;

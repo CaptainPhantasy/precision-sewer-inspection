@@ -381,7 +381,9 @@ async function buildRecentBookings(): Promise<RecentBooking[]> {
       }
 
       if (lifecycle.requiresOperationalHandoff && !job) {
-        handoffIssues.push("Active paid booking is not present in the PWA Job table.");
+        handoffIssues.push(
+          "Active paid booking is not present in the field PWA Job table; this does not check the separate Forms CRM promotion state."
+        );
       }
 
       let calendarPayload: RecentBooking["calendar"];
@@ -529,18 +531,21 @@ function calendarHandoffCheck(bookings: RecentBooking[]): MonitorCheck {
 function pwaJobHandoffCheck(bookings: RecentBooking[]): MonitorCheck {
   const issueCount = countIssues(bookings, "handoffIssues");
   const activeBookings = bookings.filter((booking) => booking.lifecycle.requiresOperationalHandoff);
+  const scopeEvidence =
+    "Scope: checks the live website/PWA Job table used by the field app, not the separate Forms CRM.";
 
   return {
     id: "pwa-job-handoff",
-    title: "PWA Job Handoff",
+    title: "Field PWA Job Dispatch",
     status: issueCount > 0 ? "fail" : "ok",
     summary:
       issueCount > 0
-        ? `${issueCount} active paid booking${issueCount === 1 ? "" : "s"} missing PWA job handoff.`
+        ? `${issueCount} active paid booking${issueCount === 1 ? "" : "s"} missing field PWA job dispatch.`
         : activeBookings.length
-          ? "Active paid bookings have matching PWA job records."
-          : "No active paid bookings currently require PWA job handoff.",
-    evidence: issueCount > 0 ? issueEvidence(bookings, "handoffIssues") : [
+          ? "Active paid bookings have matching field PWA job records."
+          : "No active paid bookings currently require field PWA job dispatch.",
+    evidence: issueCount > 0 ? [scopeEvidence, ...issueEvidence(bookings, "handoffIssues")] : [
+      scopeEvidence,
       `${activeBookings.length} active paid booking${activeBookings.length === 1 ? "" : "s"} checked for PWA Job records.`,
       `${bookings.length - activeBookings.length} refunded, canceled, or review booking${bookings.length - activeBookings.length === 1 ? "" : "s"} excluded from active handoff failure.`,
     ],
@@ -620,7 +625,7 @@ export async function GET(request: Request) {
     ? [
         unavailableLayerCheck("payment-records", "Payment Records", bookingReadError),
         unavailableLayerCheck("calendar-handoff", "Calendar Handoff", bookingReadError),
-        unavailableLayerCheck("pwa-job-handoff", "PWA Job Handoff", bookingReadError),
+        unavailableLayerCheck("pwa-job-handoff", "Field PWA Job Dispatch", bookingReadError),
       ]
     : [
         paymentRecordCheck(recentBookings.bookings),
