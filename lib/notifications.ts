@@ -411,7 +411,7 @@ export function getBookingConfirmationEmail(data: {
             <ol style="color: #4b5563; margin: 0; padding-left: 20px;">
               <li>We review your request and confirm availability</li>
               <li>We'll reach out to finalize scheduling</li>
-              <li>A certified technician performs your inspection</li>
+              <li>An inspector performs your inspection</li>
               <li>You receive HD video + detailed report</li>
             </ol>
           </div>
@@ -464,7 +464,7 @@ export function getPaymentReceiptEmail(data: {
 
           <div style="background: #eff6ff; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2563eb;">
             <p style="margin: 0; color: #1e40af; font-size: 14px;">
-              <strong>Next Step:</strong> We'll confirm your appointment and a certified technician will arrive at the scheduled time with professional HD camera equipment.
+              <strong>Next Step:</strong> We'll confirm your appointment and our inspector will arrive at the scheduled time with professional HD camera equipment.
             </p>
           </div>
 

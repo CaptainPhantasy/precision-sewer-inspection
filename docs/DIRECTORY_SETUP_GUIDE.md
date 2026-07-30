@@ -60,15 +60,14 @@ Upload at minimum:
 ```
 Precision Sewer Inspections provides professional sewer and drain camera 
 inspection services for homeowners, realtors, and property managers 
-throughout the Indianapolis metro area. Our certified technicians use 
+throughout the Indianapolis metro area. Our InterNACHI-member inspector uses 
 state-of-the-art camera technology to identify problems before they 
 become emergencies.
 
-Services include standard sewer inspections, pre-sale inspections for 
-home sellers, buyer inspections for real estate transactions, and 
-emergency service.
+Services include standard sewer inspections, pre-listing inspections for 
+home sellers, and inspection-window scopes for real estate transactions.
 
-Fully licensed and insured. Same-day service available.
+Fully insured. Same-day service available.
 ```
 
 ### Step 7: Verify Ownership

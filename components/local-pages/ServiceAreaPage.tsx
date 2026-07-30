@@ -32,16 +32,79 @@ interface ServiceAreaPageProps {
   nearbyAreas: ServiceArea[];
 }
 
+// PSI offers no emergency service. The legacy emergency row still exists in the
+// database (owner decision pending), but the template never renders it — neither
+// as a card nor as a JSON-LD Service entry.
+const HIDDEN_SERVICE_SLUGS = new Set(['emergency-sewer-service']);
+
+// Truthful, use-case copy for the one real service (a sewer scope) and its real
+// add-ons. The database rows still carry older invented product framing
+// (disclosure packages, negotiation documentation, emergency response); the
+// template owns what is actually displayed and emitted as JSON-LD.
+const SERVICE_COPY_OVERRIDES: Record<
+  string,
+  { name?: string; shortDescription?: string; description?: string; href?: string }
+> = {
+  'standard-sewer-inspection': {
+    description:
+      'A comprehensive sewer line inspection using professional HD camera equipment. Our inspector inserts a high-resolution camera into your sewer line to identify cracks, blockages, root intrusion, and other issues. You receive a detailed video report and written summary of findings.',
+  },
+  'sewer-inspection-crawl-space': {
+    shortDescription:
+      "Crawl-space access available (+$30) when there's no exterior cleanout.",
+  },
+  'pre-sale-sewer-inspection': {
+    shortDescription:
+      'Selling? A pre-listing scope means surprises never reach the closing table.',
+  },
+  'buyers-sewer-inspection': {
+    shortDescription:
+      'Buying? An inspection-window scope with footage you can negotiate from.',
+  },
+  'sewer-line-locating': {
+    shortDescription:
+      'Private utility locating — electronic line tracing and depth measurement.',
+    href: '/locating',
+  },
+  'commercial-sewer-inspection': {
+    shortDescription:
+      'Commercial & multi-family sewer inspections for businesses, property managers, and investors.',
+  },
+};
+
 export default function ServiceAreaPage({
   area,
   faqs,
   reviews,
   nearbyAreas,
 }: ServiceAreaPageProps) {
+  // Filter hidden services and apply copy overrides once, so the rendered cards
+  // and the JSON-LD schema always describe the same, truthful offering.
+  const displayServices = area.services
+    .filter(({ service }) => !HIDDEN_SERVICE_SLUGS.has(service.slug))
+    .map((entry) => {
+      const override = SERVICE_COPY_OVERRIDES[entry.service.slug];
+      if (!override) return { ...entry, hrefOverride: undefined as string | undefined };
+      return {
+        ...entry,
+        service: {
+          ...entry.service,
+          name: override.name ?? entry.service.name,
+          shortDescription:
+            override.shortDescription ?? entry.service.shortDescription,
+          description: override.description ?? override.shortDescription ?? entry.service.description,
+          // Overridden cards drop the legacy DB feature lists, which reference
+          // invented product contents (disclosure packages, repair estimates).
+          features: override.shortDescription ? [] : entry.service.features,
+        },
+        hrefOverride: override.href,
+      };
+    });
+
   // Generate schema markup for SEO
   const schemas = generateLandingPageSchema({
     area,
-    services: area.services.map(s => s.service),
+    services: displayServices.map(s => s.service),
     reviews,
     faqs,
   });
@@ -76,7 +139,7 @@ export default function ServiceAreaPage({
                 <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span><T>Licensed & Insured</T></span>
+                <span><T>Fully Insured</T></span>
               </div>
               <div className="flex items-center gap-2">
                 <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
@@ -119,7 +182,7 @@ export default function ServiceAreaPage({
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {area.services.map(({ service, localPrice, isAvailable, estimatedWaitDays }) => (
+              {displayServices.map(({ service, localPrice, isAvailable, estimatedWaitDays, hrefOverride }) => (
                 <ServiceCard
                   key={service.id}
                   service={service}
@@ -127,6 +190,7 @@ export default function ServiceAreaPage({
                   isAvailable={isAvailable}
                   estimatedWaitDays={estimatedWaitDays}
                   areaSlug={area.slug}
+                  hrefOverride={hrefOverride}
                 />
               ))}
             </div>
@@ -204,7 +268,7 @@ export default function ServiceAreaPage({
                   <T>Meet Your</T> {area.name} <T>Inspection Team</T>
                 </h2>
                 <p className="text-lg text-gray-600">
-                  <T>Our certified technicians serve</T> {area.name} <T>and surrounding communities.</T>
+                  <T>Our inspector serves</T> {area.name} <T>and surrounding communities.</T>
                 </p>
               </div>
 

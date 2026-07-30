@@ -153,9 +153,9 @@ export default function MaintenancePage() {
                 answers you can trust.</T>
               </p>
               <div className="creds">
-                <span className="cred"><T>Licensed &amp; Insured</T></span>
+                <span className="cred"><T>Fully Insured</T></span>
                 <span className="cred">
-                  <span className="dot">·</span>InterNACHI
+                  <span className="dot">·</span>InterNACHI Member
                 </span>
               </div>
             </div>

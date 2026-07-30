@@ -3,17 +3,15 @@ import Header from '@/components/header'
 import Footer from '@/components/footer'
 import AIChat from '@/components/ai-chat'
 import Link from 'next/link'
-import Image from 'next/image'
 import { ArrowRight, Shield, Award, Heart, Eye, Zap, Users, Check } from 'lucide-react'
-import { COMPANY_INFO, TEAM_MEMBERS } from '@/lib/constants'
 import { T } from '@/components/diversity/diversity-provider'
 
 export const metadata: Metadata = {
-  title: 'About Us | InterNACHI Certified Sewer Inspectors Indianapolis',
-  description: "Meet the Precision Sewer Inspection team. InterNACHI certified inspectors serving Central Indiana. We're inspectors, not contractors—honest assessments only.",
+  title: 'About Us | Independent Sewer Scope Inspections, Indianapolis | Precision Sewer',
+  description: "We're inspectors, not contractors. One InterNACHI-member inspector, camera-verified findings, no sewer repairs, no contractor referrals. Serving Central Indiana.",
   openGraph: {
-    title: 'About Precision Sewer Inspection | Indianapolis Sewer Scope Experts',
-    description: 'InterNACHI certified inspectors. No upselling, just honest sewer line assessments. Serving Indianapolis and Central Indiana.',
+    title: 'About Us | Independent Sewer Scope Inspections, Indianapolis | Precision Sewer',
+    description: "We're inspectors, not contractors. One InterNACHI-member inspector, camera-verified findings, no sewer repairs, no contractor referrals. Serving Central Indiana.",
   },
   alternates: {
     canonical: '/about',
@@ -55,22 +53,13 @@ export default function AboutPage() {
             <div className="prose prose-lg max-w-none">
               <h2 className="text-3xl font-heading font-bold text-gray-900 mb-6"><T>Our Story</T></h2>
               <p className="text-gray-600 mb-4">
-                <T>We started Precision Sewer Inspection for one simple reason:</T> <strong><T>we were tired of seeing good people get taken advantage of.</T></strong>
+                <T>We started Precision Sewer Inspections because we kept watching the same thing happen in Central Indiana real estate: a camera goes down a sewer line, and the person holding it has a repair crew waiting in the truck. The &quot;inspection&quot; becomes a sales pitch. The findings grow to fit the invoice.</T>
               </p>
               <p className="text-gray-600 mb-4">
-                <T>Time after time, we watched homeowners and home buyers get scared into expensive repairs they didn't need. Contractors would find &quot;problems&quot; that weren't really problems, quoting prices that made your jaw drop.</T>
-              </p>
-              <p className="text-gray-600 mb-4">
-                <T>Meanwhile, the honest inspectors—the ones who just wanted to give people the truth—were getting drowned out by the salespeople.</T>
-              </p>
-              <p className="text-gray-600 mb-4">
-                <strong><T>So we decided to do something different.</T></strong>
-              </p>
-              <p className="text-gray-600 mb-4">
-                <T>We made a simple promise: We would be inspectors, not contractors. We would show people exactly what we found—the good, the bad, and the ugly—without trying to sell them anything. Because when you don't do repairs, you have no reason to exaggerate problems.</T>
+                <T>So we drew one hard line and built the whole company on it: we sell no repairs on anything we inspect. No sewer repairs, no drain work, no contractor referrals — nothing to gain from what the camera finds. When your report says the line is clear, that&apos;s because it is — and when it shows a problem, you get the footage, the location, and plain-English facts you can hand to any contractor you choose.</T>
               </p>
               <p className="text-gray-600">
-                <T>Turns out, people appreciate honesty. Word spread. And today, we're proud to serve all of Central Indiana—not because we're the cheapest or the biggest, but because we're the ones who tell the truth.</T>
+                <T>We&apos;re a new company, and we won&apos;t pretend otherwise. No invented track record, no padded team page. What you get is exactly what exists: one inspector, professional HD equipment, a published national standard, and reports that say what the camera saw.</T>
               </p>
             </div>
           </div>
@@ -102,64 +91,44 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Team */}
+        {/* The Inspector */}
         <section className="section-padding bg-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-heading font-bold text-gray-900 mb-4"><T>Meet Our Team</T></h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                <T>Certified professionals dedicated to giving you honest, accurate inspections.</T>
+          <div className="max-w-4xl mx-auto">
+            <div className="prose prose-lg max-w-none">
+              <h2 className="text-3xl font-heading font-bold text-gray-900 mb-6"><T>The Inspector</T></h2>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <T>Ryan Galbraith — Owner &amp; Inspector · InterNACHI Member</T>
+              </h3>
+              <p className="text-gray-600 mb-4">
+                <T>Ryan performs every PSI inspection to InterNACHI&apos;s published Sewer Scope Standards of Practice — a national standard anyone can read for themselves. He completed InterNACHI&apos;s Sewer Scope Inspector training, and he&apos;s an InterNACHI member in good standing — ID NACHI26032508, verifiable at nachi.org/verify. Go check. We mean it.</T>
               </p>
-            </div>
-            <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-              {TEAM_MEMBERS?.map((member, index) => (
-                <div key={index} className="bg-gray-50 rounded-2xl overflow-hidden">
-                  <div className="aspect-[3/4] relative">
-                    <Image
-                      src={member?.image ?? ''}
-                      alt={member?.name ?? 'Team member'}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900">{member?.name ?? ''}</h3>
-                    <p className="text-primary-600 font-medium mb-3"><T>{member?.role ?? ''}</T></p>
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {member?.certifications?.map((cert, i) => (
-                        <span key={i} className="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded-full">
-                          {cert ?? ''}
-                        </span>
-                      ))}
-                    </div>
-                    <p className="text-gray-500 text-sm">{member?.experience ?? ''} <T>experience</T></p>
-                  </div>
-                </div>
-              ))}
+              <p className="text-gray-600">
+                <T>Here&apos;s the part we&apos;re proudest of: Ryan deliberately does not wear titles that can&apos;t be verified. He&apos;s not a home inspector — sewer lines are the whole point, done properly, not one line item on a long checklist. And when a credential turned out to be a logo you download rather than a registration anyone can look up, he left it off. An inspector who won&apos;t inflate his own badge is not going to inflate your sewer findings. That&apos;s the whole company, in one decision.</T>
+              </p>
             </div>
           </div>
         </section>
 
-        {/* Certifications */}
+        {/* Trust row */}
         <section className="section-padding bg-primary-900 text-white">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-heading font-bold mb-8"><T>Certified & Trusted</T></h2>
+            <h2 className="text-3xl font-heading font-bold mb-8"><T>Trust &amp; Verification</T></h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className="bg-primary-800 rounded-xl p-6">
                 <Shield className="w-10 h-10 text-primary-300 mx-auto mb-3" />
-                <p className="font-semibold">InterNACHI Certified</p>
+                <p className="font-semibold">InterNACHI Member</p>
               </div>
               <div className="bg-primary-800 rounded-xl p-6">
                 <Award className="w-10 h-10 text-primary-300 mx-auto mb-3" />
-                <p className="font-semibold"><T>Licensed & Insured</T></p>
+                <p className="font-semibold"><T>Fully Insured</T></p>
               </div>
               <div className="bg-primary-800 rounded-xl p-6">
                 <Check className="w-10 h-10 text-primary-300 mx-auto mb-3" />
-                <p className="font-semibold"><T>Certified Professional</T></p>
+                <p className="font-semibold"><T>Inspections to InterNACHI&apos;s Published Sewer Scope Standards of Practice</T></p>
               </div>
               <div className="bg-primary-800 rounded-xl p-6">
                 <Users className="w-10 h-10 text-primary-300 mx-auto mb-3" />
-                <p className="font-semibold">Indiana Clay Pipe Specialists</p>
+                <p className="font-semibold"><T>No Contractor Referrals</T></p>
               </div>
             </div>
           </div>

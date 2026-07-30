@@ -36,7 +36,7 @@ export default function HeroSection() {
             </h1>
             
             <p className="price-line">
-              <T>Before it costs you</T> <b>$7,500</b>
+              <T>Before it costs you</T> <b>thousands</b>
             </p>
             
             <p className="lede-dark">
@@ -99,8 +99,8 @@ export default function HeroSection() {
             </div>
             
             <div className="ribbon">
-              <div className="lead">InterNACHI Certified</div>
-              <div className="meta">Licensed & Insured</div>
+              <div className="lead">InterNACHI Member</div>
+              <div className="meta">Fully Insured</div>
             </div>
             
             <div className="cert-bump">
@@ -108,7 +108,7 @@ export default function HeroSection() {
                 <ShieldCheck style={{ width: '20px', height: '20px' }} />
               </div>
               <div className="text">
-                <div className="a">Verified Pro</div>
+                <div className="a">No Contractor Referrals</div>
                 <div className="b">Precision Inspection</div>
               </div>
             </div>

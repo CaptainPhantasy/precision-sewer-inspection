@@ -14,7 +14,7 @@ const features = [
   {
     icon: HandCoins,
     title: 'No Upselling, Ever',
-    description: "We're inspectors, not contractors. We don't do repairs, so we have nothing to gain by finding problems that aren't there.",
+    description: "We're inspectors, not contractors. We sell no sewer repairs — so we have nothing to gain by finding problems that aren't there.",
   },
   {
     icon: Clock,

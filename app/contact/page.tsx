@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 }
 
 const benefits = [
-  { icon: Shield, text: 'InterNACHI Certified Inspectors' },
+  { icon: Shield, text: 'InterNACHI Member' },
   { icon: Video, text: 'HD Video & Written Report' },
   { icon: Clock, text: 'One-Business-Day Delivery Guaranteed' },
   { icon: CheckCircle, text: 'No Upselling, Ever' },

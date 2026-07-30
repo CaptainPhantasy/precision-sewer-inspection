@@ -12,6 +12,7 @@ interface ServiceCardProps {
   isAvailable?: boolean;
   estimatedWaitDays?: number | null;
   areaSlug?: string;
+  hrefOverride?: string;
 }
 
 export default function ServiceCard({
@@ -20,6 +21,7 @@ export default function ServiceCard({
   isAvailable = true,
   estimatedWaitDays,
   areaSlug,
+  hrefOverride,
 }: ServiceCardProps) {
   const displayPrice = localPrice ?? service.basePrice;
   
@@ -105,7 +107,7 @@ export default function ServiceCard({
 
         {/* CTA */}
         <CTAButton
-          href={isAvailable ? `/book?service=${service.slug}${areaSlug ? `&area=${areaSlug}` : ''}` : '#'}
+          href={hrefOverride ?? (isAvailable ? `/book?service=${service.slug}${areaSlug ? `&area=${areaSlug}` : ''}` : '#')}
           variant={service.isFeatured ? 'primary' : 'outline'}
           className="w-full"
           disabled={!isAvailable}

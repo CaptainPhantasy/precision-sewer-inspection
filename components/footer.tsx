@@ -39,11 +39,11 @@ export default function Footer() {
 						<div className="flex gap-4">
 							<div className="flex items-center gap-1 text-xs text-primary-300">
 								<Shield className="w-4 h-4" />
-								<span><T>Licensed & Insured</T></span>
+								<span><T>Fully Insured</T></span>
 							</div>
 							<div className="flex items-center gap-1 text-xs text-primary-300">
 								<Award className="w-4 h-4" />
-								<span>InterNACHI</span>
+								<span>InterNACHI Member</span>
 							</div>
 						</div>
 					</div>

@@ -21,7 +21,7 @@ export default function StructuredData({ type, pageTitle, pageDescription, bread
     '@type': 'LocalBusiness',
     '@id': `${baseUrl}/#organization`,
     name: COMPANY_INFO.name,
-    description: 'Independent sewer inspection company serving Central Indiana. Inspection only, no repairs, so every finding is unbiased. HD video sewer scope inspections, one-business-day report delivery, InterNACHI certified inspectors.',
+    description: 'HD video sewer scope inspections, one-business-day report delivery, performed by an InterNACHI-member inspector to InterNACHI\'s published Sewer Scope Standards of Practice.',
     url: baseUrl,
     telephone: COMPANY_INFO.phone,
     email: COMPANY_INFO.email,
@@ -105,7 +105,7 @@ export default function StructuredData({ type, pageTitle, pageDescription, bread
       '@type': 'City',
       name: `${area}, Indiana`,
     })),
-    description: 'Unbiased sewer camera surveys for home buyers, homeowners, and real estate professionals in Central Indiana. Certified sewer scope inspector, HD footage, premium reporting with transparent pricing.',
+    description: 'Unbiased sewer camera surveys for home buyers, homeowners, and real estate professionals in Central Indiana. InterNACHI-member inspector, HD footage, premium reporting with transparent pricing.',
     offers: {
       '@type': 'AggregateOffer',
       lowPrice: '159',

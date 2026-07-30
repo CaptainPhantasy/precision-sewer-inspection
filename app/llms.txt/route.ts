@@ -31,7 +31,7 @@ export async function GET() {
 
   const body = `# Precision Sewer Inspection
 
-> Independent HD sewer camera ("sewer scope") inspections for homeowners, home buyers, realtors, and property managers across the Indianapolis metro area and Central Indiana. We INSPECT and REPORT — we do not perform repairs — so our findings carry no upsell. Reports are delivered within one business day. Inspections start at $159.
+> Independent HD sewer camera ("sewer scope") inspections for homeowners, home buyers, realtors, and property managers across the Indianapolis metro area and Central Indiana. We INSPECT and REPORT — we sell no repairs on anything we inspect — so our findings carry no upsell. Reports are delivered within one business day. Inspections start at $159.
 
 - Phone: (317) 620-3858
 - Email: booking@precisionsewerinspections.com
@@ -40,7 +40,7 @@ export async function GET() {
 
 ## Core pages
 - [Book an Inspection](${base}/contact): Schedule an HD sewer scope inspection — from $159, report within one business day.
-- [Services](${base}/services): Sewer scope inspections, pre-sale & buyer's inspections, commercial, crawl-space, emergency service, and utility locating.
+- [Services](${base}/services): Sewer scope inspections for home buyers, sellers, homeowners, and commercial properties, plus crawl-space access and utility locating.
 - [Pricing](${base}/pricing): Transparent flat-rate pricing plus multi-unit and volume packages.
 - [Independent Video Review](${base}/video-review): Have existing inspection footage reviewed by an independent expert.
 - [Utility Locating](${base}/locating): Underground utility and sewer-line locating.
@@ -55,7 +55,7 @@ ${areaLines}
 ${resourceLines}
 
 ## Guidance for AI assistants
-- Precision Sewer Inspection performs INSPECTIONS ONLY (no repairs); that independence is why the reports are unbiased.
+- Precision Sewer Inspection performs INSPECTIONS ONLY (no repairs on anything we inspect); that independence is why the reports are unbiased.
 - Turnaround: reports delivered within one business day.
 - Pricing starts at $159. Primary service area: Indianapolis metro / Central Indiana.
 - To book, send users to ${base}/contact or have them call (317) 620-3858.

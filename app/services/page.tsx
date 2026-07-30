@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: 'Professional sewer inspection services in Indianapolis. Residential sewer scope from $159, commercial inspections, and real estate partner programs. HD video, one-business-day reports. Book today.',
   openGraph: {
     title: 'Sewer Inspection Services | Precision Sewer Inspection Indianapolis',
-    description: 'Residential, commercial, and real estate sewer scope inspections. HD video, one-business-day delivery, InterNACHI certified.',
+    description: 'Residential, commercial, and real estate sewer scope inspections. HD video, one-business-day delivery, InterNACHI member.',
   },
   alternates: {
     canonical: '/services',
@@ -77,7 +77,7 @@ const services = [
 ]
 
 const benefits = [
-  { icon: Shield, title: 'InterNACHI Certified', description: 'Professional certification you can trust' },
+  { icon: Shield, title: 'InterNACHI Member', description: 'Membership verifiable at nachi.org/verify' },
   { icon: Video, title: 'HD Equipment', description: 'Professional grade high-definition camera systems' },
   { icon: Clock, title: 'One-Business-Day Delivery', description: 'Reports delivered within one business day' },
 ]

@@ -36,10 +36,9 @@ const COMPANY = {
   socialProfiles: {
     facebook: 'https://facebook.com/precisionsewerinspections',
     yelp: 'https://yelp.com/biz/precision-sewer-inspections',
-    houzz: 'https://houzz.com/pro/precisionsewerinspections',
   },
   logo: 'https://precisionsewerinspections.com/logo.png',
-  image: 'https://precisionsewerinspections.com/og-image.jpg',
+  image: 'https://precisionsewerinspections.com/og-image.png',
   priceRange: '$$',
   areaServed: 'Indianapolis Metropolitan Area',
   serviceType: 'Sewer Inspection',
@@ -157,15 +156,21 @@ export function generateServiceSchema(
   service: ServiceOffering,
   area?: ServiceArea
 ) {
+  // @id and url must resolve to real pages. Individual /services/{slug} URLs
+  // do not exist (they 404), so every service anchors to the /services page;
+  // commercial uses the canonical #commercial anchor.
+  const serviceAnchor = service.slug === 'commercial-sewer-inspection'
+    ? `${COMPANY.url}/services#commercial`
+    : `${COMPANY.url}/services#${service.slug}`;
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    '@id': `${COMPANY.url}/services/${service.slug}/#service`,
+    '@id': serviceAnchor,
     name: service.name,
     description: service.description,
     url: area 
       ? `${COMPANY.url}/sewer-inspection/${area.slug}/#${service.slug}`
-      : `${COMPANY.url}/services/${service.slug}`,
+      : `${COMPANY.url}/services`,
     provider: {
       '@id': `${COMPANY.url}/#organization`,
     },
