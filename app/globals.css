@@ -1028,6 +1028,11 @@ html.dark {
 }
 html.dark body { background: var(--paper); color: var(--ink); }
 
+/* Hero cert card: hard-coded white background must keep dark text in dark mode
+   (was inheriting the remapped near-white --ink = invisible text, WCAG fail) */
+html.dark .tech-card .cert-bump { color:#0f1c2a; }
+html.dark .tech-card .cert-bump .text .b { color:#4d5c6f; }
+
 /* Tailwind utility remaps — only active in dark mode */
 html.dark .bg-white { background-color:#121d28 !important; }
 html.dark .bg-white\/95 { background-color:rgba(18,29,40,.95) !important; }
