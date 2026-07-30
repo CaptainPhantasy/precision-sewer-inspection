@@ -187,6 +187,60 @@ export const serviceAreas = [
       west: -86.0689,
       center: { lat: 39.9089, lng: -85.9989 }
     }
+  },
+  {
+    name: 'Westfield',
+    slug: 'westfield-in',
+    city: 'Westfield',
+    state: 'IN',
+    zipCodes: ['46074', '46062'],
+    population: 54894,
+    priority: 8,
+    description: 'Westfield\'s rapid residential boom and thriving Grand Park area require dependable sewer inspection services. We help Westfield home buyers, sellers, and realtors inspect both newly constructed PVC lines and established sewer laterals before closing.',
+    localKeywords: ['Westfield sewer inspection', 'Westfield IN sewer camera', 'Hamilton County sewer inspection', 'Grand Park sewer scope'],
+    geoBounds: {
+      north: 40.0828,
+      south: 40.0028,
+      east: -86.0675,
+      west: -86.1875,
+      center: { lat: 40.0428, lng: -86.1275 }
+    }
+  },
+  {
+    name: 'Franklin',
+    slug: 'franklin-in',
+    city: 'Franklin',
+    state: 'IN',
+    zipCodes: ['46131'],
+    population: 26633,
+    priority: 6,
+    description: 'As the Johnson County seat, historic Franklin features a mix of classic homes with aging clay pipes and new suburban developments. Our HD camera scope inspections provide Franklin homeowners with clear, unvarnished video evidence of underground line health.',
+    localKeywords: ['Franklin sewer inspection', 'Franklin IN sewer camera', 'Johnson County sewer inspection', 'Franklin College area plumbing camera'],
+    geoBounds: {
+      north: 39.5206,
+      south: 39.4406,
+      east: -85.9950,
+      west: -86.1150,
+      center: { lat: 39.4806, lng: -86.0550 }
+    }
+  },
+  {
+    name: 'Greenfield',
+    slug: 'greenfield-in',
+    city: 'Greenfield',
+    state: 'IN',
+    zipCodes: ['46140'],
+    population: 24741,
+    priority: 6,
+    description: 'Greenfield homeowners and real estate investors trust our unbiased sewer inspection services along the I-70 corridor. We specialize in detecting root intrusion, line sags, and material transitions across Hancock County.',
+    localKeywords: ['Greenfield sewer inspection', 'Greenfield IN sewer camera', 'Hancock County sewer inspection', 'Greenfield drain camera'],
+    geoBounds: {
+      north: 39.8250,
+      south: 39.7450,
+      east: -85.7094,
+      west: -85.8294,
+      center: { lat: 39.7850, lng: -85.7694 }
+    }
   }
 ];
 
@@ -392,11 +446,16 @@ async function main() {
   console.log(`   • ${services.length} service offerings`);
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+// Only run the full seed when this file is executed directly
+// (`tsx prisma/seed-service-areas.ts`). Importing its data arrays from another
+// script (e.g. scripts/seed-new-areas.ts) must NOT trigger a full re-seed.
+if (process.argv[1] && process.argv[1].includes('seed-service-areas')) {
+  main()
+    .catch((e) => {
+      console.error(e);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+}

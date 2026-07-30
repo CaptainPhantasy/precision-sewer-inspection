@@ -23,6 +23,8 @@ const fallbackAreaNames: Record<string, string> = {
   'noblesville-in': 'Noblesville',
   'greenwood-in': 'Greenwood',
   'westfield-in': 'Westfield',
+  'franklin-in': 'Franklin',
+  'greenfield-in': 'Greenfield',
 };
 
 function fallbackAreaForSlug(slug: string) {

@@ -1,5 +1,4 @@
 import { NextRequest } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
 import { 
   COMPANY_INFO, 
   SERVICE_AREAS, 
@@ -14,11 +13,9 @@ import {
 
 export const dynamic = 'force-dynamic'
 
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-})
-
-const AI_MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-20250514'
+// Vercel AI Gateway — OpenAI-compatible endpoint, one key fronts many models.
+const AI_GATEWAY_URL = 'https://ai-gateway.vercel.sh/v1/chat/completions'
+const AI_MODEL = process.env.AI_GATEWAY_MODEL || 'anthropic/claude-haiku-4.5'
 
 // Dynamically build system context from actual site data
 function buildDynamicSystemContext(): string {
@@ -172,8 +169,8 @@ export async function POST(request: NextRequest) {
       return new Response('Invalid messages format', { status: 400 })
     }
 
-    if (!process.env.ANTHROPIC_API_KEY) {
-      console.error('ANTHROPIC_API_KEY not configured')
+    if (!process.env.AI_GATEWAY_API_KEY) {
+      console.error('AI_GATEWAY_API_KEY not configured')
       return new Response('AI service not configured', { status: 500 })
     }
 
@@ -193,33 +190,46 @@ export async function POST(request: NextRequest) {
       return new Response('No valid messages', { status: 400 })
     }
 
-    // Use Anthropic streaming
-    const stream = client.messages.stream({
-      model: AI_MODEL,
-      max_tokens: 500,
-      temperature: 0.7,
-      system: dynamicSystemContext,
-      messages: formattedMessages,
+    // Vercel AI Gateway streaming (OpenAI SSE format; the chat widget parses
+    // choices[0].delta.content natively, so gateway chunks pass through as-is)
+    const gatewayResponse = await fetch(AI_GATEWAY_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.AI_GATEWAY_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: AI_MODEL,
+        max_tokens: 500,
+        temperature: 0.7,
+        stream: true,
+        messages: [
+          { role: 'system', content: dynamicSystemContext },
+          ...formattedMessages,
+        ],
+      }),
     })
 
-    // Create a ReadableStream that converts Anthropic events to simple SSE
+    if (!gatewayResponse.ok) {
+      const detail = await gatewayResponse.text()
+      console.error('AI Gateway error:', gatewayResponse.status, detail.slice(0, 300))
+      return new Response('AI service error', { status: 502 })
+    }
+
+    // Pass the gateway's SSE stream through verbatim
     const readableStream = new ReadableStream({
       async start(controller) {
-        const encoder = new TextEncoder()
-
+        const reader = gatewayResponse.body?.getReader()
+        if (!reader) {
+          controller.close()
+          return
+        }
         try {
-          for await (const event of stream) {
-            // Extract text deltas from content_block_delta events
-            if (
-              event.type === 'content_block_delta' &&
-              event.delta.type === 'text_delta'
-            ) {
-              const sseData = JSON.stringify({ content: event.delta.text })
-              controller.enqueue(encoder.encode(`data: ${sseData}\n\n`))
-            }
+          while (true) {
+            const { done, value } = await reader.read()
+            if (done) break
+            controller.enqueue(value)
           }
-          // Signal completion
-          controller.enqueue(encoder.encode('data: [DONE]\n\n'))
         } catch (error) {
           console.error('Stream error:', error)
           controller.error(error)
