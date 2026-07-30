@@ -750,6 +750,7 @@
     letter-spacing:1px; text-transform:uppercase;
     color:rgba(255,255,255,.92);
     background:rgba(255,255,255,.08);
+    text-align:center;
     border:1px solid rgba(255,255,255,.18);
     padding:8px 14px;
     border-radius:999px;
