@@ -37,7 +37,7 @@ export default function Header() {
                 priority
               />
             </div>
-            <div className="hidden xl:flex flex-col">
+            <div className="hidden 2xl:flex flex-col">
               <span className="font-heading font-bold text-primary-900 text-xl leading-tight whitespace-nowrap">Precision Sewer</span>
               <span className="font-heading font-bold text-primary-900 text-xl leading-tight whitespace-nowrap">Inspection</span>
               <span className="text-sm text-gray-600 mt-0.5 whitespace-nowrap">Central Indiana&apos;s Trusted Experts</span>
