@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, Search, Phone } from 'lucide-react'
 import { FAQ_ITEMS, COMPANY_INFO } from '@/lib/constants'
 import Link from 'next/link'
+import { CONVERSATIONAL_FAQS } from '@/lib/constants'
 import { T, useDiversity } from '@/components/diversity/diversity-provider'
 
 const additionalFAQs = [
@@ -30,7 +31,7 @@ const additionalFAQs = [
   },
   {
     question: "What's included in the written report?",
-    answer: 'Your premium report includes a summary of findings, condition ratings for different sections of the line, photos from the video, recommendations for any issues found, and an overall assessment. Everything is explained with no jargon. Our reports are designed for transparency and quality.',
+    answer: 'Your premium report includes a summary of findings, condition ratings for different sections of the line, photos from the video, documentation of any issues found, and an overall assessment. Everything is explained with no jargon. Our reports are designed for transparency and quality.',
   },
   {
     question: 'How do I get my video and report?',
@@ -46,7 +47,9 @@ const additionalFAQs = [
   },
 ]
 
-const allFAQs = [...(FAQ_ITEMS ?? []), ...(additionalFAQs ?? [])]
+
+
+const allFAQs = [...(CONVERSATIONAL_FAQS ?? []), ...(FAQ_ITEMS ?? []), ...(additionalFAQs ?? [])]
 
 export default function FAQPage() {
   const { t } = useDiversity()

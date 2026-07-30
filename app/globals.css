@@ -1041,6 +1041,22 @@ html.dark .bg-gray-50 { background-color:#0d1620 !important; }
 html.dark .bg-gray-100 { background-color:#18242f !important; }
 html.dark .bg-gray-900 { background-color:#060d14 !important; }
 html.dark .text-gray-900 { color:#e8eef4 !important; }
+
+/* A-tier contrast fixes (2026-07-30 audit): remapped-light text classes were
+   landing on non-remapped light backgrounds -> invisible text in dark mode */
+html.dark .bg-primary-50 { background-color:#12293a !important; }
+html.dark .bg-primary-100 { background-color:#16334a !important; }
+html.dark .text-primary-600 { color:#7dd3fc !important; }
+html.dark .bg-amber-50 { background-color:#3a2a12 !important; }
+html.dark .text-amber-700 { color:#fbbf24 !important; }
+html.dark .bg-white\/80 { background-color:rgba(18,29,40,.8) !important; }
+
+/* Maintenance page header band: pinned white background with var(--ink) text */
+html.dark header.site { background:rgba(13,22,32,.96); }
+
+/* Dormant booking select: white bg + var(--ink) — same white-on-white class
+   as the hero cert card; pin text so it can never revive broken */
+html.dark .service-select-box select { color:#0f1c2a; }
 html.dark .text-gray-800 { color:#dbe3ec !important; }
 html.dark .text-gray-700 { color:#c2ccd8 !important; }
 html.dark .text-gray-600 { color:#93a3b4 !important; }

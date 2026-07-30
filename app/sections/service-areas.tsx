@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { SERVICE_AREAS } from '@/lib/constants'
@@ -11,7 +12,7 @@ export default function ServiceAreas() {
   return (
     <section className="psi dark" data-screen-label="Service Areas">
       <div className="container" style={{ textAlign: 'center' }}>
-        
+
         <div className="section-head" style={{ alignItems: 'center' }}>
           <span className="eyebrow"><T>Service Areas</T></span>
           {/* Inline auto margins center the rule under the heading */}
@@ -21,24 +22,29 @@ export default function ServiceAreas() {
           </p>
         </div>
 
-        <div ref={ref} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '12px', padding: '2rem 0' }}>
+        <div ref={ref} className="areas-chips">
           {SERVICE_AREAS?.map((area, index) => (
-            <motion.span
+            <Link
               key={area ?? index}
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.2, ease: "easeOut", delay: index * 0.05 }}
-              className="badge" // Reuses the badge styling we validated in the pricing section
+              href={`/sewer-inspection/${(area ?? '').toLowerCase().replace(/\s+/g, '')}-in`}
+              className="area-chip"
+              style={{ textDecoration: 'none' }}
             >
-              {area ?? ''}
-            </motion.span>
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={inView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.2, ease: "easeOut", delay: index * 0.05 }}
+              >
+                {area ?? ''}
+              </motion.span>
+            </Link>
           ))}
         </div>
 
-        <p style={{ marginTop: '1rem', color: 'var(--text-light)', opacity: 0.8, fontSize: '0.9rem' }}>
+        <p className="areas-foot">
           <T>Don&apos;t see your city? Contact us—we likely serve your area too!</T>
         </p>
-        
+
       </div>
     </section>
   )
