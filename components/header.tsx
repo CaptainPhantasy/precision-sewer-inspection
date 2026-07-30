@@ -65,7 +65,7 @@ export default function Header() {
           <div className="flex items-center gap-3">
             <a
               href={`tel:${COMPANY_INFO?.phoneRaw ?? ''}`}
-              className="hidden xl:flex items-center gap-2 text-primary-700 font-semibold hover:text-primary-800 transition-colors whitespace-nowrap flex-shrink-0"
+              className="hidden 2xl:flex items-center gap-2 text-primary-700 font-semibold hover:text-primary-800 transition-colors whitespace-nowrap flex-shrink-0"
             >
               <Phone className="w-4 h-4" />
               {COMPANY_INFO?.phone ?? ''}
