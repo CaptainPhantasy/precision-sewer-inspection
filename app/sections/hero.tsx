@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Play, ArrowRight, MapPin, Clock, ShieldCheck, DollarSign } from 'lucide-react'
 import AnimatedCounter from '@/components/animated-counter'
+import { useDiversity, T } from '@/components/diversity/diversity-provider'
 
 const trustBadges = [
   { icon: ShieldCheck, value: '100', label: 'No Upselling', suffix: '%' },
@@ -15,6 +16,7 @@ const trustBadges = [
 ]
 
 export default function HeroSection() {
+  const { t } = useDiversity()
   return (
     <section className="cover">
       <div className="container">
@@ -26,30 +28,30 @@ export default function HeroSection() {
             transition={{ duration: 0.6 }}
           >
             <span className="eyebrow on-dark">
-              Central Indiana&apos;s Trusted Choice
+              {t("Central Indiana's Trusted Choice")}
             </span>
             
             <h1>
-              See What&apos;s Really In Your <em>Pipes</em>
+              <T>See What&apos;s Really In Your</T> <em><T>Pipes</T></em>
             </h1>
             
             <p className="price-line">
-              Before it costs you <b>$7,500</b>
+              <T>Before it costs you</T> <b>$7,500</b>
             </p>
             
             <p className="lede-dark">
-              Our HD sewer scope lets you see what&apos;s really in your pipes with honest answers. No upselling, no scare tactics—just the evidence you need to make confident decisions.
+              <T>Our HD sewer scope lets you see what&apos;s really in your pipes with honest answers. No upselling, no scare tactics—just the evidence you need to make confident decisions.</T>
             </p>
 
             {/* CTA Buttons */}
             <div className="ctas">
               <Link href="/contact" className="btn btn-accent">
-                Book Inspection — 60 Seconds
+                {t('Book Inspection — 60 Seconds')}
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a href="#what-we-find" className="btn btn-outline-dark">
                 <Play className="w-5 h-5" />
-                See Sample Footage
+                {t('See Sample Footage')}
               </a>
             </div>
 
@@ -66,7 +68,7 @@ export default function HeroSection() {
                     className="cell"
                   >
                     {IconComponent && <IconComponent className="w-5 h-5 text-accent-400 mx-auto mb-2" />}
-                    <div className="k">{badge?.label ?? ''}</div>
+                    <div className="k">{t(badge?.label ?? '')}</div>
                     <div className="v">
                       <AnimatedCounter 
                         end={Number(badge?.value ?? 0)} 

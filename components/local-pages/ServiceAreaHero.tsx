@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, ShieldCheck } from 'lucide-react'
 import AnimatedCounter from '@/components/animated-counter'
+import { T, useDiversity } from '@/components/diversity/diversity-provider'
 import { MapPin, Clock, DollarSign } from 'lucide-react'
 
 interface ServiceAreaHeroProps {
@@ -27,6 +28,7 @@ export default function ServiceAreaHero({
   description,
   phone,
 }: ServiceAreaHeroProps) {
+  const { t } = useDiversity()
   return (
     <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 text-white overflow-hidden">
       {/* Background Pattern */}
@@ -38,7 +40,7 @@ export default function ServiceAreaHero({
       <div className="absolute inset-0 opacity-20">
         <Image
           src="/images/hero_equipment.jpg"
-          alt="Sewer inspection equipment"
+          alt={t('Sewer inspection equipment')}
           fill
           className="object-cover"
           priority
@@ -54,19 +56,19 @@ export default function ServiceAreaHero({
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block px-4 py-1 bg-accent-500/20 text-accent-400 text-sm font-semibold rounded-full mb-6">
-              {cityName}, {state} Sewer Experts
+              {cityName}, {state} <T>Sewer Experts</T>
             </span>
             
             <h1 className="text-hero text-white mb-6">
-              Professional Sewer Inspection in <span className="text-accent-400">{cityName}</span>
+              <T>Professional Sewer Inspection in</T> <span className="text-accent-400">{cityName}</span>
             </h1>
             
             <p className="text-xl text-primary-200 mb-4">
-              Before it costs you <span className="text-white font-bold">$7,500</span>
+              <T>Before it costs you</T> <span className="text-white font-bold">$7,500</span>
             </p>
             
             <p className="text-lg text-primary-300 mb-8 max-w-lg">
-              {description || `Expert sewer camera inspections serving ${cityName} and surrounding communities. HD video reports with honest answers.`}
+              {description || <><T>Expert sewer camera inspections serving</T> {cityName} <T>and surrounding communities. HD video reports with honest answers.</T></>}
             </p>
 
             {/* CTA Buttons */}
@@ -75,7 +77,7 @@ export default function ServiceAreaHero({
                 href="/contact" 
                 className="btn-cta"
               >
-                Book Inspection — 60 Seconds
+                <T>Book Inspection — 60 Seconds</T>
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a 
@@ -105,7 +107,7 @@ export default function ServiceAreaHero({
                         suffix={badge?.suffix ?? ''} 
                       />
                     </div>
-                    <div className="text-xs text-primary-300">{badge?.label ?? ''}</div>
+                    <div className="text-xs text-primary-300"><T>{badge?.label ?? ''}</T></div>
                   </motion.div>
                 )
               })}
@@ -122,7 +124,7 @@ export default function ServiceAreaHero({
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
               <Image
                 src="/images/tech_hero.jpg"
-                alt="Precision Sewer Inspection technician with professional equipment"
+                alt={t('Precision Sewer Inspection technician with professional equipment')}
                 fill
                 className="object-cover"
                 priority
@@ -135,7 +137,7 @@ export default function ServiceAreaHero({
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">InterNACHI Certified</p>
-                    <p className="text-sm text-gray-600">Licensed & Insured</p>
+                    <p className="text-sm text-gray-600"><T>Licensed & Insured</T></p>
                   </div>
                 </div>
               </div>

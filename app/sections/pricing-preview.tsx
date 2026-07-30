@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
 import { Check, ArrowRight, Video } from 'lucide-react'
+import { T } from '@/components/diversity/diversity-provider'
 
 const PREVIEW_CARDS = [
   {
@@ -72,9 +73,9 @@ export default function PricingPreview() {
       <div className="container">
         
         <div className="section-head">
-          <span className="eyebrow">Pricing</span>
-          <h2 className="psi"><span className="rule"></span>Transparent Pricing, No Surprises</h2>
-          <p className="lede">We believe in upfront, honest pricing. What you see is what you pay—no surprises.</p>
+          <span className="eyebrow"><T>Pricing</T></span>
+          <h2 className="psi"><span className="rule"></span><T>Transparent Pricing, No Surprises</T></h2>
+          <p className="lede"><T>We believe in upfront, honest pricing. What you see is what you pay—no surprises.</T></p>
         </div>
 
         <div ref={ref} className="pricing-grid">
@@ -89,18 +90,18 @@ export default function PricingPreview() {
               {/* Badges kept intact */}
               {card.badge && (
                 <span className={`badge ${card.badge === 'Free Service' ? 'alt' : ''}`}>
-                  {card.badge}
+                  <T>{card.badge}</T>
                 </span>
               )}
-              
-              <h3>{card.name}</h3>
-              <div className="desc">{card.description}</div>
+
+              <h3><T>{card.name}</T></h3>
+              <div className="desc"><T>{card.description}</T></div>
               
               <div className="price">
                 <span className="amt" style={card.price === 'Call for Pricing' ? { fontSize: '24px' } : undefined}>
                   {card.price}
                 </span>
-                {card.priceLabel && <span className="unit">{card.priceLabel}</span>}
+                {card.priceLabel && <span className="unit"><T>{card.priceLabel}</T></span>}
               </div>
               
               {/* Inline style overrides the CSS ::before element so the Lucide icon renders cleanly */}
@@ -109,7 +110,7 @@ export default function PricingPreview() {
                 {card.features.map((feature, i) => (
                   <li key={i}>
                     <Check size={18} strokeWidth={1.5} color="currentColor" style={{ flexShrink: 0, marginTop: '2px', color: 'var(--accent)' }} />
-                    <span>{feature}</span>
+                    <span><T>{feature}</T></span>
                   </li>
                 ))}
               </ul>
@@ -120,7 +121,7 @@ export default function PricingPreview() {
                   className={`btn ${card.featured ? 'btn-accent' : 'btn-outline-light'}`}
                 >
                   {card.name === 'Independent Video Review' && <Video size={16} strokeWidth={1.5} color="currentColor" style={{ marginRight: '6px' }} />}
-                  {card.cta} 
+                  <T>{card.cta}</T>
                   <ArrowRight size={16} strokeWidth={1.5} color="currentColor" style={{ marginLeft: '6px' }} />
                 </Link>
               </div>
@@ -130,7 +131,7 @@ export default function PricingPreview() {
 
         <div className="pricing-foot">
           <Link href="/pricing" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            View Full Pricing Details <ArrowRight size={14} strokeWidth={1.5} color="currentColor" />
+            <T>View Full Pricing Details</T> <ArrowRight size={14} strokeWidth={1.5} color="currentColor" />
           </Link>
         </div>
         

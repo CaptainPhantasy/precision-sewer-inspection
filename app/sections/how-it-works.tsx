@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Calendar, Camera, Video, CheckCircle, ArrowRight } from 'lucide-react'
+import { T } from '@/components/diversity/diversity-provider'
 
 const steps = [
   {
@@ -27,7 +28,7 @@ const steps = [
     icon: CheckCircle,
     step: '4',
     title: 'Decide With Confidence',
-    description: 'Armed with real evidence and honest recommendations, make informed decisions.',
+    description: 'Armed with real evidence and honest findings, make informed decisions.',
   },
 ]
 
@@ -40,9 +41,9 @@ export default function HowItWorks() {
         
         {/* Replaced old SectionHeading with the exact design system DOM structure */}
         <div className="section-head">
-          <span className="eyebrow">How It Works</span>
-          <h2 className="psi"><span className="rule"></span>Simple, Fast, Transparent</h2>
-          <p className="lede">From booking to report delivery, we've streamlined every step so you can focus on what matters.</p>
+          <span className="eyebrow"><T>How It Works</T></span>
+          <h2 className="psi"><span className="rule"></span><T>Simple, Fast, Transparent</T></h2>
+          <p className="lede"><T>From booking to report delivery, we've streamlined every step so you can focus on what matters.</T></p>
         </div>
 
         <div ref={ref} className="steps-wrap">
@@ -66,8 +67,8 @@ export default function HowItWorks() {
                     {step?.step ?? index + 1}
                   </div>
                   
-                  <h3>{step?.title ?? ''}</h3>
-                  <p>{step?.description ?? ''}</p>
+                  <h3><T>{step?.title ?? ''}</T></h3>
+                  <p><T>{step?.description ?? ''}</T></p>
                 </motion.div>
               )
             })}

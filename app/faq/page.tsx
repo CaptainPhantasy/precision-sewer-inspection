@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, Search, Phone } from 'lucide-react'
 import { FAQ_ITEMS, COMPANY_INFO } from '@/lib/constants'
 import Link from 'next/link'
+import { CONVERSATIONAL_FAQS } from '@/lib/constants'
+import { T, useDiversity } from '@/components/diversity/diversity-provider'
 
 const additionalFAQs = [
   {
@@ -29,7 +31,7 @@ const additionalFAQs = [
   },
   {
     question: "What's included in the written report?",
-    answer: 'Your premium report includes a summary of findings, condition ratings for different sections of the line, photos from the video, recommendations for any issues found, and an overall assessment. Everything is explained with no jargon. Our reports are designed for transparency and quality.',
+    answer: 'Your premium report includes a summary of findings, condition ratings for different sections of the line, photos from the video, documentation of any issues found, and an overall assessment. Everything is explained with no jargon. Our reports are designed for transparency and quality.',
   },
   {
     question: 'How do I get my video and report?',
@@ -45,9 +47,12 @@ const additionalFAQs = [
   },
 ]
 
-const allFAQs = [...(FAQ_ITEMS ?? []), ...(additionalFAQs ?? [])]
+
+
+const allFAQs = [...(CONVERSATIONAL_FAQS ?? []), ...(FAQ_ITEMS ?? []), ...(additionalFAQs ?? [])]
 
 export default function FAQPage() {
+  const { t } = useDiversity()
   const [openIndex, setOpenIndex] = useState<number | null>(0)
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -68,13 +73,13 @@ export default function FAQPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-3xl mx-auto text-center">
               <span className="inline-block px-4 py-1 bg-primary-700 text-primary-200 text-sm font-semibold rounded-full mb-6">
-                FAQ
+                <T>FAQ</T>
               </span>
               <h1 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-                Frequently Asked Questions
+                <T>Frequently Asked Questions</T>
               </h1>
               <p className="text-xl text-primary-200 mb-8">
-                Everything you need to know about sewer inspections in Central Indiana.
+                <T>Everything you need to know about sewer inspections in Central Indiana.</T>
               </p>
               
               {/* Search */}
@@ -82,7 +87,7 @@ export default function FAQPage() {
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search questions..."
+                  placeholder={t('Search questions...')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e?.target?.value ?? '')}
                   className="w-full pl-12 pr-4 py-3 rounded-xl bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500"
@@ -97,7 +102,7 @@ export default function FAQPage() {
           <div className="max-w-3xl mx-auto">
             {filteredFAQs?.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-500">No questions found matching &quot;{searchQuery}&quot;</p>
+                <p className="text-gray-500"><T>No questions found matching</T> &quot;{searchQuery}&quot;</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -110,7 +115,7 @@ export default function FAQPage() {
                       onClick={() => setOpenIndex(openIndex === index ? null : index)}
                       className="w-full px-6 py-4 flex items-center justify-between text-left bg-gray-50 hover:bg-gray-100 transition-colors"
                     >
-                      <span className="font-semibold text-gray-900 pr-4">{item?.question ?? ''}</span>
+                      <span className="font-semibold text-gray-900 pr-4"><T>{item?.question ?? ''}</T></span>
                       <ChevronDown
                         className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform duration-300 ${
                           openIndex === index ? 'rotate-180' : ''
@@ -126,7 +131,7 @@ export default function FAQPage() {
                           transition={{ duration: 0.3 }}
                         >
                           <div className="px-6 py-4 bg-white border-t border-gray-100">
-                            <p className="text-gray-600 whitespace-pre-line">{item?.answer ?? ''}</p>
+                            <p className="text-gray-600 whitespace-pre-line"><T>{item?.answer ?? ''}</T></p>
                           </div>
                         </motion.div>
                       )}
@@ -141,13 +146,13 @@ export default function FAQPage() {
         {/* Still have questions */}
         <section className="section-padding bg-gray-50">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl font-heading font-bold text-gray-900 mb-4">Still Have Questions?</h2>
+            <h2 className="text-2xl font-heading font-bold text-gray-900 mb-4"><T>Still Have Questions?</T></h2>
             <p className="text-gray-600 mb-8">
-              Our team is happy to answer any questions you have about sewer inspections.
+              <T>Our team is happy to answer any questions you have about sewer inspections.</T>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact" className="btn-primary">
-                Contact Us
+                <T>Contact Us</T>
               </Link>
               <a
                 href={`tel:${COMPANY_INFO?.phoneRaw ?? ''}`}

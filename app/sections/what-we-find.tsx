@@ -6,9 +6,11 @@ import Image from 'next/image'
 import { AlertTriangle } from 'lucide-react'
 import SectionHeading from '@/components/section-heading'
 import { PIPE_ISSUES } from '@/lib/constants'
+import { T, useDiversity } from '@/components/diversity/diversity-provider'
 
 export default function WhatWeFind() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
+  const { t } = useDiversity()
 
   return (
     <section id="what-we-find" className="psi alt">
@@ -16,7 +18,7 @@ export default function WhatWeFind() {
         <SectionHeading
           label="What We Find"
           title="Common Issues We Discover"
-          description="50% of our inspections reveal issues homeowners didn't know about. Here's what our cameras commonly find."
+          description="A surprising share of the lines we scope have problems the homeowner couldn't see. Here's what our cameras commonly find."
           icon={AlertTriangle}
         />
 
@@ -32,14 +34,14 @@ export default function WhatWeFind() {
               <div className="still">
                 <Image
                   src={issue?.image ?? ''}
-                  alt={issue?.name ?? 'Pipe issue'}
+                  alt={t(issue?.name ?? 'Pipe issue')}
                   fill
                   className="object-cover"
                 />
               </div>
               <div className="label-row">
                 <h3 className="nm">
-                  {issue?.name ?? ''}
+                  <T>{issue?.name ?? ''}</T>
                 </h3>
               </div>
             </motion.div>
@@ -48,7 +50,7 @@ export default function WhatWeFind() {
 
         <div className="findings-foot">
           <p>
-            Each issue comes with expert explanation—no jargon, no scare tactics.
+            <T>Each issue comes with expert explanation—no jargon, no scare tactics.</T>
           </p>
         </div>
       </div>

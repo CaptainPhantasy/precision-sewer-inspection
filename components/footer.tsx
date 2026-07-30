@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { COMPANY_INFO } from "@/lib/constants";
 import { SERVICE_AREA_LINKS } from "@/lib/service-areas";
+import { T } from "@/components/diversity/diversity-provider";
 
 export default function Footer() {
 	return (
@@ -30,13 +31,15 @@ export default function Footer() {
 							</div>
 						</Link>
 						<p className="text-primary-200 text-sm mb-4">
-							Central Indiana&apos;s most trusted sewer inspection company.
-							Evidence you can see, answers you can trust.
+							<T>
+								Central Indiana&apos;s most trusted sewer inspection company.
+								Evidence you can see, answers you can trust.
+							</T>
 						</p>
 						<div className="flex gap-4">
 							<div className="flex items-center gap-1 text-xs text-primary-300">
 								<Shield className="w-4 h-4" />
-								<span>Licensed & Insured</span>
+								<span><T>Licensed & Insured</T></span>
 							</div>
 							<div className="flex items-center gap-1 text-xs text-primary-300">
 								<Award className="w-4 h-4" />
@@ -47,14 +50,14 @@ export default function Footer() {
 
 					{/* Quick Links */}
 					<div>
-						<h4 className="font-heading font-bold text-lg mb-4">Services</h4>
+						<h4 className="font-heading font-bold text-lg mb-4"><T>Services</T></h4>
 						<ul className="space-y-2">
 							<li>
 								<Link
 									href="/services"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									Sewer Scope Inspection
+									<T>Sewer Scope Inspection</T>
 								</Link>
 							</li>
 							<li>
@@ -62,7 +65,7 @@ export default function Footer() {
 									href="/services"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									Commercial Inspections
+									<T>Commercial Inspections</T>
 								</Link>
 							</li>
 							<li>
@@ -70,7 +73,7 @@ export default function Footer() {
 									href="/services"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									Real Estate Partners
+									<T>Real Estate Partners</T>
 								</Link>
 							</li>
 							<li>
@@ -78,7 +81,7 @@ export default function Footer() {
 									href="/pricing"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									Pricing
+									<T>Pricing</T>
 								</Link>
 							</li>
 						</ul>
@@ -86,14 +89,14 @@ export default function Footer() {
 
 					{/* Company */}
 					<div>
-						<h4 className="font-heading font-bold text-lg mb-4">Company</h4>
+						<h4 className="font-heading font-bold text-lg mb-4"><T>Company</T></h4>
 						<ul className="space-y-2">
 							<li>
 								<Link
 									href="/about"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									About Us
+									<T>About Us</T>
 								</Link>
 							</li>
 							<li>
@@ -101,7 +104,7 @@ export default function Footer() {
 									href="/resources"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									Resources & Blog
+									<T>Resources & Blog</T>
 								</Link>
 							</li>
 							<li>
@@ -109,7 +112,7 @@ export default function Footer() {
 									href="/faq"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									FAQ
+									<T>FAQ</T>
 								</Link>
 							</li>
 							<li>
@@ -117,7 +120,7 @@ export default function Footer() {
 									href="/contact"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									Contact
+									<T>Contact</T>
 								</Link>
 							</li>
 							<li>
@@ -125,7 +128,7 @@ export default function Footer() {
 									href="/status"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									Track Your Inspection
+									<T>Track Your Inspection</T>
 								</Link>
 							</li>
 							<li>
@@ -133,7 +136,7 @@ export default function Footer() {
 									href="/support"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									Support & Terms
+									<T>Support & Terms</T>
 								</Link>
 							</li>
 							<li>
@@ -141,7 +144,7 @@ export default function Footer() {
 									href="/privacy"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									Privacy Policy
+									<T>Privacy Policy</T>
 								</Link>
 							</li>
 						</ul>
@@ -150,7 +153,7 @@ export default function Footer() {
 					{/* Contact Info */}
 					<div className="lg:col-span-1 lg:min-w-[280px]">
 						<h4 className="font-heading font-bold text-lg mb-4 pl-6">
-							Contact Us
+							<T>Contact Us</T>
 						</h4>
 						<ul className="space-y-3">
 							<li>
@@ -189,33 +192,40 @@ export default function Footer() {
 					</div>
 				</div>
 
-				{/* Service Areas */}
+				{/* Service Areas — linked so every page points crawlers + LLMs at the city pages */}
 				<div className="mt-10 pt-8 border-t border-primary-800">
 					<h4 className="font-heading font-bold text-sm mb-3">
-						<Link href="/areas" className="hover:text-white transition-colors">Sewer Inspection Service Areas</Link>
+						<Link href="/areas" className="hover:text-white transition-colors">
+							<T>Sewer Inspection Service Areas</T>
+						</Link>
 					</h4>
 					<div className="flex flex-wrap gap-2">
 						{SERVICE_AREA_LINKS.map((area) => (
+							<Link
+								key={area.slug}
+								href={`/sewer-inspection/${area.slug}`}
+								className="text-xs text-primary-300 bg-primary-800 px-2 py-1 rounded hover:bg-primary-700 hover:text-white transition-colors"
+							>
+								{area.name}
+							</Link>
+						))}
 						<Link
-							key={area.slug}
-							href={`/sewer-inspection/${area.slug}`}
-							className="text-xs text-primary-300 bg-primary-800 px-2 py-1 rounded hover:bg-primary-700 hover:text-white transition-colors"
+							href="/areas"
+							className="text-xs text-primary-300 px-2 py-1 hover:text-white transition-colors self-center"
 						>
-							{area.name}
+							<T>View all areas</T>
 						</Link>
-					))}
-					<Link href="/areas" className="text-xs text-primary-300 px-2 py-1 hover:text-white transition-colors self-center">View all areas</Link>
 					</div>
 				</div>
 
 				{/* Bottom Bar */}
 				<div className="mt-8 pt-8 border-t border-primary-800 flex flex-col sm:flex-row justify-between items-center gap-4">
 					<p className="text-primary-300 text-sm">
-						© {new Date().getFullYear()} {COMPANY_INFO?.name ?? ""}. All rights
-						reserved.
+						© {new Date().getFullYear()} {COMPANY_INFO?.name ?? ""}.{" "}
+						<T>All rights reserved.</T>
 					</p>
 					<p className="text-primary-300 text-xs">
-						Serving all of Central Indiana with pride.
+						<T>Serving all of Central Indiana with pride.</T>
 					</p>
 				</div>
 			</div>

@@ -75,3 +75,4 @@ scripts/send-backfill-admin-emails.ts
 /final_evidence_and_completeness.md
 /workflow_test_plans.md
 /css-refactor-diff.txt
+.env*

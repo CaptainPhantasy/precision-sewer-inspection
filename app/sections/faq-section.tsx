@@ -6,6 +6,7 @@ import { ChevronDown, HelpCircle } from 'lucide-react'
 import SectionHeading from '@/components/section-heading'
 import { FAQ_ITEMS } from '@/lib/constants'
 import Link from 'next/link'
+import { T } from '@/components/diversity/diversity-provider'
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
@@ -35,7 +36,7 @@ export default function FAQSection() {
                   className={`w-full flex items-center justify-between text-left ${openIndex === index ? 'open' : ''}`}
                 >
                   <div className="summary" onClick={(e) => e.preventDefault()}>
-                    <span className="q">{item?.question ?? ''}</span>
+                    <span className="q"><T>{item?.question ?? ''}</T></span>
                     <ChevronDown
                       className={`chev ${
                         openIndex === index ? 'rotate-180' : ''
@@ -52,7 +53,7 @@ export default function FAQSection() {
                       transition={{ duration: 0.3 }}
                     >
                       <div className="a">
-                        <p>{item?.answer ?? ''}</p>
+                        <p><T>{item?.answer ?? ''}</T></p>
                       </div>
                     </motion.div>
                   )}
@@ -63,7 +64,7 @@ export default function FAQSection() {
 
           <div className="faq-foot">
             <Link href="/faq">
-              View All FAQs →
+              <T>View All FAQs</T> →
             </Link>
           </div>
         </div>

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { X, Tag, ArrowRight } from 'lucide-react'
 import { PROMO_CODE, PROMO_PERCENT } from '@/lib/checkout-pricing'
 import { motion, AnimatePresence } from 'framer-motion'
+import { T, useDiversity } from '@/components/diversity/diversity-provider'
 
 const DISCOUNT_AMOUNT = PROMO_PERCENT
 
@@ -53,6 +54,7 @@ const HIDDEN_ROUTES = ['/technician', '/admin', '/status', '/download']
 
 export default function PromoBanner() {
   const pathname = usePathname()
+  const { t } = useDiversity()
   const [isVisible, setIsVisible] = useState(true)
   const [isDismissed, setIsDismissed] = useState(false)
   const [hasDiscount, setHasDiscount] = useState(false)
@@ -106,18 +108,18 @@ export default function PromoBanner() {
               {hasDiscount ? (
                 <span className="flex items-center gap-2">
                   <span className="bg-white/20 px-2 py-0.5 rounded text-xs sm:text-sm">SAVE10 Applied!</span>
-                  <span>Complete your booking to save 10%</span>
+                  <span><T>Complete your booking to save 10%</T></span>
                 </span>
               ) : (
                 <>
-                  <span className="hidden sm:inline">Limited Time Offer: </span>
+                  <span className="hidden sm:inline"><T>Limited Time Offer:</T> </span>
                   <span className="code">10% OFF</span>
-                  <span className="promo-cta"> your first sewer inspection!</span>
+                  <span className="promo-cta"> <T>your first sewer inspection!</T></span>
                 </>
               )}
             </span>
             <span className="flex items-center gap-1 font-bold underline underline-offset-2 group-hover:no-underline whitespace-nowrap">
-              {hasDiscount ? 'Book Now' : 'Claim Discount'}
+              {hasDiscount ? <T>Book Now</T> : <T>Claim Discount</T>}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </span>
           </Link>
@@ -125,7 +127,7 @@ export default function PromoBanner() {
           <button
             onClick={handleDismiss}
             className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-white/20 rounded-full transition-colors"
-            aria-label="Dismiss banner"
+            aria-label={t('Dismiss banner')}
           >
             <X className="w-4 h-4" />
           </button>

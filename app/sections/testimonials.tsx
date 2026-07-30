@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { TESTIMONIALS } from '@/lib/constants'
+import { T } from '@/components/diversity/diversity-provider'
 
 export default function Testimonials() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -16,9 +17,9 @@ export default function Testimonials() {
         
         {/* Replaced old SectionHeading with the exact design system DOM structure */}
         <div className="section-head">
-          <span className="eyebrow">Testimonials</span>
-          <h2 className="psi"><span className="rule"></span>What Our Customers Say</h2>
-          <p className="lede">Don't just take our word for it. Here's what Indiana homeowners and real estate professionals say about us.</p>
+          <span className="eyebrow"><T>Testimonials</T></span>
+          <h2 className="psi"><span className="rule"></span><T>What Our Customers Say</T></h2>
+          <p className="lede"><T>Don&apos;t just take our word for it. Here&apos;s what Indiana homeowners and real estate professionals say about us.</T></p>
         </div>
 
         <div ref={ref} className="testimonial-grid">
@@ -39,7 +40,7 @@ export default function Testimonials() {
               
               <div className="who">
                 <div className="name">{testimonial?.author ?? ''}</div>
-                <div className="role">{testimonial?.role ?? ''}</div>
+                <div className="role"><T>{testimonial?.role ?? ''}</T></div>
               </div>
             </motion.article>
           ))}

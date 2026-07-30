@@ -1,4 +1,4 @@
-import { COMPANY_INFO, FAQ_ITEMS, SERVICE_AREAS } from '@/lib/constants'
+import { COMPANY_INFO, CONVERSATIONAL_FAQS, FAQ_ITEMS, SERVICE_AREAS } from '@/lib/constants'
 
 interface StructuredDataProps {
   type: 'LocalBusiness' | 'Service' | 'FAQPage' | 'WebPage' | 'BreadcrumbList'
@@ -15,7 +15,7 @@ export default function StructuredData({ type, pageTitle, pageDescription, bread
     '@type': 'LocalBusiness',
     '@id': `${baseUrl}/#organization`,
     name: COMPANY_INFO.name,
-    description: 'Professional sewer scope inspections in Central Indiana. HD video inspections, one-business-day report delivery, InterNACHI certified inspectors.',
+    description: 'Independent sewer inspection company serving Central Indiana. Inspection only, no repairs, so every finding is unbiased. HD video sewer scope inspections, one-business-day report delivery, InterNACHI certified inspectors.',
     url: baseUrl,
     telephone: COMPANY_INFO.phone,
     email: COMPANY_INFO.email,
@@ -89,11 +89,17 @@ export default function StructuredData({ type, pageTitle, pageDescription, bread
       name: COMPANY_INFO.name,
       telephone: COMPANY_INFO.phone,
     },
-    areaServed: {
-      '@type': 'State',
-      name: 'Indiana',
-    },
-    description: 'Professional HD video sewer line inspections for home buyers, homeowners, and real estate professionals in Central Indiana. Premium reporting with transparent pricing.',
+    additionalType: [
+      'sewer camera inspection',
+      'sanitary lateral camera inspection',
+      'pre-purchase sewer scope',
+      'non-invasive sewer line inspection',
+    ],
+    areaServed: SERVICE_AREAS.map((area) => ({
+      '@type': 'City',
+      name: `${area}, Indiana`,
+    })),
+    description: 'Unbiased sewer camera surveys for home buyers, homeowners, and real estate professionals in Central Indiana. Certified sewer scope inspector, HD footage, premium reporting with transparent pricing.',
     offers: {
       '@type': 'AggregateOffer',
       lowPrice: '159',
@@ -105,7 +111,7 @@ export default function StructuredData({ type, pageTitle, pageDescription, bread
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: FAQ_ITEMS.map((item) => ({
+    mainEntity: [...CONVERSATIONAL_FAQS, ...FAQ_ITEMS].map((item) => ({
       '@type': 'Question',
       name: item.question,
       acceptedAnswer: {

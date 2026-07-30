@@ -10,6 +10,7 @@ import ServiceCard from '@/components/local-pages/ServiceCard';
 import FAQAccordion from '@/components/local-pages/FAQAccordion';
 import TechnicianCard from '@/components/local-pages/TechnicianCard';
 import CTAButton from '@/components/ui/CTAButton';
+import { T } from '@/components/diversity/diversity-provider';
 
 interface ServiceAreaPageProps {
   area: ServiceArea & {
@@ -75,19 +76,19 @@ export default function ServiceAreaPage({
                 <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span>Licensed & Insured</span>
+                <span><T>Licensed & Insured</T></span>
               </div>
               <div className="flex items-center gap-2">
                 <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span>Same-Day Service</span>
+                <span><T>Same-Day Service</T></span>
               </div>
               <div className="flex items-center gap-2">
                 <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span>Detailed Reports</span>
+                <span><T>Detailed Reports</T></span>
               </div>
               {reviews && (
                 <div className="flex items-center gap-2">
@@ -98,7 +99,7 @@ export default function ServiceAreaPage({
                       </svg>
                     ))}
                   </div>
-                  <span>{reviews.rating.toFixed(1)} ({reviews.count} reviews)</span>
+                  <span>{reviews.rating.toFixed(1)} ({reviews.count} <T>reviews</T>)</span>
                 </div>
               )}
             </div>
@@ -110,10 +111,10 @@ export default function ServiceAreaPage({
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Sewer Inspection Services in {area.name}
+                <T>Sewer Inspection Services in</T> {area.name}
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Choose the inspection service that fits your needs. All inspections include a detailed video report.
+                <T>Choose the inspection service that fits your needs. All inspections include a detailed video report.</T>
               </p>
             </div>
 
@@ -137,7 +138,7 @@ export default function ServiceAreaPage({
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12">
-                Why Choose Precision Sewer Inspections in {area.name}?
+                <T>Why Choose</T> Precision Sewer Inspections <T>in</T> {area.name}?
               </h2>
 
               <div className="grid md:grid-cols-2 gap-8">
@@ -149,8 +150,8 @@ export default function ServiceAreaPage({
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2">HD Camera Technology</h3>
-                    <p className="text-gray-600">State-of-the-art cameras see every detail, from hairline cracks to root intrusion.</p>
+                    <h3 className="font-semibold text-lg mb-2"><T>HD Camera Technology</T></h3>
+                    <p className="text-gray-600"><T>State-of-the-art cameras see every detail, from hairline cracks to root intrusion.</T></p>
                   </div>
                 </div>
 
@@ -161,8 +162,8 @@ export default function ServiceAreaPage({
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2">Written Documentation</h3>
-                    <p className="text-gray-600">Complete inspection reports with video recording for your records.</p>
+                    <h3 className="font-semibold text-lg mb-2"><T>Written Documentation</T></h3>
+                    <p className="text-gray-600"><T>Complete inspection reports with video recording for your records.</T></p>
                   </div>
                 </div>
 
@@ -173,8 +174,8 @@ export default function ServiceAreaPage({
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2">Same-Day Service</h3>
-                    <p className="text-gray-600">Need it fast? We offer same-day inspections in {area.name} and surrounding areas.</p>
+                    <h3 className="font-semibold text-lg mb-2"><T>Same-Day Service</T></h3>
+                    <p className="text-gray-600"><T>Need it fast? We offer same-day inspections in</T> {area.name} <T>and surrounding areas.</T></p>
                   </div>
                 </div>
 
@@ -185,8 +186,8 @@ export default function ServiceAreaPage({
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2">Upfront Pricing</h3>
-                    <p className="text-gray-600">Know your cost before we start. No surprises, no hidden fees.</p>
+                    <h3 className="font-semibold text-lg mb-2"><T>Upfront Pricing</T></h3>
+                    <p className="text-gray-600"><T>Know your cost before we start. No surprises, no hidden fees.</T></p>
                   </div>
                 </div>
               </div>
@@ -200,10 +201,10 @@ export default function ServiceAreaPage({
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                  Meet Your {area.name} Inspection Team
+                  <T>Meet Your</T> {area.name} <T>Inspection Team</T>
                 </h2>
                 <p className="text-lg text-gray-600">
-                  Our certified technicians serve {area.name} and surrounding communities.
+                  <T>Our certified technicians serve</T> {area.name} <T>and surrounding communities.</T>
                 </p>
               </div>
 
@@ -226,10 +227,10 @@ export default function ServiceAreaPage({
               <div className="max-w-3xl mx-auto">
                 <div className="text-center mb-12">
                   <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                    Frequently Asked Questions
+                    <T>Frequently Asked Questions</T>
                   </h2>
                   <p className="text-lg text-gray-600">
-                    Common questions about sewer inspections in {area.name}
+                    <T>Common questions about sewer inspections in</T> {area.name}
                   </p>
                 </div>
 
@@ -244,7 +245,7 @@ export default function ServiceAreaPage({
           <section className="py-16">
             <div className="container mx-auto px-4">
               <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-                Also Serving These Nearby Areas
+                <T>Also Serving These Nearby Areas</T>
               </h2>
               <div className="flex flex-wrap justify-center gap-4">
                 {nearbyAreas.map(nearby => (
@@ -265,10 +266,10 @@ export default function ServiceAreaPage({
         <section className="py-16 bg-primary-900 text-white">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Schedule Your Inspection?
+              <T>Ready to Schedule Your Inspection?</T>
             </h2>
             <p className="text-xl text-primary-200 mb-8 max-w-2xl mx-auto">
-              Get your sewer inspection scheduled today and know exactly what's in your pipes.
+              <T>Get your sewer inspection scheduled today and know exactly what's in your pipes.</T>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <CTAButton 
@@ -276,7 +277,7 @@ export default function ServiceAreaPage({
                 variant="secondary"
                 size="lg"
               >
-                Book Your Inspection
+                <T>Book Your Inspection</T>
               </CTAButton>
               <CTAButton 
                 href={`tel:${process.env.NEXT_PUBLIC_PHONE}`}
