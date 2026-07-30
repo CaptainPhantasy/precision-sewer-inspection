@@ -2,6 +2,7 @@ import Header from '@/components/header'
 import Footer from '@/components/footer'
 import AIChat from '@/components/ai-chat'
 import StructuredData from '@/components/structured-data'
+import { FAQ_ITEMS } from '@/lib/constants'
 import HeroSection from './sections/hero'
 import WhyChooseUs from './sections/why-choose-us'
 import HowItWorks from './sections/how-it-works'
@@ -16,7 +17,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       <StructuredData type="LocalBusiness" />
-      <StructuredData type="FAQPage" />
+      <StructuredData type="FAQPage" faqs={FAQ_ITEMS.slice(0, 5)} />
       <Header />
       <main className="flex-1">
         <HeroSection />

@@ -19,7 +19,12 @@ export class DyslexiaEngine {
 
   isEnabled(): boolean {
     if (typeof window === 'undefined') return false
-    return window.localStorage.getItem(this.storageKey) === 'true'
+    try {
+      return window.localStorage.getItem(this.storageKey) === 'true'
+    } catch {
+      // Storage blocked (privacy mode / sandboxed iframe) — default off.
+      return false
+    }
   }
 
   /** Apply the stored state to the DOM. Idempotent. */
@@ -30,7 +35,11 @@ export class DyslexiaEngine {
   setEnabled(enable: boolean): void {
     const state = !!enable
     if (typeof window !== 'undefined') {
-      window.localStorage.setItem(this.storageKey, String(state))
+      try {
+        window.localStorage.setItem(this.storageKey, String(state))
+      } catch {
+        // Storage blocked — best-effort persistence only; state still applies below.
+      }
     }
     this.applyToDOM(state)
     this.listeners.forEach((fn) => fn(state))

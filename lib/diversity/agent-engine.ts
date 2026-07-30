@@ -40,7 +40,12 @@ export class AgentEngine {
   /** True only when the user has explicitly chosen a value. */
   hasStoredPreference(): boolean {
     if (typeof window === 'undefined') return false
-    return window.localStorage.getItem(this.storageKey) !== null
+    try {
+      return window.localStorage.getItem(this.storageKey) !== null
+    } catch {
+      // Storage blocked (privacy mode / sandboxed iframe) — no stored preference.
+      return false
+    }
   }
 
   /** Heuristic detection of a non-human user agent. */
@@ -56,7 +61,13 @@ export class AgentEngine {
   /** Stored choice if present, else auto-detection. */
   isEnabled(): boolean {
     if (typeof window === 'undefined') return false
-    const stored = window.localStorage.getItem(this.storageKey)
+    let stored: string | null = null
+    try {
+      stored = window.localStorage.getItem(this.storageKey)
+    } catch {
+      // Storage blocked (privacy mode / sandboxed iframe) — fall through to detection.
+      stored = null
+    }
     if (stored !== null) return stored === 'true'
     return this.detectAgent()
   }
@@ -69,7 +80,11 @@ export class AgentEngine {
   setEnabled(enable: boolean): void {
     const state = !!enable
     if (typeof window !== 'undefined') {
-      window.localStorage.setItem(this.storageKey, String(state))
+      try {
+        window.localStorage.setItem(this.storageKey, String(state))
+      } catch {
+        // Storage blocked — best-effort persistence only; state still applies below.
+      }
     }
     this.applyToDOM(state)
     this.listeners.forEach((fn) => fn(state))

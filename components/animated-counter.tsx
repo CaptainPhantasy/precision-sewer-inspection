@@ -1,7 +1,11 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
+
+// useLayoutEffect on the client (resets before paint, so no flash), plain
+// useEffect during SSR (avoids the React SSR warning).
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 interface AnimatedCounterProps {
   end: number
@@ -18,9 +22,19 @@ export default function AnimatedCounter({
   suffix = '',
   decimals = 0,
 }: AnimatedCounterProps) {
+  // Initial state is the FINAL value so SSR / no-JS renders the real number.
   const [count, setCount] = useState(end ?? 0)
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 })
   const hasAnimated = useRef(false)
+
+  // Before the first client paint, reset to 0 so that when the counter later
+  // enters the viewport the count-up starts cleanly from 0 — instead of the
+  // old end → 0 → end flash. Without JS this never runs and the final value
+  // stays on the page.
+  useIsomorphicLayoutEffect(() => {
+    setCount(0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (inView && !hasAnimated?.current) {

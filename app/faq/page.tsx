@@ -10,6 +10,7 @@ import { FAQ_ITEMS, COMPANY_INFO } from '@/lib/constants'
 import Link from 'next/link'
 import { CONVERSATIONAL_FAQS } from '@/lib/constants'
 import { T, useDiversity } from '@/components/diversity/diversity-provider'
+import StructuredData from '@/components/structured-data'
 
 const additionalFAQs = [
   {
@@ -58,7 +59,13 @@ export default function FAQPage() {
 
   const filteredFAQs = allFAQs?.filter((faq) => {
     const query = searchQuery?.toLowerCase() ?? ''
+    // Match the translated/displayed strings (what the user actually sees and
+    // searches against) in addition to the English originals.
+    const question = t(faq?.question ?? '')?.toLowerCase?.() ?? ''
+    const answer = t(faq?.answer ?? '')?.toLowerCase?.() ?? ''
     return (
+      question.includes(query) ||
+      answer.includes(query) ||
       faq?.question?.toLowerCase?.()?.includes?.(query) ||
       faq?.answer?.toLowerCase?.()?.includes?.(query)
     )
@@ -66,6 +73,7 @@ export default function FAQPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <StructuredData type="FAQPage" faqs={allFAQs} />
       <Header />
       <main className="flex-1">
         {/* Hero */}

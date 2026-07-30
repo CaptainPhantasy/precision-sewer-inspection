@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import StructuredData from '@/components/structured-data'
 
 export const metadata: Metadata = {
   title: 'Sewer Scope FAQ Indianapolis | Common Questions Answered',
@@ -18,10 +17,7 @@ export default function FAQLayout({
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <>
-      <StructuredData type="FAQPage" />
-      {children}
-    </>
-  )
+  // FAQPage structured data is emitted by app/faq/page.tsx, which owns the
+  // exact rendered FAQ list (schema must match what the page renders).
+  return <>{children}</>
 }
