@@ -50,7 +50,7 @@ export default function Header() {
               <Link
                 key={link?.href ?? ''}
                 href={link?.href ?? '/'}
-                className={`px-2 xl:px-3 py-2 text-sm 2xl:text-base font-medium rounded-lg transition-colors whitespace-nowrap ${
+                className={`px-2 xl:px-3 py-2 text-sm min-[1700px]:text-base font-medium rounded-lg transition-colors whitespace-nowrap ${
                   (link as { highlight?: boolean })?.highlight 
                     ? 'text-amber-700 bg-amber-50 hover:bg-amber-100' 
                     : 'text-gray-700 hover:text-primary-700 hover:bg-gray-50'
