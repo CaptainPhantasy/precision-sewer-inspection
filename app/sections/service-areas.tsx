@@ -13,14 +13,12 @@ export default function ServiceAreas() {
     <section className="psi dark" data-screen-label="Service Areas">
       <div className="container" style={{ textAlign: 'center' }}>
 
-        <div className="section-head" style={{ alignItems: 'center' }}>
-          <span className="eyebrow"><T>Service Areas</T></span>
-          {/* Inline auto margins center the rule under the heading */}
-          <h2 className="psi"><span className="rule" style={{ margin: '0 auto 1rem auto' }}></span><T>Serving Central Indiana</T></h2>
-          <p className="lede max-w-2xl mx-auto">
-            <T>We provide professional sewer inspection services throughout Central Indiana.</T>
-          </p>
-        </div>
+        <h2 className="psi" style={{ border: 'none', padding: 0, marginBottom: '1rem' }}>
+          <T>Serving Central Indiana</T>
+        </h2>
+        <p className="lede" style={{ maxWidth: '600px', margin: '0 auto 2rem auto' }}>
+          <T>We provide professional sewer inspection services throughout Central Indiana.</T>
+        </p>
 
         <div ref={ref} className="areas-chips">
           {SERVICE_AREAS?.map((area, index) => (
