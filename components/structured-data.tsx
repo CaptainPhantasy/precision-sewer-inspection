@@ -1,13 +1,19 @@
-import { COMPANY_INFO, CONVERSATIONAL_FAQS, FAQ_ITEMS, SERVICE_AREAS } from '@/lib/constants'
+import { COMPANY_INFO, FAQ_ITEMS, SERVICE_AREAS } from '@/lib/constants'
 
 interface StructuredDataProps {
   type: 'LocalBusiness' | 'Service' | 'FAQPage' | 'WebPage' | 'BreadcrumbList'
   pageTitle?: string
   pageDescription?: string
   breadcrumbs?: { name: string; url: string }[]
+  /**
+   * The exact FAQ items rendered on the page. FAQPage structured data must
+   * describe only what the page actually shows, so callers pass their rendered
+   * list; defaults to the full homepage set for backwards compatibility.
+   */
+  faqs?: { question: string; answer: string }[]
 }
 
-export default function StructuredData({ type, pageTitle, pageDescription, breadcrumbs }: StructuredDataProps) {
+export default function StructuredData({ type, pageTitle, pageDescription, breadcrumbs, faqs }: StructuredDataProps) {
   const baseUrl = process.env.NEXTAUTH_URL || 'https://precisionsewerinspections.com'
 
   const localBusinessSchema = {
@@ -111,7 +117,7 @@ export default function StructuredData({ type, pageTitle, pageDescription, bread
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: [...CONVERSATIONAL_FAQS, ...FAQ_ITEMS].map((item) => ({
+    mainEntity: (faqs ?? FAQ_ITEMS).map((item) => ({
       '@type': 'Question',
       name: item.question,
       acceptedAnswer: {

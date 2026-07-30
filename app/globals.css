@@ -1050,6 +1050,7 @@ html.dark .bg-primary-100 { background-color:#16334a !important; }
 html.dark .text-primary-600 { color:#7dd3fc !important; }
 html.dark .bg-amber-50 { background-color:#3a2a12 !important; }
 html.dark .text-amber-700 { color:#fbbf24 !important; }
+html.dark .text-amber-900 { color:#fcd34d !important; }
 html.dark .bg-white\/80 { background-color:rgba(18,29,40,.8) !important; }
 
 /* Maintenance page header band: pinned white background with var(--ink) text */

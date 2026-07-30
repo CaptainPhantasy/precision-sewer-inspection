@@ -101,7 +101,11 @@ export class LocaleEngine {
     if (!SUPPORTED.includes(locale)) return
     this.locale = locale
     if (typeof window !== 'undefined') {
-      window.localStorage.setItem(this.storageKey, locale)
+      try {
+        window.localStorage.setItem(this.storageKey, locale)
+      } catch {
+        // Storage blocked — best-effort persistence only; the locale still applies below.
+      }
     }
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('lang', locale)
@@ -186,8 +190,17 @@ export class LocaleEngine {
         body: JSON.stringify({ text, target, source: 'en' }),
       })
       if (!res.ok) return null
-      const data = (await res.json()) as { translatedText?: string }
-      return data.translatedText?.trim() || null
+      const data = (await res.json()) as {
+        translatedText?: string
+        configured?: boolean
+        degraded?: boolean
+      }
+      // A graceful-degradation fallback echoes the original English back with
+      // HTTP 200 — never treat (or cache) it as a real translation.
+      if (data.configured === false || data.degraded === true) return null
+      // No trim: boundary whitespace is intentional — fragments like
+      // "Call us at " sit next to links/spans and must keep their spaces.
+      return data.translatedText || null
     } catch {
       return null
     }
@@ -195,8 +208,13 @@ export class LocaleEngine {
 
   private readStoredLocale(): Locale {
     if (typeof window === 'undefined') return 'en'
-    const stored = window.localStorage.getItem(this.storageKey) as Locale | null
-    return stored && SUPPORTED.includes(stored) ? stored : 'en'
+    try {
+      const stored = window.localStorage.getItem(this.storageKey) as Locale | null
+      return stored && SUPPORTED.includes(stored) ? stored : 'en'
+    } catch {
+      // Storage blocked (privacy mode / sandboxed iframe) — default to English.
+      return 'en'
+    }
   }
 
   private readCache(): Record<string, string> {

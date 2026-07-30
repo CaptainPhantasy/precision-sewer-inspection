@@ -77,7 +77,22 @@ export default function DiversityToolbar() {
   ]
 
   return (
-    <div className="fixed bottom-6 left-6 z-50" data-agent-hidden>
+    <>
+      {/* Escape hatch: agent mode hides the whole toolbar (data-agent-hidden),
+          so without this there is no UI left to turn the mode back off. This
+          button is deliberately NOT flagged data-agent-hidden. */}
+      {agentMode && (
+        <button
+          type="button"
+          onClick={toggleAgentMode}
+          aria-label={t('Exit agent mode')}
+          className="fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-full bg-primary-700 px-4 py-3 text-xs font-semibold text-white shadow-lg hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-500/40 transition-colors"
+        >
+          <X className="w-4 h-4" />
+          {t('Exit agent mode')}
+        </button>
+      )}
+      <div className="fixed bottom-6 left-6 z-50" data-agent-hidden>
       {open && (
         <div
           ref={panelRef}
@@ -179,7 +194,8 @@ export default function DiversityToolbar() {
       >
         <Accessibility className="w-6 h-6" />
       </button>
-    </div>
+      </div>
+    </>
   )
 }
 

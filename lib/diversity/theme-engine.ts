@@ -34,8 +34,13 @@ export class ThemeEngine {
   /** Read the stored preference (defaults to 'system'). */
   getPreference(): ThemePreference {
     if (typeof window === 'undefined') return 'system'
-    const stored = window.localStorage.getItem(this.storageKey) as ThemePreference | null
-    return stored && PREFERENCES.includes(stored) ? stored : 'system'
+    try {
+      const stored = window.localStorage.getItem(this.storageKey) as ThemePreference | null
+      return stored && PREFERENCES.includes(stored) ? stored : 'system'
+    } catch {
+      // Storage blocked (privacy mode / sandboxed iframe) — default, no persistence.
+      return 'system'
+    }
   }
 
   /** Resolve a preference to the concrete theme that should render. */
@@ -66,7 +71,11 @@ export class ThemeEngine {
   setPreference(preference: ThemePreference, animate = true): void {
     if (!PREFERENCES.includes(preference)) return
     if (typeof window !== 'undefined') {
-      window.localStorage.setItem(this.storageKey, preference)
+      try {
+        window.localStorage.setItem(this.storageKey, preference)
+      } catch {
+        // Storage blocked — best-effort persistence only; the theme still applies below.
+      }
     }
     this.applyToDOM(preference, animate)
     this.notify()

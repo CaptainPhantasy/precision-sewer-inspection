@@ -187,7 +187,9 @@ export default async function Page({ params }: PageProps) {
   return (
     <div className="min-h-screen flex flex-col">
       <StructuredData type="LocalBusiness" />
-      <StructuredData type="FAQPage" />
+      {faqs.length > 0 && (
+        <StructuredData type="FAQPage" faqs={faqs.map((f) => ({ question: f.question, answer: f.answer }))} />
+      )}
       <Header />
       <main className="flex-1">
         <ServiceAreaPage

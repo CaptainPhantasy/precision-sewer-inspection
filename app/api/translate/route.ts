@@ -111,7 +111,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
 
-  text = text.trim()
+  // Fragments like "Call us at " intentionally begin/end with a space because
+  // they render next to links or styled spans. Capture the boundary whitespace
+  // before trimming, translate the core, and re-attach the original whitespace.
+  const rawText = text
+  const leadingWs = rawText.match(/^\s*/)?.[0] ?? ''
+  const trailingWs = rawText.match(/\s*$/)?.[0] ?? ''
+  text = rawText.trim()
   if (!text) {
     return NextResponse.json({ error: 'Missing "text"' }, { status: 400 })
   }
@@ -124,25 +130,25 @@ export async function POST(request: NextRequest) {
 
   // Nothing to do if source and target match.
   if (target === source) {
-    return NextResponse.json({ translatedText: text, configured: isConfigured(), cached: false })
+    return NextResponse.json({ translatedText: rawText, configured: isConfigured(), cached: false })
   }
 
   const cacheKey = `${target}:${text}`
   const hit = cache.get(cacheKey)
   if (hit !== undefined) {
-    return NextResponse.json({ translatedText: hit, configured: true, cached: true })
+    return NextResponse.json({ translatedText: leadingWs + hit + trailingWs, configured: true, cached: true })
   }
 
   // Not configured → graceful fallback (return source text).
   if (!isConfigured()) {
-    return NextResponse.json({ translatedText: text, configured: false, cached: false })
+    return NextResponse.json({ translatedText: rawText, configured: false, cached: false })
   }
 
   try {
     const projectId = getProjectId()
     const { token } = await getAuthClient().getAccessToken()
     if (!token) {
-      return NextResponse.json({ translatedText: text, configured: false, cached: false })
+      return NextResponse.json({ translatedText: rawText, configured: false, cached: false })
     }
 
     const endpoint = `https://translation.googleapis.com/v3/projects/${projectId}/locations/global:translateText`
@@ -165,7 +171,7 @@ export async function POST(request: NextRequest) {
       // the exact Google error so operators can act on it.
       const errBody = await res.text().catch(() => '')
       console.error('[translate] Google Translation API error', res.status, errBody)
-      return NextResponse.json({ translatedText: text, configured: true, cached: false, degraded: true })
+      return NextResponse.json({ translatedText: rawText, configured: true, cached: false, degraded: true })
     }
 
     const data = (await res.json()) as {
@@ -174,10 +180,10 @@ export async function POST(request: NextRequest) {
     const translatedText = data.translations?.[0]?.translatedText?.trim() || text
     rememberInCache(cacheKey, translatedText)
 
-    return NextResponse.json({ translatedText, configured: true, cached: false })
+    return NextResponse.json({ translatedText: leadingWs + translatedText + trailingWs, configured: true, cached: false })
   } catch (err) {
     // Network / auth failure — never surface an error to the client UI.
     console.error('[translate] request failed', err)
-    return NextResponse.json({ translatedText: text, configured: true, cached: false, degraded: true })
+    return NextResponse.json({ translatedText: rawText, configured: true, cached: false, degraded: true })
   }
 }
