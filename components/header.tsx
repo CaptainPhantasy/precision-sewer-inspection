@@ -37,7 +37,7 @@ export default function Header() {
                 priority
               />
             </div>
-            <div className="hidden 2xl:flex flex-col">
+            <div className="hidden min-[1700px]:flex flex-col">
               <span className="font-heading font-bold text-primary-900 text-xl leading-tight whitespace-nowrap">Precision Sewer</span>
               <span className="font-heading font-bold text-primary-900 text-xl leading-tight whitespace-nowrap">Inspection</span>
               <span className="text-sm text-gray-600 mt-0.5 whitespace-nowrap">Central Indiana&apos;s Trusted Experts</span>
@@ -65,7 +65,7 @@ export default function Header() {
           <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1">
             <a
               href={`tel:${COMPANY_INFO?.phoneRaw ?? ''}`}
-              className="hidden 2xl:flex items-center gap-2 text-primary-700 font-semibold hover:text-primary-800 transition-colors whitespace-nowrap flex-shrink-0"
+              className="hidden min-[1700px]:flex items-center gap-2 text-primary-700 font-semibold hover:text-primary-800 transition-colors whitespace-nowrap flex-shrink-0"
             >
               <Phone className="w-4 h-4" />
               {COMPANY_INFO?.phone ?? ''}
