@@ -62,7 +62,7 @@ export default function Header() {
           </nav>
 
           {/* CTA Buttons */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1">
             <a
               href={`tel:${COMPANY_INFO?.phoneRaw ?? ''}`}
               className="hidden 2xl:flex items-center gap-2 text-primary-700 font-semibold hover:text-primary-800 transition-colors whitespace-nowrap flex-shrink-0"
