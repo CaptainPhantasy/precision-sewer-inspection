@@ -51,7 +51,7 @@ A sewer inspection doesn't just protect you — it gives you leverage. If the in
 
 When choosing a sewer inspection company, independence is critical. Some companies that offer sewer inspections also do sewer repairs. This creates an obvious conflict of interest — they have a financial incentive to find problems and recommend their own repair services.
 
-At Precision Sewer Inspection, we are strictly an inspection company. We don't do repairs, we don't recommend contractors, and we don't have any financial interest in the outcome of your inspection. You get an honest, unbiased assessment every time.
+At Precision Sewer Inspection, we are strictly an inspection company. We sell no repairs on anything we inspect, we don't recommend contractors, and we don't have any financial interest in the outcome of your inspection. You get an honest, unbiased assessment every time.
 
 ## What Your Real Estate Agent Should Know
 

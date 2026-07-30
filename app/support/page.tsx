@@ -96,7 +96,7 @@ export default function SupportPage() {
                     <li><T>Digital delivery of video and report within one business day (standard) or same-day (if selected)</T></li>
                   </ul>
                   <p className="text-gray-700 mt-3">
-                    <strong><T>We are inspectors, not contractors.</T></strong> <T>We do not perform repairs, cleaning, or any remediation work. Our role is to document and report what we observe.</T>
+                    <strong><T>We are inspectors, not contractors.</T></strong> <T>We do not perform sewer repairs, drain cleaning, or any remediation work on the lines we inspect. Our role is to document and report what we observe.</T>
                   </p>
                 </div>
 

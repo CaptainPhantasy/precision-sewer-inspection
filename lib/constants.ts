@@ -215,22 +215,6 @@ export const SERVICE_AREAS = [
   'Franklin', 'Greenfield',
 ]
 
-export const TEAM_MEMBERS = [
-  {
-    name: 'Mike Reynolds',
-    role: 'Lead Inspector',
-    image: '/images/tech_male.png',
-    certifications: ['InterNACHI Certified', 'HD Camera Certified'],
-    experience: '8+ years',
-  },
-  {
-    name: 'Sarah Chen',
-    role: 'Senior Inspector',
-    image: '/images/tech_female.png',
-    certifications: ['InterNACHI Certified', 'Licensed & Insured'],
-    experience: '5+ years',
-  },
-]
 type DiscountType = 'fixed' | 'percent'
 
 export const ACTIVE_PROMOTIONS: Array<{

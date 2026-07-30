@@ -64,7 +64,7 @@ export default function ServiceAreaHero({
             </h1>
             
             <p className="text-xl text-primary-200 mb-4">
-              <T>Before it costs you</T> <span className="text-white font-bold">$7,500</span>
+              <T>Before it costs you</T> <span className="text-white font-bold">thousands</span>
             </p>
             
             <p className="text-lg text-primary-300 mb-8 max-w-lg">
@@ -136,8 +136,8 @@ export default function ServiceAreaHero({
                     <ShieldCheck className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">InterNACHI Certified</p>
-                    <p className="text-sm text-gray-600"><T>Licensed & Insured</T></p>
+                    <p className="font-semibold text-gray-900">InterNACHI Member</p>
+                    <p className="text-sm text-gray-600"><T>Fully Insured</T></p>
                   </div>
                 </div>
               </div>

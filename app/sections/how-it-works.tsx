@@ -16,7 +16,7 @@ const steps = [
     icon: Camera,
     step: '2',
     title: 'On Time Inspections',
-    description: 'Our certified inspector arrives on time with professional HD camera equipment.',
+    description: 'Our inspector arrives on time with professional HD camera equipment.',
   },
   {
     icon: Video,

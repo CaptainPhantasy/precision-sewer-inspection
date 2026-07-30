@@ -101,8 +101,8 @@ ${(() => {
 - Our services: [Services Overview](/services)
 
 === KEY DIFFERENTIATORS ===
-- We are INSPECTORS, NOT contractors - we don't do repairs, so NO upselling ever
-- InterNACHI Certified, Licensed & Insured
+- We are INSPECTORS, NOT contractors - we sell no sewer repairs, so NO upselling ever
+- InterNACHI Member, Fully Insured
 - Indiana clay pipe specialists
 - Professional HD sewer camera systems
 - Every inspection includes video evidence + structured evaluation

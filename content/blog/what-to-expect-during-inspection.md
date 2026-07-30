@@ -19,7 +19,7 @@ We offer flexible scheduling, including same-day availability for urgent needs l
 
 ## Step 2: Arrival and Setup
 
-Our certified inspector arrives at your scheduled time with all necessary equipment. The first step is locating and accessing the cleanout. For standard cleanout access, no preparation is needed on your part.
+Our inspector arrives at your scheduled time with all necessary equipment. The first step is locating and accessing the cleanout. For standard cleanout access, no preparation is needed on your part.
 
 If your home doesn't have an accessible cleanout, we can access the sewer line through alternative methods: roof vent access, toilet pull (we remove and reinstall the toilet with a new wax ring and supply line), or crawl space access. We'll confirm the access method and any additional costs before beginning work.
 

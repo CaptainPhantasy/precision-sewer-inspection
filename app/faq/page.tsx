@@ -19,7 +19,7 @@ const additionalFAQs = [
   },
   {
     question: 'Do you provide repair services?',
-    answer: "No, and that's intentional. We are strictly an inspection company. Because we don't do repairs, we have no incentive to exaggerate problems or recommend unnecessary work. You get an honest, unbiased assessment every time.",
+    answer: "No sewer repairs, and that's intentional. We are strictly an inspection company. Because we sell no repairs on anything we inspect, we have no incentive to exaggerate problems or recommend unnecessary work. You get an honest, unbiased assessment every time.",
   },
   {
     question: 'How do I prepare for the inspection?',

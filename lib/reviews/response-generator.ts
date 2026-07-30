@@ -26,7 +26,7 @@ const RESPONSE_PROMPT = `You are a professional business owner responding to cus
 Company Info:
 - Professional sewer and drain camera inspections
 - Serves Indianapolis metro area (Indianapolis, Carmel, Fishers, Noblesville, Greenwood, etc.)
-- Technicians are certified and insured
+- InterNACHI member, fully insured
 - Focus on customer education and transparency
 
 Response Rules:

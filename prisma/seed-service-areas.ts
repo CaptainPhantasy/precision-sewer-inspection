@@ -16,7 +16,7 @@ export const serviceAreas = [
     zipCodes: ['46201', '46202', '46203', '46204', '46205', '46206', '46208', '46209', '46211', '46214', '46216', '46217', '46218', '46219', '46220', '46221', '46222', '46224', '46225', '46226', '46227', '46228', '46229', '46230', '46234', '46235', '46236', '46237', '46239', '46240', '46241', '46242', '46244', '46249', '46250', '46251', '46253', '46254', '46255', '46256', '46259', '46260', '46262', '46266', '46268', '46274', '46275', '46277', '46278', '46280', '46282', '46283', '46285', '46290'],
     population: 887642,
     priority: 10,
-    description: 'Indianapolis, the Circle City, is home to precision sewer inspection services you can trust. Our Indianapolis-based team provides fast, thorough sewer camera inspections for homeowners, realtors, and property managers across the metro.',
+    description: 'Indianapolis, the Circle City, is home to precision sewer inspection services you can trust. Our Indianapolis-based inspector provides fast, thorough sewer camera inspections for homeowners, realtors, and property managers across the metro.',
     localKeywords: ['Indianapolis sewer inspection', 'Indy sewer camera', 'Indianapolis drain inspection', 'Circle City plumbing inspection'],
     geoBounds: {
       north: 39.9241,
@@ -248,7 +248,7 @@ export const serviceOfferings = [
   {
     name: 'Standard Sewer Inspection',
     slug: 'standard-sewer-inspection',
-    description: 'A comprehensive sewer line inspection using state-of-the-art camera technology. Our certified technicians insert a high-resolution camera into your sewer line to identify cracks, blockages, root intrusion, and other issues. You receive a detailed video report and written summary of findings.',
+    description: 'A comprehensive sewer line inspection using state-of-the-art camera technology. Our inspector inserts a high-resolution camera into your sewer line to identify cracks, blockages, root intrusion, and other issues. You receive a detailed video report and written summary of findings.',
     shortDescription: 'Complete sewer line inspection with HD video camera and detailed report.',
     basePrice: 159,
     priceUnit: 'flat rate',
