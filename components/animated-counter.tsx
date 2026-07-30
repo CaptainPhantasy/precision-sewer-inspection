@@ -18,7 +18,7 @@ export default function AnimatedCounter({
   suffix = '',
   decimals = 0,
 }: AnimatedCounterProps) {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(end ?? 0)
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 })
   const hasAnimated = useRef(false)
 

@@ -24,7 +24,7 @@ const features = [
   {
     icon: BadgeCheck,
     title: 'Decide with Confidence',
-    description: 'Every inspection includes video evidence and a structured evaluation—real evidence and honest recommendations to help you make informed decisions.',
+    description: 'Every inspection includes video evidence and a structured evaluation—real evidence and honest findings to help you make informed decisions.',
   },
 ]
 

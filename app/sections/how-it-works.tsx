@@ -28,7 +28,7 @@ const steps = [
     icon: CheckCircle,
     step: '4',
     title: 'Decide With Confidence',
-    description: 'Armed with real evidence and honest recommendations, make informed decisions.',
+    description: 'Armed with real evidence and honest findings, make informed decisions.',
   },
 ]
 

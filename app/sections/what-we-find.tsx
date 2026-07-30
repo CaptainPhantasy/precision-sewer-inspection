@@ -18,7 +18,7 @@ export default function WhatWeFind() {
         <SectionHeading
           label="What We Find"
           title="Common Issues We Discover"
-          description="50% of our inspections reveal issues homeowners didn't know about. Here's what our cameras commonly find."
+          description="A surprising share of the lines we scope have problems the homeowner couldn't see. Here's what our cameras commonly find."
           icon={AlertTriangle}
         />
 
