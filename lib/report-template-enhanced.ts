@@ -758,7 +758,7 @@ function renderVerification(data: EnhancedReportData): string {
         <div class="verification-item">
           <span class="verification-label">Inspected By</span>
           <span class="verification-value">${data.technician.name}</span>
-          <span class="verification-sub">Certified Sewer Inspector</span>
+          <span class="verification-sub">InterNACHI Member</span>
         </div>
         <div class="verification-item">
           <span class="verification-label">Report Generated</span>

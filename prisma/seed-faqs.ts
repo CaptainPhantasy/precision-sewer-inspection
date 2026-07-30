@@ -49,8 +49,8 @@ export const faqs: { question: string; answer: string; shortAnswer: string; cate
   // BOOKING
   {
     question: 'How do I schedule a sewer inspection?',
-    answer: 'Scheduling is easy! You can book online through our website 24/7, or call or text us at (317) XXX-XXXX during business hours. For emergency service, we offer same-day and next-day appointments. We\'ll confirm your appointment time and send you a reminder before we arrive.',
-    shortAnswer: 'Book online anytime, call/text during business hours, or schedule emergency service for same-day response.',
+    answer: 'Scheduling is easy! You can book online through our website 24/7, or call or text us at (317) 620-3858 during business hours. We\'ll confirm your appointment time and send you a reminder before we arrive.',
+    shortAnswer: 'Book online anytime, or call/text (317) 620-3858 during business hours.',
     category: 'BOOKING',
     keywords: ['schedule', 'appointment', 'book', 'booking', 'how to schedule'],
     sortOrder: 1,
@@ -58,8 +58,8 @@ export const faqs: { question: string; answer: string; shortAnswer: string; cate
   },
   {
     question: 'What are your hours of operation?',
-    answer: 'We offer flexible scheduling to meet your needs. Standard appointments are available Monday through Saturday. We also offer emergency service outside regular hours for urgent situations. Contact us to find a time that works for your schedule.',
-    shortAnswer: 'Monday through Saturday, with emergency service available outside regular hours.',
+    answer: 'We offer flexible scheduling to meet your needs. Standard appointments are available Monday through Saturday. Contact us to find a time that works for your schedule.',
+    shortAnswer: 'Monday through Saturday.',
     category: 'BOOKING',
     keywords: ['hours', 'open', 'available', 'days', 'weekend', 'evening'],
     sortOrder: 2,
@@ -67,8 +67,8 @@ export const faqs: { question: string; answer: string; shortAnswer: string; cate
   },
   {
     question: 'Do you offer same-day or emergency service?',
-    answer: 'Yes! We understand sewer problems don\'t wait for convenient timing. We offer same-day emergency service for urgent situations like sewage backups, suspected line breaks, or when you need inspection results immediately for time-sensitive real estate transactions. Emergency service may have additional fees.',
-    shortAnswer: 'Yes, same-day emergency service is available for urgent situations.',
+    answer: 'We don\'t offer emergency callout service. You can see real-time availability and book the earliest open slot online, and for time-sensitive real estate transactions every report is delivered within one business day.',
+    shortAnswer: 'No emergency callout — book the earliest open slot online; reports arrive within one business day.',
     category: 'BOOKING',
     keywords: ['emergency', 'same day', 'urgent', 'rush', 'immediate'],
     sortOrder: 3,
@@ -96,7 +96,7 @@ export const faqs: { question: string; answer: string; shortAnswer: string; cate
   // PRICING
   {
     question: 'How much does a sewer inspection cost?',
-    answer: 'Our standard sewer inspection is $159 for most residential properties with cleanout access. This includes the complete camera inspection, HD video recording, written report, and 24-hour delivery. Additional services like roof vent access (+$50), toilet pull (+$65), crawl space access (+$30), or emergency service may have different pricing. We provide upfront pricing before starting any work.',
+    answer: 'Our standard sewer inspection is $159 for most residential properties with cleanout access. This includes the complete camera inspection, HD video recording, and a written report delivered within one business day. Additional access methods like roof vent access (+$50), toilet pull (+$65), or crawl space access (+$30) have different pricing. We provide upfront pricing before starting any work.',
     shortAnswer: 'Standard residential inspection starts at $159 with complete report and video included.',
     category: 'PRICING',
     keywords: ['cost', 'price', 'cost', 'fee', 'how much', 'pricing'],
@@ -123,8 +123,8 @@ export const faqs: { question: string; answer: string; shortAnswer: string; cate
   },
   {
     question: 'What forms of payment do you accept?',
-    answer: 'We accept all major credit cards, debit cards, cash, and checks. Payment is expected at the time of service unless other arrangements have been made in advance. We also offer payment plans for larger repair quotes through our financing partner.',
-    shortAnswer: 'Credit cards, debit cards, cash, checks, and financing options available.',
+    answer: 'We accept all major credit cards, debit cards, cash, and checks. Payment is expected at the time of service unless other arrangements have been made in advance.',
+    shortAnswer: 'Credit cards, debit cards, cash, and checks.',
     category: 'PRICING',
     keywords: ['payment', 'credit card', 'cash', 'check', 'financing'],
     sortOrder: 4,
@@ -217,7 +217,7 @@ export const faqs: { question: string; answer: string; shortAnswer: string; cate
   },
   {
     question: 'When will I get my report?',
-    answer: 'You\'ll receive your written report and video recording immediately after the inspection. For standard appointments, reports are typically ready within a few hours. Emergency service reports are prioritized and often delivered the same day. The video is provided on a USB drive or via secure download link.',
+    answer: 'You\'ll receive your written report and video recording after the inspection — delivered within one business day via secure download link.',
     shortAnswer: 'Reports delivered immediately after inspection, typically within hours via USB or secure download.',
     category: 'PROCESS',
     keywords: ['report', 'when', 'delivery', 'video', 'results', 'turnaround'],
@@ -228,8 +228,8 @@ export const faqs: { question: string; answer: string; shortAnswer: string; cate
   // AFTER SERVICE
   {
     question: 'What do I do if problems are found?',
-    answer: 'After your inspection, you\'ll have a clear understanding of any issues found. If repairs are recommended, we can provide estimates for various repair options—from targeted spot repairs to full line replacement. We can also refer you to qualified plumbers if you prefer. Our goal is to give you the information you need to make informed decisions about your property.',
-    shortAnswer: 'We explain findings clearly and can provide repair estimates or refer qualified plumbers.',
+    answer: 'After your inspection, you\'ll have a clear understanding of anything the camera found. We don\'t sell repairs and we don\'t refer contractors — you get the footage, the location, and plain-English facts you can hand to any contractor you choose.',
+    shortAnswer: 'We explain findings clearly; any repair is yours to arrange with any contractor you choose.',
     category: 'AFTER_SERVICE',
     keywords: ['repair', 'fix', 'problems', 'recommendations', 'next steps'],
     sortOrder: 1,
@@ -237,8 +237,8 @@ export const faqs: { question: string; answer: string; shortAnswer: string; cate
   },
   {
     question: 'Can you repair the issues you find?',
-    answer: 'While we specialize in inspection rather than repair, we can provide repair recommendations and estimates for the issues we find. We partner with trusted Indianapolis plumbers who can handle everything from simple spot repairs to full sewer line replacement. We\'re happy to coordinate with repair professionals to ensure you get the best outcome.',
-    shortAnswer: 'We specialize in inspection. We can recommend and coordinate with trusted repair plumbers.',
+    answer: 'No — and that\'s deliberate. We sell no repairs on anything we inspect, so we have nothing to gain from what the camera finds. Your report includes the footage and the location of any problem, ready to hand to any contractor you choose.',
+    shortAnswer: 'No. Inspection only — no repairs, no contractor referrals.',
     category: 'AFTER_SERVICE',
     keywords: ['repair', 'fix', 'plumber', 'contractor', 'recommend'],
     sortOrder: 2,
@@ -295,11 +295,15 @@ async function main() {
   console.log(`\n✅ Seed complete! ${faqs.length} FAQs created.`);
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+// Only run when executed directly — importing the `faqs` array from another
+// script must NOT trigger a re-seed.
+if (process.argv[1] && process.argv[1].includes('seed-faqs')) {
+  main()
+    .catch((e) => {
+      console.error(e);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+}

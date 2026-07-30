@@ -72,7 +72,6 @@ const services = [
       'Repeat Client Discounts',
     ],
     price: 'Partner Pricing',
-    image: '/images/tech_male.png',
   },
 ]
 
@@ -169,14 +168,16 @@ export default function ServicesPage() {
                         </Link>
                       </div>
                     </div>
-                    <div className={`relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-                      <Image
-                        src={service?.image ?? ''}
-                        alt={service?.title ?? 'Service'}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
+                    {service?.image && (
+                      <div className={`relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
+                        <Image
+                          src={service.image}
+                          alt={service?.title ?? 'Service'}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
                   </div>
                 )
               })}

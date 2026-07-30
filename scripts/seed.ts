@@ -30,10 +30,10 @@ async function main() {
     create: {
       email: "tech@precisionsewerinspections.com",
       passwordHash: techPassword,
-      name: "John Technician",
+      name: "Test Technician",
       phone: "(317) 555-0123",
       role: "TECHNICIAN",
-      certifications: ["InterNACHI", "NASSCO PACP"],
+      certifications: ["InterNACHI"],
     },
   });
   console.log("Created technician user:", technician.email);
