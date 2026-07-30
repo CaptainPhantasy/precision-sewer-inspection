@@ -49,6 +49,37 @@ function getAuthClient(): JWT {
   return cachedClient
 }
 
+/**
+ * Abuse control (2026-07-30 review): this proxy spends billed Google quota on
+ * every unique input. Per-IP token bucket plus a per-instance daily ceiling.
+ * Note: serverless instances each carry their own counters, so these are a
+ * deterrent, not an exact ledger — but they stop single-source floods cold.
+ */
+const RATE_WINDOW_MS = 60_000
+const RATE_MAX_PER_IP = 30
+const DAILY_MAX_TOTAL = 3_000
+
+const ipHits = new Map<string, { count: number; resetAt: number }>()
+let dailyCount = 0
+let dailyResetAt = Date.now() + 86_400_000
+
+function rateLimitExceeded(ip: string): boolean {
+  const now = Date.now()
+  if (now >= dailyResetAt) {
+    dailyCount = 0
+    dailyResetAt = now + 86_400_000
+  }
+  if (dailyCount >= DAILY_MAX_TOTAL) return true
+
+  const rec = ipHits.get(ip)
+  if (!rec || now >= rec.resetAt) {
+    ipHits.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS })
+    return false
+  }
+  rec.count += 1
+  return rec.count > RATE_MAX_PER_IP
+}
+
 function rememberInCache(key: string, value: string): void {
   if (cache.size >= CACHE_MAX) {
     const oldest = cache.keys().next().value
@@ -58,6 +89,16 @@ function rememberInCache(key: string, value: string): void {
 }
 
 export async function POST(request: NextRequest) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    || request.headers.get('x-real-ip')
+    || 'unknown'
+  if (rateLimitExceeded(ip)) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded. Please try again shortly.' },
+      { status: 429 }
+    )
+  }
+  dailyCount += 1
   let text = ''
   let target = ''
   let source = 'en'

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { SERVICE_AREAS } from '@/lib/constants'
+import { SERVICE_AREA_LINKS } from '@/lib/service-areas'
 import { T } from '@/components/diversity/diversity-provider'
 
 export default function ServiceAreas() {
@@ -21,13 +22,11 @@ export default function ServiceAreas() {
         </p>
 
         <div ref={ref} className="areas-chips">
-          {SERVICE_AREAS?.map((area, index) => (
-            <Link
-              key={area ?? index}
-              href={`/sewer-inspection/${(area ?? '').toLowerCase().replace(/\s+/g, '')}-in`}
-              className="area-chip"
-              style={{ textDecoration: 'none' }}
-            >
+          {SERVICE_AREAS?.map((area, index) => {
+            // Only canonical slugs (lib/service-areas.ts) have live pages; other
+            // cities render as plain chips so no chip ever 404s.
+            const link = SERVICE_AREA_LINKS.find((l) => l.name === area)
+            const inner = (
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={inView ? { opacity: 1 } : {}}
@@ -35,8 +34,20 @@ export default function ServiceAreas() {
               >
                 {area ?? ''}
               </motion.span>
-            </Link>
-          ))}
+            )
+            return link ? (
+              <Link
+                key={area ?? index}
+                href={`/sewer-inspection/${link.slug}`}
+                className="area-chip"
+                style={{ textDecoration: 'none' }}
+              >
+                {inner}
+              </Link>
+            ) : (
+              <span key={area ?? index} className="area-chip">{inner}</span>
+            )
+          })}
         </div>
 
         <p className="areas-foot">
