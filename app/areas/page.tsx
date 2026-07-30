@@ -93,7 +93,9 @@ export default async function ServiceAreasPage() {
                         {area.name}, {area.state}
                       </h2>
                       <p className="text-gray-600 text-sm mt-2">
-                        {area.description?.substring(0, 100) || 'Professional sewer inspection services'}
+                        {area.description
+                          ? area.description.substring(0, 100)
+                          : <T>Professional sewer inspection services</T>}
                         {(area.description?.length || 0) > 100 ? '...' : ''}
                       </p>
                     </div>
@@ -114,7 +116,7 @@ export default async function ServiceAreasPage() {
                     ))}
                     {(area.zipCodes?.length || 0) > 3 && (
                       <span className="text-xs text-gray-500">
-                        +{area.zipCodes!.length - 3} more
+                        +{area.zipCodes!.length - 3} <T>more</T>
                       </span>
                     )}
                   </div>

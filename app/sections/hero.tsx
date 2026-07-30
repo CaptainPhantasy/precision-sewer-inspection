@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Play, ArrowRight, MapPin, Clock, ShieldCheck, DollarSign } from 'lucide-react'
 import AnimatedCounter from '@/components/animated-counter'
-import { useDiversity } from '@/components/diversity/diversity-provider'
+import { useDiversity, T } from '@/components/diversity/diversity-provider'
 
 const trustBadges = [
   { icon: ShieldCheck, value: '100', label: 'No Upselling', suffix: '%' },
@@ -32,15 +32,15 @@ export default function HeroSection() {
             </span>
             
             <h1>
-              See What&apos;s Really In Your <em>Pipes</em>
+              <T>See What&apos;s Really In Your</T> <em><T>Pipes</T></em>
             </h1>
             
             <p className="price-line">
-              Before it costs you <b>$7,500</b>
+              <T>Before it costs you</T> <b>$7,500</b>
             </p>
             
             <p className="lede-dark">
-              Our HD sewer scope lets you see what&apos;s really in your pipes with honest answers. No upselling, no scare tactics—just the evidence you need to make confident decisions.
+              <T>Our HD sewer scope lets you see what&apos;s really in your pipes with honest answers. No upselling, no scare tactics—just the evidence you need to make confident decisions.</T>
             </p>
 
             {/* CTA Buttons */}
