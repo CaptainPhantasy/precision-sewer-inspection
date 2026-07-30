@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight, Phone } from 'lucide-react'
 import { COMPANY_INFO } from '@/lib/constants'
+import { T } from '@/components/diversity/diversity-provider'
 
 export default function FinalCTA() {
   return (
@@ -8,11 +9,11 @@ export default function FinalCTA() {
       <div className="container" style={{ textAlign: 'center' }}>
         
         <h2 className="psi" style={{ color: '#fff', border: 'none', padding: 0, marginBottom: '1rem' }}>
-          Don&apos;t Guess. Know What&apos;s In Your Pipes.
+          <T>Don&apos;t Guess. Know What&apos;s In Your Pipes.</T>
         </h2>
         
         <p className="lede" style={{ color: '#fff', opacity: 0.9, maxWidth: '600px', margin: '0 auto 2rem auto' }}>
-          Book your professional sewer inspection today and get the evidence you need to make confident decisions.
+          <T>Book your professional sewer inspection today and get the evidence you need to make confident decisions.</T>
         </p>
 
         <div className="cta-row" style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
@@ -27,7 +28,7 @@ export default function FinalCTA() {
               alignItems: 'center'
             }}
           >
-            Book Your Inspection
+            <T>Book Your Inspection</T>
             <ArrowRight size={18} strokeWidth={1.5} color="currentColor" style={{ marginLeft: '8px' }} />
           </Link>
         </div>
@@ -38,7 +39,7 @@ export default function FinalCTA() {
             {COMPANY_INFO?.phone ?? ''}
           </a>
           <span style={{ margin: '0 8px', opacity: 0.5 }}>|</span>
-          <span>Available 7 Days a Week</span>
+          <span><T>Available 7 Days a Week</T></span>
         </div>
         
       </div>

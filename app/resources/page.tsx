@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { getAllPosts } from '@/lib/blog'
 import { ArrowRight, BookOpen, Calendar, Clock } from 'lucide-react'
 import { COMPANY_INFO } from '@/lib/constants'
+import { T } from '@/components/diversity/diversity-provider'
 
 export const metadata: Metadata = {
   title: 'Sewer Inspection Resources & Education',
@@ -31,13 +32,13 @@ export default function ResourcesPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-3xl mx-auto text-center">
               <span className="inline-block px-4 py-1 bg-primary-700 text-primary-200 text-sm font-semibold rounded-full mb-6">
-                Resources
+                <T>Resources</T>
               </span>
               <h1 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-                Sewer Inspection Education
+                <T>Sewer Inspection Education</T>
               </h1>
               <p className="text-xl text-primary-200">
-                Expert guides, tips, and insights to help you understand your sewer system and make informed decisions.
+                <T>Expert guides, tips, and insights to help you understand your sewer system and make informed decisions.</T>
               </p>
             </div>
           </div>
@@ -49,9 +50,9 @@ export default function ResourcesPage() {
             {posts?.length === 0 ? (
               <div className="text-center py-16">
                 <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h2 className="text-2xl font-heading font-bold text-gray-900 mb-2">Coming Soon</h2>
+                <h2 className="text-2xl font-heading font-bold text-gray-900 mb-2"><T>Coming Soon</T></h2>
                 <p className="text-gray-500 max-w-md mx-auto">
-                  We&apos;re working on educational content to help you understand sewer inspections. Check back soon!
+                  <T>We&apos;re working on educational content to help you understand sewer inspections. Check back soon!</T>
                 </p>
               </div>
             ) : (
@@ -84,7 +85,7 @@ export default function ResourcesPage() {
                           {post?.date ? new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : ''}
                         </span>
                         <span className="text-primary-600 text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
-                          Read More
+                          <T>Read More</T>
                           <ArrowRight className="w-4 h-4" />
                         </span>
                       </div>
@@ -99,20 +100,20 @@ export default function ResourcesPage() {
         {/* CTA */}
         <section className="section-padding bg-gray-50">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl font-heading font-bold text-gray-900 mb-4">Have Questions?</h2>
+            <h2 className="text-2xl font-heading font-bold text-gray-900 mb-4"><T>Have Questions?</T></h2>
             <p className="text-gray-600 mb-8">
-              Our AI assistant is available 24/7 to answer your sewer inspection questions, or contact us directly.
+              <T>Our AI assistant is available 24/7 to answer your sewer inspection questions, or contact us directly.</T>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact" className="btn-primary">
-                Contact Us
+                <T>Contact Us</T>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <a
                 href={`tel:${COMPANY_INFO?.phoneRaw ?? ''}`}
                 className="btn-secondary"
               >
-                Call {COMPANY_INFO?.phone ?? ''}
+                <T>Call</T> {COMPANY_INFO?.phone ?? ''}
               </a>
             </div>
           </div>

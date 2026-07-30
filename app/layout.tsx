@@ -4,6 +4,8 @@ import './psi-website.css'
 import { Toaster } from 'react-hot-toast'
 import GoogleAnalytics from '@/components/google-analytics'
 import SiteTracker from '@/components/site-tracker'
+import DiversityHeadScript from '@/components/diversity/diversity-head-script'
+import DiversityGate from '@/components/diversity/diversity-gate'
 
 export const dynamic = 'force-dynamic'
 
@@ -97,12 +99,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Chatbot powered by Anthropic Claude via /api/chat */}
+        {/* Applies persisted theme/locale/a11y prefs before paint (no FOUC) */}
+        <DiversityHeadScript />
       </head>
       <body className="min-h-screen bg-white text-gray-900 antialiased">
-        {children}
+        <DiversityGate>
+          {children}
+        </DiversityGate>
         <Toaster position="bottom-right" />
         <GoogleAnalytics />
         <SiteTracker />

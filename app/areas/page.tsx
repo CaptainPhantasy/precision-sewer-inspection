@@ -11,6 +11,7 @@ import AIChat from '@/components/ai-chat';
 import StructuredData from '@/components/structured-data';
 import { generateAllSchemas, getJsonLdScript } from '@/lib/schema/markup';
 import { withDatabaseFallback } from '@/lib/prisma-timeout';
+import { T } from '@/components/diversity/diversity-provider';
 
 const prisma = new PrismaClient();
 
@@ -68,10 +69,10 @@ export default async function ServiceAreasPage() {
         <section className="bg-gradient-to-br from-primary-900 to-primary-700 text-white py-16 md:py-24">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Service Areas
+              <T>Service Areas</T>
             </h1>
             <p className="text-xl text-primary-100 max-w-2xl mx-auto">
-              Professional sewer inspection services throughout the Indianapolis metro area and surrounding communities.
+              <T>Professional sewer inspection services throughout the Indianapolis metro area and surrounding communities.</T>
             </p>
           </div>
         </section>
@@ -127,16 +128,16 @@ export default async function ServiceAreasPage() {
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Don't See Your Area?
+              <T>Don't See Your Area?</T>
             </h2>
             <p className="text-gray-600 mb-6 max-w-xl mx-auto">
-              We serve most of central Indiana. Contact us to check if we cover your location.
+              <T>We serve most of central Indiana. Contact us to check if we cover your location.</T>
             </p>
             <Link
               href="/contact"
               className="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors"
             >
-              Contact Us
+              <T>Contact Us</T>
               <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
