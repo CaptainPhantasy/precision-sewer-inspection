@@ -38,8 +38,8 @@ export const faqs: { question: string; answer: string; shortAnswer: string; cate
   },
   {
     question: 'What equipment do you use?',
-    answer: 'We run three professional camera scope systems, matched to the job. Our flagship is a high-end RIDGID SeeSnake system with an electronic locator and sonde transmitter — that lets us pinpoint the camera\'s exact underground location and depth from the surface. Every system records high-definition video for your report.',
-    shortAnswer: 'Three camera systems, including a high-end RIDGID SeeSnake with locator and sonde for exact underground positioning.',
+    answer: 'We run three professional camera scope systems, matched to the job. Our high-end system carries an electronic locator and sonde transmitter — that lets us pinpoint the camera\'s exact underground location and depth from the surface. Every system records high-definition video for your report.',
+    shortAnswer: 'Three camera systems, including a high-end unit with locator and sonde for exact underground positioning.',
     category: 'GENERAL',
     keywords: ['equipment', 'tools', 'camera', 'brand', 'RIDGID'],
     sortOrder: 4,
