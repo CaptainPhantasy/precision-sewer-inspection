@@ -104,9 +104,9 @@ const ADDITIONAL_SERVICES = [
 ]
 
 const EQUIPMENT = [
-  'RIDGID SR-20 Utility Locator',
-  'RIDGID ST-305 Line Transmitter',
-  'Radiodetection RD8200 Utility Locator',
+  'Professional utility locator',
+  'Line transmitter (sonde)',
+  'Multi-frequency precision locator',
 ]
 
 const ADDITIONAL_METHODS = [

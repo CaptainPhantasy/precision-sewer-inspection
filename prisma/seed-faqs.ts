@@ -41,7 +41,7 @@ export const faqs: { question: string; answer: string; shortAnswer: string; cate
     answer: 'We run three professional camera scope systems, matched to the job. Our high-end system carries an electronic locator and sonde transmitter — that lets us pinpoint the camera\'s exact underground location and depth from the surface. Every system records high-definition video for your report.',
     shortAnswer: 'Three camera systems, including a high-end unit with locator and sonde for exact underground positioning.',
     category: 'GENERAL',
-    keywords: ['equipment', 'tools', 'camera', 'brand', 'RIDGID'],
+    keywords: ['equipment', 'tools', 'camera', 'brand', 'locator'],
     sortOrder: 4,
     isPublished: true
   },
