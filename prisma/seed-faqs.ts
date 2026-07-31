@@ -38,8 +38,8 @@ export const faqs: { question: string; answer: string; shortAnswer: string; cate
   },
   {
     question: 'What equipment do you use?',
-    answer: 'We use professional-grade sewer inspection equipment including RIDGID SeeSnake camera systems with high-resolution imaging, electronic locators to trace pipe paths and depths, and specialized software for pipe condition assessment. Our equipment can inspect pipes ranging from 2 inches to 12 inches in diameter.',
-    shortAnswer: 'We use professional RIDGID SeeSnake cameras with high-resolution imaging and electronic locating equipment.',
+    answer: 'We run three professional camera scope systems, matched to the job. Our flagship is a high-end RIDGID SeeSnake system with an electronic locator and sonde transmitter — that lets us pinpoint the camera\'s exact underground location and depth from the surface. Every system records high-definition video for your report.',
+    shortAnswer: 'Three camera systems, including a high-end RIDGID SeeSnake with locator and sonde for exact underground positioning.',
     category: 'GENERAL',
     keywords: ['equipment', 'tools', 'camera', 'brand', 'RIDGID'],
     sortOrder: 4,
@@ -114,8 +114,8 @@ export const faqs: { question: string; answer: string; shortAnswer: string; cate
   },
   {
     question: 'Do you offer discounts?',
-    answer: 'We offer several ways to save: Military discounts for active duty personnel and veterans, Senior discounts for homeowners 65+, Referral discounts for customers who refer friends and neighbors, and Package discounts when combining services. Ask about current promotions when booking!',
-    shortAnswer: 'Yes! Military, senior, referral, and package discounts are available.',
+    answer: 'We keep pricing simple: a flat $159 standard inspection with upfront pricing before any work begins — you never need a coupon to get our best price. Realtors and multi-property clients: ask about partner pricing when booking.',
+    shortAnswer: 'Flat $159 standard pricing, upfront with no surprises. Partner pricing available for realtors.',
     category: 'PRICING',
     keywords: ['discount', 'military', 'senior', 'referral', 'savings', 'coupon'],
     sortOrder: 3,
