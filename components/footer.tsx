@@ -26,7 +26,7 @@ export default function Footer() {
 									Precision
 								</span>
 								<span className="block text-xs text-primary-300 -mt-1">
-									Sewer Inspection
+									Sewer Inspections
 								</span>
 							</div>
 						</Link>
