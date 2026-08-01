@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "Admin Dashboard | Precision Sewer Inspection",
+    default: "Admin Dashboard | Precision Sewer Inspections",
     template: "%s | PSI Admin",
   },
   description: "Admin dashboard for reviewing and approving sewer inspections",

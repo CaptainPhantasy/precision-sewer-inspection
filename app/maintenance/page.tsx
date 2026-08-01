@@ -3,9 +3,9 @@ import Link from 'next/link'
 import { T } from '@/components/diversity/diversity-provider'
 
 export const metadata: Metadata = {
-  title: 'Planned Maintenance | Precision Sewer Inspection',
+  title: 'Planned Maintenance | Precision Sewer Inspections',
   description:
-    'Precision Sewer Inspection is briefly offline for planned routine maintenance.',
+    'Precision Sewer Inspections is briefly offline for planned routine maintenance.',
   robots: {
     index: false,
     follow: false,
@@ -19,7 +19,7 @@ export default function MaintenancePage() {
         <div className="container header-inner">
           <Link className="brand-lockup" href="/">
             <div className="mark">
-              <img src="/assets/psi_logo.png" alt="Precision Sewer Inspection" />
+              <img src="/assets/psi_logo.png" alt="Precision Sewer Inspections" />
             </div>
             <div className="name">
               <span className="display">
@@ -52,7 +52,7 @@ export default function MaintenancePage() {
                   <T>Online booking is paused for a few hours while we finish scheduled updates.</T>
                 </p>
                 <p className="lede-dark">
-                  <T>Precision Sewer Inspection is still available by phone and email. If you need
+                  <T>Precision Sewer Inspections is still available by phone and email. If you need
                   to schedule, change, or ask about an inspection, contact us directly and we will
                   take care of it.</T>
                 </p>
@@ -96,7 +96,7 @@ export default function MaintenancePage() {
                   </div>
                 </div>
                 <div className="ribbon">
-                  <div className="lead">Precision Sewer Inspection</div>
+                  <div className="lead">Precision Sewer Inspections</div>
                   <div className="meta">Clean · Accurate · Reliable</div>
                 </div>
               </div>
@@ -139,7 +139,7 @@ export default function MaintenancePage() {
             <div className="footer-brand">
               <Link className="lockup" href="/">
                 <div className="mark">
-                  <img src="/assets/psi_logo.png" alt="Precision Sewer Inspection" />
+                  <img src="/assets/psi_logo.png" alt="Precision Sewer Inspections" />
                 </div>
                 <div className="nm">
                   <div className="a">
@@ -214,7 +214,7 @@ export default function MaintenancePage() {
             <div className="tagline">
               Clear<span className="dot">·</span>Accurate<span className="dot">·</span>Reliable
             </div>
-            <div className="copy">© 2026 Precision Sewer Inspection. All rights reserved.</div>
+            <div className="copy">© 2026 Precision Sewer Inspections. All rights reserved.</div>
           </div>
         </div>
       </footer>

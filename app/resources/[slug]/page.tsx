@@ -80,7 +80,7 @@ export default function BlogPostPage({ params }: Props) {
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                 <span className="flex items-center gap-1">
                   <User className="w-4 h-4" />
-                  {post?.author ?? 'Precision Sewer Inspection'}
+                  {post?.author ?? 'Precision Sewer Inspections'}
                 </span>
                 <span className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />

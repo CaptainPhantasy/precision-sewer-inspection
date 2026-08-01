@@ -2,7 +2,7 @@
 title: "What to Expect During a Sewer Scope Inspection"
 description: "A step-by-step guide to what happens during a professional sewer camera inspection, from booking to report delivery."
 date: "2026-03-05"
-author: "Precision Sewer Inspection"
+author: "Precision Sewer Inspections"
 category: "Guide"
 readTime: "5 min read"
 ---
@@ -64,4 +64,4 @@ Preparation is minimal:
 
 That's it. The inspection itself is completely non-invasive — no digging, no damage, no mess.
 
-Ready to see what's in your pipes? Precision Sewer Inspection serves all of Central Indiana with honest, evidence-based inspections. [Book your inspection today](/contact) or [check our pricing](/pricing).
+Ready to see what's in your pipes? Precision Sewer Inspections serves all of Central Indiana with honest, evidence-based inspections. [Book your inspection today](/contact) or [check our pricing](/pricing).

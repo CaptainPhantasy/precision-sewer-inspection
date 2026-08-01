@@ -62,8 +62,8 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     // Why Choose Us — trust block
     'Why Choose Us': 'Por Qué Elegirnos',
     'The Difference is in the Details': 'La Diferencia Está en los Detalles',
-    "We built Precision Sewer Inspection around one simple principle: give people the truth, and they'll make smart decisions.":
-      'Creamos Precision Sewer Inspection en torno a un principio simple: Darle la verdad a la gente, y esta tomará decisiones acertadas.',
+    "We built Precision Sewer Inspections around one simple principle: give people the truth, and they'll make smart decisions.":
+      'Creamos Precision Sewer Inspections en torno a un principio simple: Darle la verdad a la gente, y esta tomará decisiones acertadas.',
     'Evidence You Can See': 'Evidencia Que Puede Ver',
     "We don't just tell you what we found—we show you. Every inspection includes HD video you can watch, pause, and share.":
       'No solo le contamos lo que encontramos: se lo mostramos. Cada inspección incluye video en HD que puede ver, pausar y compartir.',

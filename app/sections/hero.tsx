@@ -91,7 +91,7 @@ export default function HeroSection() {
             <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '400px', borderRadius: '16px', overflow: 'hidden' }}>
               <Image
                 src="/images/tech_hero.jpg"
-                alt="Precision Sewer Inspection technician with professional equipment"
+                alt="Precision Sewer Inspections technician with professional equipment"
                 fill
                 className="object-cover"
                 priority

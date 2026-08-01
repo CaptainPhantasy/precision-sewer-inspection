@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: 'Sewer Scope Services Indianapolis | Residential, Commercial & Real Estate',
   description: 'Professional sewer inspection services in Indianapolis. Residential sewer scope from $159, commercial inspections, and real estate partner programs. HD video, one-business-day reports. Book today.',
   openGraph: {
-    title: 'Sewer Inspection Services | Precision Sewer Inspection Indianapolis',
+    title: 'Sewer Inspection Services | Precision Sewer Inspections Indianapolis',
     description: 'Residential, commercial, and real estate sewer scope inspections. HD video, one-business-day delivery, InterNACHI member.',
   },
   alternates: {

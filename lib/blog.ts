@@ -32,7 +32,7 @@ export function getAllPosts(): BlogPost[] {
       title: data.title || '',
       description: data.description || '',
       date: data.date || '',
-      author: data.author || 'Precision Sewer Inspection',
+      author: data.author || 'Precision Sewer Inspections',
       category: data.category || 'General',
       readTime: data.readTime || '5 min read',
       image: data.image || undefined,

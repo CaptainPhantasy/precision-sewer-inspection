@@ -59,13 +59,13 @@ export default function TechnicianLoginPage() {
           <div className="relative w-24 h-24 mx-auto mb-4 bg-white rounded-full p-2">
             <Image
               src="/logo.png"
-              alt="Precision Sewer Inspection"
+              alt="Precision Sewer Inspections"
               fill
               className="object-contain p-2"
             />
           </div>
           <h1 className="text-2xl font-bold text-white">Field Technician App</h1>
-          <p className="text-blue-200 mt-1">Precision Sewer Inspection</p>
+          <p className="text-blue-200 mt-1">Precision Sewer Inspections</p>
         </div>
 
         {/* Login Form */}

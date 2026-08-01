@@ -2,7 +2,7 @@
 title: "5 Common Sewer Problems in Central Indiana Homes"
 description: "Central Indiana's clay pipe infrastructure creates unique challenges. Here are the most common issues we find during inspections."
 date: "2026-03-10"
-author: "Precision Sewer Inspection"
+author: "Precision Sewer Inspections"
 category: "Common Issues"
 readTime: "7 min read"
 ---
@@ -55,4 +55,4 @@ Scale buildup is the accumulation of mineral deposits on the inside walls of pip
 
 The common thread with all these issues is that they're progressive — they get worse over time. A professional sewer scope inspection catches these problems early, when your options are most flexible and least expensive.
 
-At Precision Sewer Inspection, we specialize in Central Indiana's unique sewer infrastructure. Our inspectors know what to look for in clay pipes, and our reports explain findings in plain English. [Schedule your inspection today](/contact) or [learn more about our services](/services).
+At Precision Sewer Inspections, we specialize in Central Indiana's unique sewer infrastructure. Our inspectors know what to look for in clay pipes, and our reports explain findings in plain English. [Schedule your inspection today](/contact) or [learn more about our services](/services).

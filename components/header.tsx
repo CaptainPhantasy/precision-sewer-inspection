@@ -31,7 +31,7 @@ export default function Header() {
             <div className="relative w-32 h-16 md:w-52 md:h-24 flex-shrink-0">
               <Image
                 src="/logo.png"
-                alt="Precision Sewer Inspection"
+                alt="Precision Sewer Inspections"
                 fill
                 className="object-contain"
                 priority

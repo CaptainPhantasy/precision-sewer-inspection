@@ -3,7 +3,7 @@ import { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "Field App | Precision Sewer Inspection",
+    default: "Field App | Precision Sewer Inspections",
     template: "%s | PSI Field App",
   },
   description: "Field technician mobile app for sewer scope inspections",

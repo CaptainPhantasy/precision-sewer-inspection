@@ -1,6 +1,6 @@
 import { PROMO_CODE, PROMO_PERCENT } from './checkout-pricing'
 export const COMPANY_INFO = {
-  name: 'Precision Sewer Inspection',
+  name: 'Precision Sewer Inspections',
   phone: '(317) 620-3858',
   phoneRaw: '3176203858',
   email: 'booking@precisionsewerinspections.com',

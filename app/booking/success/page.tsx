@@ -100,7 +100,7 @@ function BookingSuccessContent() {
               </h1>
               
               <p className="text-lg text-gray-600 mb-6">
-                Thank you for booking with Precision Sewer Inspection.
+                Thank you for booking with Precision Sewer Inspections.
               </p>
 
               {/* Appointment Confirmation */}

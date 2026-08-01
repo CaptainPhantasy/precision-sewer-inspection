@@ -263,7 +263,7 @@ export function generateReportHTML(inspection: InspectionData, isClientVersion: 
 </head>
 <body>
   <div class="header">
-    <h1>Precision Sewer Inspection</h1>
+    <h1>Precision Sewer Inspections</h1>
     <p>Central Indiana's Trusted Experts</p>
     <div class="inspection-number">${reportTitle} #${inspection.inspectionNumber}</div>
   </div>
@@ -411,7 +411,7 @@ export function generateReportHTML(inspection: InspectionData, isClientVersion: 
   ` : ""}
 
   <div class="footer">
-    <p><strong>Precision Sewer Inspection</strong></p>
+    <p><strong>Precision Sewer Inspections</strong></p>
     <p>6405 Justins Ridge Road, Nashville, IN 47448 | (317) 620-3858 | booking@precisionsewerinspections.com</p>
     <p style="margin-top: 8px;">This report is based on visual inspection via camera at the time of service. Hidden defects beyond camera reach are not covered.</p>
     <p>Report generated on ${format(new Date(), "MMMM d, yyyy")}</p>

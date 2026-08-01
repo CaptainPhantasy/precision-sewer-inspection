@@ -70,7 +70,7 @@ export const metadata: Metadata = {
   title: 'Sewer Scope Cost Indianapolis | $159 Standard',
   description: 'Sewer inspection pricing in Indianapolis. Standard rate $159. Multi-unit discounts, volume packages for investors. Transparent pricing, no hidden fees.',
   openGraph: {
-    title: 'Sewer Scope Pricing | Indianapolis | Precision Sewer Inspection',
+    title: 'Sewer Scope Pricing | Indianapolis | Precision Sewer Inspections',
     description: 'Transparent sewer inspection pricing. Standard rate $159. Volume packages available. No surprises.',
   },
   alternates: {

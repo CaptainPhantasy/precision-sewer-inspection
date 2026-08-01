@@ -48,7 +48,7 @@ export async function sendNotificationEmail(
       process.env.SMTP_FROM || process.env.SMTP_USER || "noreply@precisionsewerinspections.com";
 
     await transporter.sendMail({
-      from: `"Precision Sewer Inspection" <${fromAddress}>`,
+      from: `"Precision Sewer Inspections" <${fromAddress}>`,
       to: params.recipientName
         ? `${params.recipientName} <${params.recipientEmail}>`
         : params.recipientEmail,
@@ -247,7 +247,7 @@ export function getVideoReadyEmail(data: {
               Questions? Call <a href="tel:3176203858" style="color: #2563eb;">(317) 620-3858</a> or reply to this email.
             </p>
             <p style="color: #9ca3af; font-size: 12px; margin-top: 20px;">
-              Precision Sewer Inspection<br>
+              Precision Sewer Inspections<br>
               Indianapolis, IN<br>
               <a href="https://precisionsewerinspections.com" style="color: #9ca3af;">precisionsewerinspections.com</a>
             </p>
@@ -391,7 +391,7 @@ export function getBookingConfirmationEmail(data: {
   if (data.source && data.source !== 'website') optionalRows.push(`<p><strong>Request Type:</strong> ${data.source.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</p>`);
 
   return {
-    subject: `Booking Request Received — Precision Sewer Inspection`,
+    subject: `Booking Request Received — Precision Sewer Inspections`,
     htmlContent: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
         <div style="text-align: center; padding: 20px; background: #1e40af;">
@@ -421,7 +421,7 @@ export function getBookingConfirmationEmail(data: {
               Questions in the meantime? Call <a href="tel:3176203858" style="color: #2563eb;">(317) 620-3858</a> or reply to this email.
             </p>
             <p style="color: #9ca3af; font-size: 12px; margin-top: 20px;">
-              Precision Sewer Inspection · Indianapolis, IN<br>
+              Precision Sewer Inspections · Indianapolis, IN<br>
               <a href="https://precisionsewerinspections.com" style="color: #9ca3af;">precisionsewerinspections.com</a>
             </p>
           </div>
@@ -442,7 +442,7 @@ export function getPaymentReceiptEmail(data: {
   discountAmount?: number;
 }): { subject: string; htmlContent: string } {
   return {
-    subject: `Payment Confirmed — $${data.amount.toFixed(2)} | Precision Sewer Inspection`,
+    subject: `Payment Confirmed — $${data.amount.toFixed(2)} | Precision Sewer Inspections`,
     htmlContent: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
         <div style="text-align: center; padding: 20px; background: #1e40af;">
@@ -473,7 +473,7 @@ export function getPaymentReceiptEmail(data: {
               Questions? Call <a href="tel:3176203858" style="color: #2563eb;">(317) 620-3858</a> or reply to this email.
             </p>
             <p style="color: #9ca3af; font-size: 12px; margin-top: 20px;">
-              Precision Sewer Inspection · Indianapolis, IN<br>
+              Precision Sewer Inspections · Indianapolis, IN<br>
               <a href="https://precisionsewerinspections.com" style="color: #9ca3af;">precisionsewerinspections.com</a>
             </p>
           </div>

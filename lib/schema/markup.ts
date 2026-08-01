@@ -7,7 +7,7 @@ import { ServiceArea, ServiceOffering, FAQ } from '@prisma/client';
 
 // Company constants (update these)
 const COMPANY = {
-  name: 'Precision Sewer Inspection',
+  name: 'Precision Sewer Inspections',
   description: 'Professional sewer and drain camera inspection services for homeowners, realtors, and property managers throughout the Indianapolis metro area.',
   url: 'https://precisionsewerinspections.com',
   phone: '(317) 620-3858',

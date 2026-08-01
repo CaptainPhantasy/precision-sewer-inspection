@@ -1,7 +1,7 @@
 {
   "name": "PSI Field Technician",
   "short_name": "PSI Field",
-  "description": "Field technician app for Precision Sewer Inspection",
+  "description": "Field technician app for Precision Sewer Inspections",
   "start_url": "/technician/dashboard",
   "display": "standalone",
   "background_color": "#1e40af",

@@ -6,8 +6,8 @@ import { COMPANY_INFO } from '@/lib/constants'
 import { T } from '@/components/diversity/diversity-provider'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Precision Sewer Inspection',
-  description: 'Privacy policy for Precision Sewer Inspection. Learn how we collect, use, and protect your personal information.',
+  title: 'Privacy Policy | Precision Sewer Inspections',
+  description: 'Privacy policy for Precision Sewer Inspections. Learn how we collect, use, and protect your personal information.',
   alternates: {
     canonical: '/privacy',
   },
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
               </p>
 
               <p className="text-gray-700 mb-8">
-                <T>Precision Sewer Inspection ("we," "us," or "our") operates the website precisionsewerinspections.com and provides sewer inspection services in Central Indiana. This Privacy Policy explains what information we collect, how we use it, and your choices regarding that information.</T>
+                <T>Precision Sewer Inspections ("we," "us," or "our") operates the website precisionsewerinspections.com and provides sewer inspection services in Central Indiana. This Privacy Policy explains what information we collect, how we use it, and your choices regarding that information.</T>
               </p>
 
               {/* Section 1 */}
@@ -227,7 +227,7 @@ export default function PrivacyPage() {
                   <T>If you have questions about this Privacy Policy or our data practices, contact us:</T>
                 </p>
                 <div className="space-y-2 text-gray-700">
-                  <p><strong>Precision Sewer Inspection</strong></p>
+                  <p><strong>Precision Sewer Inspections</strong></p>
                   <p>{COMPANY_INFO.serviceAreaDisplay}</p>
                   <p><T>Email:</T> <a href="mailto:support@precisionsewerinspections.com" className="text-primary-600 hover:underline">support@precisionsewerinspections.com</a></p>
                   <p><T>Phone:</T> <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="text-primary-600 hover:underline">{COMPANY_INFO.phone}</a></p>

@@ -2,7 +2,7 @@
 title: "Why Sewer Inspections Matter: Protecting Your Home Investment"
 description: "Learn why a sewer scope inspection is one of the smartest investments you can make when buying or maintaining a home."
 date: "2026-03-15"
-author: "Precision Sewer Inspection"
+author: "Precision Sewer Inspections"
 category: "Education"
 readTime: "6 min read"
 ---
@@ -35,4 +35,4 @@ A professional sewer scope inspection costs a fraction of what even minor repair
 
 A professional sewer scope inspection provides HD video evidence of your pipe's condition. You'll see exactly what's happening inside your sewer line — no guesswork, no assumptions. Your report includes condition ratings, identified issues, screenshots from the video, and plain-English explanations of everything found.
 
-At [Precision Sewer Inspection](https://www.precisionsewerinspections.com), we serve all of Central Indiana with honest, unbiased assessments. We're inspectors, not contractors — so we have zero incentive to exaggerate problems. [Book your inspection today](/contact) and see what's really in your pipes.
+At [Precision Sewer Inspections](https://www.precisionsewerinspections.com), we serve all of Central Indiana with honest, unbiased assessments. We're inspectors, not contractors — so we have zero incentive to exaggerate problems. [Book your inspection today](/contact) and see what's really in your pipes.

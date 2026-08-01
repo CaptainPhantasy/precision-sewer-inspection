@@ -907,7 +907,7 @@ export default function ContactForm() {
               <div className="flex justify-between font-bold text-lg pt-2 border-t"><span><T>Total:</T></span><span>{formatCents(pricing.totalCents)}</span></div>
             </div>
             {formData.referrerName && (
-              <div className="mt-4 pt-3 border-t text-sm text-gray-600">Thanks for choosing Precision Sewer Inspection!</div>
+              <div className="mt-4 pt-3 border-t text-sm text-gray-600">Thanks for choosing Precision Sewer Inspections!</div>
             )}
           </div>
 
@@ -924,7 +924,7 @@ export default function ContactForm() {
               <div className="bg-gray-50 p-4 rounded-lg text-sm text-gray-700 space-y-2 ml-8">
                 <p>&#8226; <strong><T>Trip Fee:</T></strong> <T>A $79 trip fee applies if access is unavailable at the scheduled time.</T></p>
                 <p>&#8226; <strong><T>Access Method:</T></strong> <T>If the access method differs from what was selected, additional charges may apply.</T></p>
-                <p>&#8226; <strong><T>Cleanout Access:</T></strong> If there is no available cleanout, you are approving Precision Sewer Inspection to access the sewer line via toilet removal/reinstallation or roof vent pipe access.</p>
+                <p>&#8226; <strong><T>Cleanout Access:</T></strong> If there is no available cleanout, you are approving Precision Sewer Inspections to access the sewer line via toilet removal/reinstallation or roof vent pipe access.</p>
                 <p>&#8226; <strong><T>Payment:</T></strong> <T>Payment is collected at checkout before service is confirmed.</T></p>
                 <p>&#8226; <strong><T>Report Delivery:</T></strong> <T>Written report and video will be emailed within one business day of inspection.</T></p>
               </div>
