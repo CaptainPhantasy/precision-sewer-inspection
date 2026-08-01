@@ -125,14 +125,6 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href="/status"
-									className="text-primary-200 hover:text-white transition-colors text-sm"
-								>
-									<T>Track Your Inspection</T>
-								</Link>
-							</li>
-							<li>
-								<Link
 									href="/support"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>

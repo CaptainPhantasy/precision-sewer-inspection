@@ -36,7 +36,7 @@ const additionalFAQs = [
   },
   {
     question: 'How do I get my video and report?',
-    answer: "We'll email you a link to view/download your HD video and PDF report within one business day of the inspection (or same-day if you chose that option). You can share these with anyone—contractors, real estate agents, etc.",
+    answer: "Your HD video link and PDF report are emailed to you within one business day of the inspection. You can share them with anyone—contractors, real estate agents, etc.",
   },
   {
     question: 'What about multi-unit or commercial properties?',
