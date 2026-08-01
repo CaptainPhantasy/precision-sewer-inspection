@@ -26,10 +26,10 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl 2xl:max-w-[1600px] mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between min-h-20 md:min-h-28">
-          {/* Logo — badge straddles the header bottom edge (transparent PNG, no box) */}
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
+          {/* Logo — badge centered on the header/hero boundary line (bisected by it), pulled left into the container padding; transparent PNG so no box shows */}
+          <Link href="/" className="flex items-center gap-3 flex-shrink-0 -ml-2 sm:-ml-4">
             <div className="relative w-28 h-20 md:w-40 md:h-28 flex-shrink-0">
-              <div className="absolute inset-x-0 top-0 h-24 md:h-36">
+              <div className="absolute inset-x-0 top-0 h-40 md:h-56">
                 <Image
                   src="/logo.png"
                   alt="Precision Sewer Inspections"
