@@ -23,7 +23,7 @@ export default function MaintenancePage() {
             </div>
             <div className="name">
               <span className="display">
-                Precision <em>Sewer</em> Inspection
+                Precision <em>Sewer</em> Inspections
               </span>
               <span className="tag"><T>Central Indiana&apos;s Trusted Experts</T></span>
             </div>
@@ -143,7 +143,7 @@ export default function MaintenancePage() {
                 </div>
                 <div className="nm">
                   <div className="a">
-                    Precision <em>Sewer</em> Inspection
+                    Precision <em>Sewer</em> Inspections
                   </div>
                   <div className="b"><T>Sanitary Lateral Camera Survey</T></div>
                 </div>
@@ -209,7 +209,7 @@ export default function MaintenancePage() {
 
           <div className="footer-bottom">
             <div className="name">
-              Precision <em>Sewer</em> Inspection
+              Precision <em>Sewer</em> Inspections
             </div>
             <div className="tagline">
               Clear<span className="dot">·</span>Accurate<span className="dot">·</span>Reliable
