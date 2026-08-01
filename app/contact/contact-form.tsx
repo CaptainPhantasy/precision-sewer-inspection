@@ -33,6 +33,21 @@ const howHeardOptions = [
 
 const serviceTypes = SERVICE_OPTIONS
 
+function isAllowedServiceType(value: unknown): value is ServiceType {
+  return value === 'sewer-inspection' || value === 'sewer-inspection-toilet' || value === 'sewer-inspection-roof'
+}
+
+function normalizeInput(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : ''
+}
+
+const EMAIL_PATTERN = /[^\s@]+@[^\s@]+\.[^\s@]+/
+
+function isValidPhone(value: string): boolean {
+  const digits = value.replace(/\D/g, '')
+  return digits.length >= 10 && digits.length <= 15
+}
+
 interface TimeSlot {
   start: string;
   end: string;
@@ -240,8 +255,16 @@ export default function ContactForm() {
 
   const validateStep = (step: Step): boolean => {
     if (step === 'job-details') {
-      if (!formData.occupancy) {
+      if (!normalizeInput(formData.occupancy)) {
         toast.error('Please select occupancy status')
+        return false
+      }
+      if (!normalizeInput(formData.propertyAccess)) {
+        toast.error('Please provide property access instructions')
+        return false
+      }
+      if (!normalizeInput(formData.cleanoutLocation)) {
+        toast.error('Please provide the cleanout location (or unknown if not found yet)')
         return false
       }
       if (!formData.accessVerified) {
@@ -258,8 +281,22 @@ export default function ContactForm() {
       return true
     }
     if (step === 'client-details') {
-      if (!formData.firstName || !formData.lastName || !formData.phone || !formData.email || !formData.streetAddress) {
+      const firstName = normalizeInput(formData.firstName)
+      const lastName = normalizeInput(formData.lastName)
+      const phone = normalizeInput(formData.phone)
+      const email = normalizeInput(formData.email)
+      const streetAddress = normalizeInput(formData.streetAddress)
+      const city = normalizeInput(formData.city)
+      if (!firstName || !lastName || !phone || !email || !streetAddress || !city) {
         toast.error('Please fill in all required fields')
+        return false
+      }
+      if (!EMAIL_PATTERN.test(email)) {
+        toast.error('Please enter a valid email address')
+        return false
+      }
+      if (!isValidPhone(phone)) {
+        toast.error('Please enter a valid phone number')
         return false
       }
       return true
@@ -282,25 +319,50 @@ export default function ContactForm() {
   const goToStep = (step: Step) => setCurrentStep(step)
 
   const handleCheckout = async () => {
+    if (!isAllowedServiceType(formData.serviceType)) {
+      toast.error('Please select a valid service type')
+      return
+    }
+
+    if (!validateStep('job-details') || !validateStep('datetime') || !validateStep('client-details')) {
+      return
+    }
+
     if (!formData.agreeToTerms) {
       toast.error('Please agree to the terms of service')
       return
     }
+
+    if (!formData.accessVerified) {
+      toast.error('Please verify the selected access method before continuing')
+      return
+    }
+
+    const customerEmail = normalizeInput(formData.email)
+    const firstName = normalizeInput(formData.firstName)
+    const lastName = normalizeInput(formData.lastName)
+    const fullAddress = normalizeInput(`${normalizeInput(formData.streetAddress)}${formData.city ? `, ${normalizeInput(formData.city)}` : ''}${formData.state ? `, ${normalizeInput(formData.state)}` : ''}${formData.zipCode ? ` ${normalizeInput(formData.zipCode)}` : ''}`)
+
+    if (!firstName || !lastName || !customerEmail || !formData.selectedTimeSlot?.start || !formData.selectedDate || !formData.selectedTimeSlot?.display || !formData.selectedTimeSlot?.end) {
+      toast.error('Please complete all required fields before checkout')
+      return
+    }
+
     setIsCheckingOut(true)
     try {
-      const fullAddress = `${formData.streetAddress}${formData.city ? ', ' + formData.city : ''}${formData.state ? ', ' + formData.state : ''}${formData.zipCode ? ' ' + formData.zipCode : ''}`
       const response = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          customerEmail: formData.email,
-          customerName: `${formData.firstName} ${formData.lastName}`,
-          customerPhone: formData.phone,
+          customerEmail,
+          customerName: `${firstName} ${lastName}`,
+          customerPhone: normalizeInput(formData.phone),
           propertyAddress: fullAddress,
+          accessVerified: formData.accessVerified,
           accessMethod: formData.serviceType.includes('toilet') ? 'toilet-pull' : formData.serviceType.includes('roof') ? 'roof-vent' : 'cleanout',
-          sewerAccessMethod: formData.cleanoutLocation,
+          sewerAccessMethod: normalizeInput(formData.cleanoutLocation),
           addOns: formData.addOns,
-          message: `Occupancy: ${formData.occupancy}\nAccess: ${formData.propertyAccess}\nCleanout: ${formData.cleanoutLocation}\nReferrer: ${formData.referrerName}\nBuyer's Agent: ${formData.buyersAgent}\nListing Agent: ${formData.listingAgent}\nHow heard: ${formData.howHeardAboutUs}\nDirections: ${formData.directions}`,
+          message: `Occupancy: ${normalizeInput(formData.occupancy)}\nAccess: ${normalizeInput(formData.propertyAccess)}\nCleanout: ${normalizeInput(formData.cleanoutLocation)}\nReferrer: ${normalizeInput(formData.referrerName)}\nBuyer's Agent: ${normalizeInput(formData.buyersAgent)}\nListing Agent: ${normalizeInput(formData.listingAgent)}\nHow heard: ${normalizeInput(formData.howHeardAboutUs)}\nDirections: ${normalizeInput(formData.directions)}`,
           promoCode: activePromoCode,
           appointmentStart: formData.selectedTimeSlot?.start,
           appointmentEnd: formData.selectedTimeSlot?.end,
@@ -308,17 +370,17 @@ export default function ContactForm() {
           appointmentDate: formData.selectedDate,
           serviceType: formData.serviceType,
           // Structured form fields for database storage
-          occupancy: formData.occupancy,
-          propertyAccess: formData.propertyAccess,
-          cleanoutLocation: formData.cleanoutLocation,
-          referrerName: formData.referrerName,
-          buyersAgent: formData.buyersAgent,
-          listingAgent: formData.listingAgent,
-          howHeardAboutUs: formData.howHeardAboutUs,
-          directions: formData.directions,
-          propertyCity: formData.city,
-          propertyState: formData.state,
-          propertyZip: formData.zipCode,
+          occupancy: normalizeInput(formData.occupancy),
+          propertyAccess: normalizeInput(formData.propertyAccess),
+          cleanoutLocation: normalizeInput(formData.cleanoutLocation),
+          referrerName: normalizeInput(formData.referrerName),
+          buyersAgent: normalizeInput(formData.buyersAgent),
+          listingAgent: normalizeInput(formData.listingAgent),
+          howHeardAboutUs: normalizeInput(formData.howHeardAboutUs),
+          directions: normalizeInput(formData.directions),
+          propertyCity: normalizeInput(formData.city),
+          propertyState: normalizeInput(formData.state),
+          propertyZip: normalizeInput(formData.zipCode),
         }),
       })
       const result = await response.json()

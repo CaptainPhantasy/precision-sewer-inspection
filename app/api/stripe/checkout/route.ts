@@ -3,15 +3,63 @@ import { stripe, STRIPE_PRODUCTS } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 import { ADD_ON_OPTIONS, AddOnId, PROMO_CODE, PROMO_PERCENT, STRIPE_PROMO_COUPON_ID, calculateCheckoutPricing, getAccessMethodForServiceType, getServiceTypeForAccessMethod, normalizeAddOns, isPromoCodeValid } from '@/lib/checkout-pricing';
 
+type RawCheckoutBody = Record<string, unknown>;
+
+const isString = (value: unknown): value is string => typeof value === 'string';
+const sanitizeString = (value: unknown): string =>
+  isString(value) ? value.trim() : '';
+const isValidEmail = (value: string): boolean =>
+  !!value && /[^\s@]+@[^\s@]+\.[^\s@]+/.test(value);
+
+const isAllowedServiceType = (value: string): value is 'sewer-inspection' | 'sewer-inspection-toilet' | 'sewer-inspection-roof' => {
+  return value === 'sewer-inspection' || value === 'sewer-inspection-toilet' || value === 'sewer-inspection-roof';
+};
+
+const isAllowedAccessMethod = (value: string): value is 'cleanout' | 'toilet-pull' | 'roof-vent' => {
+  return value === 'cleanout' || value === 'toilet-pull' || value === 'roof-vent';
+};
+
+const badRequest = (message: string) => NextResponse.json({ error: message }, { status: 400 });
+
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { 
+    const body = (await request.json()) as RawCheckoutBody;
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      return badRequest('Invalid checkout payload');
+    }
+
+    const rawServiceType = sanitizeString(body.serviceType);
+    const rawAccessMethod = sanitizeString(body.accessMethod);
+    const hasServiceType = rawServiceType.length > 0;
+    const hasAccessMethod = rawAccessMethod.length > 0;
+
+    if (!hasServiceType && !hasAccessMethod) {
+      return badRequest('Missing service context');
+    }
+
+    if (hasServiceType && !isAllowedServiceType(rawServiceType)) {
+      return badRequest('Invalid serviceType');
+    }
+
+    if (hasAccessMethod && !isAllowedAccessMethod(rawAccessMethod)) {
+      return badRequest('Invalid accessMethod');
+    }
+
+    const effectiveServiceType = hasServiceType
+      ? rawServiceType
+      : getServiceTypeForAccessMethod(rawAccessMethod);
+    const effectiveAccessMethod = getAccessMethodForServiceType(effectiveServiceType);
+
+    const accessVerified = body.accessVerified === true;
+    if (!accessVerified) {
+      return badRequest('accessVerified must be true');
+    }
+
+    const {
       customerEmail,
       customerName,
       customerPhone,
       propertyAddress,
-      accessMethod,
       sewerAccessMethod,
       addOns = [],
       message,
@@ -21,7 +69,6 @@ export async function POST(request: NextRequest) {
       appointmentEnd,
       appointmentDisplay,
       appointmentDate,
-      serviceType,
       // Structured form fields
       occupancy,
       propertyAccess,
@@ -36,8 +83,52 @@ export async function POST(request: NextRequest) {
       propertyZip,
     } = body;
 
-    const effectiveServiceType = serviceType || getServiceTypeForAccessMethod(accessMethod);
-    const effectiveAccessMethod = getAccessMethodForServiceType(effectiveServiceType);
+    const normalizedCustomerEmail = sanitizeString(customerEmail);
+    const normalizedCustomerName = sanitizeString(customerName);
+    const normalizedCustomerPhone = sanitizeString(customerPhone);
+    const normalizedPropertyAddress = sanitizeString(propertyAddress);
+    const normalizedOccupancy = sanitizeString(occupancy);
+    const normalizedPropertyAccess = sanitizeString(propertyAccess);
+    const normalizedCleanoutLocation = sanitizeString(cleanoutLocation);
+    const normalizedReferrerName = sanitizeString(referrerName);
+    const normalizedBuyersAgent = sanitizeString(buyersAgent);
+    const normalizedListingAgent = sanitizeString(listingAgent);
+    const normalizedHowHeardAboutUs = sanitizeString(howHeardAboutUs);
+    const normalizedDirections = sanitizeString(directions);
+    const normalizedPropertyCity = sanitizeString(propertyCity);
+    const normalizedPropertyState = sanitizeString(propertyState);
+    const normalizedPropertyZip = sanitizeString(propertyZip);
+    const normalizedAppointmentStart = sanitizeString(appointmentStart);
+    const normalizedAppointmentEnd = sanitizeString(appointmentEnd);
+    const normalizedAppointmentDisplay = sanitizeString(appointmentDisplay);
+    const normalizedAppointmentDate = sanitizeString(appointmentDate);
+    const normalizedSewerAccessMethod = sanitizeString(sewerAccessMethod);
+
+    if (!normalizedCustomerName) {
+      return badRequest('customerName is required');
+    }
+    if (!isValidEmail(normalizedCustomerEmail)) {
+      return badRequest('Valid customerEmail is required');
+    }
+    if (!normalizedPropertyAddress) {
+      return badRequest('propertyAddress is required');
+    }
+    if (!normalizedOccupancy) {
+      return badRequest('occupancy is required');
+    }
+    if (!normalizedPropertyAccess) {
+      return badRequest('propertyAccess is required');
+    }
+    if (!normalizedCleanoutLocation) {
+      return badRequest('cleanoutLocation is required');
+    }
+    if (!normalizedAppointmentStart || !normalizedAppointmentEnd || !normalizedAppointmentDisplay || !normalizedAppointmentDate) {
+      return badRequest('appointment details are required');
+    }
+    if (!normalizedPropertyCity) {
+      return badRequest('propertyCity is required');
+    }
+
     const selectedAddOns = normalizeAddOns(addOns);
 
     // Build line items based on normalized selections.
@@ -116,15 +207,14 @@ export async function POST(request: NextRequest) {
 
     // Apply promo discount if valid. Validate from the promo code only; never trust
     // client-supplied discount amounts as proof a discount should apply.
-    const hasValidPromo = isPromoCodeValid(promoCode);
-    const checkoutPricing = calculateCheckoutPricing(effectiveServiceType, selectedAddOns, promoCode);
+    const normalizedPromoCode = sanitizeString(promoCode);
+    const hasValidPromo = isPromoCodeValid(normalizedPromoCode);
+    const checkoutPricing = calculateCheckoutPricing(effectiveServiceType, selectedAddOns, normalizedPromoCode);
     
     // Get origin for redirect URLs
     const origin = request.headers.get('origin') || 'https://precisionsewerinspections.com';
-    const stripeCustomerEmail =
-      typeof customerEmail === 'string' && customerEmail.trim().length > 0
-        ? customerEmail.trim()
-        : undefined;
+    const stripeCustomerEmail = normalizedCustomerEmail || undefined;
+    const messageText = sanitizeString(message);
 
     // Create or get the SAVE10 coupon for 10% off
     let discounts: Array<{ coupon: string }> = [];
@@ -151,27 +241,27 @@ export async function POST(request: NextRequest) {
     try {
       const submission = await prisma.contactSubmission.create({
         data: {
-          name: customerName || '',
-          email: customerEmail || '',
-          phone: customerPhone || null,
+          name: normalizedCustomerName,
+          email: normalizedCustomerEmail,
+          phone: normalizedCustomerPhone || null,
           serviceType: effectiveServiceType,
           source: 'stripe-booking',
-          message: message?.substring(0, 2000) || '',
+          message: messageText.slice(0, 2000),
           status: 'pending-payment',
-          propertyAddress: propertyAddress || null,
-          propertyCity: propertyCity || null,
-          propertyState: propertyState || null,
-          propertyZip: propertyZip || null,
-          occupancy: occupancy || null,
-          propertyAccess: propertyAccess || null,
-          cleanoutLocation: cleanoutLocation || null,
-          referrerName: referrerName || null,
-          buyersAgent: buyersAgent || null,
-          listingAgent: listingAgent || null,
-          howHeardAboutUs: howHeardAboutUs || null,
-          directions: directions || null,
-          appointmentDate: appointmentDate || null,
-          appointmentTime: appointmentDisplay || null,
+          propertyAddress: normalizedPropertyAddress,
+          propertyCity: normalizedPropertyCity || null,
+          propertyState: normalizedPropertyState || null,
+          propertyZip: normalizedPropertyZip || null,
+          occupancy: normalizedOccupancy || null,
+          propertyAccess: normalizedPropertyAccess || null,
+          cleanoutLocation: normalizedCleanoutLocation || null,
+          referrerName: normalizedReferrerName || null,
+          buyersAgent: normalizedBuyersAgent || null,
+          listingAgent: normalizedListingAgent || null,
+          howHeardAboutUs: normalizedHowHeardAboutUs || null,
+          directions: normalizedDirections || null,
+          appointmentDate: normalizedAppointmentDate || null,
+          appointmentTime: normalizedAppointmentDisplay || null,
           promoCode: hasValidPromo ? PROMO_CODE : null,
         },
       });
@@ -191,19 +281,20 @@ export async function POST(request: NextRequest) {
       cancel_url: `${origin}/contact`,
       customer_email: stripeCustomerEmail,
       metadata: {
-        customerName,
-        customerPhone,
-        propertyAddress,
+        accessVerified: 'true',
+        customerName: normalizedCustomerName,
+        customerPhone: normalizedCustomerPhone,
+        propertyAddress: normalizedPropertyAddress,
         accessMethod: effectiveAccessMethod,
-        sewerAccessMethod,
+        sewerAccessMethod: normalizedSewerAccessMethod,
         addOns: selectedAddOns.join(','),
         promoCode: hasValidPromo ? PROMO_CODE : '',
-        message: message?.substring(0, 500) || '',
+        message: messageText.slice(0, 500),
         // Calendar booking info
-        appointmentStart: appointmentStart || '',
-        appointmentEnd: appointmentEnd || '',
-        appointmentDisplay: appointmentDisplay || '',
-        appointmentDate: appointmentDate || '',
+        appointmentStart: normalizedAppointmentStart,
+        appointmentEnd: normalizedAppointmentEnd,
+        appointmentDisplay: normalizedAppointmentDisplay,
+        appointmentDate: normalizedAppointmentDate,
         serviceType: effectiveServiceType,
         submissionId: submissionId || '',
         subtotalCents: String(checkoutPricing.subtotalCents),
@@ -212,13 +303,16 @@ export async function POST(request: NextRequest) {
       payment_intent_data: {
         receipt_email: stripeCustomerEmail,
         metadata: {
-          customerName,
-          customerPhone,
-          propertyAddress,
+          accessVerified: 'true',
+          customerName: normalizedCustomerName,
+          customerPhone: normalizedCustomerPhone,
+          propertyAddress: normalizedPropertyAddress,
           promoCode: hasValidPromo ? PROMO_CODE : '',
           addOns: selectedAddOns.join(','),
-          appointmentStart: appointmentStart || '',
-          appointmentDisplay: appointmentDisplay || '',
+          appointmentStart: normalizedAppointmentStart,
+          appointmentEnd: normalizedAppointmentEnd,
+          appointmentDisplay: normalizedAppointmentDisplay,
+          appointmentDate: normalizedAppointmentDate,
         },
       },
     });
