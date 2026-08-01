@@ -35,9 +35,12 @@ export default function Header() {
       <div className="max-w-7xl 2xl:max-w-[1600px] mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between min-h-20 md:min-h-28">
           {/* Logo — BIG badge at page top (hero presence), shrinks to header size on scroll so it never covers content. Transparent PNG, no box. */}
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0 -ml-2 sm:-ml-4">
+          <Link href="/" className="flex items-center gap-3 flex-shrink-0 -ml-3 sm:-ml-6 md:-ml-4 xl:-ml-12 2xl:-ml-16">
             <div className="relative w-28 h-20 md:w-40 md:h-28 flex-shrink-0">
-              <div className={`absolute top-0 left-0 transition-all duration-300 ${scrolled ? 'h-24 w-24 md:h-36 md:w-36' : 'h-40 w-40 md:h-72 md:w-72'}`}>
+              {/* Right edge pinned to the placeholder; badge grows LEFT into the
+                  empty page margin, sized per breakpoint so it never clips the
+                  viewport and never reaches the brand text on the right */}
+              <div className={`absolute top-0 right-0 transition-all duration-300 ${scrolled ? 'h-24 w-24 md:h-36 md:w-36' : 'h-28 w-28 md:h-40 md:w-40 xl:h-52 xl:w-52 2xl:h-64 2xl:w-64'}`}>
                 <Image
                   src="/logo.png"
                   alt="Precision Sewer Inspections"
