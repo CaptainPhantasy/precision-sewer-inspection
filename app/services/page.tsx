@@ -65,11 +65,11 @@ const services = [
     description: 'Fast, reliable inspections designed for real estate professionals. We understand the time pressure of transactions and deliver when you need it.',
     features: [
       'Priority Scheduling',
-      'Same-Day Delivery Available',
+      'One-Business-Day Reports',
       'Direct Inspector Access',
       'Agent-Friendly Reports',
       'Quick Turnaround',
-      'Repeat Client Discounts',
+      'Multi-Property Volume Pricing',
     ],
     price: 'Partner Pricing',
   },
@@ -162,8 +162,8 @@ export default function ServicesPage() {
                       </ul>
                       <div className="flex items-center gap-4">
                         <span className="text-2xl font-bold text-gray-900">{service?.price ?? ''}</span>
-                        <Link href="/contact" className="btn-primary">
-                          <T>{service?.price === 'Custom Quote' ? 'Get Quote' : 'Book Now'}</T>
+                        <Link href={service?.id === 'real-estate' ? '/realtors' : '/contact'} className="btn-primary">
+                          <T>{service?.id === 'real-estate' ? 'Partner With Us' : service?.price === 'Custom Quote' ? 'Get Quote' : 'Book Now'}</T>
                           <ArrowRight className="w-4 h-4" />
                         </Link>
                       </div>

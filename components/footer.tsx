@@ -78,6 +78,14 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
+									href="/realtors"
+									className="text-primary-200 hover:text-white transition-colors text-sm"
+								>
+									<T>For Realtors</T>
+								</Link>
+							</li>
+							<li>
+								<Link
 									href="/pricing"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
