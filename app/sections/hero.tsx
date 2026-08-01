@@ -27,6 +27,8 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
+            {/* Spacer: keeps hero text below the oversized header badge's overhang at page top */}
+            <div className="h-20 md:h-44" aria-hidden="true" />
             <span className="eyebrow on-dark">
               {t("Central Indiana's Trusted Choice")}
             </span>
