@@ -29,7 +29,7 @@ export default function Header() {
           {/* Logo — badge centered on the header/hero boundary line (bisected by it), pulled left into the container padding; transparent PNG so no box shows */}
           <Link href="/" className="flex items-center gap-3 flex-shrink-0 -ml-2 sm:-ml-4">
             <div className="relative w-28 h-20 md:w-40 md:h-28 flex-shrink-0">
-              <div className="absolute inset-x-0 top-0 h-40 md:h-56">
+              <div className="absolute inset-x-0 top-0 h-24 md:h-36">
                 <Image
                   src="/logo.png"
                   alt="Precision Sewer Inspections"
