@@ -342,6 +342,7 @@ export const serviceOfferings = [
     ],
     avgDuration: 30,
     icon: 'alert',
+    isActive: false, // QUARANTINED 2026-07-31: PSI offers no emergency service (owner ruling, truth run). Not deleted; disabled in DB too.
     isFeatured: false,
     sortOrder: 5
   },
