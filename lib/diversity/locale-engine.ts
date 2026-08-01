@@ -51,12 +51,12 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'Indiana Areas Served': 'Zonas de Indiana Atendidas',
     'InterNACHI Member': 'Miembro de InterNACHI',
     'Fully Insured': 'Totalmente Asegurado',
-    'No Contractor Referrals': 'Sin Referidos a Contratistas',
+    'No Contractor Referrals': 'Sin Remisiones a Contratistas',
     // Why Choose Us — trust block
     'Why Choose Us': 'Por Qué Elegirnos',
     'The Difference is in the Details': 'La Diferencia Está en los Detalles',
     "We built Precision Sewer Inspection around one simple principle: give people the truth, and they'll make smart decisions.":
-      'Creamos Precision Sewer Inspection en torno a un principio simple: dígale a la gente la verdad y tomará decisiones acertadas.',
+      'Creamos Precision Sewer Inspection en torno a un principio simple: Darle la verdad a la gente, y esta tomará decisiones acertadas.',
     'Evidence You Can See': 'Evidencia Que Puede Ver',
     "We don't just tell you what we found—we show you. Every inspection includes HD video you can watch, pause, and share.":
       'No solo le contamos lo que encontramos: se lo mostramos. Cada inspección incluye video en HD que puede ver, pausar y compartir.',
@@ -96,9 +96,9 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'We started Precision Sewer Inspections because we kept watching the same thing happen in Central Indiana real estate: a camera goes down a sewer line, and the person holding it has a repair crew waiting in the truck. The "inspection" becomes a sales pitch. The findings grow to fit the invoice.':
       'Iniciamos Precision Sewer Inspections porque veíamos pasar lo mismo una y otra vez en el sector inmobiliario del centro de Indiana: una cámara baja por una línea de alcantarillado y la persona que la sostiene tiene un equipo de reparación esperando en el camión. La «inspección» se convierte en un discurso de ventas. Los hallazgos crecen hasta ajustarse a la factura.',
     "So we drew one hard line and built the whole company on it: we sell no repairs on anything we inspect. No sewer repairs, no drain work, no contractor referrals — nothing to gain from what the camera finds. When your report says the line is clear, that's because it is — and when it shows a problem, you get the footage, the location, and plain-English facts you can hand to any contractor you choose.":
-      'Así que trazamos una línea firme y construimos toda la empresa sobre ella: no vendemos reparaciones de nada de lo que inspeccionamos. Ni reparaciones de alcantarillado, ni trabajos de drenaje, ni referidos a contratistas: no ganamos nada con lo que encuentre la cámara. Cuando su informe dice que la línea está libre, es porque lo está; y cuando muestra un problema, usted recibe el video, la ubicación y los hechos en lenguaje sencillo que puede entregar al contratista que elija.',
+      'Así que trazamos una línea firme y construimos toda la empresa sobre ella: no vendemos reparaciones de nada que inspeccionemos. Ni reparaciones de alcantarillado, ni trabajos de drenaje, ni remisiones a contratistas: no ganamos nada con lo que encuentre la cámara. Cuando su informe dice que la línea está libre, es porque lo está; y cuando muestra un problema, usted recibe el video, la ubicación y los hechos en lenguaje sencillo que puede entregar al contratista que elija.',
     "We're a new company, and we won't pretend otherwise. No invented track record, no padded team page. What you get is exactly what exists: one inspector, professional HD equipment, a published national standard, and reports that say what the camera saw.":
-      'Somos una empresa nueva y no vamos a fingir lo contrario. Sin historial inventado, sin página de equipo inflada. Lo que usted recibe es exactamente lo que existe: un inspector, equipo profesional de HD, una norma nacional publicada e informes que dicen lo que vio la cámara.',
+      'Somos una empresa nueva y no vamos a fingir lo contrario. Sin historial inventado, sin página de equipo inflada. Lo que usted recibe es exactamente lo que existe: un inspector, equipo profesional de cámara HD, una norma nacional publicada e informes que dicen lo que vio la cámara.',
     'Our Values': 'Nuestros Valores',
     "These aren't just words on a wall. They're the principles that guide every inspection we do.":
       'No son solo palabras en una pared. Son los principios que guían cada inspección que hacemos.',
@@ -114,9 +114,9 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'The Inspector': 'El Inspector',
     'Ryan Galbraith — Owner & Inspector · InterNACHI Member': 'Ryan Galbraith — Propietario e Inspector · Miembro de InterNACHI',
     "Ryan performs every PSI inspection to InterNACHI's published Sewer Scope Standards of Practice — a national standard anyone can read for themselves. He completed InterNACHI's Sewer Scope Inspector training, and he's an InterNACHI member in good standing — ID NACHI26032508, verifiable at nachi.org/verify. Go check. We mean it.":
-      'Ryan realiza cada inspección de PSI conforme a las Normas de Práctica para Inspección de Alcantarillado con Cámara publicadas por InterNACHI, una norma nacional que cualquiera puede leer por sí mismo. Completó la capacitación de Inspector de Alcantarillado de InterNACHI y es miembro de InterNACHI al corriente: ID NACHI26032508, verificable en nachi.org/verify. Compruébelo. Lo decimos en serio.',
+      'Ryan realiza cada inspección de PSI conforme a las Normas de Práctica para Inspección de Alcantarillado con Cámara publicadas por InterNACHI, una norma nacional que cualquiera puede leer por sí mismo. Completó la capacitación de Inspector de Alcantarillado de InterNACHI y es miembro de InterNACHI en regla: ID NACHI26032508, verificable en nachi.org/verify. Compruébelo. Lo decimos en serio.',
     "Here's the part we're proudest of: Ryan deliberately does not wear titles that can't be verified. He's not a home inspector — sewer lines are the whole point, done properly, not one line item on a long checklist. And when a credential turned out to be a logo you download rather than a registration anyone can look up, he left it off. An inspector who won't inflate his own badge is not going to inflate your sewer findings. That's the whole company, in one decision.":
-      'Esta es la parte de la que más orgullosos estamos: Ryan deliberadamente no usa títulos que no se pueden verificar. No es inspector de viviendas: las líneas de alcantarillado son todo el punto, hechas como se debe, no una partida más en una larga lista de verificación. Y cuando una credencial resultó ser un logo que uno descarga en lugar de un registro que cualquiera puede consultar, la dejó fuera. Un inspector que no infla su propia credencial no va a inflar los hallazgos de su alcantarillado. Esa es toda la empresa, en una sola decisión.',
+      'Esta es la parte de la que más orgullosos estamos: Ryan deliberadamente no usa títulos que no se pueden verificar. No es inspector de viviendas: las líneas de alcantarillado son nuestra única especialidad, hechas como se debe, no una partida más en una larga lista de verificación. Y cuando una credencial resultó ser un logo que uno descarga en lugar de un registro que cualquiera puede consultar, la dejó fuera. Un inspector que no infla su propia credencial no va a inflar los hallazgos de su alcantarillado. Esa es toda la empresa, en una sola decisión.',
     'Trust & Verification': 'Confianza y Verificación',
     "Inspections to InterNACHI's Published Sewer Scope Standards of Practice":
       'Inspecciones Conforme a las Normas de Práctica para Inspección de Alcantarillado con Cámara Publicadas por InterNACHI',
@@ -135,7 +135,7 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'Free Service': 'Servicio Gratuito',
     'Independent Sewer Video Review': 'Revisión Independiente de Video de Alcantarillado',
     'No-Jargon Explanation of Findings': 'Explicación de Hallazgos sin Jerga',
-    'Report Reviewed if Provided': 'Informe Revisado si se Proporciona',
+    'Report Reviewed if Provided': 'Revisión del Informe si lo Proporciona',
     '24-Hour Response': 'Respuesta en 24 Horas',
     'Informational Review Only (No Repair Recommendations)': 'Revisión Solo Informativa (Sin Recomendaciones de Reparación)',
     'Submit Video': 'Enviar Video',
@@ -164,8 +164,8 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'Outdoor or indoor cleanout — fastest access method': 'Punto de limpieza exterior o interior: el método de acceso más rápido',
     'Multiple Cleanouts': 'Múltiples Puntos de Limpieza',
     'Additional cleanout inspections performed on-site': 'Inspecciones adicionales de puntos de limpieza realizadas en el sitio',
-    'Roof Vent Access': 'Acceso por la Ventilación del Techo',
-    'Camera entry via plumbing vent on roof': 'Entrada de la cámara por la ventilación de plomería en el techo',
+    'Roof Vent Access': 'Acceso por el Tubo de Venteo del Techo',
+    'Camera entry via plumbing vent on roof': 'Entrada de la cámara por el tubo de venteo de la plomería en el techo',
     'Toilet Pull & Reset': 'Retiro y Reinstalación del Inodoro',
     'Includes new wax ring and supply line — reusing supply lines is the #1 cause of post-inspection leaks':
       'Incluye anillo de cera y línea de suministro nuevos: reutilizar las líneas de suministro es la causa número 1 de fugas después de la inspección',
