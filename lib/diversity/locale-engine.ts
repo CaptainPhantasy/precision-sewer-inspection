@@ -186,7 +186,12 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'First Unit': 'Primera Unidad',
     'Standard inspection rate': 'Tarifa estándar de inspección',
     'Each Additional Unit': 'Cada Unidad Adicional',
-    'When using same access point conditions': 'Cuando se usan las mismas condiciones del punto de acceso',
+    'When using the same access point': 'Cuando se usa el mismo punto de acceso',
+    'Call for Pricing': 'Llame para Precios',
+    'Step 01': 'Paso 01',
+    'Step 02': 'Paso 02',
+    'Step 03': 'Paso 03',
+    'Step 04': 'Paso 04',
     'Prepaid Volume Packages': 'Paquetes Prepago por Volumen',
     'Brokerage and investor packages with cost savings and priority scheduling. Purchase upfront and save on every scope.':
       'Paquetes para inmobiliarias e inversionistas con ahorros y programación prioritaria. Compre por adelantado y ahorre en cada inspección.',

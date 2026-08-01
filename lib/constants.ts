@@ -98,7 +98,7 @@ export const ACCESS_METHODS = [
 
 export const MULTI_UNIT_PRICING = [
   { units: 'First Unit', price: '$159', description: 'Standard inspection rate' },
-  { units: 'Each Additional Unit', price: '$129', description: 'When using same access point conditions' },
+  { units: 'Each Additional Unit', price: '$129', description: 'When using the same access point' },
 ]
 
 export const VOLUME_PACKAGES = [

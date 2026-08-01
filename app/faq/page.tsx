@@ -40,7 +40,7 @@ const additionalFAQs = [
   },
   {
     question: 'What about multi-unit or commercial properties?',
-    answer: 'We offer discounted rates for multi-family properties: $159 for the first unit and $129 for each additional unit when using the same access point conditions. For commercial properties and high-volume needs, contact us for custom pricing.',
+    answer: 'We offer discounted rates for multi-family properties: $159 for the first unit and $129 for each additional unit when using the same access point. For commercial properties and high-volume needs, contact us for custom pricing.',
   },
   {
     question: 'Do you offer any discounts or packages?',

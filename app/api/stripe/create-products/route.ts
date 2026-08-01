@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       },
       {
         name: 'Additional Unit Inspection',
-        description: 'Additional unit inspection for multi-family properties when using same access point conditions.',
+        description: 'Additional unit inspection for multi-family properties when using the same access point.',
         amount: 12900, // $129.00
         key: 'ADDITIONAL_UNIT',
       },
