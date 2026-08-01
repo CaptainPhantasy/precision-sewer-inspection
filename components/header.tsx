@@ -26,20 +26,22 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl 2xl:max-w-[1600px] mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between min-h-20 md:min-h-28">
-          {/* Logo */}
+          {/* Logo — badge straddles the header bottom edge (transparent PNG, no box) */}
           <Link href="/" className="flex items-center gap-3 flex-shrink-0">
-            <div className="relative w-32 h-16 md:w-52 md:h-24 flex-shrink-0">
-              <Image
-                src="/logo.png"
-                alt="Precision Sewer Inspections"
-                fill
-                className="object-contain"
-                priority
-              />
+            <div className="relative w-28 h-20 md:w-40 md:h-28 flex-shrink-0">
+              <div className="absolute inset-x-0 top-0 h-24 md:h-36">
+                <Image
+                  src="/logo.png"
+                  alt="Precision Sewer Inspections"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
             </div>
             <div className="hidden min-[1700px]:flex flex-col">
               <span className="font-heading font-bold text-primary-900 text-xl leading-tight whitespace-nowrap">Precision Sewer</span>
-              <span className="font-heading font-bold text-primary-900 text-xl leading-tight whitespace-nowrap">Inspection</span>
+              <span className="font-heading font-bold text-primary-900 text-xl leading-tight whitespace-nowrap">Inspections</span>
               <span className="text-sm text-gray-600 mt-0.5 whitespace-nowrap">Central Indiana&apos;s Trusted Experts</span>
             </div>
           </Link>
