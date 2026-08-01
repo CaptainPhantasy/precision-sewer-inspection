@@ -22,7 +22,14 @@ const SUPPORTED: Locale[] = ['en', 'es']
 export type LocaleDictionary = Partial<Record<Locale, Record<string, string>>>
 
 /** Seed dictionary — instant, offline coverage of high-visibility strings.
- *  Anything not listed here falls through to the Google Translation proxy. */
+ *  Anything not listed here falls through to the Google Translation proxy.
+ *
+ *  MAINTENANCE WARNING: keys must match the English source string in the
+ *  component BYTE-FOR-BYTE (punctuation, em-dashes, &amp; entities, casing).
+ *  If you edit ANY user-visible English copy, check whether it has a key here
+ *  and update the key to match — otherwise that string silently reverts to
+ *  machine translation and nobody gets an error. ~175 hand-vetted entries as
+ *  of 2026-07-31 (adversarially reviewed). */
 const DEFAULT_DICTIONARY: LocaleDictionary = {
   es: {
     // Header / nav

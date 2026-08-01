@@ -23,14 +23,8 @@ export const metadata: Metadata = {
   title: 'Realtor Sewer Scope Indianapolis | Partner Program for Agents & Brokers',
   description:
     'The sewer scope built for real estate transactions: pre-listing and buyer scope inspections across Central Indiana with priority scheduling and one-business-day reports. Independent — no repairs, no contractor referrals.',
-  keywords: [
-    'realtor sewer scope',
-    'pre-listing',
-    'buyer scope',
-    'same day sewer scope realtor',
-  ],
   openGraph: {
-    title: 'Sewer Scope Partner Program for Real Estate Agents | Precision Sewer Inspection',
+    title: 'Sewer Scope Partner Program for Real Estate Agents | Precision Sewer Inspections',
     description:
       'Pre-listing and buyer sewer scopes across Central Indiana. Priority scheduling, one-business-day reports, and findings that inform without inflating.',
   },
@@ -153,6 +147,7 @@ const REALTOR_FAQS = [
 export default function RealtorsPage() {
   return (
     <div className="min-h-screen flex flex-col">
+      <StructuredData type="LocalBusiness" />
       <StructuredData type="FAQPage" faqs={REALTOR_FAQS} />
       <Header />
       <main className="flex-1">
