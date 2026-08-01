@@ -146,7 +146,6 @@ export const TESTIMONIALS: { quote: string; author: string; role: string; rating
     rating: 5,
   },
 ]
-
 export const CONVERSATIONAL_FAQS = [
   {
     question: 'Should I get a sewer scope on an older home in Indianapolis?',
@@ -205,7 +204,11 @@ export const FAQ_ITEMS = [
   },
   {
     question: 'What equipment do you use?',
-    answer: "We use professional grade high-definition sewer camera systems trusted by industry professionals for accurate pipeline inspections. This ensures crystal-clear video footage so you can see exactly what's happening in your pipes.",
+    answer: "We run three professional camera scope systems, matched to the job. Our high-end system carries an electronic locator and sonde transmitter — that lets us pinpoint the camera's exact underground location and depth from the surface. Every system records high-definition video for your report.",
+  },
+  {
+    question: 'Do you offer hydro jetting?',
+    answer: 'Yes — as preparation for a proper inspection. Roots, grease, and scale can stop the camera before it reaches the real problem, so when a line needs it, we jet it first. That way your scope covers the whole pipe, not just the first few feet. Jetting is priced with your inspection.',
   },
 ]
 

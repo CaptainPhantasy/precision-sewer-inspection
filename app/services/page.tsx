@@ -185,6 +185,42 @@ export default function ServicesPage() {
           </div>
         </section>
 
+        {/* Secondary Services */}
+        <section className="section-padding bg-gray-50">
+          <div className="max-w-6xl mx-auto px-4">
+            <SectionHeading
+              title="Secondary Services"
+              description="Supporting work that makes your inspection better — offered alongside the scope, never instead of it."
+            />
+            <div className="grid md:grid-cols-2 gap-8 mt-10">
+              <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center">
+                <div className="relative w-40 h-40 mb-6">
+                  <Image src="/images/jetting-logo.png" alt="Precision Sewer Inspections hydro jetting" fill className="object-contain" />
+                </div>
+                <h3 className="text-2xl font-heading font-bold text-gray-900 mb-2"><T>Hydro Jetting</T></h3>
+                <p className="text-primary-700 font-semibold mb-4"><T>Clears the way for a proper scope</T></p>
+                <p className="text-gray-600 mb-4">
+                  <T>Roots, grease, and scale can stop the camera before it reaches the real problem. When a line needs it, we jet it first — so your inspection covers the whole pipe, not just the first few feet.</T>
+                </p>
+                <p className="text-gray-900 font-bold"><T>Priced with your inspection</T></p>
+              </div>
+              <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center">
+                <div className="relative w-40 h-40 mb-6">
+                  <Image src="/images/pls_logo.png" alt="Precision Location Services private utility locating" fill className="object-contain" />
+                </div>
+                <h3 className="text-2xl font-heading font-bold text-gray-900 mb-2"><T>Private Utility Locating</T></h3>
+                <p className="text-primary-700 font-semibold mb-4"><T>Electronic line tracing &amp; depth measurement</T></p>
+                <p className="text-gray-600 mb-4">
+                  <T>Dog fence wires, irrigation lines, and other private utilities — located and marked before anyone digs.</T>
+                </p>
+                <Link href="/locating" className="text-primary-700 font-bold hover:underline">
+                  <T>Learn more</T> →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="section-padding bg-primary-900 text-white">
           <div className="max-w-3xl mx-auto text-center">
