@@ -173,33 +173,6 @@ export const CONVERSATIONAL_FAQS = [
   },
 ]
 
-export const CONVERSATIONAL_FAQS = [
-  {
-    question: 'Should I get a sewer scope on an older home in Indianapolis?',
-    answer: "Yes—especially in Central Indiana, where many older homes still have clay tile or cast iron lines that deteriorate over decades. A $159 scope shows you the exact condition before you're responsible for it.",
-  },
-  {
-    question: 'How long does a sewer scope inspection take?',
-    answer: 'Most inspections take 30-60 minutes on-site. Your HD video and written report arrive within one business day, with same-day delivery available if you are on a deadline.',
-  },
-  {
-    question: 'What does a sewer camera inspection show?',
-    answer: 'The camera shows the inside of your sewer line in HD: roots, cracks, bellies, offsets, corrosion, and blockages, with footage-counter readings so you know exactly where each issue sits. You see the same video we do—no interpretations you cannot verify.',
-  },
-  {
-    question: 'How much does a sewer scope inspection cost in Indiana?',
-    answer: 'Our standard inspection is $159 with cleanout access, including HD video and a written report within one business day. Alternate access methods cost a bit more (roof vent +$50, toilet pull +$65, crawl space +$30), and we confirm all pricing before work begins.',
-  },
-  {
-    question: 'How to tell if a sewer line has tree roots?',
-    answer: 'Recurring slow drains, gurgling, and backups that return after clearing are the usual signs—especially in yards with mature trees. Only a camera shows roots for certain: they appear as fibrous masses intruding at the joints of the line.',
-  },
-  {
-    question: 'Does a standard home inspection cover the sewer line?',
-    answer: "No—general home inspectors do not scope sewer lines; the underground lateral is outside their standard scope. That is exactly why a dedicated sewer scope matters: it is the one major system a standard inspection never sees.",
-  },
-]
-
 export const FAQ_ITEMS = [
   {
     question: 'How much does a sewer scope cost in Indiana?',
