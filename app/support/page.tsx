@@ -77,7 +77,7 @@ export default function SupportPage() {
                   <T>Terms of Service</T>
                 </h2>
                 <p className="text-gray-600 mb-8">
-                  <T>Last updated: March 2026. By booking an inspection with Precision Sewer Inspection LLC (d/b/a Precision Sewer Inspections), you agree to these terms.</T>
+                  <T>Last updated: March 2026. By booking an inspection with Precision Sewer Inspection LLC, operating as Precision Sewer Inspections, you agree to these terms.</T>
                 </p>
 
                 {/* Section 1 */}

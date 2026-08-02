@@ -42,7 +42,7 @@ export default function PrivacyPage() {
               </p>
 
               <p className="text-gray-700 mb-8">
-                <T>Precision Sewer Inspection LLC, doing business as Precision Sewer Inspections ("we," "us," or "our") operates the website precisionsewerinspections.com and provides sewer inspection services in Central Indiana. This Privacy Policy explains what information we collect, how we use it, and your choices regarding that information.</T>
+                <T>Precision Sewer Inspection LLC, operating as Precision Sewer Inspections ("we," "us," or "our") operates the website precisionsewerinspections.com and provides sewer inspection services in Central Indiana. This Privacy Policy explains what information we collect, how we use it, and your choices regarding that information.</T>
               </p>
 
               {/* Section 1 */}
