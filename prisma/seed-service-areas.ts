@@ -256,7 +256,7 @@ export const serviceOfferings = [
       'HD video camera inspection',
       'Real-time video feed',
       'Written inspection report',
-      'Video recording on USB',
+      'Video recording via secure download link',
       'Problem area photography',
       'Location mapping of issues'
     ],
