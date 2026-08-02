@@ -105,9 +105,9 @@ export default function ServiceCard({
           <span>~{service.avgDuration} minutes</span>
         </div>
 
-        {/* CTA */}
+        {/* CTA — booking form lives at /contact (there is no /book route) */}
         <CTAButton
-          href={hrefOverride ?? (isAvailable ? `/book?service=${service.slug}${areaSlug ? `&area=${areaSlug}` : ''}` : '#')}
+          href={hrefOverride ?? (isAvailable ? '/contact' : '#')}
           variant={service.isFeatured ? 'primary' : 'outline'}
           className="w-full"
           disabled={!isAvailable}
