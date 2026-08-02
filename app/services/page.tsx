@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: 'Sewer Scope Services Indianapolis | Residential, Commercial & Real Estate',
   description: 'Professional sewer inspection services in Indianapolis. Residential sewer scope from $159, commercial inspections, and real estate partner programs. HD video, one-business-day reports. Book today.',
   openGraph: {
-    title: 'Sewer Inspection Services | Precision Sewer Inspection Indianapolis',
+    title: 'Sewer Inspection Services | Precision Sewer Inspections Indianapolis',
     description: 'Residential, commercial, and real estate sewer scope inspections. HD video, one-business-day delivery, InterNACHI member.',
   },
   alternates: {
@@ -65,14 +65,13 @@ const services = [
     description: 'Fast, reliable inspections designed for real estate professionals. We understand the time pressure of transactions and deliver when you need it.',
     features: [
       'Priority Scheduling',
-      'Same-Day Delivery Available',
+      'One-Business-Day Reports',
       'Direct Inspector Access',
       'Agent-Friendly Reports',
       'Quick Turnaround',
-      'Repeat Client Discounts',
+      'Multi-Property Volume Pricing',
     ],
     price: 'Partner Pricing',
-    image: '/images/tech_male.png',
   },
 ]
 
@@ -163,23 +162,61 @@ export default function ServicesPage() {
                       </ul>
                       <div className="flex items-center gap-4">
                         <span className="text-2xl font-bold text-gray-900">{service?.price ?? ''}</span>
-                        <Link href="/contact" className="btn-primary">
-                          <T>{service?.price === 'Custom Quote' ? 'Get Quote' : 'Book Now'}</T>
+                        <Link href={service?.id === 'real-estate' ? '/realtors' : '/contact'} className="btn-primary">
+                          <T>{service?.id === 'real-estate' ? 'Partner With Us' : service?.price === 'Custom Quote' ? 'Get Quote' : 'Book Now'}</T>
                           <ArrowRight className="w-4 h-4" />
                         </Link>
                       </div>
                     </div>
-                    <div className={`relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-                      <Image
-                        src={service?.image ?? ''}
-                        alt={service?.title ?? 'Service'}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
+                    {service?.image && (
+                      <div className={`relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
+                        <Image
+                          src={service.image}
+                          alt={service?.title ?? 'Service'}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
                   </div>
                 )
               })}
+            </div>
+          </div>
+        </section>
+
+        {/* Secondary Services */}
+        <section className="section-padding bg-gray-50">
+          <div className="max-w-6xl mx-auto px-4">
+            <SectionHeading
+              title="Secondary Services"
+              description="Supporting work that makes your inspection better — offered alongside the scope, never instead of it."
+            />
+            <div className="grid md:grid-cols-2 gap-8 mt-10">
+              <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center">
+                <div className="relative w-40 h-40 mb-6">
+                  <Image src="/images/jetting-logo.png" alt="Precision Sewer Inspections hydro jetting" fill className="object-contain" />
+                </div>
+                <h3 className="text-2xl font-heading font-bold text-gray-900 mb-2"><T>Hydro Jetting</T></h3>
+                <p className="text-primary-700 font-semibold mb-4"><T>Clears the way for a proper scope</T></p>
+                <p className="text-gray-600 mb-4">
+                  <T>Roots, grease, and scale can stop the camera before it reaches the real problem. When a line needs it, we jet it first — so your inspection covers the whole pipe, not just the first few feet.</T>
+                </p>
+                <p className="text-gray-900 font-bold"><T>Priced with your inspection</T></p>
+              </div>
+              <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center">
+                <div className="relative w-40 h-40 mb-6">
+                  <Image src="/images/pls_logo.png" alt="Precision Location Services private utility locating" fill className="object-contain" />
+                </div>
+                <h3 className="text-2xl font-heading font-bold text-gray-900 mb-2"><T>Private Utility Locating</T></h3>
+                <p className="text-primary-700 font-semibold mb-4"><T>Electronic line tracing &amp; depth measurement</T></p>
+                <p className="text-gray-600 mb-4">
+                  <T>Dog fence wires, irrigation lines, and other private utilities — located and marked before anyone digs.</T>
+                </p>
+                <Link href="/locating" className="text-primary-700 font-bold hover:underline">
+                  <T>Learn more</T> →
+                </Link>
+              </div>
             </div>
           </div>
         </section>

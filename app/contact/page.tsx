@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: 'Book Sewer Inspection Indianapolis | Schedule Online in 60 Seconds',
   description: 'Book your sewer scope inspection in Indianapolis online. Same-day appointments available. Call (317) 620-3858 or fill out our quick form. Serving all Central Indiana.',
   openGraph: {
-    title: 'Book Your Sewer Inspection | Precision Sewer Inspection Indianapolis',
+    title: 'Book Your Sewer Inspection | Precision Sewer Inspections Indianapolis',
     description: 'Schedule your sewer scope inspection online in 60 seconds. Same-day available. Serving Indianapolis and Central Indiana.',
   },
   alternates: {

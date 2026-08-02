@@ -39,7 +39,7 @@ export default function WhyChooseUs() {
         <div className="section-head">
           <span className="eyebrow"><T>Why Choose Us</T></span>
           <h2 className="psi"><span className="rule"></span><T>The Difference is in the Details</T></h2>
-          <p className="lede"><T>We built Precision Sewer Inspection around one simple principle: give people the truth, and they'll make smart decisions.</T></p>
+          <p className="lede"><T>We built Precision Sewer Inspections around one simple principle: give people the truth, and they'll make smart decisions.</T></p>
         </div>
 
         <div ref={ref} className="find-grid">

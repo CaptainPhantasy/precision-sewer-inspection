@@ -124,7 +124,7 @@ export default function ServiceAreaHero({
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
               <Image
                 src="/images/tech_hero.jpg"
-                alt={t('Precision Sewer Inspection technician with professional equipment')}
+                alt={t('Precision Sewer Inspections technician with professional equipment')}
                 fill
                 className="object-cover"
                 priority

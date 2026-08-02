@@ -26,7 +26,7 @@ export default function Footer() {
 									Precision
 								</span>
 								<span className="block text-xs text-primary-300 -mt-1">
-									Sewer Inspection
+									Sewer Inspections
 								</span>
 							</div>
 						</Link>
@@ -78,6 +78,14 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
+									href="/realtors"
+									className="text-primary-200 hover:text-white transition-colors text-sm"
+								>
+									<T>For Realtors</T>
+								</Link>
+							</li>
+							<li>
+								<Link
 									href="/pricing"
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
@@ -121,14 +129,6 @@ export default function Footer() {
 									className="text-primary-200 hover:text-white transition-colors text-sm"
 								>
 									<T>Contact</T>
-								</Link>
-							</li>
-							<li>
-								<Link
-									href="/status"
-									className="text-primary-200 hover:text-white transition-colors text-sm"
-								>
-									<T>Track Your Inspection</T>
 								</Link>
 							</li>
 							<li>

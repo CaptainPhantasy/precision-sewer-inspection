@@ -70,7 +70,7 @@ export const metadata: Metadata = {
   title: 'Sewer Scope Cost Indianapolis | $159 Standard',
   description: 'Sewer inspection pricing in Indianapolis. Standard rate $159. Multi-unit discounts, volume packages for investors. Transparent pricing, no hidden fees.',
   openGraph: {
-    title: 'Sewer Scope Pricing | Indianapolis | Precision Sewer Inspection',
+    title: 'Sewer Scope Pricing | Indianapolis | Precision Sewer Inspections',
     description: 'Transparent sewer inspection pricing. Standard rate $159. Volume packages available. No surprises.',
   },
   alternates: {
@@ -117,7 +117,7 @@ export default function PricingPage() {
                   <h3 className="text-xl font-bold text-gray-900 mb-1"><T>{card.name}</T></h3>
                   <p className="text-sm text-gray-500 mb-4"><T>{card.description}</T></p>
                   <div className="mb-6">
-                    <span className="text-5xl font-heading font-bold text-gray-900">{card.price}</span>
+                    <span className="text-5xl font-heading font-bold text-gray-900"><T>{card.price}</T></span>
                     {card.priceLabel && <span className="text-gray-500 block text-sm mt-1"><T>{card.priceLabel}</T></span>}
                   </div>
                   <ul className="space-y-3 mb-8 text-left">
@@ -165,7 +165,7 @@ export default function PricingPage() {
                     <p className="text-sm text-gray-500"><T>{method?.description ?? ''}</T></p>
                   </div>
                   <div className="text-right">
-                    <span className="text-2xl font-bold text-primary-700">{method?.price ?? ''}</span>
+                    <span className="text-2xl font-bold text-primary-700"><T>{method?.price ?? ''}</T></span>
                   </div>
                 </div>
               ))}
@@ -221,7 +221,7 @@ export default function PricingPage() {
                     <p className="text-sm text-gray-500"><T>{item?.description ?? ''}</T></p>
                   </div>
                   <div className="text-right">
-                    <span className="text-2xl font-bold text-primary-700">{item?.price ?? ''}</span>
+                    <span className="text-2xl font-bold text-primary-700"><T>{item?.price ?? ''}</T></span>
                   </div>
                 </div>
               ))}
@@ -251,7 +251,7 @@ export default function PricingPage() {
                   <h3 className="text-lg font-bold text-gray-900 mb-2"><T>{pkg?.name ?? ''}</T></h3>
                   <p className="text-sm text-gray-500 mb-4"><T>{pkg?.description ?? ''}</T></p>
                   <div className="mb-4">
-                    <span className="text-xl font-bold text-primary-700">{pkg?.price ?? ''}</span>
+                    <span className="text-xl font-bold text-primary-700"><T>{pkg?.price ?? ''}</T></span>
                   </div>
                   <ul className="space-y-2">
                     {pkg?.features?.map((feature, i) => (

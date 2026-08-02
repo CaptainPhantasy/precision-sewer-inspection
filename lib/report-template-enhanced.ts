@@ -758,7 +758,7 @@ function renderVerification(data: EnhancedReportData): string {
         <div class="verification-item">
           <span class="verification-label">Inspected By</span>
           <span class="verification-value">${data.technician.name}</span>
-          <span class="verification-sub">Certified Sewer Inspector</span>
+          <span class="verification-sub">InterNACHI Member</span>
         </div>
         <div class="verification-item">
           <span class="verification-label">Report Generated</span>
@@ -790,7 +790,7 @@ function renderDisclaimers(data: EnhancedReportData): string {
         The inspection is limited to the accessible portions of the sewer line from the point of entry.
         Hidden defects beyond camera reach, behind obstructions, or below standing water are not covered
         by this inspection. This report does not constitute a warranty or guarantee of the sewer line's
-        future condition. Precision Sewer Inspection is an inspection-only company and does not perform
+        future condition. Precision Sewer Inspections is an inspection-only company and does not perform
         repairs, ensuring complete objectivity in our assessments.
       </p>
       ${hasAcoustic ? `
@@ -821,7 +821,7 @@ function renderFooter(data: EnhancedReportData): string {
         ? `<img src="${logoDataUrl}" alt="PSI" class="footer-logo-image" />`
         : `<div class="footer-logo-circle"><span class="footer-logo-text">PSI</span></div>`}
       <div class="footer-company">
-        <span class="footer-company-name">Precision Sewer Inspection</span>
+        <span class="footer-company-name">Precision Sewer Inspections</span>
         <span class="footer-company-address">Nashville, IN 47448</span>
       </div>
     </div>
@@ -837,7 +837,7 @@ function renderFooter(data: EnhancedReportData): string {
       <span>•</span>
       <span>Generated ${format(new Date(), "MMMM d, yyyy")}</span>
       <span>•</span>
-      <span>© ${new Date().getFullYear()} Precision Sewer Inspection. All rights reserved.</span>
+      <span>© ${new Date().getFullYear()} Precision Sewer Inspections. All rights reserved.</span>
     </div>
   </div>`;
 }
@@ -1661,7 +1661,7 @@ export function generateEnhancedReportHTML(
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sewer Inspection Report #${data.inspectionNumber} — Precision Sewer Inspection</title>
+  <title>Sewer Inspection Report #${data.inspectionNumber} — Precision Sewer Inspections</title>
   ${getStylesheet()}
 </head>
 <body>

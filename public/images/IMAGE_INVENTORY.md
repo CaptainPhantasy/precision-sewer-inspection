@@ -1,4 +1,4 @@
-# Precision Sewer Inspection - Website Image Inventory
+# Precision Sewer Inspections - Website Image Inventory
 
 **Location:** `/home/ubuntu/precision_sewer_inspection/nextjs_space/public/images/`
 
@@ -8,7 +8,7 @@
 
 ## Image Summary
 
-All 10 professional images have been successfully acquired and saved for the Precision Sewer Inspection website. Images are optimized for web use and meet the specified aspect ratio requirements.
+All 10 professional images have been successfully acquired and saved for the Precision Sewer Inspections website. Images are optimized for web use and meet the specified aspect ratio requirements.
 
 ---
 

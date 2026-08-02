@@ -2,7 +2,7 @@
 title: "Buying a Home? Why You Need a Sewer Inspection Before Closing"
 description: "Don't skip the sewer scope during your home purchase. Here's why it could save you thousands."
 date: "2026-02-20"
-author: "Precision Sewer Inspection"
+author: "Precision Sewer Inspections"
 category: "Real Estate"
 readTime: "6 min read"
 ---
@@ -51,7 +51,7 @@ A sewer inspection doesn't just protect you — it gives you leverage. If the in
 
 When choosing a sewer inspection company, independence is critical. Some companies that offer sewer inspections also do sewer repairs. This creates an obvious conflict of interest — they have a financial incentive to find problems and recommend their own repair services.
 
-At Precision Sewer Inspection, we are strictly an inspection company. We sell no repairs on anything we inspect, we don't recommend contractors, and we don't have any financial interest in the outcome of your inspection. You get an honest, unbiased assessment every time.
+At Precision Sewer Inspections, we are strictly an inspection company. We sell no repairs on anything we inspect, we don't recommend contractors, and we don't have any financial interest in the outcome of your inspection. You get an honest, unbiased assessment every time.
 
 ## What Your Real Estate Agent Should Know
 
@@ -63,4 +63,4 @@ We work with real estate professionals throughout Central Indiana and offer prio
 
 A home is likely the largest purchase you'll ever make. Spending $159 to inspect the sewer line is one of the smartest investments in the entire home-buying process. It takes less than an hour, it's completely non-invasive, and it could save you tens of thousands of dollars.
 
-Precision Sewer Inspection serves all of Central Indiana with professional, independent sewer scope inspections. [Book your pre-purchase inspection today](/contact) or [learn more about our services](/services). Your future self will thank you.
+Precision Sewer Inspections serves all of Central Indiana with professional, independent sewer scope inspections. [Book your pre-purchase inspection today](/contact) or [learn more about our services](/services). Your future self will thank you.

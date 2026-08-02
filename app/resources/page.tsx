@@ -10,9 +10,9 @@ import { T } from '@/components/diversity/diversity-provider'
 
 export const metadata: Metadata = {
   title: 'Sewer Inspection Resources & Education',
-  description: 'Learn about sewer inspections, common pipe problems, maintenance tips, and what to expect during a professional sewer scope. Expert guides from Precision Sewer Inspection.',
+  description: 'Learn about sewer inspections, common pipe problems, maintenance tips, and what to expect during a professional sewer scope. Expert guides from Precision Sewer Inspections.',
   openGraph: {
-    title: 'Sewer Inspection Resources | Precision Sewer Inspection',
+    title: 'Sewer Inspection Resources | Precision Sewer Inspections',
     description: 'Expert guides on sewer inspections, common problems, and maintenance tips for Central Indiana homeowners.',
   },
   alternates: {

@@ -63,7 +63,7 @@ export default function HowItWorks() {
                   className="step"
                 >
                   <div className="num-block">
-                    <span className="stepN">Step 0{step?.step ?? index + 1}</span>
+                    <span className="stepN"><T>{`Step 0${step?.step ?? index + 1}`}</T></span>
                     {step?.step ?? index + 1}
                   </div>
                   

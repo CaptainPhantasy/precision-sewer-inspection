@@ -6,7 +6,7 @@ import { COMPANY_INFO } from '@/lib/constants'
 import { T } from '@/components/diversity/diversity-provider'
 
 export const metadata: Metadata = {
-  title: 'Support & Terms of Service | Precision Sewer Inspection',
+  title: 'Support & Terms of Service | Precision Sewer Inspections',
   description: 'Get help with your sewer inspection or review our terms of service. Contact support@precisionsewerinspections.com for assistance.',
   alternates: {
     canonical: '/support',
@@ -77,7 +77,7 @@ export default function SupportPage() {
                   <T>Terms of Service</T>
                 </h2>
                 <p className="text-gray-600 mb-8">
-                  <T>Last updated: March 2026. By booking an inspection with Precision Sewer Inspection, you agree to these terms.</T>
+                  <T>Last updated: March 2026. By booking an inspection with Precision Sewer Inspection LLC, operating as Precision Sewer Inspections, you agree to these terms.</T>
                 </p>
 
                 {/* Section 1 */}
@@ -87,7 +87,7 @@ export default function SupportPage() {
                     <T>1. Scope of Services</T>
                   </h3>
                   <p className="text-gray-700 mb-3">
-                    <T>Precision Sewer Inspection provides video camera inspection services for residential and commercial sewer lines. Our services include:</T>
+                    <T>Precision Sewer Inspections provides video camera inspection services for residential and commercial sewer lines. Our services include:</T>
                   </p>
                   <ul className="list-disc pl-6 text-gray-700 space-y-2">
                     <li><T>HD video recording of sewer line interior</T></li>
@@ -174,7 +174,7 @@ export default function SupportPage() {
                     <T>6. Liability</T>
                   </h3>
                   <p className="text-gray-700 mb-3">
-                    <T>Precision Sewer Inspection carries general liability insurance. Our liability is limited to the cost of the inspection service. We are not liable for:</T>
+                    <T>Precision Sewer Inspection LLC carries general liability insurance. Our liability is limited to the cost of the inspection service. We are not liable for:</T>
                   </p>
                   <ul className="list-disc pl-6 text-gray-700 space-y-2">
                     <li><T>Decisions made based on our findings (repair costs, purchase decisions, etc.)</T></li>

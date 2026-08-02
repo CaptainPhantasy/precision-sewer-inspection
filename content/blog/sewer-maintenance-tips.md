@@ -2,7 +2,7 @@
 title: "Sewer Line Maintenance: 7 Tips Every Homeowner Should Know"
 description: "Simple preventive measures to keep your sewer line healthy and avoid costly emergency repairs."
 date: "2026-02-28"
-author: "Precision Sewer Inspection"
+author: "Precision Sewer Inspections"
 category: "Maintenance"
 readTime: "5 min read"
 ---
@@ -69,4 +69,4 @@ Keep your inspection videos and reports in a safe place. They're part of your ho
 
 ## Take Action Today
 
-The best time to inspect your sewer line is before you have a problem. Precision Sewer Inspection serves all of Central Indiana with professional, unbiased sewer scope inspections starting at $159. [Book your inspection today](/contact) and get the peace of mind that comes with knowing exactly what's happening beneath your property.
+The best time to inspect your sewer line is before you have a problem. Precision Sewer Inspections serves all of Central Indiana with professional, unbiased sewer scope inspections starting at $159. [Book your inspection today](/contact) and get the peace of mind that comes with knowing exactly what's happening beneath your property.

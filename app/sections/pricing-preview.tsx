@@ -98,8 +98,7 @@ export default function PricingPreview() {
               <div className="desc"><T>{card.description}</T></div>
               
               <div className="price">
-                <span className="amt" style={card.price === 'Call for Pricing' ? { fontSize: '24px' } : undefined}>
-                  {card.price}
+                <span className="amt" style={card.price === 'Call for Pricing' ? { fontSize: '24px' } : undefined}><T>{card.price}</T>
                 </span>
                 {card.priceLabel && <span className="unit"><T>{card.priceLabel}</T></span>}
               </div>

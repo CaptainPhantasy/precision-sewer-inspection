@@ -57,7 +57,9 @@ export default function StructuredData({ type, pageTitle, pageDescription, bread
     ],
     image: `${baseUrl}/logo.png`,
     logo: `${baseUrl}/logo.png`,
-    sameAs: [],
+    sameAs: [
+      'https://www.bbb.org/us/in/indianapolis/profile/sewer-inspection/precision-sewer-inspection-llc-0382-90068319',
+    ],
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'Sewer Inspection Services',

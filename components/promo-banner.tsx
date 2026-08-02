@@ -50,7 +50,7 @@ export function clearPromoDiscount() {
 }
 
 // Routes where the promo banner should NOT appear
-const HIDDEN_ROUTES = ['/technician', '/admin', '/status', '/download']
+const HIDDEN_ROUTES = ['/technician', '/admin']
 
 export default function PromoBanner() {
   const pathname = usePathname()
