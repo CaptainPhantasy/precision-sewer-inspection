@@ -277,9 +277,6 @@ Booked via: precisionsewerinspections.com
           dateTime: endDate.toISOString(),
           timeZone: TIMEZONE,
         },
-        attendees: [
-          { email: booking.customerEmail, displayName: booking.customerName },
-        ],
         reminders: {
           useDefault: false,
           overrides: [
