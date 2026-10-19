@@ -13,8 +13,8 @@ const features = [
   },
   {
     icon: HandCoins,
-    title: 'No Upselling, Ever',
-    description: "We're inspectors, not contractors. We sell no sewer repairs — so we have nothing to gain by finding problems that aren't there.",
+    title: 'Inspection Findings First',
+    description: "Our findings reflect what we observe, whether or not you choose additional service. Guidance is available when you ask, and any work is separately quoted and approved.",
   },
   {
     icon: Clock,
@@ -63,7 +63,6 @@ export default function WhyChooseUs() {
                       </span>
                     )}
                   </div>
-                  <span className="pill"><T>Observed</T></span>
                 </div>
                 <p><T>{feature?.description ?? ''}</T></p>
               </motion.article>

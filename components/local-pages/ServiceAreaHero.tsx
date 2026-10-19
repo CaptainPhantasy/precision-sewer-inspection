@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, ShieldCheck } from 'lucide-react'
-import AnimatedCounter from '@/components/animated-counter'
+
 import { T, useDiversity } from '@/components/diversity/diversity-provider'
 import { MapPin, Clock, DollarSign } from 'lucide-react'
 
@@ -16,10 +16,10 @@ interface ServiceAreaHeroProps {
 }
 
 const trustBadges = [
-  { icon: ShieldCheck, value: '100', label: 'No Upselling', suffix: '%' },
+  { icon: ShieldCheck, value: 'HD', label: 'Video Evidence', suffix: '' },
   { icon: Clock, value: '1', label: 'Business-Day Reports', suffix: '' },
-  { icon: DollarSign, value: '0', label: 'Hidden Fees', suffix: '' },
-  { icon: MapPin, value: '10', label: 'Indiana Areas Served', suffix: '+' },
+  { icon: DollarSign, value: '$159', label: 'Standard Cleanout Scope', suffix: '' },
+  { icon: MapPin, value: '13', label: 'Local Service Areas', suffix: '' },
 ]
 
 export default function ServiceAreaHero({
@@ -34,17 +34,6 @@ export default function ServiceAreaHero({
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-[url('/images/hero-pattern.svg')] bg-repeat" />
-      </div>
-
-      {/* Background Image */}
-      <div className="absolute inset-0 opacity-20">
-        <Image
-          src="/images/hero_equipment.jpg"
-          alt={t('Sewer inspection equipment')}
-          fill
-          className="object-cover"
-          priority
-        />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24 lg:py-32">
@@ -64,10 +53,10 @@ export default function ServiceAreaHero({
             </h1>
             
             <p className="text-xl text-primary-200 mb-4">
-              <T>Before it costs you</T> <span className="text-white font-bold">thousands</span>
+              <T>Clear evidence for your next decision.</T>
             </p>
             
-            <p className="text-lg text-primary-300 mb-8 max-w-lg">
+            <p className="text-lg text-primary-200 mb-8 max-w-lg">
               {description || <><T>Expert sewer camera inspections serving</T> {cityName} <T>and surrounding communities. HD video reports with honest answers.</T></>}
             </p>
 
@@ -77,7 +66,7 @@ export default function ServiceAreaHero({
                 href="/contact" 
                 className="btn-cta"
               >
-                <T>Book Inspection — 60 Seconds</T>
+                <T>Book an Inspection</T>
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a 
@@ -102,12 +91,9 @@ export default function ServiceAreaHero({
                   >
                     {IconComponent && <IconComponent className="w-5 h-5 text-accent-400 mx-auto mb-2" />}
                     <div className="text-2xl font-bold text-white">
-                      <AnimatedCounter 
-                        end={Number(badge?.value ?? 0)} 
-                        suffix={badge?.suffix ?? ''} 
-                      />
+                      {badge.value}
                     </div>
-                    <div className="text-xs text-primary-300"><T>{badge?.label ?? ''}</T></div>
+                    <div className="text-xs text-primary-100"><T>{badge?.label ?? ''}</T></div>
                   </motion.div>
                 )
               })}
@@ -124,7 +110,7 @@ export default function ServiceAreaHero({
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
               <Image
                 src="/images/tech_hero.jpg"
-                alt={t('Precision Sewer Inspections technician with professional equipment')}
+                alt={t('Sewer camera inspection')}
                 fill
                 className="object-cover"
                 priority
@@ -137,7 +123,6 @@ export default function ServiceAreaHero({
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">InterNACHI Member</p>
-                    <p className="text-sm text-gray-600"><T>Fully Insured</T></p>
                   </div>
                 </div>
               </div>

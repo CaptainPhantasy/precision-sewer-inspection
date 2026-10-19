@@ -47,11 +47,11 @@ A sewer inspection doesn't just protect you — it gives you leverage. If the in
 
 **Proceed with confidence:** If the inspection shows a healthy sewer line, you close knowing you won't face any sewer surprises.
 
-## Why Independence Matters
+## Why Clear Findings and Customer Choice Matter
 
-When choosing a sewer inspection company, independence is critical. Some companies that offer sewer inspections also do sewer repairs. This creates an obvious conflict of interest — they have a financial incentive to find problems and recommend their own repair services.
+Choose an inspection company that shows you the evidence, explains the limitations, and clearly discloses any relationship with a service provider. Findings should describe the observed condition, with any service proposal presented separately.
 
-At Precision Sewer Inspections, we are strictly an inspection company. We sell no repairs on anything we inspect, we don't recommend contractors, and we don't have any financial interest in the outcome of your inspection. You get an honest, unbiased assessment every time.
+Precision Sewer Inspections and Indiana Drain Company are sister companies under shared ownership. PSI focuses on inspection and reporting. If you ask for recommendations, we can discuss practical options, including separately quoted IDC services where appropriate. You are free to use any provider, and your findings do not depend on buying additional work. [Learn how inspection and service work together](/inspection-and-service).
 
 ## What Your Real Estate Agent Should Know
 
@@ -63,4 +63,4 @@ We work with real estate professionals throughout Central Indiana and offer prio
 
 A home is likely the largest purchase you'll ever make. Spending $159 to inspect the sewer line is one of the smartest investments in the entire home-buying process. It takes less than an hour, it's completely non-invasive, and it could save you tens of thousands of dollars.
 
-Precision Sewer Inspections serves all of Central Indiana with professional, independent sewer scope inspections. [Book your pre-purchase inspection today](/contact) or [learn more about our services](/services). Your future self will thank you.
+Precision Sewer Inspections serves all of Central Indiana with professional, evidence-based sewer scope inspections. [Book your pre-purchase inspection today](/contact) or [learn more about our services](/services). Your future self will thank you.

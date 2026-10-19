@@ -16,7 +16,7 @@ import { emitDiversityEvent } from './telemetry'
 export type Locale = 'en' | 'es'
 
 export const LOCALE_STORAGE_KEY = 'psi-locale'
-const CACHE_STORAGE_KEY = 'psi-locale-cache'
+const CACHE_STORAGE_KEY = 'psi-locale-cache-2026-09-psi-idc'
 const SUPPORTED: Locale[] = ['en', 'es']
 
 export type LocaleDictionary = Partial<Record<Locale, Record<string, string>>>
@@ -32,6 +32,54 @@ export type LocaleDictionary = Partial<Record<Locale, Record<string, string>>>
  *  of 2026-07-31 (adversarially reviewed). */
 const DEFAULT_DICTIONARY: LocaleDictionary = {
   es: {
+    "Standard Sewer Scope": "Inspección estándar de alcantarillado",
+    "Standard Inspection": "Inspección estándar",
+    "One-Business-Day Response": "Respuesta en un día hábil",
+    "No Purchase Required": "No es necesario comprar",
+    "Can you help with cleaning, repairs, or next-step recommendations?": "¿Pueden ayudar con limpieza, reparaciones o recomendaciones sobre los próximos pasos?",
+    "PSI provides inspections, clear reporting, and separately approved hydro jetting. Our sister company, Indiana Drain Company, is the service arm of our shared team, offering cleaning, maintenance, and qualifying repair services. Contractor recommendations are available only when you ask and follow your needs: if IDC is not the right fit, it will not be our recommendation. You can choose IDC, another provider, or no additional service. Your findings do not depend on that choice.": "PSI ofrece inspecciones, informes claros e hidrojetado aprobado por separado. Nuestra empresa hermana, Indiana Drain Company, es el área de servicios de nuestro equipo y ofrece limpieza, mantenimiento y reparaciones dentro de su alcance. Solo recomendamos contratistas cuando usted lo solicita y según sus necesidades: si IDC no es la opción adecuada, no la recomendaremos. Puede elegir IDC, otro proveedor o ningún servicio adicional. Los resultados de su inspección no dependen de esa decisión.",
+    "What if cleaning is needed to complete my inspection?": "¿Qué sucede si hace falta limpiar para completar la inspección?",
+    "If an obstruction limits the camera, we explain what is visible and whether cleaning or hydro jetting could help. We explain the scope and price separately and proceed only with your approval. If you decline, we document the accessible portions and the inspection limitation. Cleaning does not guarantee that every section can be reached or that an underlying defect is repaired.": "Si una obstrucción limita la cámara, explicamos lo que se puede ver y si la limpieza o el hidrojetado podrían ayudar. Explicamos el alcance y el precio por separado y procedemos solo con su aprobación. Si no acepta, documentamos las partes accesibles y la limitación de la inspección. La limpieza no garantiza el acceso a todos los tramos ni la reparación de un defecto subyacente.",
+    "Clear answers. A clearer way forward.": "Respuestas claras. Un camino más claro para seguir.",
+    "Start with PSI for clear findings.": "Comience con PSI para obtener resultados claros.",
+    "Turn to IDC for the next step.": "Acuda a IDC para el siguiente paso.",
+    "Precision Sewer Inspections and Indiana Drain Company are sister companies under shared ownership. Together, we connect careful inspection and clear reporting with practical help when you want it.": "Precision Sewer Inspections e Indiana Drain Company son empresas hermanas que comparten propietarios. Juntas conectamos una inspección cuidadosa e informes claros con ayuda práctica cuando usted la desea.",
+    "Residential and commercial drain and sewer inspections, household and pool pump inspections, and other ordinary liquid lines within our equipment and expertise. PSI also offers separately approved hydro jetting, written reports, and free video second opinions. We explain what we observe and what we cannot confirm. Highly specialized systems require a suitable specialist.": "Inspecciones de drenajes y alcantarillado residencial y comercial, bombas domésticas y de piscina, y otras tuberías comunes de líquidos dentro de nuestra capacidad y experiencia. PSI también ofrece hidrojetado aprobado por separado, informes escritos y segundas opiniones gratuitas sobre videos. Explicamos lo que observamos y lo que no podemos confirmar. Los sistemas altamente especializados requieren un especialista adecuado.",
+    "Indiana Drain Company is the service arm of our shared team: drain cleaning, hydro jetting, pump cleaning, maintenance, and qualifying repair work. IDC confirms the service, location, access requirements, and price before you authorize work. A recommendation depends on your needs, not our shared ownership.": "Indiana Drain Company es el área de servicios de nuestro equipo: limpieza de drenajes, hidrojetado, limpieza de bombas, mantenimiento y reparaciones dentro de su alcance. IDC confirma el servicio, la ubicación, los requisitos de acceso y el precio antes de que usted autorice el trabajo. Una recomendación depende de sus necesidades, no de que compartamos propietarios.",
+    "Clear answers.": "Respuestas claras.",
+    "A clearer way forward.": "Un camino más claro para seguir.",
+    "Sewer Inspections · Central Indiana": "Inspecciones de alcantarillado · Centro de Indiana",
+    "Video evidence. Clear reporting. Your next step.": "Evidencia en video. Informes claros. Su próximo paso.",
+    "Book an Inspection": "Reservar una inspección",
+    "Explore Drain & Pump Services": "Ver servicios de drenaje y bombas",
+    "Inspection Findings First": "Primero, los resultados de la inspección",
+    "You Choose the Next Step": "Usted elige el próximo paso",
+    "Video Evidence": "Evidencia en video",
+    "Standard Cleanout Scope": "Inspección con acceso estándar",
+    "Local Service Areas": "Áreas de servicio locales",
+    "Guidance When You Ask": "Orientación cuando la solicite",
+    "Free Video Second Opinion": "Segunda opinión gratuita sobre su video",
+    "Free Sewer Video Second Opinion": "Segunda opinión gratuita sobre video de alcantarillado",
+    "Next-Step Guidance When You Ask": "Orientación sobre los próximos pasos cuando la solicite",
+    "Additional Work Only With Your Approval": "Trabajo adicional solo con su aprobación",
+    "One-Business-Day Report Delivery": "Entrega del informe en un día hábil",
+    "Good service starts with understanding.": "Un buen servicio comienza con comprender.",
+    "The same care, from understanding the problem to addressing it.": "El mismo cuidado, desde comprender el problema hasta solucionarlo.",
+    "How Inspection & Service Work Together": "Cómo se relacionan la inspección y el servicio",
+    "Explore Indiana Drain Company": "Conozca Indiana Drain Company",
+    "One local team. Two focused brands.": "Un equipo local. Dos marcas especializadas.",
+    "Your findings. Your choice.": "Sus resultados. Su decisión.",
+    "Get a Free Video Second Opinion": "Obtenga una segunda opinión gratuita sobre su video",
+    "PSI + Indiana Drain Company: inspection and service, connected.": "PSI + Indiana Drain Company: inspección y servicio conectados.",
+    "An inspection gives you the information to make a decision. Sometimes that is all you need. Sometimes you want help putting that information to work.": "Una inspección le da la información para decidir. A veces eso es todo lo que necesita. Otras veces desea ayuda para actuar con esa información.",
+    "Bringing PSI and Indiana Drain Company together connects clear inspection findings with practical service options. PSI documents and explains what we find. Our sister company provides the next step when you choose it.": "La unión de PSI e Indiana Drain Company conecta resultados claros con opciones prácticas de servicio. PSI documenta y explica lo que encontramos. Nuestra empresa hermana ofrece el siguiente paso cuando usted lo elige.",
+    "Understand what is happening below the surface with video evidence, clear reporting, and straightforward explanations. Through our sister company, Indiana Drain Company, that same approach now extends to cleaning, maintenance, and repair services when you want help taking the next step.": "Comprenda lo que ocurre bajo la superficie con evidencia en video, informes claros y explicaciones sencillas. A través de nuestra empresa hermana, Indiana Drain Company, ese enfoque también abarca limpieza, mantenimiento y reparaciones cuando desea ayuda para dar el siguiente paso.",
+    "Our findings reflect what we observe, whether or not you choose additional service. Guidance is available when you ask, and any work is separately quoted and approved.": "Nuestros resultados reflejan lo observado, contrate o no servicios adicionales. Hay orientación disponible cuando la solicita; cualquier trabajo se cotiza y aprueba por separado.",
+    "I would like optional next-step recommendations if the review identifies a concern.": "Deseo recibir recomendaciones opcionales sobre los próximos pasos si la revisión identifica un problema.",
+    "PSI and Indiana Drain Company are sister companies. If you request guidance, we can discuss IDC services where appropriate. Any work is quoted and approved separately.": "PSI e Indiana Drain Company son empresas hermanas. Si solicita orientación, podemos hablar de servicios de IDC cuando corresponda. Todo trabajo se cotiza y aprueba por separado.",
+    "Next-step recommendations are available when you ask": "Puede solicitar recomendaciones sobre los próximos pasos",
+    "No purchase is required; you may choose any service provider": "No es necesario comprar ningún servicio; puede elegir cualquier proveedor",
+    "View Sample Report": "Ver informe de ejemplo",
     // Header / nav
     Services: 'Servicios',
     Pricing: 'Precios',
@@ -42,23 +90,17 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'Book Inspection': 'Reservar Inspección',
     // Hero
     "Central Indiana's Trusted Choice": 'La Opción de Confianza del Centro de Indiana',
-    'Book Inspection — 60 Seconds': 'Reservar Inspección — 60 Segundos',
     'See Sample Footage': 'Ver Video de Muestra',
     'Google Rating': 'Calificación de Google',
     'Hour Delivery': 'Entrega en Horas',
-    'No Upselling': 'Sin Ventas Adicionales',
     'Hidden Fees': 'Tarifas Ocultas',
     // Hero — claims, CTAs, trust badges
     "See What's Really In Your": 'Vea lo Que Realmente Hay en Sus',
     Pipes: 'Tuberías',
-    'Before it costs you': 'Antes de que le cueste',
-    "Our HD sewer scope lets you see what's really in your pipes with honest answers. No upselling, no scare tactics—just the evidence you need to make confident decisions.":
-      'Nuestra inspección de alcantarillado con cámara HD le permite ver lo que realmente hay en sus tuberías, con respuestas honestas. Sin ventas adicionales, sin tácticas de miedo: solo la evidencia que necesita para tomar decisiones con confianza.',
     'Business-Day Reports': 'Informes en Días Hábiles',
     'Indiana Areas Served': 'Zonas de Indiana Atendidas',
     'InterNACHI Member': 'Miembro de InterNACHI',
     'Fully Insured': 'Totalmente Asegurado',
-    'No Contractor Referrals': 'Sin Remisiones a Contratistas',
     // Why Choose Us — trust block
     'Why Choose Us': 'Por Qué Elegirnos',
     'The Difference is in the Details': 'La Diferencia Está en los Detalles',
@@ -67,22 +109,17 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'Evidence You Can See': 'Evidencia Que Puede Ver',
     "We don't just tell you what we found—we show you. Every inspection includes HD video you can watch, pause, and share.":
       'No solo le contamos lo que encontramos: se lo mostramos. Cada inspección incluye video en HD que puede ver, pausar y compartir.',
-    'No Upselling, Ever': 'Sin Ventas Adicionales, Nunca',
-    "We're inspectors, not contractors. We sell no sewer repairs — so we have nothing to gain by finding problems that aren't there.":
-      'Somos inspectores, no contratistas. No vendemos reparaciones de alcantarillado, así que no ganamos nada al encontrar problemas que no existen.',
     'Answers in One Business Day': 'Respuestas en Un Día Hábil',
     "We know timing matters, especially in real estate transactions. That's why we deliver your video and report within one business day.":
       'Sabemos que el tiempo importa, especialmente en transacciones de bienes raíces. Por eso entregamos su video e informe dentro de un día hábil.',
     'Decide with Confidence': 'Decida con Confianza',
     'Every inspection includes video evidence and a structured evaluation—real evidence and honest findings to help you make informed decisions.':
       'Cada inspección incluye evidencia en video y una evaluación estructurada: evidencia real y hallazgos honestos para ayudarle a tomar decisiones informadas.',
-    Observed: 'Observado',
     // How It Works — steps
     'How It Works': 'Cómo Funciona',
     'Simple, Fast, Transparent': 'Simple, Rápido, Transparente',
     "From booking to report delivery, we've streamlined every step so you can focus on what matters.":
       'Desde la reserva hasta la entrega del informe, hemos simplificado cada paso para que pueda concentrarse en lo que importa.',
-    'Book Online in 60 Seconds': 'Reserve en Línea en 60 Segundos',
     "Pick your time, share your address, and you're done. No phone calls, no voicemail tag.":
       'Elija su horario, comparta su dirección y listo. Sin llamadas telefónicas, sin ir y venir de mensajes de voz.',
     'On Time Inspections': 'Inspecciones Puntuales',
@@ -100,12 +137,6 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'Tell the truth, show the evidence, and let people make their own informed decisions.':
       'Decir la verdad, mostrar la evidencia y dejar que las personas tomen sus propias decisiones informadas.',
     'Our Story': 'Nuestra Historia',
-    'We started Precision Sewer Inspections because we kept watching the same thing happen in Central Indiana real estate: a camera goes down a sewer line, and the person holding it has a repair crew waiting in the truck. The "inspection" becomes a sales pitch. The findings grow to fit the invoice.':
-      'Iniciamos Precision Sewer Inspections porque veíamos pasar lo mismo una y otra vez en el sector inmobiliario del centro de Indiana: una cámara baja por una línea de alcantarillado y la persona que la sostiene tiene un equipo de reparación esperando en el camión. La «inspección» se convierte en un discurso de ventas. Los hallazgos crecen hasta ajustarse a la factura.',
-    "So we drew one hard line and built the whole company on it: we sell no repairs on anything we inspect. No sewer repairs, no drain work, no contractor referrals — nothing to gain from what the camera finds. When your report says the line is clear, that's because it is — and when it shows a problem, you get the footage, the location, and plain-English facts you can hand to any contractor you choose.":
-      'Así que trazamos una línea firme y construimos toda la empresa sobre ella: no vendemos reparaciones de nada que inspeccionemos. Ni reparaciones de alcantarillado, ni trabajos de drenaje, ni remisiones a contratistas: no ganamos nada con lo que encuentre la cámara. Cuando su informe dice que la línea está libre, es porque lo está; y cuando muestra un problema, usted recibe el video, la ubicación y los hechos en lenguaje sencillo que puede entregar al contratista que elija.',
-    "We're a new company, and we won't pretend otherwise. No invented track record, no padded team page. What you get is exactly what exists: one inspector, professional HD equipment, a published national standard, and reports that say what the camera saw.":
-      'Somos una empresa nueva y no vamos a fingir lo contrario. Sin historial inventado, sin página de equipo inflada. Lo que usted recibe es exactamente lo que existe: un inspector, equipo profesional de cámara HD, una norma nacional publicada e informes que dicen lo que vio la cámara.',
     'Our Values': 'Nuestros Valores',
     "These aren't just words on a wall. They're the principles that guide every inspection we do.":
       'No son solo palabras en una pared. Son los principios que guían cada inspección que hacemos.',
@@ -119,11 +150,6 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'Education Over Fear': 'Educación por Encima del Miedo',
     "We explain what we find, we don't scare you into action.": 'Le explicamos lo que encontramos; no lo asustamos para que actúe.',
     'The Inspector': 'El Inspector',
-    'Ryan Galbraith — Owner & Inspector · InterNACHI Member': 'Ryan Galbraith — Propietario e Inspector · Miembro de InterNACHI',
-    "Ryan performs every PSI inspection to InterNACHI's published Sewer Scope Standards of Practice — a national standard anyone can read for themselves. He completed InterNACHI's Sewer Scope Inspector training, and he's an InterNACHI member in good standing — ID NACHI26032508, verifiable at nachi.org/verify. Go check. We mean it.":
-      'Ryan realiza cada inspección de PSI conforme a las Normas de Práctica para Inspección de Alcantarillado con Cámara publicadas por InterNACHI, una norma nacional que cualquiera puede leer por sí mismo. Completó la capacitación de Inspector de Alcantarillado de InterNACHI y es miembro de InterNACHI en regla: ID NACHI26032508, verificable en nachi.org/verify. Compruébelo. Lo decimos en serio.',
-    "Here's the part we're proudest of: Ryan deliberately does not wear titles that can't be verified. He's not a home inspector — sewer lines are the whole point, done properly, not one line item on a long checklist. And when a credential turned out to be a logo you download rather than a registration anyone can look up, he left it off. An inspector who won't inflate his own badge is not going to inflate your sewer findings. That's the whole company, in one decision.":
-      'Esta es la parte de la que más orgullosos estamos: Ryan deliberadamente no usa títulos que no se pueden verificar. No es inspector de viviendas: las líneas de alcantarillado son nuestra única especialidad, hechas como se debe, no una partida más en una larga lista de verificación. Y cuando una credencial resultó ser un logo que uno descarga en lugar de un registro que cualquiera puede consultar, la dejó fuera. Un inspector que no infla su propia credencial no va a inflar los hallazgos de su alcantarillado. Esa es toda la empresa, en una sola decisión.',
     'Trust & Verification': 'Confianza y Verificación',
     "Inspections to InterNACHI's Published Sewer Scope Standards of Practice":
       'Inspecciones Conforme a las Normas de Práctica para Inspección de Alcantarillado con Cámara Publicadas por InterNACHI',
@@ -136,15 +162,12 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'Clear, Upfront Pricing': 'Precios Claros y por Adelantado',
     "Premium reporting quality with transparent pricing. Know exactly what you'll pay before we arrive.":
       'Informes de calidad superior con precios transparentes. Sepa exactamente lo que pagará antes de que lleguemos.',
-    'Independent Video Review': 'Revisión Independiente de Video',
     'Free Expert Opinion': 'Opinión de Experto Gratuita',
     '/ review': '/ revisión',
     'Free Service': 'Servicio Gratuito',
-    'Independent Sewer Video Review': 'Revisión Independiente de Video de Alcantarillado',
     'No-Jargon Explanation of Findings': 'Explicación de Hallazgos sin Jerga',
     'Report Reviewed if Provided': 'Revisión del Informe si lo Proporciona',
     '24-Hour Response': 'Respuesta en 24 Horas',
-    'Informational Review Only (No Repair Recommendations)': 'Revisión Solo Informativa (Sin Recomendaciones de Reparación)',
     'Submit Video': 'Enviar Video',
     'Early Adopter': 'Cliente Pionero',
     'Limited Time Launch Pricing': 'Precio de Lanzamiento por Tiempo Limitado',
@@ -155,7 +178,6 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'One-Business-Day Delivery': 'Entrega en Un Día Hábil',
     'Standard Cleanout Access': 'Acceso Estándar por Punto de Limpieza',
     'Phone Consultation': 'Consulta Telefónica',
-    'No Upselling Guarantee': 'Sin Ventas Adicionales, Garantizado',
     'Book Now': 'Reserve Ahora',
     'Volume Packages': 'Paquetes por Volumen',
     'Brokerages & Investors': 'Inmobiliarias e Inversionistas',
@@ -231,16 +253,12 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'Account manager': 'Gerente de cuenta',
     'Purchase Volume Package': 'Comprar Paquete por Volumen',
     'Ready to Book?': '¿Listo para Reservar?',
-    'Schedule your inspection online in 60 seconds or call us for immediate assistance.':
-      'Programe su inspección en línea en 60 segundos o llámenos para atención inmediata.',
     // Pricing preview (home)
     'Transparent Pricing, No Surprises': 'Precios Transparentes, Sin Sorpresas',
     'We believe in upfront, honest pricing. What you see is what you pay—no surprises.':
       'Creemos en precios honestos y por adelantado. Lo que ve es lo que paga: sin sorpresas.',
     'View Full Pricing Details': 'Ver Todos los Detalles de Precios',
     // Footer — badge row and links
-    "Central Indiana's most trusted sewer inspection company. Evidence you can see, answers you can trust.":
-      'La empresa de inspección de alcantarillado más confiable del centro de Indiana. Evidencia que puede ver, respuestas en las que puede confiar.',
     'Sewer Scope Inspection': 'Inspección de Alcantarillado con Cámara',
     'Commercial Inspections': 'Inspecciones Comerciales',
     'Real Estate Partners': 'Socios Inmobiliarios',
@@ -265,7 +283,6 @@ const DEFAULT_DICTIONARY: LocaleDictionary = {
     'Service Area': 'Zona de Servicio',
     'Why Choose Us?': '¿Por Qué Elegirnos?',
     'HD Video & Written Report': 'Video en HD e Informe Escrito',
-    'One-Business-Day Delivery Guaranteed': 'Entrega Garantizada en Un Día Hábil',
     'Available 7 Days a Week': 'Disponible los 7 Días de la Semana',
     // Toolbar
     Accessibility: 'Accesibilidad',

@@ -32,10 +32,11 @@ export default function Footer() {
 						</Link>
 						<p className="text-primary-200 text-sm mb-4">
 							<T>
-								Central Indiana&apos;s most trusted sewer inspection company.
-								Evidence you can see, answers you can trust.
+								Sewer inspections across Central Indiana.
+								Video evidence, clear reporting, and practical guidance when you ask.
 							</T>
 						</p>
+						<p className="text-primary-200 text-sm mb-4"><Link href="/inspection-and-service" className="underline hover:text-white"><T>PSI + Indiana Drain Company: inspection and service, connected.</T></Link></p>
 						<div className="flex gap-4">
 							<div className="flex items-center gap-1 text-xs text-primary-300">
 								<Shield className="w-4 h-4" />
@@ -84,6 +85,7 @@ export default function Footer() {
 									<T>For Realtors</T>
 								</Link>
 							</li>
+							<li><Link href="/contractors/lateral-lining-inspections" className="text-primary-200 hover:text-white transition-colors text-sm"><T>For Contractors</T></Link></li>
 							<li>
 								<Link
 									href="/pricing"

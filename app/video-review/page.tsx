@@ -19,6 +19,7 @@ export default function VideoReviewPage() {
     videoLink: '',
     reportLink: '',
     additionalNotes: '',
+    wantsGuidance: false,
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -51,7 +52,7 @@ export default function VideoReviewPage() {
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
-          message: `VIDEO REVIEW REQUEST\n\nVideo Link: ${formData.videoLink}\n\nReport Link: ${formData.reportLink || 'Not provided'}\n\nAdditional Notes: ${formData.additionalNotes || 'None'}`,
+          message: `VIDEO REVIEW REQUEST\n\nVideo Link: ${formData.videoLink}\n\nReport Link: ${formData.reportLink || 'Not provided'}\n\nAdditional Notes: ${formData.additionalNotes || 'None'}\n\nCustomer requests optional next-step guidance: ${formData.wantsGuidance ? 'Yes' : 'No'}`,
           source: 'video-review',
         }),
       })
@@ -81,7 +82,7 @@ export default function VideoReviewPage() {
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-4"><T>Video Submitted for Review</T></h1>
             <p className="text-gray-600 mb-6">
-              <T>Thank you! We&apos;ve received your video review request. You&apos;ll receive our independent assessment within one business day.</T>
+              <T>Thank you! We&apos;ve received your video review request. You&apos;ll receive our explanation of the footage and any limitations within one business day.</T>
             </p>
             <p className="text-sm text-gray-500">
               <T>Questions? Call us at</T>{' '}
@@ -107,10 +108,10 @@ export default function VideoReviewPage() {
             <div className="max-w-3xl mx-auto text-center">
               <Video className="w-12 h-12 mx-auto mb-4 text-primary-300" />
               <h1 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-                <T>Independent Video Review</T>
+                <T>Free Video Second Opinion</T>
               </h1>
               <p className="text-lg text-primary-200">
-                <T>Already have a sewer scope video from another company? Submit it for a free, unbiased review of the findings.</T>
+                <T>Already have a sewer scope video from another company? Submit it for a free explanation of the findings and any limitations. No service purchase is required.</T>
               </p>
             </div>
           </div>
@@ -233,14 +234,17 @@ export default function VideoReviewPage() {
                   />
                 </div>
 
+                <label className="flex gap-3 items-start text-sm text-gray-700"><input type="checkbox" checked={formData.wantsGuidance} onChange={(event) => setFormData({ ...formData, wantsGuidance: event.target.checked })} className="mt-1" /><T>I would like optional next-step recommendations if the review identifies a concern.</T></label>
+                <p className="text-sm text-gray-600"><T>PSI and Indiana Drain Company are sister companies. If you request guidance, we can discuss IDC services where appropriate. Any work is quoted and approved separately.</T></p>
+
                 {/* What to Expect */}
                 <div className="bg-primary-50 rounded-lg p-4">
                   <h3 className="font-semibold text-primary-900 mb-2"><T>What to Expect</T></h3>
                   <ul className="text-sm text-primary-700 space-y-1">
                     <li>• <T>We&apos;ll review your video within one business day</T></li>
                     <li>• <T>You&apos;ll receive a no-jargon explanation of findings</T></li>
-                    <li>• <T>This is an informational review only — no repair recommendations</T></li>
-                    <li>• <T>We do not provide contractor referrals</T></li>
+                    <li>• <T>Next-step recommendations are available when you ask</T></li>
+                    <li>• <T>No purchase is required; you may choose any service provider</T></li>
                   </ul>
                 </div>
 

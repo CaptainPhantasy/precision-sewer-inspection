@@ -15,15 +15,15 @@ import StructuredData from '@/components/structured-data'
 const additionalFAQs = [
   {
     question: 'What areas do you serve?',
-    answer: "We serve all of Central Indiana, including Indianapolis, Carmel, Fishers, Noblesville, Westfield, Zionsville, Brownsburg, Avon, Plainfield, Greenwood, Franklin, Greenfield, and surrounding areas. If you're not sure if we serve your area, just ask!",
+    answer: "Our shared Central Indiana coverage includes Avon, Brownsburg, Carmel, Fishers, Franklin, Geist, Greenfield, Greenwood, Indianapolis, Noblesville, Plainfield, Westfield and Zionsville. We confirm your exact address, access, service suitability and availability before scheduling.",
   },
   {
     question: 'Do you provide repair services?',
-    answer: "No sewer repairs, and that's intentional. We are strictly an inspection company. Because we sell no repairs on anything we inspect, we have no incentive to exaggerate problems or recommend unnecessary work. You get an honest, unbiased assessment every time.",
+    answer: "PSI provides inspection findings and clear reporting. Our sister company, Indiana Drain Company, offers optional cleaning, maintenance, and qualifying repair services. When you ask for guidance, we can discuss practical next steps and a separate quote where appropriate. You may choose IDC, another provider, or no additional service; your findings do not depend on that choice.",
   },
   {
     question: 'How do I prepare for the inspection?',
-    answer: "Please confirm access to your clean-out before your appointment. If we're accessing via an outdoor cleanout, make sure we can reach it. If we need to access via toilet or roof vent, we'll coordinate with you ahead of time. Remember, a $79 trip fee applies if access cannot be provided as confirmed.",
+    answer: "Please confirm access to your clean-out before your appointment. If we're accessing via an outdoor cleanout, make sure we can reach it. If we need to access via toilet or roof vent, we'll coordinate with you ahead of time. Remember, a $79 trip fee may apply on a case-by-case basis if access cannot be provided as confirmed.",
   },
 
   {
@@ -92,8 +92,10 @@ export default function FAQPage() {
               
               {/* Search */}
               <div className="relative max-w-lg mx-auto">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <label htmlFor="faq-search" className="sr-only"><T>Search questions</T></label>
+                <Search aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
+                  id="faq-search"
                   type="text"
                   placeholder={t('Search questions...')}
                   value={searchQuery}
@@ -120,11 +122,16 @@ export default function FAQPage() {
                     className="border border-gray-200 rounded-xl overflow-hidden"
                   >
                     <button
+                      id={`faq-question-${index}`}
+                      type="button"
+                      aria-expanded={openIndex === index}
+                      aria-controls={openIndex === index ? `faq-answer-${index}` : undefined}
                       onClick={() => setOpenIndex(openIndex === index ? null : index)}
                       className="w-full px-6 py-4 flex items-center justify-between text-left bg-gray-50 hover:bg-gray-100 transition-colors"
                     >
                       <span className="font-semibold text-gray-900 pr-4"><T>{item?.question ?? ''}</T></span>
                       <ChevronDown
+                        aria-hidden="true"
                         className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform duration-300 ${
                           openIndex === index ? 'rotate-180' : ''
                         }`}
@@ -133,6 +140,9 @@ export default function FAQPage() {
                     <AnimatePresence>
                       {openIndex === index && (
                         <motion.div
+                          id={`faq-answer-${index}`}
+                          role="region"
+                          aria-labelledby={`faq-question-${index}`}
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: 'auto', opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
