@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/page-metadata'
 // ============================================================================
 // Service Areas Index Page
 // Lists all service areas
@@ -11,14 +12,14 @@ import AIChat from '@/components/ai-chat';
 import StructuredData from '@/components/structured-data';
 import { generateAllSchemas, getJsonLdScript } from '@/lib/schema/markup';
 import { withDatabaseFallback } from '@/lib/prisma-timeout';
+import { SERVICE_AREA_LINKS } from '@/lib/service-areas';
+import { LOCAL_INSPECTION_CONTENT } from '@/lib/local-inspection-content';
 import { T } from '@/components/diversity/diversity-provider';
 
 const prisma = new PrismaClient();
 
-export const metadata = {
-  title: 'Service Areas | Precision Sewer Inspections',
-  description: 'Professional sewer inspection services throughout the Indianapolis metro area. Serving Indianapolis, Carmel, Fishers, Noblesville, Greenwood, and surrounding communities.',
-};
+export const metadata = pageMetadata("/areas", "Sewer Inspection Service Areas in Central Indiana", "Find PSI sewer camera inspection information for Indianapolis and nearby Central Indiana communities. Share the property address to confirm availability.")
+
 
 const fallbackAreaSeeds = [
   { id: 'indianapolis-in', name: 'Indianapolis', state: 'IN', slug: 'indianapolis-in', description: 'Professional sewer inspection services throughout Indianapolis and Marion County.', zipCodes: ['46201', '46202', '46203'] },
@@ -29,9 +30,10 @@ const fallbackAreaSeeds = [
   { id: 'westfield-in', name: 'Westfield', state: 'IN', slug: 'westfield-in', description: 'Professional sewer inspection services for Westfield homes and real estate transactions.', zipCodes: ['46074'] },
 ];
 
-const fallbackAreas = fallbackAreaSeeds.map((area) => ({
-  ...area,
-  city: area.name,
+const fallbackAreas = SERVICE_AREA_LINKS.map(({ name, slug }) => ({
+  id: slug, name, slug, state: 'IN', zipCodes: [],
+  description: LOCAL_INSPECTION_CONTENT[slug]?.title ?? 'Confirm your address and inspection scope with PSI.',
+  city: name,
   geoBounds: null,
   population: null,
   isActive: true,

@@ -46,7 +46,7 @@ If we find an issue, our built-in sonde transmitter allows us to mark the exact 
 
 ## Step 4: Report Delivery
 
-Within 24 hours of your inspection (or same-day if you selected that option), you'll receive an email with:
+Within one business day of your inspection (or same-day if that option was confirmed), you'll receive an email with:
 
 - **HD Video Recording** — The complete video of your sewer line inspection, available to view and download
 - **Written Report** — A detailed document including condition ratings for different sections, screenshots from the video highlighting key findings, and a clear summary of the overall assessment

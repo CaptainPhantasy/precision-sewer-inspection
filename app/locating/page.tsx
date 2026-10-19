@@ -28,9 +28,9 @@ const UTILITIES_WE_LOCATE = [
 
 const ADDITIONAL_SERVICES = [
   {
-    title: 'Invisible Dog Fence Wire Locating and Repair',
+    title: 'Invisible Dog Fence Wire Locating',
     icon: Radio,
-    description: 'We locate and repair broken invisible dog fence boundary wires.',
+    description: 'We trace suitable boundary wiring and investigate where a usable signal stops. Repair is separately scoped with a suitable service provider.',
     problems: [
       'Broken boundary wires',
       'Damaged underground connections',
@@ -40,12 +40,12 @@ const ADDITIONAL_SERVICES = [
     services: [
       'Locating invisible dog fence wire',
       'Identifying wire breaks',
-      'Repairing damaged boundary wire',
-      'Restoring system operation',
+      'Documenting accessible findings',
+      'Explaining locating limitations',
     ],
   },
   {
-    title: 'Irrigation Wire Locating and Repair',
+    title: 'Irrigation Wire Locating',
     icon: Droplets,
     description: 'Sprinkler systems rely on low-voltage control wires to operate underground valves.',
     problems: [
@@ -57,7 +57,7 @@ const ADDITIONAL_SERVICES = [
       'Locating sprinkler valve wires',
       'Locating irrigation valve boxes',
       'Identifying wiring faults',
-      'Repairing damaged wiring connections',
+      'Documenting the traced route and limitations',
     ],
   },
   {
@@ -69,7 +69,7 @@ const ADDITIONAL_SERVICES = [
       'Locating underground electrical lines',
       'Tracing conduit to detached structures',
       'Identifying electrical line paths',
-      'Exposing the line if necessary',
+      'Discussing separate exposure work when needed',
     ],
   },
   {
@@ -156,11 +156,11 @@ const FAQS = [
   },
   {
     question: 'Can you locate underground electrical lines?',
-    answer: 'Yes. We can locate and expose many private electrical lines, but electrical repairs must be performed by a licensed electrician.',
+    answer: 'We can trace suitable private electrical lines when a usable signal is available. Locating does not include exposure or repair. Discuss excavation separately with IDC or your chosen provider; electrical repairs require a suitable licensed electrician.',
   },
   {
     question: 'Do you repair invisible dog fences?',
-    answer: 'Yes. We can locate broken boundary wires and repair them using waterproof underground connectors.',
+    answer: 'PSI focuses on locating the traceable wire and documenting the findings. Repair is a separate scope; tell us what you need and we can discuss an appropriate service provider.',
   },
   {
     question: 'Can you locate buried drain pipes?',
@@ -253,8 +253,15 @@ export default function LocatingPage() {
       <Header />
       
       <main className="flex-1">
+        <section id="sewer-drain" className="section-padding bg-primary-50"><div className="max-w-5xl mx-auto px-4">
+          <h1 className="text-3xl md:text-4xl font-bold mb-5">Sewer, drain and private utility locating</h1>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div><h2 className="text-2xl font-semibold mb-3">Following a sewer or drain line</h2><p>PSI uses suitable accessible entry points and a camera sonde or traceable equipment to identify an approximate route, blockage or defect location. Surface markings, footage-counter references and available depth estimates describe what could be traced. We explain signal interference, reach and access limits.</p><p className="mt-4">If you need a buried cleanout located without digging, describe the property and known access first. We confirm whether a non-excavating locate is feasible; an unseen cleanout cannot always be found. Exposure or excavation is separate work through IDC or your chosen provider.</p></div>
+            <div><h2 className="text-2xl font-semibold mb-3">Marking and sketching the findings</h2><p>Agree on whether you need a surface mark, a point location or a basic route sketch. These are approximate inspection records, not surveyed coordinates or an engineered map. Depth is an estimate, and a footage counter measures cable travel rather than a precise ground position.</p><p className="mt-4">Private utility locating below concerns suitable traceable private wiring and lines. It does not mean we can find every utility, mark public infrastructure or make a site safe to excavate. Contact Indiana 811 before digging and confirm the required notifications for your work.</p></div>
+          </div><Link href="/contact" className="btn-primary mt-6">Discuss a locate or route sketch</Link>
+        </div></section>
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-amber-600 to-amber-700 text-white py-16 md:py-24">
+        <section className="bg-gradient-to-br from-amber-800 to-amber-900 text-white py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-3xl mx-auto text-center">
               {/* PLS Logo */}
@@ -269,9 +276,9 @@ export default function LocatingPage() {
                   />
                 </div>
               </div>
-              <h1 className="text-4xl md:text-5xl font-heading font-bold mb-6">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
                 <T>Private Utility Locating – Indianapolis</T>
-              </h1>
+              </h2>
               <p className="text-xl text-amber-100 mb-4">
                 <T>Locate underground utilities that 811 does not mark before digging.</T>
               </p>
@@ -289,7 +296,7 @@ export default function LocatingPage() {
                 </Link>
                 <a
                   href={`tel:${COMPANY_INFO.phoneRaw}`}
-                  className="bg-amber-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-400 transition-colors inline-flex items-center justify-center gap-2"
+                  className="bg-amber-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-900 transition-colors inline-flex items-center justify-center gap-2"
                 >
                   <Phone className="w-5 h-5" />
                   <T>Call Now</T>
@@ -596,7 +603,7 @@ export default function LocatingPage() {
         </section>
 
         {/* Booking Section */}
-        <section id="booking" className="py-16 bg-amber-600">
+        <section id="booking" className="py-16 bg-amber-800">
           <div className="max-w-2xl mx-auto px-4">
             {isSubmitted ? (
               <div className="bg-white rounded-2xl p-8 text-center">
@@ -609,7 +616,7 @@ export default function LocatingPage() {
                 </p>
                 <p className="text-sm text-gray-500">
                   <T>Questions? Call us at</T>{' '}
-                  <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="text-amber-600 hover:underline">
+                  <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="text-amber-800 underline">
                     {COMPANY_INFO.phone}
                   </a>
                 </p>
@@ -668,7 +675,7 @@ export default function LocatingPage() {
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        onBlur={handleLeadBlur}
+                          onBlur={handleLeadBlur}
                         name="email"
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                         required
@@ -685,7 +692,7 @@ export default function LocatingPage() {
                         type="text"
                         value={formData.address}
                         onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                        onBlur={handleLeadBlur}
+                          onBlur={handleLeadBlur}
                         name="address"
                         placeholder={t('Full street address')}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
@@ -746,7 +753,7 @@ export default function LocatingPage() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors inline-flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="w-full bg-amber-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-900 transition-colors inline-flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       {isSubmitting ? (
                         <>

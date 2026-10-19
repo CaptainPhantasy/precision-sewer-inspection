@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/page-metadata'
 // ============================================================================
 // Dynamic Service Area Page
 // Generates individual pages for each service area
@@ -13,6 +14,9 @@ import AIChat from '@/components/ai-chat';
 import StructuredData from '@/components/structured-data';
 import ServiceAreaPage from '@/components/local-pages/ServiceAreaPage';
 import { withDatabaseFallback } from '@/lib/prisma-timeout';
+import { SERVICE_AREA_LINKS } from '@/lib/service-areas';
+import { LOCAL_INSPECTION_CONTENT } from '@/lib/local-inspection-content';
+import { INSPECTION_SERVICE_FAQ, CLEANING_FAQ } from '@/lib/inspection-and-service';
 
 const prisma = new PrismaClient();
 
@@ -28,6 +32,8 @@ const fallbackAreaNames: Record<string, string> = {
 };
 
 function fallbackAreaForSlug(slug: string) {
+  const knownArea = SERVICE_AREA_LINKS.find((entry) => entry.slug === slug);
+  if (!knownArea) return null;
   const name = fallbackAreaNames[slug] ?? slug
     .replace(/-in$/, '')
     .split('-')
@@ -37,7 +43,7 @@ function fallbackAreaForSlug(slug: string) {
 
   return {
     id: slug,
-    name,
+    name: knownArea.name,
     slug,
     city: name,
     state: 'IN',
@@ -46,7 +52,7 @@ function fallbackAreaForSlug(slug: string) {
     population: null,
     isActive: true,
     priority: 0,
-    description: `Professional sewer camera inspection services in ${name}, Indiana. Serving homeowners, realtors, and property managers.`,
+    description: LOCAL_INSPECTION_CONTENT[slug]?.intro ?? `Sewer camera inspections in ${knownArea.name}, Indiana, with video, written findings and access limitations explained.`,
     localKeywords: [
       `sewer inspection ${name}`,
       `sewer camera ${name}`,
@@ -87,25 +93,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: 'Service Area Not Found' };
   }
 
-  return {
-    title: `Sewer Inspection in ${area.name}, ${area.state} | Precision Sewer Inspections`,
-    description: area.description || `Professional sewer camera inspection services in ${area.name}, Indiana. Serving homeowners, realtors, and property managers.`,
-    keywords: area.localKeywords || [
-      `sewer inspection ${area.name}`,
-      `sewer camera ${area.name}`,
-      `${area.city} drain inspection`,
-      `sewer line ${area.name} Indiana`,
-    ],
-    openGraph: {
-      title: `Sewer Inspection in ${area.name} | Precision Sewer Inspections`,
-      description: area.description || `Professional sewer inspection services in ${area.name}.`,
-      url: `/sewer-inspection/${slug}`,
-      type: 'website',
-    },
-    alternates: {
-      canonical: `/sewer-inspection/${slug}`,
-    },
-  };
+  return pageMetadata(
+    `/sewer-inspection/${slug}`,
+    `Sewer Camera Inspection in ${area.name}, ${area.state}`,
+    area.description || `Sewer camera inspection information for ${area.name}, Indiana. Contact PSI to confirm your property address, access and available appointment.`,
+  );
 }
 
 // Generate static params for all active service areas
@@ -154,7 +146,7 @@ export default async function Page({ params }: PageProps) {
   }
 
   // Fetch FAQs
-  const faqs = await withDatabaseFallback(
+  const storedFaqs = await withDatabaseFallback(
     prisma.fAQ.findMany({
       where: {
         isPublished: true,
@@ -172,6 +164,16 @@ export default async function Page({ params }: PageProps) {
   );
 
   // Fetch nearby areas (excluding current)
+  const faqs = storedFaqs.map((faq) => {
+    if (/repair|referral|recommendation|independen/i.test(faq.question)) {
+      return { ...faq, ...INSPECTION_SERVICE_FAQ, shortAnswer: INSPECTION_SERVICE_FAQ.answer };
+    }
+    if (/jetting|cleaning/i.test(faq.question)) {
+      return { ...faq, ...CLEANING_FAQ, shortAnswer: CLEANING_FAQ.answer };
+    }
+    return faq;
+  });
+
   const nearbyAreas = await withDatabaseFallback(
     prisma.serviceArea.findMany({
       where: {

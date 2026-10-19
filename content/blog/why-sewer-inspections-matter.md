@@ -19,7 +19,7 @@ Sewer line problems don't announce themselves with obvious warning signs — at 
 
 Here's what makes sewer problems so expensive: the pipe runs underground, often beneath your yard, driveway, or even your foundation. Repairing or replacing it means excavation, which means heavy equipment, landscaping destruction, and potentially weeks of disruption.
 
-A professional sewer scope inspection costs a fraction of what even minor repairs cost. For as little as $159, you get a complete HD video assessment of your entire sewer line's condition — from your home to the city connection.
+A professional sewer scope inspection starts at $159 and provides an HD video assessment of accessible sewer-line sections, with any limitations documented.
 
 ## When Should You Get a Sewer Inspection?
 
@@ -35,4 +35,4 @@ A professional sewer scope inspection costs a fraction of what even minor repair
 
 A professional sewer scope inspection provides HD video evidence of your pipe's condition. You'll see exactly what's happening inside your sewer line — no guesswork, no assumptions. Your report includes condition ratings, identified issues, screenshots from the video, and plain-English explanations of everything found.
 
-At [Precision Sewer Inspections](https://www.precisionsewerinspections.com), we serve all of Central Indiana with honest, unbiased assessments. We're inspectors, not contractors — so we have zero incentive to exaggerate problems. [Book your inspection today](/contact) and see what's really in your pipes.
+At [Precision Sewer Inspections](https://www.precisionsewerinspections.com), we serve all of Central Indiana with honest, unbiased assessments. PSI documents the evidence first. If you want help taking the next step, our sister company, Indiana Drain Company, offers optional services with a separate quote and your approval. [Book your inspection today](/contact) and see what's really in your pipes.

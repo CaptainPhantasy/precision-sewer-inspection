@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/page-metadata'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import AIChat from '@/components/ai-chat'
@@ -19,19 +19,8 @@ import { T } from '@/components/diversity/diversity-provider'
 const BBB_PROFILE_URL =
   'https://www.bbb.org/us/in/indianapolis/profile/sewer-inspection/precision-sewer-inspection-llc-0382-90068319'
 
-export const metadata: Metadata = {
-  title: 'Realtor Sewer Scope Indianapolis | Partner Program for Agents & Brokers',
-  description:
-    'The sewer scope built for real estate transactions: pre-listing and buyer scope inspections across Central Indiana with priority scheduling and one-business-day reports. Independent — no repairs, no contractor referrals.',
-  openGraph: {
-    title: 'Sewer Scope Partner Program for Real Estate Agents | Precision Sewer Inspections',
-    description:
-      'Pre-listing and buyer sewer scopes across Central Indiana. Priority scheduling, one-business-day reports, and findings that inform without inflating.',
-  },
-  alternates: {
-    canonical: '/realtors',
-  },
-}
+export const metadata = pageMetadata("/realtors", "Sewer Camera Inspections for Real Estate Transactions", "Arrange buyer or pre-listing sewer camera inspections in Central Indiana. PSI provides recorded evidence, written findings and explanations for agents and clients.")
+
 
 const trustItems = [
   {
@@ -52,8 +41,8 @@ const trustItems = [
   },
   {
     icon: Ban,
-    title: 'No Repairs, No Referrals',
-    description: 'Inspection only — zero sales incentive',
+    title: 'Your Client Stays in Control',
+    description: 'Findings first; service by choice',
   },
 ]
 
@@ -62,7 +51,7 @@ const whyAgents = [
     icon: Scale,
     title: 'Findings That Inform Without Inflating',
     description:
-      'We perform no repairs and make no contractor referrals. Our only product is evidence — so nothing in the report is a sales pitch, and nothing kills a deal that should survive it.',
+      'We document what the camera shows and explain the limitations. If your client asks for next-step guidance, optional service through our sister company, Indiana Drain Company, is discussed separately from the inspection findings.',
   },
   {
     icon: Eye,
@@ -82,7 +71,7 @@ const windowSteps = [
   {
     icon: Timer,
     step: 'Step 1',
-    title: 'Book in 60 Seconds',
+    title: 'Book an Inspection',
     description:
       'Online booking or one phone call. Transparent flat pricing is published — no quote-chasing while the inspection window ticks.',
   },
@@ -115,12 +104,12 @@ const REALTOR_FAQS = [
   {
     question: 'Should my buyer get a sewer scope on an older Indianapolis home?',
     answer:
-      'Yes — especially in Central Indiana, where many older homes still have clay tile or cast iron lines that deteriorate over decades. A $159 scope shows the exact condition of the line before your buyer is responsible for it.',
+      'Yes — especially in Central Indiana, where many older homes still have clay tile or cast iron lines that deteriorate over decades. A $159 scope documents the visible condition of the line before your buyer is responsible for it.',
   },
   {
     question: 'Does a standard home inspection cover the sewer line?',
     answer:
-      'No — general home inspectors do not scope sewer lines; the underground lateral is outside their standard scope. A dedicated sewer scope is the one major system check a standard inspection never performs.',
+      'A standard home inspection typically excludes a sewer-camera scope. Some home inspectors offer it separately; confirm the scope before booking.',
   },
   {
     question: 'How long does a sewer scope take, and when do we get the report?',
@@ -140,7 +129,7 @@ const REALTOR_FAQS = [
   {
     question: 'Do you sell repairs or refer contractors?',
     answer:
-      'No — and that is intentional. We are strictly an inspection company. Because we sell no repairs on anything we inspect, we have no incentive to exaggerate problems. You and your clients get an honest, unbiased assessment every time.',
+      'PSI provides inspection findings and clear reporting. Our sister company, Indiana Drain Company, offers optional cleaning, maintenance, and qualifying repair services. When you ask for guidance, we can discuss practical next steps and a separate quote where appropriate. You may choose IDC, another provider, or no additional service; your findings do not depend on that choice.',
   },
 ]
 
@@ -163,7 +152,7 @@ export default function RealtorsPage() {
               </h1>
               <p className="text-xl text-primary-200 mb-8">
                 <T>
-                  Independent sewer scope inspections for real estate professionals — we sell no repairs and make no contractor referrals, so our findings inform without inflating. HD video and a written report delivered within one business day.
+                  Sewer scope inspections for real estate professionals, with HD video and a clear written report delivered within one business day. Your client gets factual findings first, with practical next-step guidance available when requested.
                 </T>
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -214,13 +203,13 @@ export default function RealtorsPage() {
           </div>
         </section>
 
-        {/* 3. Why agents stake their deals on us */}
+        {/* 3. Clear information for your client’s decision */}
         <section className="section-padding bg-white">
           <div className="max-w-7xl mx-auto">
             <SectionHeading
-              label="Independent by Design"
-              title="Why agents stake their deals on us"
-              description="The report your buyer reads should create clarity, not a sales funnel for a repair company."
+              label="Evidence at Every Step"
+              title="Clear information for your client’s decision"
+              description="Video, written findings, and inspection limitations help your buyer understand the property and decide what comes next."
             />
             <div className="grid md:grid-cols-3 gap-8">
               {whyAgents?.map((item, index) => {

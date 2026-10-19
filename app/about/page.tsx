@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/page-metadata'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import AIChat from '@/components/ai-chat'
@@ -6,17 +6,8 @@ import Link from 'next/link'
 import { ArrowRight, Shield, Award, Heart, Eye, Zap, Users, Check } from 'lucide-react'
 import { T } from '@/components/diversity/diversity-provider'
 
-export const metadata: Metadata = {
-  title: 'About Us | Independent Sewer Scope Inspections, Indianapolis | Precision Sewer',
-  description: "We're inspectors, not contractors. One InterNACHI-member inspector, camera-verified findings, no sewer repairs, no contractor referrals. Serving Central Indiana.",
-  openGraph: {
-    title: 'About Us | Independent Sewer Scope Inspections, Indianapolis | Precision Sewer',
-    description: "We're inspectors, not contractors. One InterNACHI-member inspector, camera-verified findings, no sewer repairs, no contractor referrals. Serving Central Indiana.",
-  },
-  alternates: {
-    canonical: '/about',
-  },
-}
+export const metadata = pageMetadata("/about", "About PSI: Independent Sewer Inspection Findings", "Meet Precision Sewer Inspections in Central Indiana. Learn how PSI documents visible conditions and explains its relationship with Indiana Drain Company.")
+
 
 const values = [
   { icon: Heart, title: 'Honesty Over Profit', description: "We'd rather lose a sale than gain it through deception." },
@@ -53,17 +44,19 @@ export default function AboutPage() {
             <div className="prose prose-lg max-w-none">
               <h2 className="text-3xl font-heading font-bold text-gray-900 mb-6"><T>Our Story</T></h2>
               <p className="text-gray-600 mb-4">
-                <T>We started Precision Sewer Inspections because we kept watching the same thing happen in Central Indiana real estate: a camera goes down a sewer line, and the person holding it has a repair crew waiting in the truck. The &quot;inspection&quot; becomes a sales pitch. The findings grow to fit the invoice.</T>
+                <T>Precision Sewer Inspections began with a clear purpose: help people understand the condition of their sewer line through useful evidence and straightforward reporting. Homeowners, buyers, and real-estate professionals deserve to know what is visible, what is uncertain, and what it means for their property.</T>
               </p>
               <p className="text-gray-600 mb-4">
-                <T>So we drew one hard line and built the whole company on it: we sell no repairs on anything we inspect. No sewer repairs, no drain work, no contractor referrals — nothing to gain from what the camera finds. When your report says the line is clear, that&apos;s because it is — and when it shows a problem, you get the footage, the location, and plain-English facts you can hand to any contractor you choose.</T>
+                <T>Bringing PSI and Indiana Drain Company together extends that care beyond the report. PSI remains focused on inspection and factual findings. Our sister company offers cleaning, maintenance, and qualifying repair services for customers who want help taking the next step.</T>
               </p>
               <p className="text-gray-600">
-                <T>We&apos;re a new company, and we won&apos;t pretend otherwise. No invented track record, no padded team page. What you get is exactly what exists: one inspector, professional HD equipment, a published national standard, and reports that say what the camera saw.</T>
+                <T>The same care guides both companies: show the evidence, explain the options, and let the customer decide. Recommendations are available when you ask. Additional work is quoted and authorized separately, and your inspection findings never depend on a service purchase.</T>
               </p>
             </div>
           </div>
         </section>
+
+        <section className="px-4 pb-12"><div className="max-w-4xl mx-auto flex flex-wrap gap-6"><a href="https://www.nachi.org/verify" className="text-primary-700 underline">Verify InterNACHI Membership</a><a href="https://www.nachi.org/sewer-scope-sop.htm" className="text-primary-700 underline">Read Sewer Scope Standards</a><Link href="/inspection-and-service" className="text-primary-700 underline">How PSI and IDC Work Together</Link></div></section>
 
         {/* Values */}
         <section className="section-padding bg-gray-50">
@@ -97,13 +90,13 @@ export default function AboutPage() {
             <div className="prose prose-lg max-w-none">
               <h2 className="text-3xl font-heading font-bold text-gray-900 mb-6"><T>The Inspector</T></h2>
               <h3 className="text-xl font-bold text-gray-900 mb-4">
-                <T>Ryan Galbraith — Owner &amp; Inspector · InterNACHI Member</T>
+                <T>Ryan Galbraith — Lead Inspector · InterNACHI Member</T>
               </h3>
               <p className="text-gray-600 mb-4">
-                <T>Ryan performs every PSI inspection to InterNACHI&apos;s published Sewer Scope Standards of Practice — a national standard anyone can read for themselves. He completed InterNACHI&apos;s Sewer Scope Inspector training, and he&apos;s an InterNACHI member in good standing — ID NACHI26032508, verifiable at nachi.org/verify. Go check. We mean it.</T>
+                <T>Ryan leads PSI inspections using professional camera equipment and InterNACHI&apos;s published Sewer Scope Standards of Practice. His listed membership ID is NACHI26032508. The membership directory and published standards are available for you to review.</T>
               </p>
               <p className="text-gray-600">
-                <T>Here&apos;s the part we&apos;re proudest of: Ryan deliberately does not wear titles that can&apos;t be verified. He&apos;s not a home inspector — sewer lines are the whole point, done properly, not one line item on a long checklist. And when a credential turned out to be a logo you download rather than a registration anyone can look up, he left it off. An inspector who won&apos;t inflate his own badge is not going to inflate your sewer findings. That&apos;s the whole company, in one decision.</T>
+                <T>Your report explains the accessible sections inspected, visible conditions, and any limitations. You receive the evidence to share with your agent, another inspector, or the service provider you choose.</T>
               </p>
             </div>
           </div>
@@ -128,7 +121,7 @@ export default function AboutPage() {
               </div>
               <div className="bg-primary-800 rounded-xl p-6">
                 <Users className="w-10 h-10 text-primary-300 mx-auto mb-3" />
-                <p className="font-semibold"><T>No Contractor Referrals</T></p>
+                <p className="font-semibold"><T>Guidance When You Ask</T></p>
               </div>
             </div>
           </div>

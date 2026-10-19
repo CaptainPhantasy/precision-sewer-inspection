@@ -1,4 +1,5 @@
 import { PROMO_CODE, PROMO_PERCENT } from './checkout-pricing'
+import { INSPECTION_SERVICE_FAQ, CLEANING_FAQ } from './inspection-and-service'
 export const COMPANY_INFO = {
   name: 'Precision Sewer Inspections',
   phone: '(317) 620-3858',
@@ -40,20 +41,20 @@ export const SERVICES = [
 
 export const PRICING_TIERS = [
   {
-    name: 'Early Adopter',
+    name: 'Standard Sewer Scope',
     price: '$159',
-    description: 'Limited Time Launch Pricing',
+    description: 'Clear, Upfront Pricing',
     features: [
       'HD Video Recording',
       'HD images and factual summary with no jargon',
       'One-Business-Day Delivery',
       'Standard Cleanout Access',
       'Phone Consultation',
-      'No Upselling Guarantee',
+      'Additional Work Only With Your Approval',
     ],
     cta: 'Book Now',
     featured: false,
-    isPromo: true,
+    isPromo: false,
   },
   {
     name: 'Standard',
@@ -65,7 +66,7 @@ export const PRICING_TIERS = [
       'One-Business-Day Delivery',
       'Standard Cleanout Access',
       'Phone Consultation',
-      'No Upselling Guarantee',
+      'Additional Work Only With Your Approval',
     ],
     cta: 'Book Now',
     featured: true,
@@ -90,7 +91,7 @@ export const ACCESS_METHODS = [
   { method: 'Standard Cleanout Access', price: 'Included', description: 'Outdoor or indoor cleanout — fastest access method' },
   { method: 'Multiple Cleanouts', price: '1st: $159 / Additional: $129', description: 'Additional cleanout inspections performed on-site' },
   { method: 'Roof Vent Access', price: '+$50', description: 'Camera entry via plumbing vent on roof' },
-  { method: 'Toilet Pull & Reset', price: '+$65', description: 'Includes new wax ring and supply line — reusing supply lines is the #1 cause of post-inspection leaks' },
+  { method: 'Toilet Pull & Reset', price: '+$65', description: 'Includes new wax ring and supply line — replacement included in the access charge' },
   { method: 'Clean-Out Cap Replacement', price: '+$50', description: 'Cut out and replace damaged or inaccessible cleanout cap' },
   { method: 'Crawl Space Access', price: '+$30', description: 'Additional fee for crawl space entry' },
   { method: 'Trip Fee', price: '$79', description: 'Charged on a case-by-case basis when access to the sewer system is unavailable, incorrect information was provided, or no one is home at the scheduled time' },
@@ -149,7 +150,7 @@ export const TESTIMONIALS: { quote: string; author: string; role: string; rating
 export const CONVERSATIONAL_FAQS = [
   {
     question: 'Should I get a sewer scope on an older home in Indianapolis?',
-    answer: "Yes—especially in Central Indiana, where many older homes still have clay tile or cast iron lines that deteriorate over decades. A $159 scope shows you the exact condition before you're responsible for it.",
+    answer: "Yes—especially in Central Indiana, where many older homes still have clay tile or cast iron lines that deteriorate over decades. A $159 scope documents the visible condition before you're responsible for it.",
   },
   {
     question: 'How long does a sewer scope inspection take?',
@@ -157,7 +158,7 @@ export const CONVERSATIONAL_FAQS = [
   },
   {
     question: 'What does a sewer camera inspection show?',
-    answer: 'The camera shows the inside of your sewer line in HD: roots, cracks, bellies, offsets, corrosion, and blockages, with footage-counter readings so you know exactly where each issue sits. You see the same video we do—no interpretations you cannot verify.',
+    answer: 'The camera shows the inside of your sewer line in HD: roots, cracks, bellies, offsets, corrosion, and blockages, with footage-counter references where useful. Distance readings are approximate and do not establish a surveyed location. We explain what the recording supports and what remains uncertain.',
   },
   {
     question: 'How much does a sewer scope inspection cost in Indiana?',
@@ -165,22 +166,27 @@ export const CONVERSATIONAL_FAQS = [
   },
   {
     question: 'How to tell if a sewer line has tree roots?',
-    answer: 'Recurring slow drains, gurgling, and backups that return after clearing are the usual signs—especially in yards with mature trees. Only a camera shows roots for certain: they appear as fibrous masses intruding at the joints of the line.',
+    answer: 'Recurring slow drains, gurgling, and backups that return after clearing are the usual signs—especially in yards with mature trees. A camera may show roots where the view is clear. These symptoms alone do not establish the cause, and an obstruction can prevent a complete view.',
   },
   {
     question: 'Does a standard home inspection cover the sewer line?',
-    answer: "No—general home inspectors do not scope sewer lines; the underground lateral is outside their standard scope. That is exactly why a dedicated sewer scope matters: it is the one major system a standard inspection never sees.",
+    answer: "A standard home inspection typically excludes a sewer-camera scope. Some home inspectors offer it as an additional service. Confirm what is included before booking.",
   },
 ]
 
 export const FAQ_ITEMS = [
+  { question: 'What is included when part of the line cannot be inspected?', answer: 'You receive the recording and findings for the accessible sections, with the stopping point and limitation explained. We do not describe an unseen section as clear. Alternate access or cleaning is discussed and priced separately; you decide whether to proceed.' },
+  { question: 'Is a locate or route sketch an engineered map?', answer: 'No. Surface marks and a basic route sketch show an approximate trace where a usable signal and access permit. Footage and depth readings are estimates. They do not replace a survey, engineering design or required utility notification before digging.' },
+  { question: 'Can I use an existing inspection for a service quote?', answer: 'Yes, tell us the previous job reference or that you have a report. We review whether it answers the current question before proposing another inspection. Changed conditions, missing sections or unsuitable footage can make new inspection work necessary.' },
+  INSPECTION_SERVICE_FAQ,
+  CLEANING_FAQ,
   {
     question: 'How much does a sewer scope cost in Indiana?',
     answer: 'Our standard sewer scope inspection is $159 with cleanout access, which includes HD video recording and a written report delivered within one business day. Additional fees may apply for alternative access methods: +$50 for roof vent access, +$65 for toilet pull (includes new wax ring and supply line), +$30 for crawl space access. We believe in transparent, upfront pricing—no hidden fees.',
   },
   {
     question: 'What if access requires a toilet pull?',
-    answer: "Toilet pull access is $65 additional. This includes removing and reinstalling the toilet with a brand new wax ring and supply line. We always replace the supply line because reusing old supply lines is the number one cause of post-inspection leaks. We'll confirm the access method and pricing before beginning work.",
+    answer: "Toilet pull access is $65 additional. This includes removing and reinstalling the toilet with a brand new wax ring and supply line. A new supply line is included in this access charge. We'll confirm the access method and pricing before beginning work.",
   },
   {
     question: "What happens if no one is home or access isn't available?",
@@ -204,18 +210,18 @@ export const FAQ_ITEMS = [
   },
   {
     question: 'What equipment do you use?',
-    answer: "We run three professional camera scope systems, matched to the job. Our high-end system carries an electronic locator and sonde transmitter — that lets us pinpoint the camera's exact underground location and depth from the surface. Every system records high-definition video for your report.",
+    answer: "We run three professional camera scope systems, matched to the job. Our high-end system carries an electronic locator and sonde transmitter — that lets us estimate the camera's underground location and depth from the surface. Every system records high-definition video for your report.",
   },
   {
     question: 'Do you offer hydro jetting?',
-    answer: 'Yes — as preparation for a proper inspection. Roots, grease, and scale can stop the camera before it reaches the real problem, so when a line needs it, we jet it first. That way your scope covers the whole pipe, not just the first few feet. Jetting is priced with your inspection.',
+    answer: 'Yes. If an obstruction limits inspection access, we explain whether cleaning or hydro jetting could help, quote it separately, and proceed only with your approval. Our sister company, Indiana Drain Company, also offers standalone cleaning and jetting. If cleaning is declined, we document the accessible sections and the limitation.',
   },
 ]
 
 export const SERVICE_AREAS = [
   'Indianapolis', 'Carmel', 'Fishers', 'Noblesville', 'Westfield',
   'Zionsville', 'Brownsburg', 'Avon', 'Plainfield', 'Greenwood',
-  'Franklin', 'Greenfield',
+  'Franklin', 'Greenfield', 'Geist',
 ]
 
 type DiscountType = 'fixed' | 'percent'

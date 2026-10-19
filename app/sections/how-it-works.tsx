@@ -6,31 +6,12 @@ import { Calendar, Camera, Video, CheckCircle, ArrowRight } from 'lucide-react'
 import { T } from '@/components/diversity/diversity-provider'
 
 const steps = [
-  {
-    icon: Calendar,
-    step: '1',
-    title: 'Book Online in 60 Seconds',
-    description: "Pick your time, share your address, and you're done. No phone calls, no voicemail tag.",
-  },
-  {
-    icon: Camera,
-    step: '2',
-    title: 'On Time Inspections',
-    description: 'Our inspector arrives on time with professional HD camera equipment.',
-  },
-  {
-    icon: Video,
-    step: '3',
-    title: 'See Your Video in One Business Day',
-    description: 'Get a link to your HD video inspection plus a written report explaining everything.',
-  },
-  {
-    icon: CheckCircle,
-    step: '4',
-    title: 'Decide With Confidence',
-    description: 'Armed with real evidence and honest findings, make informed decisions.',
-  },
+  { step: '1', title: 'Choose your inspection', description: 'Select your access method and tell us how to reach the property. Review the price before you pay.' },
+  { step: '2', title: 'Pick a time and pay online', description: 'Choose an available appointment from our live calendar, enter your contact and property details, then pay securely through Stripe.' },
+  { step: '3', title: 'Get your video and report', description: 'PSI inspects the accessible line and documents the findings and limitations. Your video and written report arrive within one business day.' },
+  { step: '4', title: 'Choose your next step', description: 'If you ask for service options, our sister company IDC may be able to help. Additional work is priced and approved separately. You choose the provider.' },
 ]
+
 
 export default function HowItWorks() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -42,8 +23,8 @@ export default function HowItWorks() {
         {/* Replaced old SectionHeading with the exact design system DOM structure */}
         <div className="section-head">
           <span className="eyebrow"><T>How It Works</T></span>
-          <h2 className="psi"><span className="rule"></span><T>Simple, Fast, Transparent</T></h2>
-          <p className="lede"><T>From booking to report delivery, we've streamlined every step so you can focus on what matters.</T></p>
+          <h2 className="psi"><span className="rule"></span><T>From your question to documented findings</T></h2>
+          <p className="lede"><T>Book and pay online. Get clear findings. Decide what happens next.</T></p>
         </div>
 
         <div ref={ref} className="steps-wrap">
@@ -53,7 +34,7 @@ export default function HowItWorks() {
           <div className="steps">
             {steps?.map((step, index) => {
               // Extracting icon to prevent unused variable warnings, though UI now uses typography lockup
-              const IconComponent = step?.icon
+              // Steps are numbered in reading order.
               return (
                 <motion.div
                   key={index}
