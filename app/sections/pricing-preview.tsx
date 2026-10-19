@@ -8,30 +8,30 @@ import { T } from '@/components/diversity/diversity-provider'
 
 const PREVIEW_CARDS = [
   {
-    name: 'Independent Video Review',
+    name: 'Free Video Second Opinion',
     description: 'Free Expert Opinion',
     price: '$0',
     priceLabel: '/ review',
     badge: 'Free Service',
     badgeColor: 'bg-secondary-500',
     features: [
-      'Independent Sewer Video Review',
+      'Free Sewer Video Second Opinion',
       'No-Jargon Explanation of Findings',
       'Report Reviewed if Provided',
-      '24-Hour Response',
-      'Informational Review Only (No Repair Recommendations)',
-      'No Contractor Referrals'
+      'One-Business-Day Response',
+      'Next-Step Guidance When You Ask',
+      'No Purchase Required'
     ],
     cta: 'Submit Video',
     href: '/video-review',
     featured: false
   },
   {
-    name: 'Early Adopter',
-    description: 'Limited Time Launch Pricing',
+    name: 'Standard Sewer Scope',
+    description: 'Clear, Upfront Pricing',
     price: '$159',
     priceLabel: 'per inspection (cleanout access)',
-    badge: 'Limited Time',
+    badge: 'Standard Inspection',
     badgeColor: 'bg-accent-500',
     features: [
       'HD Video Recording',
@@ -39,7 +39,7 @@ const PREVIEW_CARDS = [
       'One-Business-Day Delivery',
       'Standard Cleanout Access',
       'Phone Consultation',
-      'No Upselling Guarantee'
+      'Additional Work Only With Your Approval'
     ],
     cta: 'Book Now',
     href: '/contact',
@@ -119,7 +119,7 @@ export default function PricingPreview() {
                   href={card.href}
                   className={`btn ${card.featured ? 'btn-accent' : 'btn-outline-light'}`}
                 >
-                  {card.name === 'Independent Video Review' && <Video size={16} strokeWidth={1.5} color="currentColor" style={{ marginRight: '6px' }} />}
+                  {card.name === 'Free Video Second Opinion' && <Video size={16} strokeWidth={1.5} color="currentColor" style={{ marginRight: '6px' }} />}
                   <T>{card.cta}</T>
                   <ArrowRight size={16} strokeWidth={1.5} color="currentColor" style={{ marginLeft: '6px' }} />
                 </Link>

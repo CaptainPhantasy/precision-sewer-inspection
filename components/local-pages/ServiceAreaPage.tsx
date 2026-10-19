@@ -11,6 +11,8 @@ import FAQAccordion from '@/components/local-pages/FAQAccordion';
 import TechnicianCard from '@/components/local-pages/TechnicianCard';
 import CTAButton from '@/components/ui/CTAButton';
 import { T } from '@/components/diversity/diversity-provider';
+import InspectionServiceIntro from '@/components/inspection-service-intro';
+import { LOCAL_INSPECTION_CONTENT } from '@/lib/local-inspection-content';
 
 interface ServiceAreaPageProps {
   area: ServiceArea & {
@@ -55,7 +57,7 @@ const SERVICE_COPY_OVERRIDES: Record<
   },
   'pre-sale-sewer-inspection': {
     shortDescription:
-      'Selling? A pre-listing scope means surprises never reach the closing table.',
+      'Selling? A pre-listing scope documents visible conditions before negotiations begin.',
   },
   'buyers-sewer-inspection': {
     shortDescription:
@@ -122,7 +124,7 @@ export default function ServiceAreaPage({
         dangerouslySetInnerHTML={getJsonLdScript(structuredData)}
       />
 
-      <main className="min-h-screen">
+      <div className="min-h-screen">
         {/* Hero Section - matches homepage HeroSection styling */}
         <ServiceAreaHero
           cityName={area.name}
@@ -145,7 +147,7 @@ export default function ServiceAreaPage({
                 <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span><T>Same-Day Service</T></span>
+                <span><T>One-Business-Day Reports</T></span>
               </div>
               <div className="flex items-center gap-2">
                 <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
@@ -169,6 +171,9 @@ export default function ServiceAreaPage({
           </div>
         </section>
 
+        {LOCAL_INSPECTION_CONTENT[area.slug] && <section className="py-12 bg-white"><div className="max-w-4xl mx-auto px-4"><h2 className="text-3xl font-bold mb-5">{LOCAL_INSPECTION_CONTENT[area.slug].title}</h2><p className="text-lg text-gray-700 mb-4">{LOCAL_INSPECTION_CONTENT[area.slug].intro}</p><p className="text-lg text-gray-700">{LOCAL_INSPECTION_CONTENT[area.slug].preparation}</p><p className="mt-5 font-medium">We confirm the exact address, available access and appointment before scheduling.</p></div></section>}
+        <InspectionServiceIntro />
+
         {/* Services Section */}
         <section className="py-16">
           <div className="container mx-auto px-4">
@@ -181,6 +186,7 @@ export default function ServiceAreaPage({
               </p>
             </div>
 
+            {displayServices.length === 0 && <p className="text-center"><a href="/services" className="text-primary-700 underline"><T>Explore inspection services and pricing</T></a></p>}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {displayServices.map(({ service, localPrice, isAvailable, estimatedWaitDays, hrefOverride }) => (
                 <ServiceCard
@@ -215,7 +221,7 @@ export default function ServiceAreaPage({
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-2"><T>HD Camera Technology</T></h3>
-                    <p className="text-gray-600"><T>State-of-the-art cameras see every detail, from hairline cracks to root intrusion.</T></p>
+                    <p className="text-gray-600"><T>HD footage documents visible conditions. Water, debris, bends and access can limit what the camera shows.</T></p>
                   </div>
                 </div>
 
@@ -238,8 +244,8 @@ export default function ServiceAreaPage({
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2"><T>Same-Day Service</T></h3>
-                    <p className="text-gray-600"><T>Need it fast? We offer same-day inspections in</T> {area.name} <T>and surrounding areas.</T></p>
+                    <h3 className="font-semibold text-lg mb-2"><T>Address-Level Availability</T></h3>
+                    <p className="text-gray-600"><T>Share your address and deadline. We confirm a suitable appointment and access before scheduling.</T></p>
                   </div>
                 </div>
 
@@ -333,7 +339,7 @@ export default function ServiceAreaPage({
               <T>Ready to Schedule Your Inspection?</T>
             </h2>
             <p className="text-xl text-primary-200 mb-8 max-w-2xl mx-auto">
-              <T>Get your sewer inspection scheduled today and know exactly what's in your pipes.</T>
+              <T>Share your concern and available access. We will confirm the scope and price before the inspection.</T>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <CTAButton 
@@ -344,7 +350,7 @@ export default function ServiceAreaPage({
                 <T>Book Your Inspection</T>
               </CTAButton>
               <CTAButton 
-                href={`tel:${process.env.NEXT_PUBLIC_PHONE}`}
+                href={`tel:${process.env.NEXT_PUBLIC_PHONE || '3176203858'}`}
                 variant="outline"
                 size="lg"
                 className="border-white text-white hover:bg-white hover:text-primary-900"
@@ -354,7 +360,7 @@ export default function ServiceAreaPage({
             </div>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 }

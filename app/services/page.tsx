@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/page-metadata'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import AIChat from '@/components/ai-chat'
@@ -9,50 +9,66 @@ import Image from 'next/image'
 import { Camera, Building2, Home, Users, Check, ArrowRight, Shield, Clock, Video } from 'lucide-react'
 import { COMPANY_INFO } from '@/lib/constants'
 import { T } from '@/components/diversity/diversity-provider'
+import InspectionServiceIntro from '@/components/inspection-service-intro'
+import FindingsExplained from '@/components/findings-explained'
 
-export const metadata: Metadata = {
-  title: 'Sewer Scope Services Indianapolis | Residential, Commercial & Real Estate',
-  description: 'Professional sewer inspection services in Indianapolis. Residential sewer scope from $159, commercial inspections, and real estate partner programs. HD video, one-business-day reports. Book today.',
-  openGraph: {
-    title: 'Sewer Inspection Services | Precision Sewer Inspections Indianapolis',
-    description: 'Residential, commercial, and real estate sewer scope inspections. HD video, one-business-day delivery, InterNACHI member.',
-  },
-  alternates: {
-    canonical: '/services',
-  },
-}
+export const metadata = pageMetadata("/services", "Sewer, Drain and Pump Inspection Services", "PSI sewer, drain and pump inspections, video reports and separately approved hydro jetting. Optional cleaning, maintenance and qualifying repairs through Indiana Drain Company.")
+
 
 const services = [
+  {
+    id: 'recurring-blockages', icon: Camera, title: 'Recurring Sewer Blockage Investigation',
+    subtitle: 'Understand what keeps returning',
+    description: 'A standalone camera investigation starts with your history of backups and earlier clearing. We document the accessible line, visible buildup or defects and where the view stops. An observed obstruction may not establish its underlying cause. Cleaning is a separate decision.',
+    features: ['Recorded Accessible Sections', 'Blockage and Defect References', 'Possible Causes Kept Separate', 'Limits and Next Questions Explained'],
+    price: 'Scope confirmed before booking',
+  },
+  {
+    id: 'sewer-locating', icon: Camera, title: 'Sewer & Drain Locating',
+    subtitle: 'Find the accessible line before planning more work',
+    description: 'Where a camera sonde or traceable line provides a usable signal, we can mark an approximate route or point at the surface. Agree on any depth estimates, footage references or basic route sketch before the visit. A locate is not a survey or engineered map, and not every buried line can be traced.',
+    features: ['Accessible Sewer and Drain Routes', 'Surface Marks Where Traceable', 'Approximate Readings with Limits', 'No Excavation Included'],
+    price: 'Scope confirmed before booking',
+  },
+  {
+    id: 'pump-inspection',
+    icon: Camera,
+    title: 'Pump Inspections',
+    subtitle: 'Clear Findings for Accessible Pump Systems',
+    description: 'Inspection of accessible household and pool pump systems after confirming the system type, access, and safe testing scope. Many systems need cleaning first; we explain why and agree the price before any cleaning begins. Highly specialized systems require a suitable specialist. Preventive pump and basin cleaning is also available through Indiana Drain Company.',
+    features: ['System and Access Review', 'Visible Findings and Limitations', 'Cleaning Separately Approved', 'Next-Step Guidance on Request'],
+    price: 'Custom Quote',
+  },
   {
     id: 'residential',
     icon: Home,
     title: 'Residential Sewer Scope',
     subtitle: 'For Homeowners & Home Buyers',
-    description: 'Complete HD video inspection of your main sewer line from house to city connection. Perfect for home buyers, homeowners, and anyone wanting to know the true condition of their sewer line.',
+    description: 'HD video inspection of the visible, accessible portions of your main sewer line, with any access limitations documented. Perfect for home buyers, homeowners, and anyone wanting to know the true condition of their sewer line.',
     features: [
       'HD Video Recording',
       'Written Report with Findings',
-      'One-Business-Day Delivery Guaranteed',
+      'One-Business-Day Report Delivery',
       'Expert Explanation With No Jargon',
       'Digital Copy for Your Records',
-      'No Upselling, Ever',
+      'Inspection Findings First',
     ],
     price: 'From $159',
-    image: '/images/hero_equipment.jpg',
+
   },
   {
     id: 'commercial',
     icon: Building2,
     title: 'Commercial Inspections',
     subtitle: 'For Businesses & Property Managers',
-    description: 'Comprehensive sewer inspections for commercial properties, multi-unit buildings, and investment properties. Volume discounts available for property managers.',
+    description: 'Inspection of agreed, accessible lines at commercial properties, multi-unit buildings and investment properties. Tell us the number of lines or laterals, access points and operating restrictions. Findings identify which line was inspected and which sections could not be reached. Discuss repeat condition checks with us so the scope and timing fit the property.',
     features: [
       'Multi-Unit Pricing Available',
       'Volume Discounts',
       'Detailed Documentation',
       'Dedicated Account Manager',
       'Flexible Scheduling',
-      'Annual Contract Options',
+      'Repeat Inspection Scope by Agreement',
     ],
     price: 'Custom Quote',
     image: '/images/tech_hero.jpg',
@@ -130,11 +146,12 @@ export default function ServicesPage() {
         <section className="section-padding bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="space-y-16">
-              {services?.map((service, index) => {
+              {[services[3], services[0], services[1], services[4], services[5], services[2]].map((service, index) => {
                 const IconComponent = service?.icon
                 return (
                   <div
                     key={service?.id ?? index}
+                    id={service.id}
                     className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-center ${
                       index % 2 === 1 ? 'lg:flex-row-reverse' : ''
                     }`}
@@ -162,7 +179,7 @@ export default function ServicesPage() {
                       </ul>
                       <div className="flex items-center gap-4">
                         <span className="text-2xl font-bold text-gray-900">{service?.price ?? ''}</span>
-                        <Link href={service?.id === 'real-estate' ? '/realtors' : '/contact'} className="btn-primary">
+                        <Link href={service?.id === 'real-estate' ? '/realtors' : service.id === 'sewer-locating' ? '/locating#sewer-drain' : '/contact'} className="btn-primary">
                           <T>{service?.id === 'real-estate' ? 'Partner With Us' : service?.price === 'Custom Quote' ? 'Get Quote' : 'Book Now'}</T>
                           <ArrowRight className="w-4 h-4" />
                         </Link>
@@ -172,7 +189,7 @@ export default function ServicesPage() {
                       <div className={`relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
                         <Image
                           src={service.image}
-                          alt={service?.title ?? 'Service'}
+                          alt="Sewer inspection"
                           fill
                           className="object-cover"
                         />
@@ -200,9 +217,9 @@ export default function ServicesPage() {
                 <h3 className="text-2xl font-heading font-bold text-gray-900 mb-2"><T>Hydro Jetting</T></h3>
                 <p className="text-primary-700 font-semibold mb-4"><T>Clears the way for a proper scope</T></p>
                 <p className="text-gray-600 mb-4">
-                  <T>Roots, grease, and scale can stop the camera before it reaches the real problem. When a line needs it, we jet it first — so your inspection covers the whole pipe, not just the first few feet.</T>
+                  <T>If roots, grease, scale, or debris prevent a clear view, we explain whether cleaning or hydro jetting could improve access. The scope and price are agreed separately before work begins. If cleaning is declined, we report what was visible and document the limitation.</T>
                 </p>
-                <p className="text-gray-900 font-bold"><T>Priced with your inspection</T></p>
+                <p className="text-gray-900 font-bold"><T>Separately quoted. Only with your approval.</T></p>
               </div>
               <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center">
                 <div className="relative w-40 h-40 mb-6">
@@ -211,7 +228,7 @@ export default function ServicesPage() {
                 <h3 className="text-2xl font-heading font-bold text-gray-900 mb-2"><T>Private Utility Locating</T></h3>
                 <p className="text-primary-700 font-semibold mb-4"><T>Electronic line tracing &amp; depth measurement</T></p>
                 <p className="text-gray-600 mb-4">
-                  <T>Dog fence wires, irrigation lines, and other private utilities — located and marked before anyone digs.</T>
+                  <T>Traceable private wiring and suitable accessible lines, subject to signal and access limits. Private utility locating has a different scope from following a sewer camera sonde. Confirm the target and required markings before booking.</T>
                 </p>
                 <Link href="/locating" className="text-primary-700 font-bold hover:underline">
                   <T>Learn more</T> →
@@ -220,6 +237,9 @@ export default function ServicesPage() {
             </div>
           </div>
         </section>
+
+        <FindingsExplained />
+        <InspectionServiceIntro />
 
         {/* CTA */}
         <section className="section-padding bg-primary-900 text-white">

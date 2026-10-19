@@ -7,7 +7,7 @@
  *
  * Kept dependency-free and tiny; runs synchronously in <head>.
  */
-const SCRIPT = `
+const SCRIPT = String.raw`
 (function () {
   try {
     // Backend app boundary: /admin and /technician (the field PWA) must never

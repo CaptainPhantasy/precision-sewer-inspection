@@ -12,7 +12,7 @@ interface DemoReportProps {
 }
 
 /**
- * "Generate Demo Report" button + modal with an embedded sample PDF.
+ * "View Sample Report" button + modal with an embedded sample PDF.
  * The 9.4 MB PDF is never loaded until the modal opens (iframe src is set
  * lazily). iOS Safari cannot render PDFs in iframes, so "Open" and "Download"
  * links stay visible at all times inside the modal.
@@ -41,7 +41,7 @@ export default function DemoReport({ buttonClassName }: DemoReportProps) {
         className={buttonClassName ?? 'btn-secondary'}
       >
         <FileText className="w-5 h-5" />
-        <T>Generate Demo Report</T>
+        <T>View Sample Report</T>
       </button>
 
       {isOpen && (

@@ -51,7 +51,7 @@ export default function ServiceAreas() {
         </div>
 
         <p className="areas-foot">
-          <T>Don&apos;t see your city? Contact us—we likely serve your area too!</T>
+          <T>Share your full address so we can confirm service suitability and appointment availability.</T>
         </p>
 
       </div>

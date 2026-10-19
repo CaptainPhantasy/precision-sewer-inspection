@@ -5,14 +5,14 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Play, ArrowRight, MapPin, Clock, ShieldCheck, DollarSign } from 'lucide-react'
-import AnimatedCounter from '@/components/animated-counter'
+import { IDC_URL } from '@/lib/inspection-and-service'
 import { useDiversity, T } from '@/components/diversity/diversity-provider'
 
 const trustBadges = [
-  { icon: ShieldCheck, value: '100', label: 'No Upselling', suffix: '%' },
-  { icon: Clock, value: '1', label: 'Business-Day Reports', suffix: '' },
-  { icon: DollarSign, value: '0', label: 'Hidden Fees', suffix: '' },
-  { icon: MapPin, value: '10', label: 'Indiana Areas Served', suffix: '+' },
+  { icon: ShieldCheck, value: 'HD', label: 'Video Evidence' },
+  { icon: Clock, value: '1', label: 'Business-Day Reports' },
+  { icon: DollarSign, value: '$159', label: 'Standard Cleanout Scope' },
+  { icon: MapPin, value: '13', label: 'Local Service Areas' },
 ]
 
 export default function HeroSection() {
@@ -30,30 +30,29 @@ export default function HeroSection() {
             {/* Spacer: keeps hero text below the oversized header badge's overhang at page top */}
             <div className="h-20 md:h-44" aria-hidden="true" />
             <span className="eyebrow on-dark">
-              {t("Central Indiana's Trusted Choice")}
+              {t('Sewer Inspections · Central Indiana')}
             </span>
             
             <h1>
-              <T>See What&apos;s Really In Your</T> <em><T>Pipes</T></em>
+              <T>Clear answers.</T> <em><T>A clearer way forward.</T></em>
             </h1>
             
             <p className="price-line">
-              <T>Before it costs you</T> <b>thousands</b>
+              <T>Video evidence. Clear reporting. Your next step.</T>
             </p>
             
             <p className="lede-dark">
-              <T>Our HD sewer scope lets you see what&apos;s really in your pipes with honest answers. No upselling, no scare tactics—just the evidence you need to make confident decisions.</T>
+              <T>Buying a property, dealing with a recurring sewer problem, or weighing a proposed repair? PSI inspects what is accessible, records the findings and explains the limits so you can decide what happens next.</T>
             </p>
 
             {/* CTA Buttons */}
             <div className="ctas">
               <Link href="/contact" className="btn btn-accent">
-                {t('Book Inspection — 60 Seconds')}
+                {t('Book an Inspection')}
                 <ArrowRight className="w-5 h-5" />
               </Link>
-              <a href="#what-we-find" className="btn btn-outline-dark">
-                <Play className="w-5 h-5" />
-                {t('See Sample Footage')}
+              <a href={IDC_URL} className="btn btn-outline-dark">
+                {t('Need drain service? Visit IDC')}
               </a>
             </div>
 
@@ -72,10 +71,7 @@ export default function HeroSection() {
                     {IconComponent && <IconComponent className="w-5 h-5 text-accent-400 mx-auto mb-2" />}
                     <div className="k">{t(badge?.label ?? '')}</div>
                     <div className="v">
-                      <AnimatedCounter 
-                        end={Number(badge?.value ?? 0)} 
-                        suffix={badge?.suffix ?? ''} 
-                      />
+                      {badge.value}
                     </div>
                   </motion.div>
                 )
@@ -93,7 +89,7 @@ export default function HeroSection() {
             <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '400px', borderRadius: '16px', overflow: 'hidden' }}>
               <Image
                 src="/images/tech_hero.jpg"
-                alt="Precision Sewer Inspections technician with professional equipment"
+                alt="Sewer camera inspection"
                 fill
                 className="object-cover"
                 priority
@@ -110,8 +106,8 @@ export default function HeroSection() {
                 <ShieldCheck style={{ width: '20px', height: '20px' }} />
               </div>
               <div className="text">
-                <div className="a">No Contractor Referrals</div>
-                <div className="b">Precision Inspection</div>
+                <div className="a"><T>Inspection Findings First</T></div>
+                <div className="b"><T>You Choose the Next Step</T></div>
               </div>
             </div>
           </motion.div>

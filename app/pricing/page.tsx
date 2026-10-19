@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/page-metadata'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import AIChat from '@/components/ai-chat'
@@ -9,30 +9,30 @@ import { T } from '@/components/diversity/diversity-provider'
 
 const PRICING_CARDS = [
   {
-    name: 'Independent Video Review',
+    name: 'Free Video Second Opinion',
     description: 'Free Expert Opinion',
     price: '$0',
     priceLabel: '/ review',
     badge: 'Free Service',
     badgeColor: 'bg-secondary-500',
     features: [
-      'Independent Sewer Video Review',
+      'Free Sewer Video Second Opinion',
       'No-Jargon Explanation of Findings',
       'Report Reviewed if Provided',
-      '24-Hour Response',
-      'Informational Review Only (No Repair Recommendations)',
-      'No Contractor Referrals'
+      'One-Business-Day Response',
+      'Next-Step Guidance When You Ask',
+      'No Purchase Required'
     ],
     cta: 'Submit Video',
     href: '/video-review',
     featured: false
   },
   {
-    name: 'Early Adopter',
-    description: 'Limited Time Launch Pricing',
+    name: 'Standard Sewer Scope',
+    description: 'Clear, Upfront Pricing',
     price: '$159',
     priceLabel: 'per inspection (cleanout access)',
-    badge: 'Limited Time',
+    badge: 'Standard Inspection',
     badgeColor: 'bg-accent-500',
     features: [
       'HD Video Recording',
@@ -40,7 +40,7 @@ const PRICING_CARDS = [
       'One-Business-Day Delivery',
       'Standard Cleanout Access',
       'Phone Consultation',
-      'No Upselling Guarantee'
+      'Additional Work Only With Your Approval'
     ],
     cta: 'Book Now',
     href: '/contact',
@@ -66,23 +66,15 @@ const PRICING_CARDS = [
   }
 ]
 
-export const metadata: Metadata = {
-  title: 'Sewer Scope Cost Indianapolis | $159 Standard',
-  description: 'Sewer inspection pricing in Indianapolis. Standard rate $159. Multi-unit discounts, volume packages for investors. Transparent pricing, no hidden fees.',
-  openGraph: {
-    title: 'Sewer Scope Pricing | Indianapolis | Precision Sewer Inspections',
-    description: 'Transparent sewer inspection pricing. Standard rate $159. Volume packages available. No surprises.',
-  },
-  alternates: {
-    canonical: '/pricing',
-  },
-}
+export const metadata = pageMetadata("/pricing", "Sewer Camera Inspection Pricing in Indianapolis", "Review PSI's published sewer camera inspection pricing, standard access requirements and separately approved options. Confirm the scope before booking.")
+
 
 export default function PricingPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
+        <section className="bg-primary-50 py-8 px-4"><div className="max-w-4xl mx-auto"><h2 className="text-xl font-bold mb-3">Agree on the scope before the work.</h2><p>The $159 standard scope uses a usable cleanout and includes the existing video, written findings and phone consultation package below. Access charges are listed separately. Multiple lines, locating, pump systems and inspection-enabling cleaning are scoped before you approve a price.</p><p className="mt-3">If access or visibility limits the inspection, we record the accessible sections, the stopping point and what remains unknown. You may decline additional access or cleaning. We explain any applicable access or trip charge before proceeding; a clear view of every section is not guaranteed.</p></div></section>
         {/* Hero */}
         <section className="bg-gradient-to-br from-primary-900 to-primary-800 text-white py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -134,7 +126,7 @@ export default function PricingPage() {
                       card.featured ? 'btn-primary' : 'btn-secondary'
                     }`}
                   >
-                    {card.name === 'Independent Video Review' && <Video className="w-4 h-4 mr-1" />}
+                    {card.name === 'Free Video Second Opinion' && <Video className="w-4 h-4 mr-1" />}
                     <T>{card.cta}</T>
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </Link>
