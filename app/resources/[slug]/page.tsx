@@ -12,7 +12,7 @@ import { ArrowLeft, Calendar, Clock, User, ArrowRight } from 'lucide-react'
 import { COMPANY_INFO } from '@/lib/constants'
 
 interface Props {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateStaticParams() {
@@ -21,10 +21,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = getPostBySlug(params.slug)
+  const { slug } = await params
+  const post = getPostBySlug(slug)
   if (!post) return { title: 'Post Not Found' }
 
-  const metadata = pageMetadata(`/resources/${params.slug}`, post.title, post.description)
+  const metadata = pageMetadata(`/resources/${slug}`, post.title, post.description)
   return {
     ...metadata,
     openGraph: {
@@ -36,8 +37,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default function BlogPostPage({ params }: Props) {
-  const post = getPostBySlug(params.slug)
+export default async function BlogPostPage({ params }: Props) {
+  const { slug } = await params
+  const post = getPostBySlug(slug)
   if (!post) notFound()
 
   const allPosts = getAllPosts()

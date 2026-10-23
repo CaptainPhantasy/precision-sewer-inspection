@@ -1,8 +1,9 @@
 // Email notification utilities
 // Uses Hostinger SMTP via nodemailer (replaced Abacus notification API)
 
-import nodemailer from "nodemailer";
+import nodemailer, { type Transporter } from "nodemailer";
 import { getSiteUrl } from "./site-url";
+import { getEmailDeliveryConfig, type EmailDeliveryConfig } from "./test-email-config";
 
 // Admin email recipients
 export const ADMIN_EMAILS = [
@@ -11,20 +12,16 @@ export const ADMIN_EMAILS = [
 ];
 
 // SMTP transport — lazily created on first use
-let _transporter: nodemailer.Transporter | null = null;
+let _transporter: Transporter | null = null;
+let _transportConfig: string | null = null;
 
-function getTransporter(): nodemailer.Transporter {
-  if (_transporter) return _transporter;
+function getTransporter(config: EmailDeliveryConfig): Transporter {
+  const configKey = JSON.stringify(config.transport);
+  if (_transporter && _transportConfig === configKey) return _transporter;
 
-  _transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || "smtp.hostinger.com",
-    port: Number(process.env.SMTP_PORT) || 465,
-    secure: true, // port 465 = implicit TLS
-    auth: {
-      user: process.env.SMTP_USER || "noreply@precisionsewerinspections.com",
-      pass: process.env.SMTP_PASSWORD,
-    },
-  });
+  _transporter?.close();
+  _transporter = nodemailer.createTransport(config.transport);
+  _transportConfig = configKey;
 
   return _transporter;
 }
@@ -37,22 +34,24 @@ interface NotificationEmailParams {
   textContent?: string;
 }
 
-/** Send notification email via Hostinger SMTP. */
+/** Send notification email, restricting every recipient when test mode is active. */
 export async function sendNotificationEmail(
   params: NotificationEmailParams
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const transporter = getTransporter();
+    // Validate on every send, including when a transport has already been cached.
+    const config = getEmailDeliveryConfig();
+    const transporter = getTransporter(config);
 
     const fromAddress =
       process.env.SMTP_FROM || process.env.SMTP_USER || "noreply@precisionsewerinspections.com";
 
     await transporter.sendMail({
       from: `"Precision Sewer Inspections" <${fromAddress}>`,
-      to: params.recipientName
+      to: config.testRecipient || (params.recipientName
         ? `${params.recipientName} <${params.recipientEmail}>`
-        : params.recipientEmail,
-      subject: params.subject,
+        : params.recipientEmail),
+      subject: config.testRecipient ? `[PSI TEST] ${params.subject}` : params.subject,
       html: params.htmlContent,
       text: params.textContent || undefined,
     });

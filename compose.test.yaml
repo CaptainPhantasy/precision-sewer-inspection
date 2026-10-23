@@ -1,0 +1,26 @@
+name: psi-test
+
+services:
+  database:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: psi_test
+      POSTGRES_DB: psi_test
+      POSTGRES_PASSWORD: ${PSI_TEST_POSTGRES_PASSWORD:?}
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - psi-test-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U psi_test -d psi_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  mail:
+    image: axllent/mailpit:v1.27
+    ports:
+      - "127.0.0.1:11025:1025"
+      - "127.0.0.1:11225:8025"
+
+volumes:
+  psi-test-postgres:
