@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const host = request.headers.get('host') || ''
   
   // Handle www → non-www redirect for SEO consistency
   if (host.startsWith('www.')) {
-    const newUrl = new URL(request.url)
-    newUrl.host = host.replace('www.', '')
-    newUrl.protocol = 'https:'
+    // Use the public Host authority; request.url can contain the internal
+    // Next.js server port when the proxy runs in the Node runtime.
+    const newUrl = new URL(`https://${host.slice(4)}`)
+    newUrl.pathname = request.nextUrl.pathname
+    newUrl.search = request.nextUrl.search
     return NextResponse.redirect(newUrl.toString(), 301)
   }
 

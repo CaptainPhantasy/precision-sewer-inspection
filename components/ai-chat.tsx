@@ -49,7 +49,7 @@ function saveChatTranscript(sessionId: string, messages: Message[]) {
 function renderMessageContent(content: string, isUser: boolean) {
 	// Match markdown links: [text](url)
 	const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-	const parts: (string | JSX.Element)[] = [];
+	const parts: (string | React.JSX.Element)[] = [];
 	let lastIndex = 0;
 	let match;
 
@@ -591,5 +591,5 @@ export default function AIChat() {
 		</>
 	);
 
-	return createPortal(portalContent, document.body) as unknown as JSX.Element;
+	return createPortal(portalContent, document.body) as unknown as React.JSX.Element;
 }

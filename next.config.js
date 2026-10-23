@@ -1,13 +1,9 @@
-const path = require("path");
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	agentRules: false,
 	distDir: process.env.NEXT_DIST_DIR || ".next",
 	output: process.env.NEXT_OUTPUT_MODE || undefined,
 	productionBrowserSourceMaps: false,
-	eslint: {
-		ignoreDuringBuilds: true,
-	},
 	typescript: {
 		ignoreBuildErrors: false,
 	},

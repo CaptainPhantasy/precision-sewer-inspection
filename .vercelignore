@@ -11,6 +11,3 @@ node_modules
 .pi
 .claude
 .floyd
-
-# Standardize on yarn for Vercel builds (avoids yarn/npm lockfile mix warning)
-package-lock.json
