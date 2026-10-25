@@ -15,8 +15,8 @@ import {
   Phone,
 } from "lucide-react";
 import { formatDistanceToNow, format } from "date-fns";
-import type { OverrideRequest, OverrideResolution } from "@/lib/services/override.service";
-import { OVERRIDE_REASON_LABELS, OVERRIDE_RESOLUTION_LABELS } from "@/lib/services/override.service";
+import type { OverrideRequest, OverrideResolution } from "@/lib/override-contract";
+import { OVERRIDE_REASON_LABELS, OVERRIDE_RESOLUTION_LABELS } from "@/lib/override-contract";
 
 interface OverridePanelProps {
   onRefresh?: () => void;

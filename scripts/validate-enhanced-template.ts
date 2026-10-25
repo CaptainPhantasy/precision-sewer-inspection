@@ -3,7 +3,7 @@
  * Run: DATABASE_URL="postgresql://douglastalley@localhost:5432/psi_local" npx tsx scripts/validate-enhanced-template.ts
  */
 
-import { PrismaClient } from "@prisma/client";
+import { createPrismaClient } from '../lib/prisma-client';
 import { generateEnhancedReportHTML } from "../lib/report-template-enhanced";
 import type { AcousticResult } from "../lib/services/acoustic-analysis.service";
 import { generateSpectrographDataUrl } from "../lib/services/spectrograph.service";
@@ -47,7 +47,7 @@ function fileToDataUrl(filePath: string, mimeType = "image/png"): string {
   return `data:${mimeType};base64,${buffer.toString("base64")}`;
 }
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 async function main() {
   console.log("Fetching Bonham inspection from local DB...");

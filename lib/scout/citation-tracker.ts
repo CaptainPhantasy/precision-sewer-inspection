@@ -3,10 +3,9 @@
 // Monitors where PSI appears in AI-generated answers
 // ============================================================================
 
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/db';
 import { AIEngine } from '@prisma/client';
 
-const prisma = new PrismaClient();
 
 // Search queries to track
 const SEARCH_QUERIES = [

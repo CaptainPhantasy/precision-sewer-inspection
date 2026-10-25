@@ -3,9 +3,10 @@
 // Common questions about sewer inspections
 // ============================================================================
 
-import { PrismaClient, FAQCategory } from '@prisma/client';
+import { FAQCategory } from '@prisma/client';
+import { createPrismaClient } from '../lib/prisma-client';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 export const faqs: { question: string; answer: string; shortAnswer: string; category: FAQCategory; keywords: string[]; sortOrder: number; isPublished: boolean }[] = [
   // GENERAL

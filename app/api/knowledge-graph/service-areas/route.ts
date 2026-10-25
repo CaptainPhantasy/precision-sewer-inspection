@@ -4,9 +4,8 @@
 // ============================================================================
 
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/db';
 
-const prisma = new PrismaClient();
 
 // GET /api/knowledge-graph/service-areas - List all service areas
 export async function GET(request: NextRequest) {
