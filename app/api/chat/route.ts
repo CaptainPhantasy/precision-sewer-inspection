@@ -15,7 +15,7 @@ export const dynamic = 'force-dynamic'
 
 // Vercel AI Gateway — OpenAI-compatible endpoint, one key fronts many models.
 const AI_GATEWAY_URL = 'https://ai-gateway.vercel.sh/v1/chat/completions'
-const AI_MODEL = process.env.AI_GATEWAY_MODEL || 'anthropic/claude-haiku-4.5'
+const AI_MODEL = 'deepseek/deepseek-v4.1-flash-1017'
 
 // Dynamically build system context from actual site data
 function buildDynamicSystemContext(): string {
@@ -177,7 +177,7 @@ export async function POST(request: NextRequest) {
     // Build system context dynamically from site data
     const dynamicSystemContext = buildDynamicSystemContext()
 
-    // Filter to only user/assistant messages (Anthropic requirement)
+    // Keep the server-owned system context separate from conversation messages.
     const formattedMessages: Array<{ role: 'user' | 'assistant'; content: string }> = 
       (messages ?? [])
         ?.filter?.((m: { role: string; content: string }) => m.role === 'user' || m.role === 'assistant')
@@ -202,6 +202,9 @@ export async function POST(request: NextRequest) {
         model: AI_MODEL,
         max_tokens: 500,
         temperature: 0.7,
+        reasoning: { effort: 'none' },
+        // Gateway uses the team's stored DeepSeek BYOK before system credentials.
+        providerOptions: { gateway: { only: ['deepseek'] } },
         stream: true,
         messages: [
           { role: 'system', content: dynamicSystemContext },
