@@ -14,6 +14,8 @@ owner review. These stages do not change database models or production records.
 - All application database access uses the shared adapter-backed client. Scripts
   retain separately owned clients and explicit disconnects. Test clients still
   require the guarded local URL before constructing a connection.
+- Standalone seed/export scripts explicitly load dotenv before constructing their
+  client; a subprocess regression checks this without opening a database connection.
 - Prisma CLI settings move to `prisma.config.ts`; credential-free generation
   during clean installation still works. Model definitions are unchanged.
 - Browser override labels/types move into a database-free contract module so

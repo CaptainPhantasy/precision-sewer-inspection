@@ -3,7 +3,7 @@
 // no deletes, and it never touches the 10 pre-existing area rows — so any
 // edits made through the admin dashboard stay intact. Safe to re-run.
 
-import { createPrismaClient } from '../lib/prisma-client';
+import { createPrismaClient } from '../lib/prisma-script-client';
 import { serviceAreas, serviceOfferings } from '../prisma/seed-service-areas';
 
 const prisma = createPrismaClient();

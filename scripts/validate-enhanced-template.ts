@@ -3,7 +3,7 @@
  * Run: DATABASE_URL="postgresql://douglastalley@localhost:5432/psi_local" npx tsx scripts/validate-enhanced-template.ts
  */
 
-import { createPrismaClient } from '../lib/prisma-client';
+import { createPrismaClient } from '../lib/prisma-script-client';
 import { generateEnhancedReportHTML } from "../lib/report-template-enhanced";
 import type { AcousticResult } from "../lib/services/acoustic-analysis.service";
 import { generateSpectrographDataUrl } from "../lib/services/spectrograph.service";
