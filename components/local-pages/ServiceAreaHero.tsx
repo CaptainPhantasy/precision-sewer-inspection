@@ -30,7 +30,7 @@ export default function ServiceAreaHero({
 }: ServiceAreaHeroProps) {
   const { t } = useDiversity()
   return (
-    <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 text-white overflow-hidden">
+    <section className="relative bg-linear-to-br/srgb from-primary-900 via-primary-800 to-primary-900 text-white overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-[url('/images/hero-pattern.svg')] bg-repeat" />
@@ -87,7 +87,7 @@ export default function ServiceAreaHero({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-                    className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center"
+                    className="bg-white/10 backdrop-blur-xs rounded-xl p-4 text-center"
                   >
                     {IconComponent && <IconComponent className="w-5 h-5 text-accent-400 mx-auto mb-2" />}
                     <div className="text-2xl font-bold text-white">
@@ -115,8 +115,8 @@ export default function ServiceAreaHero({
                 className="object-cover"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary-900/60 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl p-4">
+              <div className="absolute inset-0 bg-linear-to-t/srgb from-primary-900/60 to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-xs rounded-xl p-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-accent-500 rounded-full flex items-center justify-center">
                     <ShieldCheck className="w-5 h-5 text-white" />

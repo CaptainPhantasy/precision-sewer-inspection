@@ -207,9 +207,9 @@ export function CameraPairing({ inspectionId, onCameraSelect }: CameraPairingPro
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3">
+      <div className="bg-linear-to-r/srgb from-blue-600 to-blue-700 px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-white">
             <Camera className="w-5 h-5" />
@@ -228,7 +228,7 @@ export function CameraPairing({ inspectionId, onCameraSelect }: CameraPairingPro
         {/* Error display */}
         {error && (
           <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm flex items-start gap-2">
-            <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+            <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
             <span>{error}</span>
             <button onClick={() => setError(null)} className="ml-auto">
               <X className="w-4 h-4" />
@@ -325,7 +325,7 @@ export function CameraPairing({ inspectionId, onCameraSelect }: CameraPairingPro
                   onClick={() => selectCamera(camera)}
                   className="flex items-center gap-2 flex-1 text-left"
                 >
-                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm">
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-xs">
                     {camera.type === "bluetooth" ? (
                       <Bluetooth className="w-4 h-4 text-blue-500" />
                     ) : camera.type === "wifi" ? (

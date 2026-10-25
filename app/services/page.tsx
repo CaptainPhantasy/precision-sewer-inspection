@@ -104,7 +104,7 @@ export default function ServicesPage() {
       <Header />
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-gradient-to-br from-primary-900 to-primary-800 text-white py-16 md:py-24">
+        <section className="bg-linear-to-br/srgb from-primary-900 to-primary-800 text-white py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-3xl mx-auto text-center">
               <span className="inline-block px-4 py-1 bg-primary-700 text-primary-200 text-sm font-semibold rounded-full mb-6">
@@ -172,7 +172,7 @@ export default function ServicesPage() {
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                         {service?.features?.map((feature, i) => (
                           <li key={i} className="flex items-center gap-2 text-gray-700">
-                            <Check className="w-5 h-5 text-secondary-500 flex-shrink-0" />
+                            <Check className="w-5 h-5 text-secondary-500 shrink-0" />
                             <span className="text-sm"><T>{feature ?? ''}</T></span>
                           </li>
                         ))}

@@ -171,7 +171,7 @@ export function AnalyticsTab() {
   return (
     <div className="space-y-6">
       {/* Controls Bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white rounded-xl p-4 shadow-sm">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white rounded-xl p-4 shadow-xs">
         <div className="flex items-center gap-3">
           <Activity className="w-5 h-5 text-blue-600 hidden sm:block" />
           <h3 className="text-base font-semibold text-gray-800 hidden sm:block">Site Analytics</h3>
@@ -182,7 +182,7 @@ export function AnalyticsTab() {
                 onClick={() => setRange(r)}
                 className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all duration-200 ${
                   range === r
-                    ? 'bg-blue-600 text-white shadow-sm'
+                    ? 'bg-blue-600 text-white shadow-xs'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-white'
                 }`}
               >
@@ -227,7 +227,7 @@ export function AnalyticsTab() {
 
       {/* Traffic Over Time - Enhanced */}
       {dailyStats.length > 0 && (
-        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-sm">
+        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-xs">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900">Traffic Over Time</h3>
             <div className="hidden lg:flex items-center gap-4 text-xs text-gray-500">
@@ -271,7 +271,7 @@ export function AnalyticsTab() {
 
       {/* Engagement Funnel - Desktop enhanced */}
       {funnelData.length > 0 && funnelData[0].value > 0 && (
-        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-sm">
+        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-xs">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <Zap className="w-5 h-5 text-yellow-500" />
             Engagement Funnel
@@ -312,7 +312,7 @@ export function AnalyticsTab() {
       {/* Two/Three Column Layout for Desktop */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
         {/* Top Pages */}
-        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-sm xl:col-span-2">
+        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-xs xl:col-span-2">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-blue-500" />
             Top Pages
@@ -327,7 +327,7 @@ export function AnalyticsTab() {
                 <div className="flex items-center gap-3">
                   <div className="w-28 lg:w-40 bg-gray-100 rounded-full h-2.5">
                     <div
-                      className="bg-gradient-to-r from-blue-400 to-blue-600 rounded-full h-2.5 transition-all duration-500"
+                      className="bg-linear-to-r/srgb from-blue-400 to-blue-600 rounded-full h-2.5 transition-all duration-500"
                       style={{ width: `${topPages[0] ? (p.views / topPages[0].views) * 100 : 0}%` }}
                     />
                   </div>
@@ -340,7 +340,7 @@ export function AnalyticsTab() {
         </div>
 
         {/* Traffic Sources */}
-        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-sm">
+        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-xs">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <Globe className="w-5 h-5 text-green-500" />
             Traffic Sources
@@ -374,7 +374,7 @@ export function AnalyticsTab() {
                   const pct = total > 0 ? Math.round((s.count / total) * 100) : 0
                   return (
                     <div key={i} className="flex items-center gap-2 group">
-                      <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
+                      <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
                       <span className="text-sm text-gray-600 flex-1 truncate">{s.source}</span>
                       <span className="text-xs text-gray-400">{pct}%</span>
                       <span className="text-sm font-semibold text-gray-900">{s.count}</span>
@@ -389,7 +389,7 @@ export function AnalyticsTab() {
         </div>
 
         {/* Device Breakdown - Enhanced */}
-        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-sm">
+        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-xs">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Devices</h3>
           <div className="grid grid-cols-3 gap-3">
             {deviceBreakdown.map((d, i) => {
@@ -397,7 +397,7 @@ export function AnalyticsTab() {
               const total = deviceBreakdown.reduce((a, b) => a + b.count, 0)
               const pct = total > 0 ? Math.round((d.count / total) * 100) : 0
               return (
-                <div key={i} className="text-center p-3 lg:p-4 bg-gradient-to-b from-gray-50 to-white rounded-xl border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all duration-200 group cursor-default">
+                <div key={i} className="text-center p-3 lg:p-4 bg-linear-to-b/srgb from-gray-50 to-white rounded-xl border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all duration-200 group cursor-default">
                   <Icon className="w-7 h-7 lg:w-9 lg:h-9 mx-auto mb-2 text-blue-500 group-hover:text-blue-600 transition-colors" />
                   <p className="text-2xl lg:text-3xl font-bold text-gray-900">{pct}%</p>
                   <p className="text-xs text-gray-500 capitalize mt-0.5">{d.device}</p>
@@ -410,7 +410,7 @@ export function AnalyticsTab() {
         </div>
 
         {/* Browser Breakdown - Enhanced */}
-        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-sm">
+        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-xs">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Browsers</h3>
           {browserBreakdown.length > 0 ? (
             <div className="h-48 lg:h-56">
@@ -434,7 +434,7 @@ export function AnalyticsTab() {
         </div>
 
         {/* Top CTAs - Enhanced */}
-        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-sm">
+        <div className="bg-white rounded-xl p-4 lg:p-6 shadow-xs">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <MousePointer className="w-5 h-5 text-orange-500" />
             Top CTA Clicks
@@ -450,7 +450,7 @@ export function AnalyticsTab() {
                   </div>
                   <div className="w-full bg-orange-50 rounded-full h-1.5">
                     <div
-                      className="bg-gradient-to-r from-orange-400 to-orange-600 rounded-full h-1.5 transition-all duration-500"
+                      className="bg-linear-to-r/srgb from-orange-400 to-orange-600 rounded-full h-1.5 transition-all duration-500"
                       style={{ width: `${(c.count / maxCount) * 100}%` }}
                     />
                   </div>
@@ -463,7 +463,7 @@ export function AnalyticsTab() {
       </div>
 
       {/* Entry & Exit Pages - Full Width Enhanced */}
-      <div className="bg-white rounded-xl p-4 lg:p-6 shadow-sm">
+      <div className="bg-white rounded-xl p-4 lg:p-6 shadow-xs">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           <div>
             <h4 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
@@ -540,7 +540,7 @@ function KPICard({
   const c = colorMap[color] || colorMap.blue
 
   return (
-    <div className={`bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-200 ${highlight ? `ring-2 ${c.ring}` : ''}`}>
+    <div className={`bg-white rounded-xl p-4 shadow-xs hover:shadow-md transition-all duration-200 ${highlight ? `ring-2 ${c.ring}` : ''}`}>
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <div className={`p-2 rounded-lg ${c.bg} ${c.text}`}>

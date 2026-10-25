@@ -22,7 +22,7 @@ export default function FAQSection() {
             icon={HelpCircle}
           />
 
-          <div className="space-y-4">
+          <div className="[&>.faq+.faq]:mt-4">
             {FAQ_ITEMS?.slice(0, 5)?.map((item, index) => (
               <motion.div
                 key={index}

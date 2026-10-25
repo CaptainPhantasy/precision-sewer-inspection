@@ -141,7 +141,7 @@ export default function RealtorsPage() {
       <Header />
       <main className="flex-1">
         {/* 1. Hero */}
-        <section className="bg-gradient-to-br from-primary-900 to-primary-800 text-white py-16 md:py-24">
+        <section className="bg-linear-to-br/srgb from-primary-900 to-primary-800 text-white py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-3xl mx-auto text-center">
               <span className="inline-block px-4 py-1 bg-primary-700 text-primary-200 text-sm font-semibold rounded-full mb-6">
@@ -242,7 +242,7 @@ export default function RealtorsPage() {
               {windowSteps?.map((step, index) => {
                 const IconComponent = step?.icon
                 return (
-                  <div key={index} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                  <div key={index} className="bg-white rounded-2xl p-8 shadow-xs border border-gray-100">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-12 h-12 bg-secondary-100 rounded-xl flex items-center justify-center">
                         {IconComponent && <IconComponent className="w-6 h-6 text-secondary-600" />}
@@ -298,7 +298,7 @@ export default function RealtorsPage() {
                 <ul className="space-y-3">
                   {partnerBenefits?.map((benefit, index) => (
                     <li key={index} className="flex items-start gap-3 text-primary-100">
-                      <BadgeCheck className="w-5 h-5 text-secondary-400 flex-shrink-0 mt-0.5" />
+                      <BadgeCheck className="w-5 h-5 text-secondary-400 shrink-0 mt-0.5" />
                       <span><T>{benefit ?? ''}</T></span>
                     </li>
                   ))}

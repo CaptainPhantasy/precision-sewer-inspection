@@ -88,7 +88,7 @@ function BookingSuccessContent() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        <section className="section-padding bg-gradient-to-b from-secondary-50 to-white">
+        <section className="section-padding bg-linear-to-b/srgb from-secondary-50 to-white">
           <div className="container-custom max-w-2xl mx-auto text-center">
             <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
               <div className="w-20 h-20 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -132,7 +132,7 @@ function BookingSuccessContent() {
               {confirmation?.needsReschedule && (
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-6 text-left">
                   <div className="flex items-start gap-3">
-                    <AlertCircle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <AlertCircle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
                     <div>
                       <h2 className="font-bold text-amber-900 mb-1">Scheduling Note</h2>
                       <p className="text-amber-800 text-sm">
@@ -148,7 +148,7 @@ function BookingSuccessContent() {
               {confirmation?.success && !confirmation?.calendarBooked && !confirmation?.needsReschedule && (
                 <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6 text-left">
                   <div className="flex items-start gap-3">
-                    <Phone className="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <Phone className="w-6 h-6 text-blue-600 shrink-0 mt-0.5" />
                     <div>
                       <h2 className="font-bold text-blue-900 mb-1">We&apos;ll Be In Touch</h2>
                       <p className="text-blue-800 text-sm">
@@ -163,7 +163,7 @@ function BookingSuccessContent() {
               {error && (
                 <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-6 text-left">
                   <div className="flex items-start gap-3">
-                    <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+                    <AlertCircle className="w-6 h-6 text-red-600 shrink-0 mt-0.5" />
                     <div>
                       <h2 className="font-bold text-red-900 mb-1">Confirmation Issue</h2>
                       <p className="text-red-800 text-sm">
@@ -178,22 +178,22 @@ function BookingSuccessContent() {
                 <h2 className="font-semibold text-gray-900 mb-4">What happens next?</h2>
                 <ul className="space-y-3 text-gray-700">
                   <li className="flex items-start gap-3">
-                    <span className="w-6 h-6 bg-primary-200 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold text-primary-800">1</span>
+                    <span className="w-6 h-6 bg-primary-200 rounded-full flex items-center justify-center shrink-0 text-sm font-bold text-primary-800">1</span>
                     <span>You will receive a confirmation email with your booking details</span>
                   </li>
                   {confirmation?.calendarBooked ? (
                     <li className="flex items-start gap-3">
-                      <span className="w-6 h-6 bg-primary-200 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold text-primary-800">2</span>
+                      <span className="w-6 h-6 bg-primary-200 rounded-full flex items-center justify-center shrink-0 text-sm font-bold text-primary-800">2</span>
                       <span>We&apos;ll send a reminder the day before your scheduled inspection</span>
                     </li>
                   ) : (
                     <li className="flex items-start gap-3">
-                      <span className="w-6 h-6 bg-primary-200 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold text-primary-800">2</span>
+                      <span className="w-6 h-6 bg-primary-200 rounded-full flex items-center justify-center shrink-0 text-sm font-bold text-primary-800">2</span>
                       <span>We will call you within 24 hours to confirm your inspection time</span>
                     </li>
                   )}
                   <li className="flex items-start gap-3">
-                    <span className="w-6 h-6 bg-primary-200 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold text-primary-800">3</span>
+                    <span className="w-6 h-6 bg-primary-200 rounded-full flex items-center justify-center shrink-0 text-sm font-bold text-primary-800">3</span>
                     <span>After your inspection, you&apos;ll receive your HD video and detailed report within one business day</span>
                   </li>
                 </ul>

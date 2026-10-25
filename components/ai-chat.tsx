@@ -425,7 +425,7 @@ export default function AIChat() {
 					>
 						{/* Feedback Overlay */}
 						{showFeedback && (
-							<div className="absolute inset-0 bg-white/95 backdrop-blur-sm z-10 flex flex-col items-center justify-center p-6">
+							<div className="absolute inset-0 bg-white/95 backdrop-blur-xs z-10 flex flex-col items-center justify-center p-6">
 								{!feedbackGiven ? (
 									<>
 										<p className="text-gray-900 font-semibold text-lg mb-2">
@@ -506,7 +506,7 @@ export default function AIChat() {
 									className={`flex gap-2 ${message?.role === "user" ? "justify-end" : "justify-start"}`}
 								>
 									{message?.role === "assistant" && (
-										<div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
+										<div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
 											<Bot className="w-4 h-4 text-primary-600" />
 										</div>
 									)}
@@ -514,7 +514,7 @@ export default function AIChat() {
 										className={`max-w-[75%] px-4 py-2 rounded-2xl text-sm whitespace-pre-wrap ${
 											message?.role === "user"
 												? "bg-primary-600 text-white rounded-br-md"
-												: "bg-white text-gray-700 rounded-bl-md shadow-sm"
+												: "bg-white text-gray-700 rounded-bl-md shadow-xs"
 										}`}
 									>
 										{renderMessageContent(
@@ -523,7 +523,7 @@ export default function AIChat() {
 										)}
 									</div>
 									{message?.role === "user" && (
-										<div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+										<div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
 											<User className="w-4 h-4 text-gray-600" />
 										</div>
 									)}
@@ -533,10 +533,10 @@ export default function AIChat() {
 								(messages ?? [])?.[(messages?.length ?? 1) - 1]?.content ===
 									"" && (
 									<div className="flex gap-2 justify-start">
-										<div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
+										<div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
 											<Loader2 className="w-4 h-4 text-primary-600 animate-spin" />
 										</div>
-										<div className="bg-white text-gray-500 px-4 py-2 rounded-2xl rounded-bl-md shadow-sm text-sm">
+										<div className="bg-white text-gray-500 px-4 py-2 rounded-2xl rounded-bl-md shadow-xs text-sm">
 											<T>Thinking...</T>
 										</div>
 									</div>
@@ -572,7 +572,7 @@ export default function AIChat() {
 									value={input}
 									onChange={(e) => setInput(e?.target?.value ?? "")}
 									placeholder={t("Ask about sewer inspections...")}
-									className="flex-1 px-4 py-2 text-sm border border-gray-200 rounded-full focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+									className="flex-1 px-4 py-2 text-sm bg-white border border-gray-200 rounded-full focus:outline-hidden focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
 									disabled={isLoading}
 								/>
 								<button

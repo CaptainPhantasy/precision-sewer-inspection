@@ -158,7 +158,7 @@ export function ConversationList({ selectedId, onSelect, onNewConversation }: Co
               placeholder="Search team members..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-white rounded-lg text-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-9 pr-3 py-2 bg-white rounded-lg text-sm border border-gray-200 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="max-h-48 overflow-y-auto space-y-1">
@@ -221,7 +221,7 @@ export function ConversationList({ selectedId, onSelect, onNewConversation }: Co
                       {other.name}
                     </p>
                     {lastMsg && (
-                      <span className="text-[11px] text-gray-400 flex-shrink-0 ml-2">
+                      <span className="text-[11px] text-gray-400 shrink-0 ml-2">
                         {formatTimestamp(lastMsg.createdAt)}
                       </span>
                     )}

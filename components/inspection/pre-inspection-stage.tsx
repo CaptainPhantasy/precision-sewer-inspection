@@ -174,7 +174,7 @@ export function PreInspectionStage({ inspection, onUpdate, onComplete }: Props) 
     <div className="p-4 space-y-4 pb-32">
       {error && (
         <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm flex items-start gap-2">
-          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
           <span>{error}</span>
         </div>
       )}
@@ -205,7 +205,7 @@ export function PreInspectionStage({ inspection, onUpdate, onComplete }: Props) 
       )}
 
       {/* Form Fields */}
-      <div className="bg-white rounded-xl p-4 shadow-sm space-y-4">
+      <div className="bg-white rounded-xl p-4 shadow-xs space-y-4">
         <h3 className="font-semibold text-gray-900">Client Interview</h3>
 
         {/* Client Name */}

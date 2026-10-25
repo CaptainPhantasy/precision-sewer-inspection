@@ -42,6 +42,11 @@ GitGuardian check was failing.
 
 ## Production boundary
 
+Target upgrade PRs directly at `main`, never at another temporary upgrade
+branch. Verify the base when opening or updating each PR. If a PR includes a
+previously verified, unmerged stage, state the required merge order explicitly;
+deleting a merged stage's branch must not close the next PR.
+
 Keep `main` and production unchanged until the owner approves the concrete
 Preview. Record the production deployment and commit before release. Never
 force-push `main`. A history repair on an assistant-owned, unmerged Preview

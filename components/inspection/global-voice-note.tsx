@@ -152,7 +152,7 @@ export function GlobalVoiceNote({ inspectionId }: { inspectionId: string }) {
       )}
       
       {saveSuccess && (
-        <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full shadow border border-green-200 text-xs font-medium mb-2 flex items-center gap-1">
+        <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full shadow-sm border border-green-200 text-xs font-medium mb-2 flex items-center gap-1">
           <CheckCircle2 className="w-3 h-3" /> Note Saved
         </div>
       )}

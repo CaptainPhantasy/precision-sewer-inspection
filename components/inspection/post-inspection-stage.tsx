@@ -119,7 +119,7 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
     <div className="p-4 space-y-4 pb-36">
       {error && (
         <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm flex items-start gap-2">
-          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
           <span>{error}</span>
         </div>
       )}
@@ -132,7 +132,7 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
       </div>
 
       {/* Overall Condition */}
-      <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="bg-white rounded-xl p-4 shadow-xs">
         <h3 className="font-semibold text-gray-900 mb-3">Overall Condition <span className="text-red-500">*</span></h3>
         <div className="grid grid-cols-2 gap-2">
           {CONDITION_RATINGS.map((rating) => (
@@ -159,7 +159,7 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
       </div>
 
       {/* Pipe Condition Rating */}
-      <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="bg-white rounded-xl p-4 shadow-xs">
         <h3 className="font-semibold text-gray-900 mb-3">Pipe Condition (1-5)</h3>
         <div className="flex gap-2">
           {[1, 2, 3, 4, 5].map((num) => (
@@ -180,7 +180,7 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
       </div>
 
       {/* Defects */}
-      <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="bg-white rounded-xl p-4 shadow-xs">
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-semibold text-gray-900">Defects Found</h3>
           <button
@@ -203,7 +203,7 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
                   <select
                     value={defect.type}
                     onChange={(e) => updateDefect(defect.id, "type", e.target.value)}
-                    className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
+                    className="flex-1 px-2 py-1 border border-gray-300 rounded-sm text-sm"
                   >
                     <option value="">Select type...</option>
                     {DEFECT_TYPES.map((type) => (
@@ -221,7 +221,7 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
                   <select
                     value={defect.severity}
                     onChange={(e) => updateDefect(defect.id, "severity", e.target.value)}
-                    className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
+                    className="flex-1 px-2 py-1 border border-gray-300 rounded-sm text-sm"
                   >
                     {SEVERITY_LEVELS.map((sev) => (
                       <option key={sev.value} value={sev.value}>{sev.label}</option>
@@ -232,7 +232,7 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
                     value={defect.location}
                     onChange={(e) => updateDefect(defect.id, "location", e.target.value)}
                     placeholder="Location (e.g., 45ft)"
-                    className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
+                    className="flex-1 px-2 py-1 border border-gray-300 rounded-sm text-sm"
                   />
                 </div>
                 <input
@@ -240,7 +240,7 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
                   value={defect.notes}
                   onChange={(e) => updateDefect(defect.id, "notes", e.target.value)}
                   placeholder="Additional notes..."
-                  className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
+                  className="w-full px-2 py-1 border border-gray-300 rounded-sm text-sm"
                 />
               </div>
             ))}
@@ -249,7 +249,7 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
       </div>
 
       {/* Connection to Main */}
-      <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="bg-white rounded-xl p-4 shadow-xs">
         <h3 className="font-semibold text-gray-900 mb-3">Connection to Main <span className="text-red-500">*</span></h3>
         <select
           value={formData.connectionToMain}
@@ -264,7 +264,7 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
       </div>
 
       {/* Recommendations */}
-      <div className="bg-white rounded-xl p-4 shadow-sm space-y-4">
+      <div className="bg-white rounded-xl p-4 shadow-xs space-y-4">
         <h3 className="font-semibold text-gray-900">Report Notes <span className="text-red-500">*</span></h3>
         
         {/* AI Summary Helper */}
@@ -287,7 +287,7 @@ export function PostInspectionStage({ inspection, onUpdate, onComplete }: Props)
       </div>
 
       {/* Urgency Level */}
-      <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="bg-white rounded-xl p-4 shadow-xs">
         <h3 className="font-semibold text-gray-900 mb-3">Urgency Level <span className="text-red-500">*</span></h3>
         <div className="space-y-2">
           {URGENCY_LEVELS.map((level) => (

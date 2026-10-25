@@ -176,7 +176,7 @@ export function OpsMonitorTab() {
 
   if (loading) {
     return (
-      <div className="rounded-xl bg-white p-8 text-center shadow-sm">
+      <div className="rounded-xl bg-white p-8 text-center shadow-xs">
         <Loader2 className="mx-auto mb-3 h-8 w-8 animate-spin text-blue-600" />
         <p className="text-sm text-gray-600">Loading live operations checks</p>
       </div>
@@ -233,7 +233,7 @@ export function OpsMonitorTab() {
 
   return (
     <div className="space-y-6">
-      <section className={`rounded-xl border p-5 shadow-sm ${statusClasses(data.overallStatus)}`}>
+      <section className={`rounded-xl border p-5 shadow-xs ${statusClasses(data.overallStatus)}`}>
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-start gap-3">
             {statusIcon(data.overallStatus)}
@@ -280,7 +280,7 @@ export function OpsMonitorTab() {
           <button
             onClick={() => fetchMonitor("refresh")}
             disabled={refreshing}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-white/80 px-3 py-2 text-sm font-medium shadow-sm hover:bg-white disabled:opacity-60"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-white/80 px-3 py-2 text-sm font-medium shadow-xs hover:bg-white disabled:opacity-60"
           >
             <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
             Refresh
@@ -290,7 +290,7 @@ export function OpsMonitorTab() {
 
       <section className="grid gap-4 lg:grid-cols-2">
         {data.checks.map((check) => (
-          <article key={check.id} className={`rounded-xl border p-5 shadow-sm ${checkCardClasses(check.status)}`}>
+          <article key={check.id} className={`rounded-xl border p-5 shadow-xs ${checkCardClasses(check.status)}`}>
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-start gap-3">
                 {statusIcon(check.status)}
@@ -316,7 +316,7 @@ export function OpsMonitorTab() {
         ))}
       </section>
 
-      <section className="rounded-xl bg-white shadow-sm">
+      <section className="rounded-xl bg-white shadow-xs">
         <div className="flex items-center justify-between border-b border-gray-100 p-5">
           <div className="flex items-center gap-2">
             <Database className="h-5 w-5 text-blue-600" />

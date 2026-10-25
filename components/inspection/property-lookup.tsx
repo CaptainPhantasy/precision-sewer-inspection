@@ -152,11 +152,11 @@ export function PropertyLookup({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">
       {/* Header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 px-4 py-3 flex items-center justify-between"
+        className="w-full bg-linear-to-r/srgb from-emerald-600 to-emerald-700 px-4 py-3 flex items-center justify-between"
       >
         <div className="flex items-center gap-2 text-white">
           <Home className="w-5 h-5" />
@@ -249,7 +249,7 @@ export function PropertyLookup({
           {/* Error */}
           {error && (
             <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+              <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
               <span>{error}</span>
             </div>
           )}
@@ -337,7 +337,7 @@ export function PropertyLookup({
 
               {/* Info notice */}
               <div className="flex items-start gap-2 text-xs text-gray-500">
-                <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <Info className="w-4 h-4 shrink-0 mt-0.5" />
                 <p>
                   Property data is estimated and should be verified with the homeowner.
                   Pipe material predictions are based on construction era.

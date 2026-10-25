@@ -267,11 +267,11 @@ export function AICompanion({
   };
 
   return (
-    <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl border border-purple-200 overflow-hidden">
+    <div className="bg-linear-to-br/srgb from-purple-50 to-blue-50 rounded-xl border border-purple-200 overflow-hidden">
       {/* Header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full px-4 py-3 flex items-center justify-between bg-gradient-to-r from-purple-500 to-blue-500 text-white"
+        className="w-full px-4 py-3 flex items-center justify-between bg-linear-to-r/srgb from-purple-500 to-blue-500 text-white"
       >
         <div className="flex items-center gap-2">
           <Bot className="w-5 h-5" />
@@ -374,7 +374,7 @@ export function AICompanion({
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
                 placeholder="Ask a question..."
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-purple-500"
               />
 
               <button

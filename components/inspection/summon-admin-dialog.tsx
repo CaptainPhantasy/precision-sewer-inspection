@@ -158,7 +158,7 @@ export function SummonAdminDialog({
       {/* Dialog */}
       <div className="relative bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col shadow-xl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-orange-500 to-red-500 px-4 py-4 text-white">
+        <div className="bg-linear-to-r/srgb from-orange-500 to-red-500 px-4 py-4 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <AlertTriangle className="w-6 h-6" />
@@ -206,7 +206,7 @@ export function SummonAdminDialog({
               {/* Error Message */}
               {error && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-red-700 text-sm flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+                  <AlertTriangle className="w-4 h-4 shrink-0" />
                   {error}
                 </div>
               )}
@@ -250,7 +250,7 @@ export function SummonAdminDialog({
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Provide more context about the situation..."
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-orange-500"
                 />
               </div>
 
@@ -286,7 +286,7 @@ export function SummonAdminDialog({
                     type="checkbox"
                     checked={skipSignature}
                     onChange={(e) => setSkipSignature(e.target.checked)}
-                    className="mt-1 h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
+                    className="mt-1 h-4 w-4 text-orange-500 border-gray-300 rounded-sm focus:ring-orange-500"
                   />
                   <div>
                     <p className="font-medium text-gray-900">Skip signature requirement</p>
@@ -303,7 +303,7 @@ export function SummonAdminDialog({
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitting || !selectedReason}
-                className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 rounded-xl font-semibold hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-linear-to-r/srgb from-orange-500 to-red-500 text-white py-3 rounded-xl font-semibold hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>

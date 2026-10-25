@@ -233,11 +233,11 @@ export function VideoChapters({
     sev ? SEVERITY_LEVELS.find(s => s.value === sev) : null;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">
       {/* Header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 px-4 py-3 flex items-center justify-between"
+        className="w-full bg-linear-to-r/srgb from-indigo-600 to-indigo-700 px-4 py-3 flex items-center justify-between"
       >
         <div className="flex items-center gap-2 text-white">
           <Film className="w-5 h-5" />
@@ -279,7 +279,7 @@ export function VideoChapters({
               </div>
 
               {error && (
-                <div className="bg-red-50 text-red-700 p-2 rounded text-sm">{error}</div>
+                <div className="bg-red-50 text-red-700 p-2 rounded-sm text-sm">{error}</div>
               )}
 
               {/* Time inputs */}
@@ -387,7 +387,7 @@ export function VideoChapters({
                   onChange={e =>
                     setFormData(prev => ({ ...prev, includeInHighlight: e.target.checked }))
                   }
-                  className="rounded text-indigo-600"
+                  className="rounded-sm text-indigo-600"
                 />
                 <span className="text-sm text-gray-700">Include in highlight reel</span>
               </label>
@@ -438,7 +438,7 @@ export function VideoChapters({
                     {/* Timestamp button */}
                     <button
                       onClick={() => onChapterClick?.(chapter.timestamp)}
-                      className="flex items-center gap-1 px-2 py-1 bg-white rounded border border-gray-200 text-sm font-mono text-gray-700 hover:bg-gray-50"
+                      className="flex items-center gap-1 px-2 py-1 bg-white rounded-sm border border-gray-200 text-sm font-mono text-gray-700 hover:bg-gray-50"
                     >
                       <Clock className="w-3 h-3" />
                       {formatTime(chapter.timestamp)}
@@ -470,13 +470,13 @@ export function VideoChapters({
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => editChapter(chapter)}
-                        className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded"
+                        className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-sm"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => deleteChapter(chapter.id)}
-                        className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded"
+                        className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-sm"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

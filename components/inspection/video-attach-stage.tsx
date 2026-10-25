@@ -265,7 +265,7 @@ export function VideoAttachStage({ inspection, onRefresh, onComplete }: Props) {
       {isRejected && hasVideo && (
         <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
           <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-amber-900">Video Needs Replacement</p>
               <p className="text-sm text-amber-700 mt-1">
@@ -334,7 +334,7 @@ export function VideoAttachStage({ inspection, onRefresh, onComplete }: Props) {
       ) : (
         <>
           {/* Upload Area */}
-          <div className="bg-white rounded-xl p-4 shadow-sm">
+          <div className="bg-white rounded-xl p-4 shadow-xs">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-semibold text-gray-900 flex items-center gap-2">
                 <Video className="w-5 h-5 text-gray-500" />

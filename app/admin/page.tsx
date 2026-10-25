@@ -375,7 +375,7 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-20">
+      <header className="bg-white shadow-xs sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="relative w-10 h-10">
@@ -440,7 +440,7 @@ export default function AdminDashboard() {
         {/* Stats Cards - Enhanced responsive grid */}
         {stats && (<>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
-            <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-xl p-4 shadow-xs hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3">
                 <div className="bg-green-100 p-2.5 rounded-lg">
                   <Radio className="w-5 h-5 text-green-600" />
@@ -452,7 +452,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-xl p-4 shadow-xs hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3">
                 <div className="bg-yellow-100 p-2.5 rounded-lg">
                   <Clock className="w-5 h-5 text-yellow-600" />
@@ -464,7 +464,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-xl p-4 shadow-xs hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3">
                 <div className="bg-green-100 p-2.5 rounded-lg">
                   <CheckCircle className="w-5 h-5 text-green-600" />
@@ -476,7 +476,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-xl p-4 shadow-xs hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3">
                 <div className="bg-purple-100 p-2.5 rounded-lg">
                   <User className="w-5 h-5 text-purple-600" />
@@ -488,7 +488,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-xl p-4 shadow-xs hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3">
                 <div className={`p-2.5 rounded-lg ${stats.pendingOverrides > 0 ? "bg-orange-100" : "bg-gray-100"}`}>
                   <AlertTriangle className={`w-5 h-5 ${stats.pendingOverrides > 0 ? "text-orange-600" : "text-gray-400"}`} />
@@ -501,7 +501,7 @@ export default function AdminDashboard() {
             </div>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
-            <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-xl p-4 shadow-xs hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3">
                 <div className="bg-blue-100 p-2.5 rounded-lg">
                   <Briefcase className="w-5 h-5 text-blue-600" />
@@ -513,7 +513,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-xl p-4 shadow-xs hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3">
                 <div className="bg-emerald-100 p-2.5 rounded-lg">
                   <Activity className="w-5 h-5 text-emerald-600" />
@@ -525,7 +525,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-xl p-4 shadow-xs hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3">
                 <div className={`p-2.5 rounded-lg ${stats.pendingSubmissions > 0 ? "bg-amber-100" : "bg-gray-100"}`}>
                   <Phone className={`w-5 h-5 ${stats.pendingSubmissions > 0 ? "text-amber-600" : "text-gray-400"}`} />
@@ -537,7 +537,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-xl p-4 shadow-xs hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3">
                 <div className="bg-indigo-100 p-2.5 rounded-lg">
                   <MessageSquare className="w-5 h-5 text-indigo-600" />
@@ -614,7 +614,7 @@ export default function AdminDashboard() {
                 {liveInspections.map((inspection) => (
                   <div
                     key={inspection.id}
-                    className="bg-white rounded-xl shadow-sm overflow-hidden"
+                    className="bg-white rounded-xl shadow-xs overflow-hidden"
                   >
                     {/* Card Header */}
                     <div
@@ -648,7 +648,7 @@ export default function AdminDashboard() {
                           {/* Time gate indicator */}
                           {inspection.currentStage === "INSPECTING" && (
                             <div
-                              className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-medium ${
+                              className={`flex items-center gap-1 px-2 py-1 rounded-sm text-xs font-medium ${
                                 inspection.meetsTimeMinimum
                                   ? "bg-green-100 text-green-700"
                                   : "bg-orange-100 text-orange-700"
@@ -686,7 +686,7 @@ export default function AdminDashboard() {
                         {inspection.stages.map((stage) => (
                           <div
                             key={stage.id}
-                            className={`flex-shrink-0 px-2 py-1 rounded text-xs font-medium ${
+                            className={`shrink-0 px-2 py-1 rounded-sm text-xs font-medium ${
                               stage.status === "completed"
                                 ? "bg-green-100 text-green-700"
                                 : stage.status === "current"
@@ -894,7 +894,7 @@ export default function AdminDashboard() {
                             <div>
                               <p className="text-gray-500">Condition</p>
                               <p
-                                className={`font-medium px-2 py-0.5 rounded inline-block ${
+                                className={`font-medium px-2 py-0.5 rounded-sm inline-block ${
                                   getConditionColor(inspection.collectedData.overallCondition)
                                 }`}
                               >
@@ -966,7 +966,7 @@ export default function AdminDashboard() {
                                   processingOverride === inspection.id ||
                                   stage.id === inspection.currentStage
                                 }
-                                className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                                className={`px-2 py-1 rounded-sm text-xs font-medium transition-colors ${
                                   stage.id === inspection.currentStage
                                     ? "bg-blue-100 text-blue-700 cursor-default"
                                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -1024,7 +1024,7 @@ export default function AdminDashboard() {
                 {reviewInspections.map((inspection) => (
                   <div
                     key={inspection.id}
-                    className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                    className="bg-white rounded-xl p-4 shadow-xs hover:shadow-md transition-shadow cursor-pointer"
                     onClick={() => router.push(`/admin/inspection/${inspection.id}`)}
                   >
                     <div className="flex items-start justify-between mb-3">
@@ -1048,7 +1048,7 @@ export default function AdminDashboard() {
                       </div>
                       <div className="text-right">
                         <p
-                          className={`font-medium px-2 py-0.5 rounded ${
+                          className={`font-medium px-2 py-0.5 rounded-sm ${
                             getConditionColor(inspection.overallCondition)
                           }`}
                         >
@@ -1063,7 +1063,7 @@ export default function AdminDashboard() {
                     </div>
 
                     <div className="flex items-start gap-2 text-sm text-gray-600 mb-3">
-                      <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
                       <div>
                         <p>{inspection.job.propertyAddress}</p>
                         <p className="text-gray-500">Client: {inspection.job.clientName}</p>

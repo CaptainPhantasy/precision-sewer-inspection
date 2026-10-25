@@ -261,7 +261,7 @@ export default function LocatingPage() {
           </div><Link href="/contact" className="btn-primary mt-6">Discuss a locate or route sketch</Link>
         </div></section>
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-amber-800 to-amber-900 text-white py-16 md:py-24">
+        <section className="bg-linear-to-br/srgb from-amber-800 to-amber-900 text-white py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-3xl mx-auto text-center">
               {/* PLS Logo */}
@@ -339,7 +339,7 @@ export default function LocatingPage() {
             <div className="grid sm:grid-cols-2 gap-4">
               {UTILITIES_WE_LOCATE.map((utility, index) => (
                 <div key={index} className="flex items-center gap-3 bg-white p-4 rounded-lg border border-gray-200">
-                  <Check className="w-5 h-5 text-amber-600 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-amber-600 shrink-0" />
                   <span className="text-gray-700"><T>{utility}</T></span>
                 </div>
               ))}
@@ -359,7 +359,7 @@ export default function LocatingPage() {
                 return (
                   <div key={index} className="bg-gray-50 rounded-xl p-6 md:p-8">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center shrink-0">
                         <Icon className="w-6 h-6 text-amber-600" />
                       </div>
                       <div className="flex-1">
@@ -558,7 +558,7 @@ export default function LocatingPage() {
                 <span className="text-gray-700"><T>Temporary marking paint</T></span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-4 h-8 bg-amber-500 rounded-sm" />
+                <div className="w-4 h-8 bg-amber-500 rounded-xs" />
                 <span className="text-gray-700"><T>Utility flags</T></span>
               </div>
             </div>

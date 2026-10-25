@@ -59,7 +59,7 @@ export default function DemoReport({ buttonClassName }: DemoReportProps) {
             {/* Header */}
             <div className="flex items-center justify-between gap-4 px-4 sm:px-6 py-3 border-b border-gray-200">
               <div className="flex items-center gap-2 min-w-0">
-                <FileText className="w-5 h-5 text-primary-600 flex-shrink-0" />
+                <FileText className="w-5 h-5 text-primary-600 shrink-0" />
                 <h2 className="font-heading font-bold text-gray-900 truncate">
                   <T>Sample Inspection Report</T>
                 </h2>
@@ -67,7 +67,7 @@ export default function DemoReport({ buttonClassName }: DemoReportProps) {
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors flex-shrink-0"
+                className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors shrink-0"
                 aria-label="Close"
               >
                 <X className="w-5 h-5" />

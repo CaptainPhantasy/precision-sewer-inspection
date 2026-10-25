@@ -310,7 +310,7 @@ const handleReject = async () => {
   return (
     <div className="min-h-screen bg-gray-100 pb-8">
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white shadow-sm">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center gap-4">
           <button
             onClick={() => router.push("/admin")}
@@ -343,7 +343,7 @@ const handleReject = async () => {
         )}
 
         {/* Summary Card */}
-        <div className="bg-white rounded-xl p-6 shadow-sm">
+        <div className="bg-white rounded-xl p-6 shadow-xs">
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
@@ -387,7 +387,7 @@ const handleReject = async () => {
         </div>
 
         {/* Report Data */}
-        <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
+        <div className="bg-white rounded-xl p-6 shadow-xs space-y-4">
         	<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         		<h3 className="font-semibold text-gray-900 flex items-center gap-2">
         			<FileText className="w-4 h-4" /> Report Data
@@ -481,7 +481,7 @@ const handleReject = async () => {
         </div>
 
         {/* Attachments */}
-        <div className="bg-white rounded-xl p-6 shadow-sm">
+        <div className="bg-white rounded-xl p-6 shadow-xs">
           <h3 className="font-semibold text-gray-900 mb-4">Attachments</h3>
           <div className="grid md:grid-cols-2 gap-4">
             <div className={`p-4 rounded-lg border ${
@@ -534,7 +534,7 @@ const handleReject = async () => {
 
         {/* Video Player & Chapter Management */}
         {inspection.videoAttachment?.uploadStatus === "COMPLETED" && (
-          <div className="bg-white rounded-xl p-6 shadow-sm">
+          <div className="bg-white rounded-xl p-6 shadow-xs">
             <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Video className="w-4 h-4" /> Video Review & Chapters
             </h3>
@@ -578,7 +578,7 @@ const handleReject = async () => {
         )}
 
         {/* Technician Info */}
-        <div className="bg-white rounded-xl p-6 shadow-sm">
+        <div className="bg-white rounded-xl p-6 shadow-xs">
           <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <Clock className="w-4 h-4" /> Inspection Details
           </h3>
@@ -604,7 +604,7 @@ const handleReject = async () => {
 
         {/* Review Notes */}
         {isActionable && (
-          <div className="bg-white rounded-xl p-6 shadow-sm">
+          <div className="bg-white rounded-xl p-6 shadow-xs">
             <h3 className="font-semibold text-gray-900 mb-4">Review Notes</h3>
             <textarea
               value={reviewNotes}
@@ -698,7 +698,7 @@ const handleReject = async () => {
             </div>
 
             {error && (
-              <p className="text-red-600 text-sm mb-4 bg-red-50 p-2 rounded">{error}</p>
+              <p className="text-red-600 text-sm mb-4 bg-red-50 p-2 rounded-sm">{error}</p>
             )}
 
             <div className="flex gap-3">

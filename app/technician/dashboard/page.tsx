@@ -302,7 +302,7 @@ export default function TechnicianDashboard() {
         <section>
           <button
             onClick={() => setShowCompleted(!showCompleted)}
-            className="w-full flex items-center justify-between p-4 bg-white rounded-xl shadow-sm mb-3"
+            className="w-full flex items-center justify-between p-4 bg-white rounded-xl shadow-xs mb-3"
           >
             <div className="flex items-center gap-2 text-gray-700">
               <History className="w-5 h-5" />
@@ -351,7 +351,7 @@ function JobCard({
   return (
     <button
       onClick={onClick}
-      className="w-full bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow text-left"
+      className="w-full bg-white rounded-xl p-4 shadow-xs hover:shadow-md transition-shadow text-left"
     >
       <div className="flex items-start justify-between mb-2">
         <div>
@@ -367,7 +367,7 @@ function JobCard({
       </div>
 
       <div className="flex items-start gap-2 text-sm text-gray-600 mb-2">
-        <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+        <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
         <span>
           {job.propertyAddress}, {job.propertyCity}, {job.propertyState} {job.propertyZip}
         </span>
@@ -393,7 +393,7 @@ function JobCard({
           )}
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs bg-gray-100 px-2 py-1 rounded">
+          <span className="text-xs bg-gray-100 px-2 py-1 rounded-sm">
             {getAccessTypeLabel(job.accessType)}
           </span>
           <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -401,7 +401,7 @@ function JobCard({
       </div>
 
       {job.specialNotes && (
-        <p className="mt-2 text-xs text-orange-600 bg-orange-50 p-2 rounded">
+        <p className="mt-2 text-xs text-orange-600 bg-orange-50 p-2 rounded-sm">
           Note: {job.specialNotes}
         </p>
       )}
@@ -422,7 +422,7 @@ function RejectedJobCard({
   return (
     <button
       onClick={onClick}
-      className="w-full bg-red-50 border-2 border-red-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-red-300 transition-all text-left"
+      className="w-full bg-red-50 border-2 border-red-200 rounded-xl p-4 shadow-xs hover:shadow-md hover:border-red-300 transition-all text-left"
     >
       <div className="flex items-start justify-between mb-2">
         <div>
@@ -451,7 +451,7 @@ function RejectedJobCard({
       )}
 
       <div className="flex items-start gap-2 text-sm text-gray-600 mb-2">
-        <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+        <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
         <span>
           {job.propertyAddress}, {job.propertyCity}, {job.propertyState} {job.propertyZip}
         </span>
@@ -475,14 +475,14 @@ function RejectedJobCard({
           )}
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs bg-gray-100 px-2 py-1 rounded">
+          <span className="text-xs bg-gray-100 px-2 py-1 rounded-sm">
             {getAccessTypeLabel(job.accessType)}
           </span>
           <ChevronRight className="w-5 h-5 text-red-400" />
         </div>
       </div>
 
-      <p className="mt-2 text-xs text-red-700 bg-red-100 p-2 rounded font-medium">
+      <p className="mt-2 text-xs text-red-700 bg-red-100 p-2 rounded-sm font-medium">
         ⚠️ Tap to review and resubmit
       </p>
     </button>
@@ -502,7 +502,7 @@ function CompletedJobCard({
   return (
     <button
       onClick={onClick}
-      className="w-full bg-gray-50 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow text-left opacity-80"
+      className="w-full bg-gray-50 rounded-xl p-4 shadow-xs hover:shadow-md transition-shadow text-left opacity-80"
     >
       <div className="flex items-start justify-between mb-2">
         <div>
@@ -519,7 +519,7 @@ function CompletedJobCard({
       </div>
 
       <div className="flex items-start gap-2 text-sm text-gray-500 mb-2">
-        <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+        <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
         <span>
           {job.propertyAddress}, {job.propertyCity}
         </span>
@@ -531,7 +531,7 @@ function CompletedJobCard({
           {format(new Date(job.scheduledDate), "MMM d, yyyy")}
         </span>
         <div className="flex items-center gap-2">
-          <span className="text-xs bg-gray-200 px-2 py-1 rounded">
+          <span className="text-xs bg-gray-200 px-2 py-1 rounded-sm">
             {getAccessTypeLabel(job.accessType)}
           </span>
           <ChevronRight className="w-5 h-5 text-gray-400" />

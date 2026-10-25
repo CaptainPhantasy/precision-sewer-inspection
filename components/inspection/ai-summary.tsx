@@ -81,7 +81,7 @@ export function AISummary({
           type="button"
           onClick={generateSummary}
           disabled={loading}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-4 py-2 bg-linear-to-r/srgb from-purple-500 to-blue-500 text-white rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? (
             <>
@@ -111,7 +111,7 @@ export function AISummary({
           <button
             type="button"
             onClick={copyToClipboard}
-            className="p-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
+            className="p-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-sm transition-colors"
             title="Copy to clipboard"
           >
             {copied ? (
@@ -124,7 +124,7 @@ export function AISummary({
             type="button"
             onClick={generateSummary}
             disabled={loading}
-            className="p-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
+            className="p-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-sm transition-colors"
             title="Regenerate"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
@@ -132,7 +132,7 @@ export function AISummary({
         </div>
       </div>
 
-      <div className="bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-100 rounded-lg p-4">
+      <div className="bg-linear-to-br/srgb from-purple-50 to-blue-50 border border-purple-100 rounded-lg p-4">
         <div className="prose prose-sm max-w-none">
           {summary.split("\n").map((line, i) => (
             <p key={i} className="mb-2 last:mb-0 text-gray-700">

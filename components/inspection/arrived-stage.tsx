@@ -83,7 +83,7 @@ export function ArrivedStage({ inspection, onStartInterview }: Props) {
       </div>
 
       {/* Property Photo Reminder */}
-      <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="bg-white rounded-xl p-4 shadow-xs">
         <div className="flex items-center gap-3">
           <div className="bg-blue-100 p-2 rounded-full">
             <Camera className="w-5 h-5 text-blue-600" />
@@ -96,7 +96,7 @@ export function ArrivedStage({ inspection, onStartInterview }: Props) {
       </div>
 
       {/* Property Info */}
-      <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="bg-white rounded-xl p-4 shadow-xs">
         <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
           <MapPin className="w-4 h-4 text-gray-500" />
           Property

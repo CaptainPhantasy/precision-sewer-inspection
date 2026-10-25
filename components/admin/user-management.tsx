@@ -141,7 +141,7 @@ export function UserManagement({ currentUserRole }: Props) {
           users.map((u) => (
             <div
               key={u.id}
-              className={`bg-white rounded-xl p-4 shadow-sm ${
+              className={`bg-white rounded-xl p-4 shadow-xs ${
                 !u.isActive ? "opacity-60" : ""
               }`}
             >
@@ -653,7 +653,7 @@ function EditUserModal({
               onChange={(e) =>
                 setFormData({ ...formData, isActive: e.target.checked })
               }
-              className="w-4 h-4 text-blue-600 rounded"
+              className="w-4 h-4 text-blue-600 rounded-sm"
             />
             <label htmlFor="isActive" className="text-sm text-gray-700">
               Account Active

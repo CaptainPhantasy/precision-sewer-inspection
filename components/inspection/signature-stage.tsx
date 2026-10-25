@@ -199,7 +199,7 @@ export function SignatureStage({ inspection, onRefresh, onComplete }: Props) {
       ) : (
         <>
           {/* Signer Info */}
-          <div className="bg-white rounded-xl p-4 shadow-sm space-y-3">
+          <div className="bg-white rounded-xl p-4 shadow-xs space-y-3">
             <h3 className="font-semibold text-gray-900">Signer Information</h3>
             
             <div>
@@ -233,7 +233,7 @@ export function SignatureStage({ inspection, onRefresh, onComplete }: Props) {
           </div>
 
           {/* Signature Pad */}
-          <div className="bg-white rounded-xl p-4 shadow-sm">
+          <div className="bg-white rounded-xl p-4 shadow-xs">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-semibold text-gray-900">Signature</h3>
               {hasSignature && (
