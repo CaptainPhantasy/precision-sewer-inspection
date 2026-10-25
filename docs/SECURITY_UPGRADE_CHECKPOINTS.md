@@ -3,6 +3,8 @@
 Each upgrade is committed separately after local checks, then verified in a
 Vercel Preview before the next stage starts. Production is released only after
 owner review. These stages do not change database models or production records.
+Every PR targets `main` directly. Pending prerequisites are listed in its
+description so deleting a merged upgrade branch cannot close a later PR.
 
 ## 1. Prisma 7
 
@@ -79,6 +81,38 @@ or database restoration are involved. Merge the Prisma script follow-up first.
 - The old ZIP/FTP/proxy dependencies and nested Zod 3 copy are removed. Audit now
   reports zero high/critical findings and one moderate CSS-parser package entry.
   npm audit does not assess the Chromium executable's own vulnerability status.
+
+Rollback: revert this stage's commit or use its pre-edit tag. No database schema
+change or restoration is required. Merge the prerequisite stages first.
+
+## 4. Tailwind 4
+
+- Baseline commit: `44df3b97381664b7048cf6c584b9e1a0b60b54a9`.
+- Remote rollback tag: `rollback/2026-10-25-before-tailwind4`.
+- A verified private Git bundle also preserves the complete pre-edit history.
+- Branch: `codex/tailwind4-security`, targeting `main`.
+- Tailwind `3.3.3` to `4.3.3`, its PostCSS plugin at `4.3.3`, and class merging
+  `2.5.2` to `3.7.0`. Tailwind handles prefixing; direct Autoprefixer is removed.
+- Split CSS imports keep utilities unlayered, preserving their precedence
+  against the existing PSI stylesheets, including link colors and underlines.
+- Equivalent shadow, radius, outline, flex and backdrop utility names retain
+  previous behavior. Utility gradients explicitly retain sRGB interpolation.
+- Border, ring, placeholder and button defaults retain the prior behavior.
+- The used standard color families retain their existing hex values in
+  `tailwind-colors.json`. The chat input explicitly retains its white surface.
+- Homepage FAQ spacing retains top margins between cards: Tailwind 4's changed
+  `space-y` selector otherwise conflicts with the existing card bottom margins
+  and shortens the section by 16px.
+- `npx tsx scripts/class-merge-check.ts` verifies component override behavior;
+  the old merger failed the new outline-utility case and the new merger passes.
+- Desktop and mobile reference captures cover public pages, chat, navigation,
+  theme switching, FAQ, booking validation and the calendar error/retry state.
+  The existing clipped booking step indicator at 375/390px is a separate issue
+  already documented in `docs/contact-page-issue.md`.
+- Modern browser floor: Safari 16.4, Chrome 111, Firefox 128. The old IE entry
+  in browserslist does not make the current Next/React/Tailwind stack support IE.
+- The old selector-parser chain is removed. Fresh npm audit reports zero
+  known affected package entries; this is not a comprehensive security guarantee.
 
 Rollback: revert this stage's commit or use its pre-edit tag. No database schema
 change or restoration is required. Merge the prerequisite stages first.

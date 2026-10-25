@@ -163,7 +163,7 @@ export default function Footer() {
 									href={`tel:${COMPANY_INFO?.phoneRaw ?? ""}`}
 									className="flex items-center gap-2 text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									<Phone className="w-4 h-4 flex-shrink-0" />
+									<Phone className="w-4 h-4 shrink-0" />
 									{COMPANY_INFO?.phone ?? ""}
 								</a>
 							</li>
@@ -172,7 +172,7 @@ export default function Footer() {
 									href={`mailto:${COMPANY_INFO?.email ?? ""}`}
 									className="flex items-center gap-2 text-primary-200 hover:text-white transition-colors text-sm whitespace-nowrap"
 								>
-									<Mail className="w-4 h-4 flex-shrink-0" />
+									<Mail className="w-4 h-4 shrink-0" />
 									{COMPANY_INFO?.email ?? ""}
 								</a>
 							</li>
@@ -183,7 +183,7 @@ export default function Footer() {
 									rel="noopener noreferrer"
 									className="flex items-start gap-2 text-primary-200 hover:text-white transition-colors text-sm"
 								>
-									<MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+									<MapPin className="w-4 h-4 mt-0.5 shrink-0" />
 									<span>
 										{COMPANY_INFO?.serviceAreaDisplay ??
 											"Indianapolis Metro & Surrounding Areas"}
@@ -206,7 +206,7 @@ export default function Footer() {
 							<Link
 								key={area.slug}
 								href={`/sewer-inspection/${area.slug}`}
-								className="text-xs text-primary-300 bg-primary-800 px-2 py-1 rounded hover:bg-primary-700 hover:text-white transition-colors"
+								className="text-xs text-primary-300 bg-primary-800 px-2 py-1 rounded-sm hover:bg-primary-700 hover:text-white transition-colors"
 							>
 								{area.name}
 							</Link>

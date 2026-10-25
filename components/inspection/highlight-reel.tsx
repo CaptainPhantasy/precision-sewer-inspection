@@ -159,7 +159,7 @@ export function HighlightReel({ inspectionId, chaptersCount }: HighlightReelProp
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-xl shadow-xs border border-gray-200 p-6">
         <div className="flex items-center justify-center">
           <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
         </div>
@@ -168,9 +168,9 @@ export function HighlightReel({ inspectionId, chaptersCount }: HighlightReelProp
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-pink-600 to-rose-600 px-4 py-3">
+      <div className="bg-linear-to-r/srgb from-pink-600 to-rose-600 px-4 py-3">
         <div className="flex items-center gap-2 text-white">
           <Sparkles className="w-5 h-5" />
           <h3 className="font-semibold">Highlight Reel</h3>
@@ -245,7 +245,7 @@ export function HighlightReel({ inspectionId, chaptersCount }: HighlightReelProp
               </div>
               <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-pink-500 to-rose-500 transition-all duration-500"
+                  className="h-full bg-linear-to-r/srgb from-pink-500 to-rose-500 transition-all duration-500"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -263,7 +263,7 @@ export function HighlightReel({ inspectionId, chaptersCount }: HighlightReelProp
           <div className="space-y-4">
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
               <div className="flex items-start gap-2 text-red-700">
-                <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
                 <div>
                   <p className="font-medium">Generation failed</p>
                   <p className="text-sm text-red-600">{error}</p>
@@ -331,7 +331,7 @@ export function HighlightReel({ inspectionId, chaptersCount }: HighlightReelProp
 
                 <button
                   onClick={generateHighlightReel}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-4 bg-gradient-to-r from-pink-600 to-rose-600 text-white rounded-lg font-medium hover:from-pink-700 hover:to-rose-700 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-4 bg-linear-to-r/srgb from-pink-600 to-rose-600 text-white rounded-lg font-medium hover:from-pink-700 hover:to-rose-700 transition-colors"
                 >
                   <Play className="w-5 h-5" />
                   Generate Highlight Reel

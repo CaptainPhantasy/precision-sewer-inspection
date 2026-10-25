@@ -168,9 +168,9 @@ export function BookingsTab() {
                   {format(new Date(s.createdAt), "MMM d, yyyy h:mm a")}
                 </span>
                 {expandedId === s.id ? (
-                  <ChevronUp className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <ChevronUp className="w-4 h-4 text-gray-400 shrink-0" />
                 ) : (
-                  <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" />
                 )}
               </button>
 
@@ -228,7 +228,7 @@ export function BookingsTab() {
                   {s.message && (
                     <div className="mt-3">
                       <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Message</h4>
-                      <p className="text-sm text-gray-700 whitespace-pre-wrap bg-gray-50 rounded p-2">{s.message}</p>
+                      <p className="text-sm text-gray-700 whitespace-pre-wrap bg-gray-50 rounded-sm p-2">{s.message}</p>
                     </div>
                   )}
 
@@ -236,7 +236,7 @@ export function BookingsTab() {
                   {s.directions && (
                     <div className="mt-3">
                       <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Directions / Special Instructions</h4>
-                      <p className="text-sm text-gray-700 whitespace-pre-wrap bg-gray-50 rounded p-2">{s.directions}</p>
+                      <p className="text-sm text-gray-700 whitespace-pre-wrap bg-gray-50 rounded-sm p-2">{s.directions}</p>
                     </div>
                   )}
 
@@ -259,7 +259,7 @@ export function BookingsTab() {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page <= 1}
-            className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-40"
+            className="px-3 py-1 text-sm border border-gray-300 rounded-sm hover:bg-gray-50 disabled:opacity-40"
           >
             Previous
           </button>
@@ -269,7 +269,7 @@ export function BookingsTab() {
           <button
             onClick={() => setPage((p) => Math.min(pagination.totalPages, p + 1))}
             disabled={page >= pagination.totalPages}
-            className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-40"
+            className="px-3 py-1 text-sm border border-gray-300 rounded-sm hover:bg-gray-50 disabled:opacity-40"
           >
             Next
           </button>

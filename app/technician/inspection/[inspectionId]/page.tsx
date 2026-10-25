@@ -466,7 +466,7 @@ export default function InspectionPage() {
       {isRejected && rejectedStage && (
         <div className="bg-red-50 border-b-2 border-red-200 px-4 py-4">
           <div className="flex items-start gap-3">
-            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <AlertTriangle className="w-6 h-6 text-red-600 shrink-0 mt-0.5" />
             <div className="flex-1">
               <h3 className="font-bold text-red-800 mb-1">Returned for Corrections</h3>
               <p className="text-sm text-red-700 mb-2">
@@ -533,7 +533,7 @@ export default function InspectionPage() {
         <div className="bg-yellow-50 border-b border-yellow-200 px-4 py-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 text-yellow-800">
-              <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0" />
+              <AlertTriangle className="w-5 h-5 text-yellow-600 shrink-0" />
               <span className="text-xs sm:text-sm font-bold">Admin Bypass Available:</span>
               <span className="text-xs sm:text-sm">You may click any future stage above to bypass gates, or click any past stage to go back.</span>
             </div>
@@ -543,7 +543,7 @@ export default function InspectionPage() {
                   updateStage(STAGES[currentStageIndex + 1].id);
                 }
               }}
-              className="px-3 py-1.5 bg-yellow-600 text-white text-xs font-bold rounded hover:bg-yellow-700 whitespace-nowrap shadow-sm"
+              className="px-3 py-1.5 bg-yellow-600 text-white text-xs font-bold rounded-sm hover:bg-yellow-700 whitespace-nowrap shadow-xs"
             >
               Force Next Stage
             </button>

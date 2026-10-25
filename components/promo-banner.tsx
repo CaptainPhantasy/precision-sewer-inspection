@@ -97,7 +97,7 @@ export default function PromoBanner() {
           transition={{ duration: 0.3 }}
           className="promo-banner"
         >
-          <Tag className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 animate-bounce" />
+          <Tag className="w-4 h-4 sm:w-5 sm:h-5 shrink-0 animate-bounce" />
           
           <Link
             href="/contact"
@@ -107,7 +107,7 @@ export default function PromoBanner() {
             <span className="text-sm sm:text-base font-semibold">
               {hasDiscount ? (
                 <span className="flex items-center gap-2">
-                  <span className="bg-white/20 px-2 py-0.5 rounded text-xs sm:text-sm">SAVE10 Applied!</span>
+                  <span className="bg-white/20 px-2 py-0.5 rounded-sm text-xs sm:text-sm">SAVE10 Applied!</span>
                   <span><T>Complete your booking to save 10%</T></span>
                 </span>
               ) : (

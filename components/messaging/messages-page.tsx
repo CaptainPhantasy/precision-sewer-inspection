@@ -106,7 +106,7 @@ export function MessagesPage({ backPath, backLabel }: MessagesPageProps) {
       {/* Main Content - Split View */}
       <div className="flex h-[calc(100vh-52px)]">
         {/* Sidebar - conversation list */}
-        <div className={`w-full lg:w-80 lg:border-r bg-white flex-shrink-0 ${showChatOnMobile ? "hidden lg:flex lg:flex-col" : "flex flex-col"}`}>
+        <div className={`w-full lg:w-80 lg:border-r bg-white shrink-0 ${showChatOnMobile ? "hidden lg:flex lg:flex-col" : "flex flex-col"}`}>
           <ConversationList
             selectedId={selectedConversation?.id || null}
             onSelect={handleSelectConversation}

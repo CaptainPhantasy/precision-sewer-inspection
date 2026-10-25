@@ -77,7 +77,7 @@ export default function FAQPage() {
       <Header />
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-gradient-to-br from-primary-900 to-primary-800 text-white py-16 md:py-24">
+        <section className="bg-linear-to-br/srgb from-primary-900 to-primary-800 text-white py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-3xl mx-auto text-center">
               <span className="inline-block px-4 py-1 bg-primary-700 text-primary-200 text-sm font-semibold rounded-full mb-6">
@@ -100,7 +100,7 @@ export default function FAQPage() {
                   placeholder={t('Search questions...')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e?.target?.value ?? '')}
-                  className="w-full pl-12 pr-4 py-3 rounded-xl bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500"
+                  className="w-full pl-12 pr-4 py-3 rounded-xl bg-white text-gray-900 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-accent-500"
                 />
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function FAQPage() {
                       <span className="font-semibold text-gray-900 pr-4"><T>{item?.question ?? ''}</T></span>
                       <ChevronDown
                         aria-hidden="true"
-                        className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform duration-300 ${
+                        className={`w-5 h-5 text-gray-500 shrink-0 transition-transform duration-300 ${
                           openIndex === index ? 'rotate-180' : ''
                         }`}
                       />

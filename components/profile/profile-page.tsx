@@ -243,7 +243,7 @@ export function ProfilePage({ backPath }: ProfilePageProps) {
         )}
 
         {/* Avatar Section */}
-        <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col items-center">
+        <div className="bg-white rounded-xl p-6 shadow-xs flex flex-col items-center">
           <div className="relative">
             {profile.profilePhotoUrl ? (
               <div className="w-24 h-24 rounded-full overflow-hidden relative">
@@ -281,7 +281,7 @@ export function ProfilePage({ backPath }: ProfilePageProps) {
         </div>
 
         {/* Edit Form */}
-        <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
+        <div className="bg-white rounded-xl p-6 shadow-xs space-y-4">
           <h3 className="font-semibold text-gray-900">Edit Profile</h3>
 
           <div>
@@ -292,7 +292,7 @@ export function ProfilePage({ backPath }: ProfilePageProps) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -317,7 +317,7 @@ export function ProfilePage({ backPath }: ProfilePageProps) {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="(555) 123-4567"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -330,7 +330,7 @@ export function ProfilePage({ backPath }: ProfilePageProps) {
               onChange={(e) => setBio(e.target.value)}
               placeholder="A short bio about yourself..."
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 resize-none"
             />
           </div>
 
@@ -348,7 +348,7 @@ export function ProfilePage({ backPath }: ProfilePageProps) {
         </div>
 
         {/* Password Change */}
-        <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
+        <div className="bg-white rounded-xl p-6 shadow-xs space-y-4">
         	<h3 className="font-semibold text-gray-900">Change Password</h3>
         	<p className="text-sm text-gray-500">
         		Enter your current password before choosing a new one.
@@ -363,7 +363,7 @@ export function ProfilePage({ backPath }: ProfilePageProps) {
         			value={currentPassword}
         			onChange={(e) => setCurrentPassword(e.target.value)}
         			autoComplete="current-password"
-        			className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
         		/>
         	</div>
 
@@ -376,7 +376,7 @@ export function ProfilePage({ backPath }: ProfilePageProps) {
         			value={newPassword}
         			onChange={(e) => setNewPassword(e.target.value)}
         			autoComplete="new-password"
-        			className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
         		/>
         	</div>
 
@@ -389,14 +389,14 @@ export function ProfilePage({ backPath }: ProfilePageProps) {
         			value={confirmPassword}
         			onChange={(e) => setConfirmPassword(e.target.value)}
         			autoComplete="new-password"
-        			className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
         		/>
         	</div>
         </div>
 
         {/* Additional Info */}
         {profile.certifications.length > 0 && (
-          <div className="bg-white rounded-xl p-6 shadow-sm">
+          <div className="bg-white rounded-xl p-6 shadow-xs">
             <h3 className="font-semibold text-gray-900 mb-3">Certifications</h3>
             <div className="flex flex-wrap gap-2">
               {profile.certifications.map((cert, i) => (

@@ -151,7 +151,7 @@ export function LeadsTab() {
           leads.map((lead) => (
             <div
               key={lead.id}
-              className={`bg-white rounded-xl p-4 shadow-sm border-l-4 ${
+              className={`bg-white rounded-xl p-4 shadow-xs border-l-4 ${
                 lead.converted
                   ? "border-green-500"
                   : lead.notificationSent
@@ -186,7 +186,7 @@ export function LeadsTab() {
                   <div className="mt-2 space-y-1">
                     {lead.email && (
                       <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Mail className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+                        <Mail className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                         <a href={`mailto:${lead.email}`} className="text-blue-600 hover:underline truncate">
                           {lead.email}
                         </a>
@@ -194,7 +194,7 @@ export function LeadsTab() {
                     )}
                     {lead.phone && (
                       <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Phone className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+                        <Phone className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                         <a href={`tel:${lead.phone}`} className="text-blue-600 hover:underline">
                           {lead.phone}
                         </a>
@@ -202,7 +202,7 @@ export function LeadsTab() {
                     )}
                     {lead.address && (
                       <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <MapPin className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+                        <MapPin className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                         <span className="truncate">
                           {lead.address}
                           {lead.city ? `, ${lead.city}` : ""}

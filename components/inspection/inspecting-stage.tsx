@@ -55,7 +55,7 @@ export function InspectingStage({ inspection, onComplete }: Props) {
       )}
 
       {/* Timer */}
-      <div className="bg-white rounded-xl p-6 shadow-sm text-center">
+      <div className="bg-white rounded-xl p-6 shadow-xs text-center">
         <div className="flex items-center justify-center gap-2 text-gray-500 mb-2">
           <Clock className="w-5 h-5" />
           <span className="text-sm font-medium">Inspection Time Recorded</span>
@@ -72,7 +72,7 @@ export function InspectingStage({ inspection, onComplete }: Props) {
       <CameraPairing inspectionId={inspection.id} />
 
       {/* Voice Notes */}
-      <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="bg-white rounded-xl p-4 shadow-xs">
         <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
           <Mic className="w-4 h-4 text-gray-500" />
           Voice Notes

@@ -79,7 +79,7 @@ export function SubmitStage({ inspection, onSubmit }: Props) {
         </div>
 
         {/* What's Next */}
-        <div className="bg-white rounded-xl p-4 shadow-sm">
+        <div className="bg-white rounded-xl p-4 shadow-xs">
           <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
             <Clock className="w-5 h-5 text-gray-500" />
             What&apos;s Next?
@@ -128,13 +128,13 @@ export function SubmitStage({ inspection, onSubmit }: Props) {
     <div className="p-4 space-y-4">
       {error && (
         <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm flex items-start gap-2">
-          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
       {/* Final Review */}
-      <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="bg-white rounded-xl p-4 shadow-xs">
         <h3 className="font-semibold text-gray-900 mb-4">Final Review</h3>
         
         <div className="space-y-3">

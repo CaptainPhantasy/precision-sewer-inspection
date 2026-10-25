@@ -563,7 +563,7 @@ export default function ContactForm() {
           </div>
 
           <label className="flex items-start gap-3 p-4 border border-amber-200 bg-amber-50 rounded-lg cursor-pointer">
-            <input type="checkbox" name="accessVerified" checked={formData.accessVerified} onChange={handleChange} className="w-5 h-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5" required />
+            <input type="checkbox" name="accessVerified" checked={formData.accessVerified} onChange={handleChange} className="w-5 h-5 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5" required />
             <span className="text-sm text-amber-900"><span className="font-semibold"><T>Access verification required:</T></span> <T>{getAccessVerificationCopy()}</T></span>
           </label>
 
@@ -582,7 +582,7 @@ export default function ContactForm() {
             </button>
             <div>
               <h2 className="text-2xl font-bold text-gray-900"><T>Date & Time</T></h2>
-              <p className="text-gray-600 text-sm"><T>Please select a desired arrival date. Available dates are highlighted in </T><span className="bg-sky-100 text-sky-700 px-2 py-0.5 rounded font-semibold"><T>blue</T></span></p>
+              <p className="text-gray-600 text-sm"><T>Please select a desired arrival date. Available dates are highlighted in </T><span className="bg-sky-100 text-sky-700 px-2 py-0.5 rounded-sm font-semibold"><T>blue</T></span></p>
             </div>
           </div>
 
@@ -882,7 +882,7 @@ export default function ContactForm() {
                       type="checkbox"
                       checked={formData.addOns.includes(addOn.id)}
                       onChange={(e) => toggleAddOn(addOn.id, e.target.checked)}
-                      className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5"
+                      className="w-4 h-4 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5"
                     />
                     <span className="text-sm">
                       <T>{addOn.label}</T> ({formatCents(addOn.amountCents)}) <span className="text-gray-500"><T>{addOn.description}</T></span>
@@ -914,7 +914,7 @@ export default function ContactForm() {
           {/* Terms and Newsletter */}
           <div className="space-y-3">
             <label className="flex items-start gap-3 cursor-pointer">
-              <input type="checkbox" name="agreeToTerms" checked={formData.agreeToTerms} onChange={handleChange} className="w-5 h-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5" required />
+              <input type="checkbox" name="agreeToTerms" checked={formData.agreeToTerms} onChange={handleChange} className="w-5 h-5 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5" required />
               <span className="text-sm">
                 <span className="text-primary-600">*</span> <T>I agree with the terms of service</T>
                 <button type="button" onClick={() => setShowTerms(!showTerms)} className="text-primary-600 ml-2 hover:underline">{showTerms ? <T>Hide</T> : <T>Show</T>} <T>Terms of Service</T></button>
@@ -930,7 +930,7 @@ export default function ContactForm() {
               </div>
             )}
             <label className="flex items-center gap-3 cursor-pointer">
-              <input type="checkbox" name="subscribeNewsletter" checked={formData.subscribeNewsletter} onChange={handleChange} className="w-5 h-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
+              <input type="checkbox" name="subscribeNewsletter" checked={formData.subscribeNewsletter} onChange={handleChange} className="w-5 h-5 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500" />
               <span className="text-sm"><T>Please email me occasional promotions and newsletters.</T></span>
             </label>
           </div>

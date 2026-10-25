@@ -14,7 +14,7 @@ export default function TechnicianCard({ technician }: TechnicianCardProps) {
     <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
       <div className="flex items-start gap-4">
         {/* Photo */}
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           {technician.photoUrl ? (
             <img
               src={technician.photoUrl}
@@ -31,7 +31,7 @@ export default function TechnicianCard({ technician }: TechnicianCardProps) {
         </div>
 
         {/* Info */}
-        <div className="flex-grow min-w-0">
+        <div className="grow min-w-0">
           <h3 className="font-bold text-gray-900 truncate">
             {technician.shortBio || 'Technician'}
           </h3>

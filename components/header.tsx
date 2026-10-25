@@ -47,12 +47,12 @@ export default function Header() {
   }, [])
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-xs border-b border-gray-100 shadow-xs">
       <div className="max-w-7xl 2xl:max-w-[1600px] mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between min-h-20 md:min-h-28">
           {/* Logo — BIG badge at page top (hero presence), shrinks to header size on scroll so it never covers content. Transparent PNG, no box. */}
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0 -ml-2 sm:-ml-4 md:-ml-6">
-            <div className="relative w-28 h-20 md:w-40 md:h-28 flex-shrink-0">
+          <Link href="/" className="flex items-center gap-3 shrink-0 -ml-2 sm:-ml-4 md:-ml-6">
+            <div className="relative w-28 h-20 md:w-40 md:h-28 shrink-0">
               {/* Concentric: badge is big at page top and scales straight down
                   into the header around the SAME center — no left/right travel */}
               <div className={`absolute top-0 left-1/2 -translate-x-1/2 transition-all duration-300 ${scrolled ? 'h-24 w-24 md:h-36 md:w-36' : 'h-28 w-28 md:h-44 md:w-44'}`}>
@@ -93,7 +93,7 @@ export default function Header() {
           <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1">
             <a
               href={`tel:${COMPANY_INFO?.phoneRaw ?? ''}`}
-              className="hidden min-[1700px]:flex items-center gap-2 text-primary-700 font-semibold hover:text-primary-800 transition-colors whitespace-nowrap flex-shrink-0"
+              className="hidden min-[1700px]:flex items-center gap-2 text-primary-700 font-semibold hover:text-primary-800 transition-colors whitespace-nowrap shrink-0"
             >
               <Phone className="w-4 h-4" />
               {COMPANY_INFO?.phone ?? ''}

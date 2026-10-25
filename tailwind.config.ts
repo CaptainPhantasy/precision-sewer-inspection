@@ -1,8 +1,9 @@
 import type { Config } from 'tailwindcss'
 import animate from 'tailwindcss-animate'
+import existingColors from './tailwind-colors.json'
 
 const config: Config = {
-  darkMode: ['class'],
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -11,6 +12,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Keep the site's existing palette while migrating the CSS compiler.
+        ...existingColors,
         primary: {
           50: '#e0f2fe',
           100: '#e0f2fe',

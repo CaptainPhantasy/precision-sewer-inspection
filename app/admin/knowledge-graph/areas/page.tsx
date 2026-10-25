@@ -65,7 +65,7 @@ export default function AdminServiceAreasPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white shadow-xs border-b">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
@@ -113,7 +113,7 @@ export default function AdminServiceAreasPage() {
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+        <div className="bg-white rounded-xl shadow-xs border overflow-hidden">
           <table className="w-full">
             <thead className="bg-gray-50 border-b">
               <tr>
@@ -169,7 +169,7 @@ export default function AdminServiceAreasPage() {
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1">
                         {area.zipCodes.slice(0, 3).map((zip) => (
-                          <span key={zip} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                          <span key={zip} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-sm">
                             {zip}
                           </span>
                         ))}

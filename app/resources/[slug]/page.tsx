@@ -134,7 +134,7 @@ export default async function BlogPostPage({ params }: Props) {
                   <Link
                     key={related?.slug}
                     href={`/resources/${related?.slug}`}
-                    className="group bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+                    className="group bg-white rounded-2xl p-6 shadow-xs border border-gray-200 hover:shadow-md transition-shadow"
                   >
                     <span className="inline-block px-3 py-1 bg-primary-50 text-primary-700 text-xs font-semibold rounded-full mb-3">
                       {related?.category ?? 'General'}

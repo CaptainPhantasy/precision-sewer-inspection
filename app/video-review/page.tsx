@@ -103,7 +103,7 @@ export default function VideoReviewPage() {
       <Header />
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-gradient-to-br from-primary-900 to-primary-800 text-white py-16">
+        <section className="bg-linear-to-br/srgb from-primary-900 to-primary-800 text-white py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-3xl mx-auto text-center">
               <Video className="w-12 h-12 mx-auto mb-4 text-primary-300" />

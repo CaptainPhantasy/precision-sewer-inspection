@@ -76,7 +76,7 @@ export default function PricingPage() {
       <main className="flex-1">
         <section className="bg-primary-50 py-8 px-4"><div className="max-w-4xl mx-auto"><h2 className="text-xl font-bold mb-3">Agree on the scope before the work.</h2><p>The $159 standard scope uses a usable cleanout and includes the existing video, written findings and phone consultation package below. Access charges are listed separately. Multiple lines, locating, pump systems and inspection-enabling cleaning are scoped before you approve a price.</p><p className="mt-3">If access or visibility limits the inspection, we record the accessible sections, the stopping point and what remains unknown. You may decline additional access or cleaning. We explain any applicable access or trip charge before proceeding; a clear view of every section is not guaranteed.</p></div></section>
         {/* Hero */}
-        <section className="bg-gradient-to-br from-primary-900 to-primary-800 text-white py-16 md:py-24">
+        <section className="bg-linear-to-br/srgb from-primary-900 to-primary-800 text-white py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-3xl mx-auto text-center">
               <span className="inline-block px-4 py-1 bg-primary-700 text-primary-200 text-sm font-semibold rounded-full mb-6">
@@ -115,7 +115,7 @@ export default function PricingPage() {
                   <ul className="space-y-3 mb-8 text-left">
                     {card.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                        <Check className="w-5 h-5 text-secondary-500 flex-shrink-0 mt-0.5" />
+                        <Check className="w-5 h-5 text-secondary-500 shrink-0 mt-0.5" />
                         <span><T>{feature}</T></span>
                       </li>
                     ))}
@@ -165,7 +165,7 @@ export default function PricingPage() {
 
             <div className="mt-8 p-6 bg-amber-50 rounded-xl border border-amber-200">
               <div className="flex gap-3">
-                <AlertCircle className="w-6 h-6 text-amber-600 flex-shrink-0" />
+                <AlertCircle className="w-6 h-6 text-amber-600 shrink-0" />
                 <div>
                   <h4 className="font-semibold text-amber-900 mb-1"><T>Important Access Information</T></h4>
                   <p className="text-sm text-amber-800">
@@ -177,7 +177,7 @@ export default function PricingPage() {
 
             <div className="mt-4 p-6 bg-primary-50 rounded-xl border border-primary-200">
               <div className="flex gap-3">
-                <Info className="w-6 h-6 text-primary-600 flex-shrink-0" />
+                <Info className="w-6 h-6 text-primary-600 shrink-0" />
                 <div>
                   <h4 className="font-semibold text-primary-900 mb-1"><T>Same-Day Delivery Option</T></h4>
                   <p className="text-sm text-primary-700">
@@ -248,7 +248,7 @@ export default function PricingPage() {
                   <ul className="space-y-2">
                     {pkg?.features?.map((feature, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                        <Check className="w-4 h-4 text-secondary-500 flex-shrink-0 mt-0.5" />
+                        <Check className="w-4 h-4 text-secondary-500 shrink-0 mt-0.5" />
                         <span><T>{feature ?? ''}</T></span>
                       </li>
                     ))}

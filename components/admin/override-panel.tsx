@@ -132,7 +132,7 @@ export function OverridePanel({ onRefresh }: OverridePanelProps) {
   return (
     <div className="space-y-3">
       {/* Alert Banner */}
-      <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-xl p-4 text-white">
+      <div className="bg-linear-to-r/srgb from-orange-500 to-red-500 rounded-xl p-4 text-white">
         <div className="flex items-center gap-3">
           <div className="bg-white/20 p-2 rounded-full">
             <AlertTriangle className="w-6 h-6" />
@@ -372,7 +372,7 @@ function OverrideRequestCard({
                     type="checkbox"
                     checked={skipSignature}
                     onChange={(e) => setSkipSignature(e.target.checked)}
-                    className="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                    className="h-4 w-4 text-green-600 border-gray-300 rounded-sm focus:ring-green-500"
                   />
                   <span className="text-sm text-gray-700">Skip signature requirement</span>
                 </label>

@@ -269,7 +269,7 @@ export function JobManagement({ currentUserRole }: JobManagementProps) {
           filteredJobs.map((job) => (
             <div
               key={job.id}
-              className="bg-white border rounded-lg p-4 hover:shadow-sm transition-shadow"
+              className="bg-white border rounded-lg p-4 hover:shadow-xs transition-shadow"
             >
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="flex-1 space-y-2">
@@ -418,7 +418,7 @@ function JobFormModal({
       <div className="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-bold text-lg">{title}</h3>
-          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded">
+          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-sm">
             <X className="w-5 h-5" />
           </button>
         </div>

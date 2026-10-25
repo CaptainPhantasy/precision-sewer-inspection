@@ -24,7 +24,7 @@ export default function ContactPage() {
       <Header />
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-gradient-to-br from-primary-900 to-primary-800 text-white pt-24 pb-10 md:pt-44 md:pb-12">
+        <section className="bg-linear-to-br/srgb from-primary-900 to-primary-800 text-white pt-24 pb-10 md:pt-44 md:pb-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-3xl mx-auto text-center">
               <span className="inline-block px-4 py-1 bg-primary-700 text-primary-200 text-sm font-semibold rounded-full mb-6">
@@ -46,7 +46,7 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 [&>div]:min-w-0">
               {/* Form */}
               <div className="lg:col-span-3">
-                <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8">
+                <div className="bg-white rounded-2xl shadow-xs p-6 md:p-8">
                   <h2 className="text-2xl font-heading font-bold text-gray-900 mb-2">
                     <T>Book Your Inspection</T>
                   </h2>
@@ -65,11 +65,11 @@ export default function ContactPage() {
                   <a href={IDC_BOOK_URL} className="btn-secondary"><T>Continue to Indiana Drain Company</T></a>
                   <p className="text-sm text-gray-600 mt-4"><T>Already have a PSI report? Give IDC your job reference so the team can review it first. You are free to choose any service provider.</T></p>
                 </div>
-                <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8 mb-6">
+                <div className="bg-white rounded-2xl shadow-xs p-6 md:p-8 mb-6">
                   <h3 className="text-lg font-bold text-gray-900 mb-3"><T>Need a different inspection scope?</T></h3>
                   <p className="text-gray-600"><T>For locating, commercial or multiple-line inspections, pump systems, or uncertain access, call us to confirm the scope and price.</T> <a className="font-semibold text-primary-700 underline" href={`tel:${COMPANY_INFO.phoneRaw}`}>{COMPANY_INFO.phone}</a></p>
                 </div>
-                <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8 mb-6">
+                <div className="bg-white rounded-2xl shadow-xs p-6 md:p-8 mb-6">
                   <h3 className="text-lg font-bold text-gray-900 mb-6"><T>Contact Information</T></h3>
                   <div className="space-y-4">
                     <a

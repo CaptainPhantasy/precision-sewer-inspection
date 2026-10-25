@@ -52,7 +52,7 @@ export default function TechnicianLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-900 to-blue-700 px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-linear-to-b/srgb from-blue-900 to-blue-700 px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">

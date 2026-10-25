@@ -43,7 +43,7 @@ export function EnRouteStage({ inspection, onArrive }: Props) {
       {/* Navigation Card */}
       <button
         onClick={openMaps}
-        className="w-full bg-white rounded-xl p-4 shadow-sm text-left"
+        className="w-full bg-white rounded-xl p-4 shadow-xs text-left"
       >
         <div className="flex items-start gap-3">
           <div className="bg-blue-100 p-2 rounded-full">
@@ -62,7 +62,7 @@ export function EnRouteStage({ inspection, onArrive }: Props) {
       </button>
 
       {/* Client Info */}
-      <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="bg-white rounded-xl p-4 shadow-xs">
         <h3 className="font-semibold text-gray-900 mb-3">Client</h3>
         <p className="text-gray-700">{inspection.job.clientName}</p>
         <p className="text-sm text-gray-500">{inspection.job.clientRole.replace("_", " ")}</p>

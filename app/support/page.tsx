@@ -39,7 +39,7 @@ export default function SupportPage() {
                 </h2>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <Mail className="w-5 h-5 text-primary-600 flex-shrink-0" />
+                    <Mail className="w-5 h-5 text-primary-600 shrink-0" />
                     <div className="min-w-0">
                       <span className="font-medium text-gray-900"><T>Email:</T></span>{' '}
                       <a href="mailto:support@precisionsewerinspections.com" className="text-primary-600 hover:underline">
@@ -48,7 +48,7 @@ export default function SupportPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Phone className="w-5 h-5 text-primary-600 flex-shrink-0" />
+                    <Phone className="w-5 h-5 text-primary-600 shrink-0" />
                     <div>
                       <span className="font-medium text-gray-900"><T>Phone:</T></span>{' '}
                       <a href={`tel:${COMPANY_INFO.phoneRaw}`} className="text-primary-600 hover:underline">
@@ -57,7 +57,7 @@ export default function SupportPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Clock className="w-5 h-5 text-primary-600 flex-shrink-0" />
+                    <Clock className="w-5 h-5 text-primary-600 shrink-0" />
                     <div>
                       <span className="font-medium text-gray-900"><T>Response Time:</T></span>{' '}
                       <span className="text-gray-600"><T>Within 24 hours</T></span>

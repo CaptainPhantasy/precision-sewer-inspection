@@ -21,7 +21,7 @@ export default function AdminKnowledgeGraphPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white shadow-xs border-b">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
@@ -72,7 +72,7 @@ export default function AdminKnowledgeGraphPage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-xl shadow-sm border p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-xs border p-6 mb-8">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
           <div className="grid md:grid-cols-3 gap-4">
             <QuickAction
@@ -97,7 +97,7 @@ export default function AdminKnowledgeGraphPage() {
         </div>
 
         {/* SEO Preview */}
-        <div className="bg-white rounded-xl shadow-sm border p-6">
+        <div className="bg-white rounded-xl shadow-xs border p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Local SEO Status</h2>
           <div className="space-y-4">
             <SEOCheck
@@ -152,7 +152,7 @@ function StatCard({ title, value, icon, href, status }: {
   };
 
   return (
-    <Link href={href} className="block bg-white rounded-xl shadow-sm border p-4 hover:shadow-md transition-shadow">
+    <Link href={href} className="block bg-white rounded-xl shadow-xs border p-4 hover:shadow-md transition-shadow">
       <div className="flex items-center gap-3">
         <div className={`p-2 rounded-lg ${status ? statusColors[status] : 'bg-primary-100 text-primary-600'}`}>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

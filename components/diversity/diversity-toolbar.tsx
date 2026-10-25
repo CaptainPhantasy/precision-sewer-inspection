@@ -112,7 +112,7 @@ export default function DiversityToolbar() {
           type="button"
           onClick={changeAgentMode}
           aria-label={t('Exit agent mode')}
-          className="fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-full bg-primary-700 px-4 py-3 text-xs font-semibold text-white shadow-lg hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-500/40 transition-colors"
+          className="fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-full bg-primary-700 px-4 py-3 text-xs font-semibold text-white shadow-lg hover:bg-primary-800 focus:outline-hidden focus:ring-4 focus:ring-primary-500/40 transition-colors"
         >
           <X className="w-4 h-4" />
           {t('Exit agent mode')}
@@ -220,7 +220,7 @@ export default function DiversityToolbar() {
         aria-controls={open ? panelId : undefined}
         aria-haspopup="dialog"
         aria-label={t('Accessibility & language options')}
-        className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-700 text-white shadow-lg hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-500/40 transition-colors"
+        className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-700 text-white shadow-lg hover:bg-primary-800 focus:outline-hidden focus:ring-4 focus:ring-primary-500/40 transition-colors"
       >
         <Accessibility className="w-6 h-6" />
       </button>
@@ -254,7 +254,7 @@ function ToggleRow({
       </span>
       <span
         aria-hidden="true"
-        className={`relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full transition-colors ${
+        className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${
           checked ? 'bg-primary-600' : 'bg-gray-300'
         }`}
       >

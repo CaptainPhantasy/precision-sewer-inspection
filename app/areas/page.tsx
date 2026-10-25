@@ -67,7 +67,7 @@ export default async function ServiceAreasPage() {
       <Header />
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-gradient-to-br from-primary-900 to-primary-700 text-white py-16 md:py-24">
+        <section className="bg-linear-to-br/srgb from-primary-900 to-primary-700 text-white py-16 md:py-24">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               <T>Service Areas</T>
@@ -101,7 +101,7 @@ export default async function ServiceAreasPage() {
                       </p>
                     </div>
                     <svg
-                      className="w-6 h-6 text-gray-400 group-hover:text-primary-600 group-hover:translate-x-1 transition-all flex-shrink-0 ml-4"
+                      className="w-6 h-6 text-gray-400 group-hover:text-primary-600 group-hover:translate-x-1 transition-all shrink-0 ml-4"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -111,7 +111,7 @@ export default async function ServiceAreasPage() {
                   </div>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {area.zipCodes?.slice(0, 3).map((zip) => (
-                      <span key={zip} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                      <span key={zip} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-sm">
                         {zip}
                       </span>
                     ))}

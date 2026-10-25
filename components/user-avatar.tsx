@@ -37,7 +37,7 @@ export function UserAvatar({ name, photoUrl, size = "md", role, className = "" }
 
   if (photoUrl) {
     return (
-      <div className={`${s.container} relative rounded-full overflow-hidden flex-shrink-0 ${className}`}>
+      <div className={`${s.container} relative rounded-full overflow-hidden shrink-0 ${className}`}>
         <Image
           src={photoUrl}
           alt={`${name}'s avatar`}
@@ -51,7 +51,7 @@ export function UserAvatar({ name, photoUrl, size = "md", role, className = "" }
 
   return (
     <div
-      className={`${s.container} ${colorClass} rounded-full flex items-center justify-center flex-shrink-0 ${className}`}
+      className={`${s.container} ${colorClass} rounded-full flex items-center justify-center shrink-0 ${className}`}
     >
       {initials ? (
         <span className={`${s.text} font-semibold`}>{initials}</span>

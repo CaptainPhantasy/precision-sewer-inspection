@@ -173,7 +173,7 @@ export default function JobDetailsPage() {
         )}
 
         {/* Client Info */}
-        <section className="bg-white rounded-xl p-4 shadow-sm">
+        <section className="bg-white rounded-xl p-4 shadow-xs">
           <h2 className="font-semibold text-gray-900 mb-3">Client Information</h2>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
@@ -203,7 +203,7 @@ export default function JobDetailsPage() {
         </section>
 
         {/* Property Info */}
-        <section className="bg-white rounded-xl p-4 shadow-sm">
+        <section className="bg-white rounded-xl p-4 shadow-xs">
           <h2 className="font-semibold text-gray-900 mb-3">Property</h2>
           <button
             onClick={openMaps}
@@ -221,7 +221,7 @@ export default function JobDetailsPage() {
         </section>
 
         {/* Schedule Info */}
-        <section className="bg-white rounded-xl p-4 shadow-sm">
+        <section className="bg-white rounded-xl p-4 shadow-xs">
           <h2 className="font-semibold text-gray-900 mb-3">Schedule</h2>
           <div className="flex items-center gap-3">
             <Clock className="w-5 h-5 text-gray-400" />
@@ -235,7 +235,7 @@ export default function JobDetailsPage() {
         </section>
 
         {/* Access & Pricing */}
-        <section className="bg-white rounded-xl p-4 shadow-sm">
+        <section className="bg-white rounded-xl p-4 shadow-xs">
           <h2 className="font-semibold text-gray-900 mb-3">Access & Pricing</h2>
           <div className="space-y-2">
             <div className="flex justify-between">

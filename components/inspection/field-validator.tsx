@@ -193,12 +193,12 @@ export function FieldValidator({ inspection, currentStage }: FieldValidatorProps
   );
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-      <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-3">
+    <div className="bg-white rounded-xl shadow-xs border border-gray-100 overflow-hidden">
+      <div className="bg-linear-to-r/srgb from-blue-500 to-blue-600 px-4 py-3">
         <div className="flex items-center justify-between">
           <h3 className="text-white font-semibold">Checklist</h3>
           <div className="flex items-center gap-2">
-            <div className="bg-white/20 px-2 py-1 rounded text-white text-sm">
+            <div className="bg-white/20 px-2 py-1 rounded-sm text-white text-sm">
               {complete.length}/{relevantItems.length}
             </div>
           </div>
@@ -223,7 +223,7 @@ export function FieldValidator({ inspection, currentStage }: FieldValidatorProps
                 key={item.field}
                 className="flex items-start gap-2 p-2 bg-red-50 rounded-lg border border-red-100"
               >
-                <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                <XCircle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
                 <div>
                   <p className="text-sm font-medium text-red-800">{item.label}</p>
                   <p className="text-xs text-red-600">{item.message}</p>
@@ -244,7 +244,7 @@ export function FieldValidator({ inspection, currentStage }: FieldValidatorProps
                 key={item.field}
                 className="flex items-start gap-2 p-2 bg-orange-50 rounded-lg border border-orange-100"
               >
-                <AlertTriangle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
+                <AlertTriangle className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
                 <div>
                   <p className="text-sm font-medium text-orange-800">{item.label}</p>
                   <p className="text-xs text-orange-600">{item.message}</p>
@@ -265,7 +265,7 @@ export function FieldValidator({ inspection, currentStage }: FieldValidatorProps
                 key={item.field}
                 className="flex items-start gap-2 p-2 bg-green-50 rounded-lg border border-green-100"
               >
-                <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
                 <div>
                   <p className="text-sm font-medium text-green-800">{item.label}</p>
                   <p className="text-xs text-green-600">{item.message}</p>

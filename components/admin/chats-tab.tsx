@@ -131,7 +131,7 @@ export function ChatsTab() {
                 onClick={() => setExpandedId(expandedId === c.id ? null : c.id)}
                 className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 transition-colors"
               >
-                <MessageSquare className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                <MessageSquare className="w-4 h-4 text-blue-500 shrink-0" />
                 <span className="text-sm text-gray-700 truncate flex-1">
                   {getPreview(c.messages)}
                 </span>
@@ -142,9 +142,9 @@ export function ChatsTab() {
                   {format(new Date(c.updatedAt), "MMM d, h:mm a")}
                 </span>
                 {expandedId === c.id ? (
-                  <ChevronUp className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <ChevronUp className="w-4 h-4 text-gray-400 shrink-0" />
                 ) : (
-                  <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" />
                 )}
               </button>
 
@@ -155,7 +155,7 @@ export function ChatsTab() {
                     {(c.messages || []).map((msg, i) => (
                       <div
                         key={i}
-                        className={`text-sm p-2 rounded ${
+                        className={`text-sm p-2 rounded-sm ${
                           msg.role === "user"
                             ? "bg-blue-50 text-gray-900"
                             : "bg-gray-50 text-gray-700"
@@ -184,7 +184,7 @@ export function ChatsTab() {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page <= 1}
-            className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-40"
+            className="px-3 py-1 text-sm border border-gray-300 rounded-sm hover:bg-gray-50 disabled:opacity-40"
           >
             Previous
           </button>
@@ -194,7 +194,7 @@ export function ChatsTab() {
           <button
             onClick={() => setPage((p) => Math.min(pagination.totalPages, p + 1))}
             disabled={page >= pagination.totalPages}
-            className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-40"
+            className="px-3 py-1 text-sm border border-gray-300 rounded-sm hover:bg-gray-50 disabled:opacity-40"
           >
             Next
           </button>
