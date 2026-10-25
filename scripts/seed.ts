@@ -1,4 +1,4 @@
-import { createPrismaClient } from '../lib/prisma-client';
+import { createPrismaClient } from '../lib/prisma-script-client';
 import bcrypt from "bcryptjs";
 
 const prisma = createPrismaClient();

@@ -4,7 +4,7 @@
 // ============================================================================
 
 import { FAQCategory } from '@prisma/client';
-import { createPrismaClient } from '../lib/prisma-client';
+import { createPrismaClient } from '../lib/prisma-script-client';
 
 const prisma = createPrismaClient();
 
