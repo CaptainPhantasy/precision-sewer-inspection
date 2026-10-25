@@ -153,7 +153,7 @@ export default function Footer() {
 					</div>
 
 					{/* Contact Info */}
-					<div className="lg:col-span-1 lg:min-w-[280px]">
+					<div className="min-w-0 lg:col-span-1">
 						<h4 className="font-heading font-bold text-lg mb-4 pl-6">
 							<T>Contact Us</T>
 						</h4>
@@ -170,10 +170,10 @@ export default function Footer() {
 							<li>
 								<a
 									href={`mailto:${COMPANY_INFO?.email ?? ""}`}
-									className="flex items-center gap-2 text-primary-200 hover:text-white transition-colors text-sm whitespace-nowrap"
+									className="flex items-center gap-2 text-primary-200 hover:text-white transition-colors text-sm"
 								>
 									<Mail className="w-4 h-4 shrink-0" />
-									{COMPANY_INFO?.email ?? ""}
+									<span className="min-w-0 [overflow-wrap:anywhere]">{COMPANY_INFO?.email ?? ""}</span>
 								</a>
 							</li>
 							<li>
