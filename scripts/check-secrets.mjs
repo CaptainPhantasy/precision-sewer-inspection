@@ -46,6 +46,12 @@ try {
           console.error(`BLOCKED: ambiguous password-shaped test label at ${path}:${lineIndex + 1}`);
           policyFailures++;
         }
+        // Credential-shaped template literals can be flagged even when they
+        // interpolate generated values. Keep generated test values as calls.
+        if (path.startsWith('scripts/') && /(?:password|passwd|secret|token)\w*\s*=\s*`/i.test(line)) {
+          console.error(`BLOCKED: credential-shaped template literal at ${path}:${lineIndex + 1}`);
+          policyFailures++;
+        }
         // These exact false-positive forms caused the original PR failure.
         // Use generated fixture values and plain required-variable references.
         if (/\b(?:SMTP_PASSWORD|POSTGRES_PASSWORD)\s*:\s*["'][^"']+["']/.test(line) ||

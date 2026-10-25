@@ -27,7 +27,7 @@ export async function POST(
     const validationResult = ApproveOverrideSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
-        { success: false, error: "Invalid input", details: validationResult.error.errors },
+        { success: false, error: "Invalid input", details: validationResult.error.issues },
         { status: 400 }
       );
     }
