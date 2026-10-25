@@ -100,7 +100,7 @@ function main() {
     case 'setup':
       compose(['up', '--detach', '--wait', '--wait-timeout', '90']);
       local('prisma', ['generate']);
-      local('prisma', ['db', 'push', '--skip-generate']);
+      local('prisma', ['db', 'push']);
       local('tsx', ['scripts/seed-test.ts']);
       console.log('Local test database ready. Run npm run test:dev; Mailpit is at http://localhost:11225.');
       break;

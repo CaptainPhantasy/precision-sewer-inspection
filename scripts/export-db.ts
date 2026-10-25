@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import { createPrismaClient } from '../lib/prisma-client';
 import * as fs from 'fs'
 
-const prisma = new PrismaClient()
+const prisma = createPrismaClient()
 
 async function exportDatabase() {
   console.log('Exporting database...')

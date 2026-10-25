@@ -11,8 +11,8 @@ import {
   Clock,
 } from "lucide-react";
 import type { InspectionWithRelations } from "@/lib/services/inspection.service";
-import type { OverrideReason } from "@/lib/services/override.service";
-import { OVERRIDE_REASON_LABELS } from "@/lib/services/override.service";
+import type { OverrideReason } from "@/lib/override-contract";
+import { OVERRIDE_REASON_LABELS } from "@/lib/override-contract";
 
 interface SummonAdminDialogProps {
   inspection: InspectionWithRelations;

@@ -6,11 +6,12 @@ async function main() {
   // All database-backed imports follow this guard, including the public seed modules.
   const databaseUrl = assertTestDatabase();
   const password = requireTestUserPassword();
-  const { PrismaClient, Prisma } = await import('@prisma/client');
+  const { Prisma } = await import('@prisma/client');
+  const { createPrismaClient } = await import('../lib/prisma-client');
   const { default: bcrypt } = await import('bcryptjs');
   const { serviceAreas, serviceOfferings } = await import('../prisma/seed-service-areas');
   const { faqs } = await import('../prisma/seed-faqs');
-  const prisma = new PrismaClient({ datasources: { db: { url: databaseUrl } } });
+  const prisma = createPrismaClient(databaseUrl);
   const passwordHash = await bcrypt.hash(password, 12);
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0);

@@ -3,9 +3,8 @@
 // Manages distribution of business data to directories
 // ============================================================================
 
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/db';
 
-const prisma = new PrismaClient();
 
 // Configuration for each publisher
 const PUBLISHERS = {

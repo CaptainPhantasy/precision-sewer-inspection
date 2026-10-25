@@ -5,7 +5,7 @@ import { pageMetadata } from '@/lib/page-metadata'
 // ============================================================================
 
 import Link from 'next/link';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/db';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import AIChat from '@/components/ai-chat';
@@ -16,7 +16,6 @@ import { SERVICE_AREA_LINKS } from '@/lib/service-areas';
 import { LOCAL_INSPECTION_CONTENT } from '@/lib/local-inspection-content';
 import { T } from '@/components/diversity/diversity-provider';
 
-const prisma = new PrismaClient();
 
 export const metadata = pageMetadata("/areas", "Sewer Inspection Service Areas in Central Indiana", "Find PSI sewer camera inspection information for Indianapolis and nearby Central Indiana communities. Share the property address to confirm availability.")
 

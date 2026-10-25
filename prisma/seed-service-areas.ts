@@ -3,9 +3,9 @@
 // Indianapolis Metro Area Coverage
 // ============================================================================
 
-import { PrismaClient } from '@prisma/client';
+import { createPrismaClient } from '../lib/prisma-client';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 export const serviceAreas = [
   {

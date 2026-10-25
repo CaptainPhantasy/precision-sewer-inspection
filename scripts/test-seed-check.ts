@@ -36,12 +36,12 @@ async function main() {
 
   const databaseUrl = assertTestDatabase();
   const password = requireTestUserPassword();
-  const { PrismaClient } = await import('@prisma/client');
+  const { createPrismaClient } = await import('../lib/prisma-client');
   const { default: bcrypt } = await import('bcryptjs');
   const { postInspectionDataSchema } = await import('../lib/validations');
   const { serviceAreas, serviceOfferings } = await import('../prisma/seed-service-areas');
   const { faqs } = await import('../prisma/seed-faqs');
-  const prisma = new PrismaClient({ datasources: { db: { url: databaseUrl } } });
+  const prisma = createPrismaClient(databaseUrl);
   const where = { id: { startsWith: TEST_PREFIX } };
   try {
     const counts = {
@@ -164,6 +164,21 @@ async function main() {
       assert.match(token.clientEmail, /@example\.test$/);
       assert.ok(jobs.some((job) => job.id === token.jobId));
     }
+    // The adapter must keep interactive transactions atomic. This only touches
+    // one guarded local fixture and deliberately rolls the change back.
+    const contactBefore = await prisma.contactSubmission.findFirstOrThrow({ where });
+    const rollbackSignal = new Error('Intentional local transaction rollback');
+    await assert.rejects(prisma.$transaction(async (tx) => {
+      const changed = await tx.contactSubmission.update({
+        where: { id: contactBefore.id },
+        data: { message: 'Synthetic rollback verification' },
+      });
+      assert.equal(changed.message, 'Synthetic rollback verification');
+      throw rollbackSignal;
+    }), (error: unknown) => error === rollbackSignal);
+    const contactAfter = await prisma.contactSubmission.findUniqueOrThrow({ where: { id: contactBefore.id } });
+    assert.deepEqual(contactAfter, contactBefore, 'A failed transaction must restore every field.');
+
     console.log(`Test seed verification: PASS ${JSON.stringify({ ...counts, areas: areas.length, services: services.length, areaServiceLinks: links })}`);
   } finally {
     await prisma.$disconnect();

@@ -7,7 +7,7 @@ import { pageMetadata } from '@/lib/page-metadata'
 
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/db';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import AIChat from '@/components/ai-chat';
@@ -18,7 +18,6 @@ import { SERVICE_AREA_LINKS } from '@/lib/service-areas';
 import { LOCAL_INSPECTION_CONTENT } from '@/lib/local-inspection-content';
 import { INSPECTION_SERVICE_FAQ, CLEANING_FAQ } from '@/lib/inspection-and-service';
 
-const prisma = new PrismaClient();
 
 const fallbackAreaNames: Record<string, string> = {
   'indianapolis-in': 'Indianapolis',

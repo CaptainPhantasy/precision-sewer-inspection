@@ -4,10 +4,9 @@
 // ============================================================================
 
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/db';
 import { ReviewResponseGenerator, analyzeSentiment, Review } from '@/lib/reviews/response-generator';
 
-const prisma = new PrismaClient();
 
 // GET /api/knowledge-graph/reviews - List all reviews
 export async function GET(request: NextRequest) {
