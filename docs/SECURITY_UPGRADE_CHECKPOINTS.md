@@ -40,3 +40,21 @@ Rollback: before merge, leave this Preview unmerged and use the baseline tag.
 After release, restore the retained Vercel production deployment and revert the
 Prisma commit through a PR; do not force-push main. No database restoration or
 reverse migration is needed because no database model changed.
+
+## 2. Zod 4
+
+- Baseline commit: `3d9b057d95cba10fd091b61d7cc9d274b4360f80`.
+- Remote rollback tag: `rollback/2026-10-25-before-zod4`.
+- Branch: `codex/zod4-security`, based on the verified Prisma script follow-up.
+- Direct Zod version: `3.25.76` to `4.6.7`.
+- Four validation-error readers use the supported `issues` field. Schema defaults,
+  optional/null fields, input limits, and caller-facing field errors are retained.
+- A focused regression passed on Zod 3, reproduced the changed error-field failure
+  on Zod 4, then passed after the compatibility fix. Local API checks reject invalid
+  override inputs with HTTP 400 and an issues array before changing any records.
+- The old Zod copy under Puppeteer's Chromium BiDi remains until the Puppeteer
+  stage. Audit still reports 10 affected package entries (9 high, 1 moderate),
+  but the direct application Zod dependency is no longer flagged.
+
+Rollback: revert the Zod-stage commit or use its pre-edit tag; no schema changes
+or database restoration are involved. Merge the Prisma script follow-up first.

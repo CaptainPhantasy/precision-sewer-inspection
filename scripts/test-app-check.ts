@@ -63,6 +63,16 @@ async function main() {
         assert.equal(data.rejectedJobs.length, 1, 'Technician rejected inspections');
         assert.equal(data.completedJobs.length, 2, 'Technician completed history');
       }
+      const invalidInputPaths = name === 'admin'
+        ? ['/api/admin/overrides/synthetic-invalid/approve', '/api/admin/overrides/synthetic-invalid/deny']
+        : name === 'technician' ? ['/api/technician/inspections/synthetic-invalid/override'] : [];
+      for (const path of invalidInputPaths) {
+        const invalid = await request(path, { method: 'POST',
+          headers: { ...headers, 'Content-Type': 'application/json' }, body: '{}' });
+        assert.equal(invalid.status, 400, 'Invalid input must be rejected before any record change.');
+        const body = await invalid.json();
+        assert.ok(Array.isArray(body.details) && body.details.length > 0, 'Validation issues must be returned.');
+      }
     } finally {
       assert.equal((await request('/api/auth/logout', { method: 'POST', headers })).status, 200, `${role} logout`);
       assert.equal((await request('/api/auth/me', { headers })).status, 401, `${role} session invalidated`);

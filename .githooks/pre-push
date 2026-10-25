@@ -5,7 +5,17 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   case "$remote_sha" in
     0000000000000000000000000000000000000000)
       scan_base=$(git merge-base refs/remotes/origin/main "$local_sha") ;;
-    *) scan_base=$remote_sha ;;
+    *)
+      if git merge-base --is-ancestor "$remote_sha" "$local_sha"; then
+        scan_base=$remote_sha
+      else
+        # Only assistant Preview branches may undergo a reviewed history repair.
+        # Scan every new commit from the common ancestor; never bypass scanning.
+        case "$remote_ref" in
+          refs/heads/codex/*) scan_base=$(git merge-base "$remote_sha" "$local_sha") ;;
+          *) echo "BLOCKED: history repair is restricted to codex Preview branches." >&2; exit 1 ;;
+        esac
+      fi ;;
   esac
   node scripts/check-secrets.mjs --range "$scan_base" "$local_sha"
 done
