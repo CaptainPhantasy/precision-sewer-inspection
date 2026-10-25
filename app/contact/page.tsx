@@ -62,7 +62,7 @@ export default function ContactPage() {
                 <div className="bg-primary-50 border border-primary-100 rounded-2xl p-6 md:p-8 mb-6">
                   <h3 className="text-lg font-bold text-gray-900 mb-3"><T>Need cleaning or repair?</T></h3>
                   <p className="text-gray-700 mb-4"><T>Indiana Drain Company is the service arm of our shared team. Drain cleaning, hydro jetting, pump cleaning and qualifying repairs are arranged separately. Booking an inspection does not authorize additional work.</T></p>
-                  <a href={IDC_BOOK_URL} className="btn-secondary"><T>Continue to Indiana Drain Company</T></a>
+                  <a href={IDC_BOOK_URL} className="btn-secondary max-w-full whitespace-normal text-center"><T>Continue to Indiana Drain Company</T></a>
                   <p className="text-sm text-gray-600 mt-4"><T>Already have a PSI report? Give IDC your job reference so the team can review it first. You are free to choose any service provider.</T></p>
                 </div>
                 <div className="bg-white rounded-2xl shadow-xs p-6 md:p-8 mb-6">
@@ -76,10 +76,10 @@ export default function ContactPage() {
                       href={`tel:${COMPANY_INFO?.phoneRaw ?? ''}`}
                       className="flex items-center gap-4 p-4 bg-primary-50 rounded-xl hover:bg-primary-100 transition-colors"
                     >
-                      <div className="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center">
+                      <div className="w-12 h-12 shrink-0 bg-primary-600 rounded-xl flex items-center justify-center">
                         <Phone className="w-6 h-6 text-white" />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-sm text-gray-500"><T>Call Us</T></p>
                         <p className="font-semibold text-gray-900">{COMPANY_INFO?.phone ?? ''}</p>
                       </div>
@@ -88,10 +88,10 @@ export default function ContactPage() {
                       href={`mailto:${COMPANY_INFO?.email ?? ''}`}
                       className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
                     >
-                      <div className="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center">
+                      <div className="w-12 h-12 shrink-0 bg-gray-200 rounded-xl flex items-center justify-center">
                         <Mail className="w-6 h-6 text-gray-600" />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-sm text-gray-500"><T>Email Us</T></p>
                         <p className="font-semibold text-gray-900 break-all">{COMPANY_INFO?.email ?? ''}</p>
                       </div>
@@ -102,10 +102,10 @@ export default function ContactPage() {
                       rel="noopener noreferrer"
                       className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
                     >
-                      <div className="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center">
+                      <div className="w-12 h-12 shrink-0 bg-gray-200 rounded-xl flex items-center justify-center">
                         <MapPin className="w-6 h-6 text-gray-600" />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-sm text-gray-500"><T>Service Area</T></p>
                         <p className="font-semibold text-gray-900 text-sm">{COMPANY_INFO?.serviceAreaDisplay ?? 'Indianapolis Metro & Surrounding Areas'}</p>
                       </div>
@@ -120,7 +120,7 @@ export default function ContactPage() {
                       const IconComponent = benefit?.icon
                       return (
                         <li key={index} className="flex items-center gap-3">
-                          {IconComponent && <IconComponent className="w-5 h-5 text-primary-300" />}
+                          {IconComponent && <IconComponent className="w-5 h-5 shrink-0 text-primary-300" />}
                           <span className="text-primary-100"><T>{benefit?.text ?? ''}</T></span>
                         </li>
                       )
@@ -128,7 +128,7 @@ export default function ContactPage() {
                   </ul>
                   <div className="mt-6 pt-6 border-t border-primary-700">
                     <div className="flex items-center gap-2">
-                      <Clock className="w-5 h-5 text-accent-400" />
+                      <Clock className="w-5 h-5 shrink-0 text-accent-400" />
                       <span className="text-accent-400 font-semibold"><T>Available 7 Days a Week</T></span>
                     </div>
                   </div>

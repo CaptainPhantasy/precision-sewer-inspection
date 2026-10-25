@@ -458,23 +458,21 @@ export default function ContactForm() {
     <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
       {/* Step Indicator */}
       <div className="mb-8">
-        <div className="flex items-center justify-between max-w-2xl mx-auto">
+        <div className="grid grid-cols-4 max-w-2xl mx-auto">
           {steps.map((step, index) => {
             const isActive = currentStep === step.key
             const isPast = index < currentIndex
             return (
-              <div key={step.key} className="flex items-center">
-                <div className="flex flex-col items-center">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors ${isActive || isPast ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-500'}`}>
-                    {step.number}
-                  </div>
-                  <span className={`text-xs mt-1 whitespace-nowrap ${isActive ? 'text-primary-600 font-semibold' : isPast ? 'text-primary-600' : 'text-gray-500'}`}>
-                    <T>{step.label}</T>
-                  </span>
-                </div>
+              <div key={step.key} className="relative min-w-0 flex flex-col items-center">
                 {index < steps.length - 1 && (
-                  <div className={`w-8 sm:w-16 h-0.5 mx-1 sm:mx-2 ${isPast ? 'bg-primary-600' : 'bg-gray-300'}`} />
+                  <div aria-hidden="true" className={`absolute top-5 left-1/2 w-full h-0.5 ${isPast ? 'bg-primary-600' : 'bg-gray-300'}`} />
                 )}
+                <div className={`relative w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-bold text-sm transition-colors ${isActive || isPast ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-500'}`}>
+                  {step.number}
+                </div>
+                <span className={`w-full px-1 text-center text-xs mt-1 ${isActive ? 'text-primary-600 font-semibold' : isPast ? 'text-primary-600' : 'text-gray-500'}`}>
+                  <T>{step.label}</T>
+                </span>
               </div>
             )
           })}
@@ -563,7 +561,7 @@ export default function ContactForm() {
           </div>
 
           <label className="flex items-start gap-3 p-4 border border-amber-200 bg-amber-50 rounded-lg cursor-pointer">
-            <input type="checkbox" name="accessVerified" checked={formData.accessVerified} onChange={handleChange} className="w-5 h-5 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5" required />
+            <input type="checkbox" name="accessVerified" checked={formData.accessVerified} onChange={handleChange} className="w-5 h-5 shrink-0 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5" required />
             <span className="text-sm text-amber-900"><span className="font-semibold"><T>Access verification required:</T></span> <T>{getAccessVerificationCopy()}</T></span>
           </label>
 
@@ -577,7 +575,7 @@ export default function ContactForm() {
       {currentStep === 'datetime' && (
         <div className="space-y-6">
           <div className="flex items-center gap-4">
-            <button type="button" onClick={goToPreviousStep} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <button type="button" onClick={goToPreviousStep} className="shrink-0 p-2 hover:bg-gray-100 rounded-lg transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div>
@@ -598,9 +596,9 @@ export default function ContactForm() {
               <button onClick={fetchAvailability} className="btn-secondary"><T>Try Again</T></button>
             </div>
           ) : (
-            <div className="flex flex-col lg:flex-row gap-6">
+            <div className="grid gap-6 xl:grid-cols-2">
               {/* Calendar */}
-              <div className="flex-1">
+              <div className="min-w-0">
                 <div className="flex items-center justify-between mb-4">
                   <button type="button" onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} className="p-2 hover:bg-gray-100 rounded-full">
                     <ArrowLeft className="w-5 h-5" />
@@ -627,7 +625,7 @@ export default function ContactForm() {
                         type="button"
                         onClick={() => { if (available) handleDateSelect(dateStr) }}
                         disabled={!available || isPast}
-                        className={`p-2 rounded-full text-sm transition-all relative ${
+                        className={`min-w-0 px-1 py-2 rounded-full text-sm transition-all relative ${
                           selected ? 'bg-primary-600 text-white font-bold'
                           : available ? 'bg-sky-100 text-sky-700 hover:bg-sky-200 font-semibold'
                           : isPast ? 'text-gray-300 cursor-not-allowed'
@@ -643,7 +641,7 @@ export default function ContactForm() {
               </div>
 
               {/* Available Dates List */}
-              <div className="lg:w-64">
+              <div className="min-w-0">
                 <div className="space-y-2">
                   {availability.filter(d => d.hasAvailableSlots).slice(0, 5).map((day) => {
                     const date = new Date(day.date + 'T12:00:00')
@@ -672,8 +670,8 @@ export default function ContactForm() {
           {/* Time Slot Selection */}
           {formData.selectedDate && selectedDayData && (
             <div className="border-t pt-6">
-              <label className="form-label flex items-center gap-2 mb-3">
-                <Clock className="w-4 h-4" /> <T>Select a Time for</T> {formatAppointmentDateShort()}
+              <label className="form-label flex flex-wrap items-center gap-2 mb-3">
+                <Clock className="w-4 h-4 shrink-0" /> <T>Select a Time for</T> {formatAppointmentDateShort()}
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {selectedDayData.slots.map((slot, index) => (
@@ -682,7 +680,7 @@ export default function ContactForm() {
                     type="button"
                     onClick={() => handleSlotSelect(slot)}
                     disabled={!slot.available}
-                    className={`p-3 rounded-lg border text-center transition-all ${
+                    className={`min-w-0 p-3 rounded-lg border text-center transition-all ${
                       formData.selectedTimeSlot?.start === slot.start ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-200'
                       : slot.available ? 'border-gray-200 hover:border-primary-300 hover:bg-gray-50'
                       : 'border-gray-100 bg-gray-100 opacity-50 cursor-not-allowed line-through'
@@ -709,7 +707,7 @@ export default function ContactForm() {
       {currentStep === 'client-details' && (
         <div className="space-y-6">
           <div className="flex items-center gap-4">
-            <button type="button" onClick={goToPreviousStep} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <button type="button" onClick={goToPreviousStep} className="shrink-0 p-2 hover:bg-gray-100 rounded-lg transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div>
@@ -755,7 +753,7 @@ export default function ContactForm() {
                 <label htmlFor="streetAddress" className="form-label"><span className="text-primary-600">*</span> <T>Street Address</T></label>
                 <input id="streetAddress" type="text" name="streetAddress" value={formData.streetAddress} onChange={handleChange} onBlur={handleLeadBlur} className="form-input" required autoComplete="street-address" />
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="grid sm:grid-cols-3 gap-4">
                 <div className="col-span-1">
                   <label htmlFor="city" className="form-label"><span className="text-primary-600">*</span> <T>City</T></label>
                   <input id="city" type="text" name="city" value={formData.city} onChange={handleChange} onBlur={handleLeadBlur} className="form-input" required autoComplete="address-level2" />
@@ -767,7 +765,7 @@ export default function ContactForm() {
                   </select>
                 </div>
                 <div className="flex items-end gap-2">
-                  <div className="flex-1">
+                  <div className="min-w-0 flex-1">
                     <label htmlFor="zipCode" className="form-label"><T>Zip Code</T></label>
                     <input id="zipCode" type="text" name="zipCode" value={formData.zipCode} onChange={handleChange} placeholder="46227" className="form-input" autoComplete="postal-code" />
                   </div>
@@ -790,7 +788,7 @@ export default function ContactForm() {
       {currentStep === 'review' && (
         <div className="space-y-6">
           <div className="flex items-center gap-4">
-            <button type="button" onClick={goToPreviousStep} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <button type="button" onClick={goToPreviousStep} className="shrink-0 p-2 hover:bg-gray-100 rounded-lg transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div>
@@ -800,7 +798,7 @@ export default function ContactForm() {
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-2 gap-6 [overflow-wrap:anywhere] [&>div]:min-w-0">
             {/* Order Details */}
             <div className="bg-white border rounded-xl p-4">
               <div className="flex justify-between items-start mb-3">
@@ -865,13 +863,13 @@ export default function ContactForm() {
 
           {/* Items / Pricing */}
           <div className="bg-white border rounded-xl p-4">
-            <div className="flex justify-between items-center text-sm border-b pb-2 mb-2">
+            <div className="flex justify-between items-center gap-3 text-sm border-b pb-2 mb-2">
               <span>{pricing.service.label}</span>
-              <span>1 X {formatCents(pricing.service.amountCents)}</span>
+              <span className="shrink-0 whitespace-nowrap">1 X {formatCents(pricing.service.amountCents)}</span>
             </div>
             {/* Add-ons Selection */}
             <div className="border-t pt-3 mt-3">
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <p className="text-sm font-medium text-gray-700"><T>Needed items / add-ons:</T></p>
                 <button type="button" onClick={() => goToStep('job-details')} className="text-primary-600 text-sm flex items-center gap-1 hover:underline"><Edit2 className="w-3 h-3" /> <T>Edit service</T></button>
               </div>
@@ -882,7 +880,7 @@ export default function ContactForm() {
                       type="checkbox"
                       checked={formData.addOns.includes(addOn.id)}
                       onChange={(e) => toggleAddOn(addOn.id, e.target.checked)}
-                      className="w-4 h-4 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5"
+                      className="w-4 h-4 shrink-0 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5"
                     />
                     <span className="text-sm">
                       <T>{addOn.label}</T> ({formatCents(addOn.amountCents)}) <span className="text-gray-500"><T>{addOn.description}</T></span>
@@ -894,9 +892,9 @@ export default function ContactForm() {
             </div>
             <div className="space-y-1 text-sm mt-3">
               {pricing.addOnItems.map(addOn => (
-                <div key={addOn.id} className="flex justify-between text-gray-700">
+                <div key={addOn.id} className="flex justify-between gap-3 text-gray-700">
                   <span><T>{addOn.label}</T></span>
-                  <span>{formatCents(addOn.amountCents)}</span>
+                  <span className="shrink-0 whitespace-nowrap">{formatCents(addOn.amountCents)}</span>
                 </div>
               ))}
               <div className="flex justify-between"><span><T>Subtotal:</T></span><span className="font-semibold">{formatCents(pricing.subtotalCents)}</span></div>
@@ -914,7 +912,7 @@ export default function ContactForm() {
           {/* Terms and Newsletter */}
           <div className="space-y-3">
             <label className="flex items-start gap-3 cursor-pointer">
-              <input type="checkbox" name="agreeToTerms" checked={formData.agreeToTerms} onChange={handleChange} className="w-5 h-5 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5" required />
+              <input type="checkbox" name="agreeToTerms" checked={formData.agreeToTerms} onChange={handleChange} className="w-5 h-5 shrink-0 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500 mt-0.5" required />
               <span className="text-sm">
                 <span className="text-primary-600">*</span> <T>I agree with the terms of service</T>
                 <button type="button" onClick={() => setShowTerms(!showTerms)} className="text-primary-600 ml-2 hover:underline">{showTerms ? <T>Hide</T> : <T>Show</T>} <T>Terms of Service</T></button>
@@ -930,7 +928,7 @@ export default function ContactForm() {
               </div>
             )}
             <label className="flex items-center gap-3 cursor-pointer">
-              <input type="checkbox" name="subscribeNewsletter" checked={formData.subscribeNewsletter} onChange={handleChange} className="w-5 h-5 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500" />
+              <input type="checkbox" name="subscribeNewsletter" checked={formData.subscribeNewsletter} onChange={handleChange} className="w-5 h-5 shrink-0 rounded-sm border-gray-300 text-primary-600 focus:ring-primary-500" />
               <span className="text-sm"><T>Please email me occasional promotions and newsletters.</T></span>
             </label>
           </div>
