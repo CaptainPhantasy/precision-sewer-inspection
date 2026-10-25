@@ -92,7 +92,7 @@ async function launchBrowser(): Promise<Browser> {
       "--no-sandbox",
     ],
     executablePath,
-    headless: true,
+    headless: "shell",
   });
 }
 
