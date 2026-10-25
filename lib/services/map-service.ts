@@ -119,7 +119,7 @@ class MapService {
       // Try the search widget
       const searchInput = await page.$(".esri-search__input");
       if (searchInput) {
-        await searchInput.click({ clickCount: 3 }); // Select all
+        await searchInput.click({ count: 3 }); // Select all
         await searchInput.type(searchQuery, { delay: 50 });
         await page.keyboard.press("Enter");
         await this.sleep(5000); // Wait for map to pan and zoom

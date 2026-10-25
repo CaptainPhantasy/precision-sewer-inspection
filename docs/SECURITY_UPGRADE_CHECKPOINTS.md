@@ -58,3 +58,27 @@ reverse migration is needed because no database model changed.
 
 Rollback: revert the Zod-stage commit or use its pre-edit tag; no schema changes
 or database restoration are involved. Merge the Prisma script follow-up first.
+
+## 3. Puppeteer and Chromium
+
+- Baseline commit: `bde2cb6303e47d2a95be7fded8de6decc08cabf9`.
+- Remote rollback tag: `rollback/2026-10-25-before-puppeteer25`.
+- Branch: `codex/puppeteer25-security`, based on the verified Zod stage.
+- Puppeteer Core `24.43.1` to `25.16.0`; serverless Chromium `148.0.0` to `153.0.0`.
+- PDF rendering explicitly selects headless shell. Map-search triple-click uses
+  the current `count` option; its whole-field replacement is checked locally.
+- The real PDF-service check uses a fresh temporary directory, verifies the actual
+  browser is Chromium 153, rejects empty input before launching, and checks cold
+  and warm two-page PDFs with `pdfinfo` and `pdftotext`. No database, storage,
+  calendar, payment or email calls are involved. Run with
+  `npx tsx scripts/pdf-render-check.ts` (Poppler utilities must be installed).
+- Compatibility limit: Puppeteer 25.16's reference Chrome revision is 156, while
+  153 is the newest available serverless Chromium package. The application's
+  exercised PDF/browser paths are tested against the actual 153 executable;
+  this is not a claim that the vendor officially matches those revisions.
+- The old ZIP/FTP/proxy dependencies and nested Zod 3 copy are removed. Audit now
+  reports zero high/critical findings and one moderate CSS-parser package entry.
+  npm audit does not assess the Chromium executable's own vulnerability status.
+
+Rollback: revert this stage's commit or use its pre-edit tag. No database schema
+change or restoration is required. Merge the prerequisite stages first.
