@@ -155,12 +155,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   }
 
   // Fetch the full submission record to get structured fields for admin email
-  let submission: { occupancy?: string | null; cleanoutLocation?: string | null; buyersAgent?: string | null; listingAgent?: string | null; howHeardAboutUs?: string | null; directions?: string | null } | null = null;
+  let submission: { occupancy?: string | null; propertyAccess?: string | null; cleanoutLocation?: string | null; appointmentDate?: string | null; buyersAgent?: string | null; listingAgent?: string | null; howHeardAboutUs?: string | null; directions?: string | null } | null = null;
   if (metadata.submissionId) {
     try {
       submission = await prisma.contactSubmission.findUnique({
         where: { id: metadata.submissionId },
-        select: { occupancy: true, cleanoutLocation: true, buyersAgent: true, listingAgent: true, howHeardAboutUs: true, directions: true },
+        select: { occupancy: true, propertyAccess: true, cleanoutLocation: true, appointmentDate: true, buyersAgent: true, listingAgent: true, howHeardAboutUs: true, directions: true },
       });
     } catch (e) {
       console.error('Error fetching submission for email enrichment:', e);
@@ -179,7 +179,9 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       promoCode: metadata.promoCode || undefined,
       stripeSessionId: session.id,
       appointmentDisplay: metadata.appointmentDisplay || undefined,
+      appointmentDate: metadata.appointmentDate || submission?.appointmentDate || undefined,
       occupancy: submission?.occupancy || undefined,
+      propertyAccess: submission?.propertyAccess || undefined,
       cleanoutLocation: submission?.cleanoutLocation || undefined,
       buyersAgent: submission?.buyersAgent || undefined,
       listingAgent: submission?.listingAgent || undefined,
@@ -207,6 +209,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         propertyAddress: metadata.propertyAddress || 'Not provided',
         accessMethod: metadata.accessMethod || metadata.sewerAccessMethod || 'Not specified',
         appointmentDisplay: metadata.appointmentDisplay || undefined,
+        appointmentDate: metadata.appointmentDate || submission?.appointmentDate || undefined,
         promoCode: metadata.promoCode || undefined,
         discountAmount: discountAmount || undefined,
       });

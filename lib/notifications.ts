@@ -322,6 +322,11 @@ export function getInspectionReturnedEmail(data: {
   };
 }
 
+function escapeEmailText(value: string): string {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 // --- Payment Received (Admin) ---
 export function getPaymentReceivedEmail(data: {
   customerName: string;
@@ -333,7 +338,9 @@ export function getPaymentReceivedEmail(data: {
   promoCode?: string;
   stripeSessionId: string;
   appointmentDisplay?: string;
+  appointmentDate?: string;
   occupancy?: string;
+  propertyAccess?: string;
   cleanoutLocation?: string;
   buyersAgent?: string;
   listingAgent?: string;
@@ -345,7 +352,9 @@ export function getPaymentReceivedEmail(data: {
     `<tr><td style="padding: 5px 0;"><strong>Property:</strong></td><td>${data.propertyAddress}</td></tr>`,
     `<tr><td style="padding: 5px 0;"><strong>Access Method:</strong></td><td>${data.accessMethod}</td></tr>`,
     data.occupancy ? `<tr><td style="padding: 5px 0;"><strong>Occupancy:</strong></td><td>${data.occupancy}</td></tr>` : '',
+    data.propertyAccess ? `<tr><td style="padding: 5px 0;"><strong>Property Access Instructions:</strong></td><td>${escapeEmailText(data.propertyAccess).replace(/\r\n|\r|\n/g, '<br>')}</td></tr>` : '',
     data.cleanoutLocation ? `<tr><td style="padding: 5px 0;"><strong>Cleanout Location:</strong></td><td>${data.cleanoutLocation}</td></tr>` : '',
+    data.appointmentDate ? `<tr><td style="padding: 5px 0;"><strong>Appointment Date:</strong></td><td>${escapeEmailText(data.appointmentDate)}</td></tr>` : '',
     data.appointmentDisplay ? `<tr><td style="padding: 5px 0;"><strong>Appointment:</strong></td><td>${data.appointmentDisplay}</td></tr>` : '',
     data.buyersAgent ? `<tr><td style="padding: 5px 0;"><strong>Buyer's Agent:</strong></td><td>${data.buyersAgent}</td></tr>` : '',
     data.listingAgent ? `<tr><td style="padding: 5px 0;"><strong>Listing Agent:</strong></td><td>${data.listingAgent}</td></tr>` : '',
@@ -437,6 +446,7 @@ export function getPaymentReceiptEmail(data: {
   propertyAddress: string;
   accessMethod: string;
   appointmentDisplay?: string;
+  appointmentDate?: string;
   promoCode?: string;
   discountAmount?: number;
 }): { subject: string; htmlContent: string } {
@@ -457,6 +467,7 @@ export function getPaymentReceiptEmail(data: {
               ${data.promoCode && data.discountAmount ? `<tr><td style="padding: 5px 0;"><strong>Discount Applied:</strong></td><td style="color: #059669;">-$${data.discountAmount.toFixed(2)} (${data.promoCode})</td></tr>` : ''}
               <tr><td style="padding: 5px 0;"><strong>Property:</strong></td><td>${data.propertyAddress}</td></tr>
               <tr><td style="padding: 5px 0;"><strong>Access Method:</strong></td><td>${data.accessMethod}</td></tr>
+              ${data.appointmentDate ? `<tr><td style="padding: 5px 0;"><strong>Appointment Date:</strong></td><td>${escapeEmailText(data.appointmentDate)}</td></tr>` : ''}
               ${data.appointmentDisplay ? `<tr><td style="padding: 5px 0;"><strong>Appointment:</strong></td><td>${data.appointmentDisplay}</td></tr>` : ''}
             </table>
           </div>
