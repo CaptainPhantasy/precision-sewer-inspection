@@ -116,3 +116,22 @@ change or restoration is required. Merge the prerequisite stages first.
 
 Rollback: revert this stage's commit or use its pre-edit tag. No database schema
 change or restoration is required. Merge the prerequisite stages first.
+
+## 5. Next.js maintenance patch
+
+- Baseline commit: `a985b81f662de96af067ca735e6dafa9e4bb412b`.
+- Remote rollback tag: `rollback/2026-10-25-before-next-patch`.
+- A verified private Git bundle also preserves the complete pre-edit history.
+- Branch: `codex/next16-patch-security`, targeting `main`.
+- `next`, `@next/third-parties`, and `@next/eslint-plugin-next` move together
+  from `16.4.2` to `16.4.3`; matching environment/SWC packages follow in the lock.
+- This is a maintenance patch. The preceding Tailwind stage already reduced
+  the current package audit to zero known affected entries.
+- No application logic, integration configuration, database models or data change.
+- Verification covers clean installation, dependency consistency, lint/types,
+  production build, public pages, the canonical host redirect retaining its
+  path/query, synthetic staff access/session checks, and desktop/mobile browser
+  hydration, chat, booking navigation, and real Preview calendar reads.
+
+Rollback: revert this stage's commit or use its pre-edit tag. No database schema
+change or restoration is required. Merge the prerequisite stages first.
