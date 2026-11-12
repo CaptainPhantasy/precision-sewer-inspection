@@ -6,6 +6,11 @@ import Link from 'next/link'
 import { Check, ArrowRight, Info, Phone, AlertCircle, Building2, Users, Video } from 'lucide-react'
 import { ACCESS_METHODS, MULTI_UNIT_PRICING, VOLUME_PACKAGES, COMPANY_INFO } from '@/lib/constants'
 import { T } from '@/components/diversity/diversity-provider'
+import { SERVICE_OPTIONS } from '@/lib/checkout-pricing'
+import { businessSchema, inspectionOffers, jsonLd, BUSINESS_ID } from '@/lib/schema/business'
+import { SITE_URL } from '@/lib/service-areas'
+
+const STANDARD_PRICE = SERVICE_OPTIONS[0].amountCents / 100
 
 const PRICING_CARDS = [
   {
@@ -30,7 +35,7 @@ const PRICING_CARDS = [
   {
     name: 'Standard Sewer Scope',
     description: 'Clear, Upfront Pricing',
-    price: '$159',
+    price: `$${STANDARD_PRICE}`,
     priceLabel: 'per inspection (cleanout access)',
     badge: 'Standard Inspection',
     badgeColor: 'bg-accent-500',
@@ -66,15 +71,30 @@ const PRICING_CARDS = [
   }
 ]
 
-export const metadata = pageMetadata("/pricing", "Sewer Camera Inspection Pricing in Indianapolis", "Review PSI's published sewer camera inspection pricing, standard access requirements and separately approved options. Confirm the scope before booking.")
+export const metadata = pageMetadata('/pricing', 'Sewer Inspection Pricing', `Indianapolis sewer scopes from $${STANDARD_PRICE} with cleanout access, HD video and written findings. Compare access charges and confirm your price before booking.`)
 
 
 export default function PricingPage() {
   return (
     <div className="min-h-screen flex flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd([
+        businessSchema(),
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          '@id': `${SITE_URL}/pricing#sewer-camera-inspection`,
+          name: 'Sewer Camera Inspection',
+          serviceType: 'Sewer Camera Inspection',
+          url: `${SITE_URL}/pricing`,
+          description: 'Camera inspection of accessible sewer lines with HD video, written findings and access limitations explained. Access method and additional work are agreed before booking.',
+          provider: { '@id': BUSINESS_ID },
+          areaServed: 'Central Indiana',
+          offers: inspectionOffers(),
+        },
+      ])} />
       <Header />
       <main className="flex-1">
-        <section className="bg-primary-50 py-8 px-4"><div className="max-w-4xl mx-auto"><h2 className="text-xl font-bold mb-3">Agree on the scope before the work.</h2><p>The $159 standard scope uses a usable cleanout and includes the existing video, written findings and phone consultation package below. Access charges are listed separately. Multiple lines, locating, pump systems and inspection-enabling cleaning are scoped before you approve a price.</p><p className="mt-3">If access or visibility limits the inspection, we record the accessible sections, the stopping point and what remains unknown. You may decline additional access or cleaning. We explain any applicable access or trip charge before proceeding; a clear view of every section is not guaranteed.</p></div></section>
+        <section className="bg-primary-50 py-8 px-4"><div className="max-w-4xl mx-auto"><h2 className="text-xl font-bold mb-3">Agree on the scope before the work.</h2><p>The ${STANDARD_PRICE} standard scope uses a usable cleanout and includes the existing video, written findings and phone consultation package below. Access charges are listed separately. Multiple lines, locating, pump systems and inspection-enabling cleaning are scoped before you approve a price.</p><p className="mt-3">If access or visibility limits the inspection, we record the accessible sections, the stopping point and what remains unknown. You may decline additional access or cleaning. We explain any applicable access or trip charge before proceeding; a clear view of every section is not guaranteed.</p></div></section>
         {/* Hero */}
         <section className="bg-linear-to-br/srgb from-primary-900 to-primary-800 text-white py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
