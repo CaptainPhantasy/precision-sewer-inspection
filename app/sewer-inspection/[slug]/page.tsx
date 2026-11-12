@@ -1,4 +1,4 @@
-import { pageMetadata } from '@/lib/page-metadata'
+import { pageMetadata, serviceAreaDescription } from '@/lib/page-metadata'
 // ============================================================================
 // Dynamic Service Area Page
 // Generates individual pages for each service area
@@ -95,7 +95,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return pageMetadata(
     `/sewer-inspection/${slug}`,
     `Sewer Camera Inspection in ${area.name}, ${area.state}`,
-    area.description || `Sewer camera inspection information for ${area.name}, Indiana. Contact PSI to confirm your property address, access and available appointment.`,
+    serviceAreaDescription(area.name),
   );
 }
 

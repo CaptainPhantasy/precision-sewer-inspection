@@ -1,8 +1,13 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/service-areas'
+import { SERVICE_OPTIONS } from '@/lib/checkout-pricing'
 
-export const SITE_DESCRIPTION = 'Central Indiana sewer, drain and pump inspections with clear findings. Optional cleaning, maintenance and qualifying repairs through sister company Indiana Drain Company.'
-export const SITE_TITLE = 'Sewer, Drain and Pump Inspections in Central Indiana'
+export const SITE_DESCRIPTION = `Sewer camera inspections in Indianapolis and Central Indiana from $${SERVICE_OPTIONS[0].amountCents / 100} with cleanout access. HD video, written findings and online booking.`
+export const SITE_TITLE = 'Indianapolis Sewer Camera Inspections'
+
+export function serviceAreaDescription(name: string) {
+  return `Sewer camera inspections in ${name}, IN from $${SERVICE_OPTIONS[0].amountCents / 100} with cleanout access. HD video and written findings. Confirm your address and book with PSI.`
+}
 
 /** Use the production page's URL even when reviewing a separate editing copy. */
 export function pageMetadata(path: string, title: string, description: string): Metadata {

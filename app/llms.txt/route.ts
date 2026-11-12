@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { SERVICE_AREA_LINKS, SITE_URL } from '@/lib/service-areas'
 import { COMPANY_INFO } from '@/lib/constants'
 import { getAllPosts } from '@/lib/blog'
+import { SERVICE_OPTIONS } from '@/lib/checkout-pricing'
 
 /**
  * A plain-text map of public PSI pages and service responsibilities.
@@ -12,6 +13,9 @@ export const revalidate = 3600
 
 export async function GET() {
   const base = SITE_URL
+  const priceLines = SERVICE_OPTIONS.map(option =>
+    `- ${option.label}: $${(option.amountCents / 100).toFixed(2)} USD total. ${option.description}.`,
+  ).join('\n')
 
   let posts: { slug: string; title: string; description: string }[] = []
   try {
@@ -37,6 +41,12 @@ export async function GET() {
 - Email: ${COMPANY_INFO.email}
 - Service area: ${COMPANY_INFO.serviceArea}; confirm the specific job address
 - Book online: ${base}/contact
+
+## Published standard inspection prices
+${priceLines}
+- Includes HD video, written findings, one-business-day delivery and a phone consultation for the standard scope.
+- Optional add-ons, additional lines, cleaning and contractor lining documentation are scoped and priced separately. Access or obstructions can limit coverage; unseen sections are not reported as clear.
+- [Full pricing and access conditions](${base}/pricing). Confirm the total and appointment availability before booking.
 
 ## Core pages
 - [Book an Inspection](${base}/contact): Confirm inspection scope, site access, price, and documentation delivery before booking.
