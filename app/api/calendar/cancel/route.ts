@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { deleteBookingEvent } from '@/lib/google-calendar';
+import { BookingConfirmationError, cancelCalendarBooking } from '@/lib/booking-confirmation';
+
+export const runtime = 'nodejs';
+export const maxDuration = 60;
 
 /**
  * Cancel a calendar booking by deleting the Google Calendar event.
@@ -11,9 +14,9 @@ import { deleteBookingEvent } from '@/lib/google-calendar';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { eventId } = body;
+    const { eventId, sessionId } = body;
 
-    if (!eventId) {
+    if (typeof eventId !== 'string' || !eventId) {
       return NextResponse.json(
         { success: false, error: 'Missing required field: eventId' },
         { status: 400 }
@@ -42,7 +45,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await deleteBookingEvent(eventId);
+    await cancelCalendarBooking(eventId, sessionId);
 
     return NextResponse.json({
       success: true,
@@ -51,8 +54,8 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error cancelling calendar booking:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to cancel booking. Please contact us directly.' },
-      { status: 500 }
+      { success: false, error: error instanceof BookingConfirmationError ? error.message : 'Failed to cancel booking. Please contact us directly.' },
+      { status: error instanceof BookingConfirmationError ? error.status : 503 }
     );
   }
 }
