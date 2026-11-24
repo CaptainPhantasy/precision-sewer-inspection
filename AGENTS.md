@@ -52,3 +52,41 @@ Preview. Record the production deployment and commit before release. Never
 force-push `main`. A history repair on an assistant-owned, unmerged Preview
 branch must preserve the old commits locally and use an exact expected-head
 lease; never overwrite someone else's new commits.
+
+## Code Review Rules
+
+Review the complete proposed change at a named head commit before posting
+findings or starting repairs. Cover every changed area and relevant callers,
+contracts, tests, and edge cases. Keep reviewing after the first finding.
+Collect every distinct, actionable, evidence-backed issue found in that
+scope, deduplicate by root cause, and publish the findings in one review
+submission. Use inline comments for location and one final summary listing
+the whole batch, not a series of review/fix loops. Do not pad the list with
+speculation or style preferences. Use parallel coverage if available and
+consolidate before publishing. For an explicitly requested whole-repository
+audit, report that broader scope separately from a PR review.
+
+Finish the first pass with exactly one explicit verdict:
+
+- **REVIEW COMPLETE — READY FOR REPAIRS**: Include the head SHA, reviewed scope,
+  and all identified issues with severity, file/line, impact, and suggested
+  remediation. This means the batch is ready for the repair agent, not merge.
+- **REVIEW COMPLETE — NO ACTIONABLE FINDINGS**: Include the head and checks.
+  An initial pass is not the post-repair merge verdict.
+- **REVIEW INCOMPLETE — NOT CLEARED TO MERGE**: Name every unreviewed area or
+  verification limit that prevents a complete verdict. Never use a clean
+  summary or silent reaction as a substitute for a complete review.
+
+Repair only after the findings handoff and on request. Apply the accepted
+batch together, report checks, and wait for the requested verification pass.
+Do not request a fresh review after each individual fix.
+
+On requested post-repair verification, verify the exact current PR head,
+recheck every original finding, and review the full current diff and related
+paths for regressions and new actionable issues. Check required CI and
+approvals. If all findings are addressed, no new actionable issues remain,
+and required checks and approvals are satisfied, state **VERIFICATION
+COMPLETE — CLEARED TO MERGE** with the head SHA and verification evidence.
+Otherwise state **NOT CLEARED TO MERGE** and list all remaining findings or
+blockers together. Never clear an outdated head or imply that reviewer
+clearance replaces branch protection, owner approval, or release authorization.
