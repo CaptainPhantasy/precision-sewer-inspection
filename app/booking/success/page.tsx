@@ -10,6 +10,7 @@ import { COMPANY_INFO } from '@/lib/constants'
 
 interface BookingConfirmation {
   success: boolean;
+  reason?: 'confirmed' | 'no_appointment' | 'cancelled' | 'refunded' | 'expired' | 'review' | 'conflict';
   calendarBooked?: boolean;
   needsReschedule?: boolean;
   message?: string;
@@ -19,6 +20,16 @@ interface BookingConfirmation {
   };
   error?: string;
 }
+
+const statusHeadings = {
+  confirmed: 'Appointment confirmed',
+  no_appointment: 'Payment confirmed',
+  cancelled: 'Appointment cancelled',
+  refunded: 'Payment refunded',
+  expired: 'Appointment needs rescheduling',
+  review: 'Booking needs review',
+  conflict: 'Scheduling needs attention',
+};
 
 function BookingSuccessContent() {
   const searchParams = useSearchParams()
@@ -30,6 +41,7 @@ function BookingSuccessContent() {
   useEffect(() => {
     const confirmBooking = async () => {
       if (!sessionId) {
+        setError('The booking reference is missing. Please open the complete link from your checkout or contact us.')
         setIsLoading(false)
         return
       }
@@ -66,8 +78,17 @@ function BookingSuccessContent() {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
+      timeZone: 'America/Indianapolis',
     })
   }
+
+  const bookingHeading = confirmation?.reason
+    ? statusHeadings[confirmation.reason]
+    : 'Booking confirmation'
+  const showNextSteps = confirmation?.calendarBooked || confirmation?.reason === 'no_appointment'
+  const showStatusMessage = confirmation?.success && confirmation.message
+    && !confirmation.calendarBooked && !confirmation.needsReschedule
+    && confirmation.reason !== 'no_appointment'
 
   if (isLoading) {
     return (
@@ -92,15 +113,19 @@ function BookingSuccessContent() {
           <div className="container-custom max-w-2xl mx-auto text-center">
             <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
               <div className="w-20 h-20 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <CheckCircle className="w-10 h-10 text-secondary-600" />
+                {confirmation?.calendarBooked ? (
+                  <CheckCircle className="w-10 h-10 text-secondary-600" />
+                ) : (
+                  <Calendar className="w-10 h-10 text-secondary-600" />
+                )}
               </div>
               
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Payment Successful!
+                {bookingHeading}
               </h1>
               
               <p className="text-lg text-gray-600 mb-6">
-                Thank you for booking with Precision Sewer Inspections.
+                Your inspection booking with Precision Sewer Inspections.
               </p>
 
               {/* Appointment Confirmation */}
@@ -136,8 +161,7 @@ function BookingSuccessContent() {
                     <div>
                       <h2 className="font-bold text-amber-900 mb-1">Scheduling Note</h2>
                       <p className="text-amber-800 text-sm">
-                        Your payment was successful, but the selected time slot is no longer available. 
-                        We will contact you shortly to find a new time that works for you.
+                        {confirmation.message || 'Please contact us to confirm your inspection time.'}
                       </p>
                     </div>
                   </div>
@@ -145,7 +169,7 @@ function BookingSuccessContent() {
               )}
 
               {/* No Appointment Selected */}
-              {confirmation?.success && !confirmation?.calendarBooked && !confirmation?.needsReschedule && (
+              {confirmation?.success && confirmation.reason === 'no_appointment' && (
                 <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6 text-left">
                   <div className="flex items-start gap-3">
                     <Phone className="w-6 h-6 text-blue-600 shrink-0 mt-0.5" />
@@ -159,6 +183,12 @@ function BookingSuccessContent() {
                 </div>
               )}
 
+              {showStatusMessage && (
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6 text-left" role="status">
+                  <p className="text-blue-900">{confirmation.message}</p>
+                </div>
+              )}
+
               {/* Error State */}
               {error && (
                 <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-6 text-left">
@@ -167,14 +197,14 @@ function BookingSuccessContent() {
                     <div>
                       <h2 className="font-bold text-red-900 mb-1">Confirmation Issue</h2>
                       <p className="text-red-800 text-sm">
-                        {error} Your payment was received - please call us to confirm your appointment.
+                        {error}
                       </p>
                     </div>
                   </div>
                 </div>
               )}
 
-              <div className="bg-gray-50 rounded-xl p-6 mb-8 text-left">
+              {showNextSteps && <div className="bg-gray-50 rounded-xl p-6 mb-8 text-left">
                 <h2 className="font-semibold text-gray-900 mb-4">What happens next?</h2>
                 <ul className="space-y-3 text-gray-700">
                   <li className="flex items-start gap-3">
@@ -197,7 +227,7 @@ function BookingSuccessContent() {
                     <span>After your inspection, you&apos;ll receive your HD video and detailed report within one business day</span>
                   </li>
                 </ul>
-              </div>
+              </div>}
 
               {sessionId && (
                 <p className="text-sm text-gray-500 mb-6">

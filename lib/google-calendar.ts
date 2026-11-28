@@ -1,4 +1,6 @@
 import { google, calendar_v3 } from 'googleapis';
+import { AsyncLocalStorage } from 'node:async_hooks';
+import { prisma } from './db';
 
 // Calendar configuration
 const CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID || '';
@@ -18,14 +20,41 @@ const SERVICE_ACCOUNT_PRIVATE_KEY = (process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_
 /**
  * Initialize Google Calendar client with service account credentials
  */
-function getCalendarClient(): calendar_v3.Calendar {
+export const CALENDAR_REQUEST_OPTIONS = { timeout: 5000, retry: false, retryConfig: { retry: 0 } };
+const bookingDeadline = new AsyncLocalStorage<number>();
+
+export function assertBookingDeadline(): void {
+  const deadline = bookingDeadline.getStore();
+  if (deadline !== undefined && Date.now() >= deadline) {
+    throw new Error('Booking confirmation timed out. Retry the same Checkout session.');
+  }
+}
+
+export function getBookingCalendarId(): string {
+  if (!CALENDAR_ID) throw new Error('GOOGLE_CALENDAR_ID is required for booking.');
+  return CALENDAR_ID;
+}
+
+export function getCalendarClient(): calendar_v3.Calendar {
   const auth = new google.auth.JWT({
     email: SERVICE_ACCOUNT_EMAIL,
     key: SERVICE_ACCOUNT_PRIVATE_KEY,
     scopes: ['https://www.googleapis.com/auth/calendar'],
+    transporterOptions: { timeout: 5000, retry: false, retryConfig: { retry: 0 } },
   });
 
   return google.calendar({ version: 'v3', auth });
+}
+
+/** Serialize all website booking writers, including requests from Zapier. */
+export async function withCalendarBookingLock<T>(operation: () => Promise<T>): Promise<T> {
+  const calendarId = getBookingCalendarId();
+  return prisma.$transaction(async (transaction) => {
+    await transaction.$executeRaw`SET LOCAL lock_timeout = '3000ms'`;
+    await transaction.$executeRaw`SELECT pg_advisory_xact_lock(hashtext('psi-calendar-booking'), hashtext(${calendarId}))`;
+    // Reserve time for the last bounded provider call before PostgreSQL releases the lock.
+    return bookingDeadline.run(Date.now() + 40000, operation);
+  }, { maxWait: 3000, timeout: 55000 });
 }
 
 /**
@@ -227,17 +256,25 @@ export interface BookingDetails {
   accessMethod: string;
   notes?: string;
   startTime: string; // ISO date string
+  endTime?: string;
+}
+
+export function getBookingEndTime(startTime: string): string {
+  return new Date(new Date(startTime).getTime() + SLOT_DURATION_HOURS * 60 * 60 * 1000).toISOString();
 }
 
 /**
  * Create a calendar event for a booking
  */
-export async function createBookingEvent(booking: BookingDetails): Promise<string> {
+export async function createBookingEvent(
+  booking: BookingDetails,
+  identity?: { eventId: string; checkoutSessionId: string },
+): Promise<string> {
+  assertBookingDeadline();
   const calendar = getCalendarClient();
   
   const startDate = new Date(booking.startTime);
-  const endDate = new Date(startDate);
-  endDate.setMinutes(endDate.getMinutes() + SLOT_DURATION_HOURS * 60);
+  const endDate = new Date(booking.endTime || getBookingEndTime(booking.startTime));
   
   // Build event description with all customer details
   const description = `
@@ -266,6 +303,10 @@ Booked via: precisionsewerinspections.com
     const event = await calendar.events.insert({
       calendarId: CALENDAR_ID,
       requestBody: {
+        ...(identity ? {
+          id: identity.eventId,
+          extendedProperties: { private: { psiCheckoutSession: identity.checkoutSessionId } },
+        } : {}),
         summary: `🔍 Sewer Inspection - ${booking.customerName}`,
         description,
         location: booking.propertyAddress,
@@ -287,9 +328,10 @@ Booked via: precisionsewerinspections.com
         // Add color for visibility (tomato = 11 for urgent/booked)
         colorId: '11',
       },
-    });
+    }, CALENDAR_REQUEST_OPTIONS);
     
-    return event.data.id || '';
+    if (!event.data.id) throw new Error('Calendar did not return an event ID.');
+    return event.data.id;
   } catch (error) {
     console.error('Error creating calendar event:', error);
     throw error;
@@ -300,13 +342,14 @@ Booked via: precisionsewerinspections.com
  * Delete a calendar event (for cancellations)
  */
 export async function deleteBookingEvent(eventId: string): Promise<void> {
+  assertBookingDeadline();
   const calendar = getCalendarClient();
   
   try {
     await calendar.events.delete({
       calendarId: CALENDAR_ID,
       eventId,
-    });
+    }, CALENDAR_REQUEST_OPTIONS);
   } catch (error) {
     console.error('Error deleting calendar event:', error);
     throw error;
@@ -316,12 +359,12 @@ export async function deleteBookingEvent(eventId: string): Promise<void> {
 /**
  * Check if a specific time slot is still available (double-check before booking)
  */
-export async function isSlotAvailable(startTime: string): Promise<boolean> {
+export async function isSlotAvailable(startTime: string, endTime = getBookingEndTime(startTime)): Promise<boolean> {
+  assertBookingDeadline();
   const calendar = getCalendarClient();
   
   const startDate = new Date(startTime);
-  const endDate = new Date(startDate);
-  endDate.setMinutes(endDate.getMinutes() + SLOT_DURATION_HOURS * 60);
+  const endDate = new Date(endTime);
   
   try {
     const freebusyResponse = await calendar.freebusy.query({
@@ -331,9 +374,13 @@ export async function isSlotAvailable(startTime: string): Promise<boolean> {
         timeZone: TIMEZONE,
         items: [{ id: CALENDAR_ID }],
       },
-    });
+    }, CALENDAR_REQUEST_OPTIONS);
     
-    const busyPeriods = freebusyResponse.data.calendars?.[CALENDAR_ID]?.busy || [];
+    const result = freebusyResponse.data.calendars?.[CALENDAR_ID];
+    if (!result || result.errors?.length) {
+      throw new Error('Calendar availability could not be verified.');
+    }
+    const busyPeriods = result.busy || [];
     
     // Slot is available if no busy periods overlap
     return !busyPeriods.some(busy => {
@@ -344,6 +391,6 @@ export async function isSlotAvailable(startTime: string): Promise<boolean> {
     });
   } catch (error) {
     console.error('Error checking slot availability:', error);
-    return false;
+    throw error;
   }
 }
